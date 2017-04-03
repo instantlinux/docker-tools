@@ -1,0 +1,112 @@
+#!groovy
+
+
+import groovy.json.JsonSlurperClassic
+
+
+@NonCPS
+def jsonParse(def json) {
+    new groovy.json.JsonSlurperClassic().parseText(json)
+}
+
+def REPO = "repo.splunk.com"
+def ORG = "izone"
+def PRODUCT = "fraud"
+def IMG = "jenkins-master"
+def APP = "app-antifraud"
+
+node {
+    try {
+        notifyBitbucket()
+
+        def server = Artifactory.server(REPO)
+        def buildInfo = buildInfoFactory()
+        def imageName = getImageName(ORG, PRODUCT, IMG)
+        def FQImageName = "${REPO}/${imageName}"
+
+        stage("Build.Image") {
+
+            checkout scm
+
+            // build and push the image
+            docker.withRegistry("https://${REPO}", 'svc-antifraud-ci') {
+                def img = docker.build(FQImageName,  '.').push()
+            }
+        }
+
+        stage("Publish.BuildInfo") {
+
+            // artifactory docker proxy code is sensitive. only works
+            // on master node for the time being
+            node('master') {
+                def img = docker.image(FQImageName)
+                img.pull()
+
+                if(isDevelopOrMaster()) { img.push('latest') }
+
+                if(isPR()) {
+                    // seems like theres a bit of a race condition when both
+                    // feature branch and PR branch build
+                    sleep 15
+                }
+
+                def buildInfo2 = artDockerPush(FQImageName)
+
+                buildInfo.append(buildInfo2)
+                server.publishBuildInfo(buildInfo)
+
+            }
+
+        }
+        currentBuild.result = 'SUCCESS'
+
+    } catch (e) {
+
+        // if any exception occurs, mark the build as failed
+        currentBuild.result = 'FAILURE'
+        throw e
+
+    } finally { notifyBitbucket() }
+}
+
+def isPR() {
+    return env.BRANCH_NAME.startsWith('PR-')
+}
+
+def isDevelopOrMaster() {
+    return env.BRANCH_NAME =~ /^(?:master|develop)/
+}
+
+def artDockerPush(img) {
+    def artDocker = Artifactory.docker(credentialsId: 'svc-antifraud-ci')
+    return artDocker.push("${img}", 'docker-solutions-local')
+}
+
+def getImageName(org,product,component) {
+
+    def prdcmp = "${product}/${component}"
+
+    if(env.BRANCH_NAME != 'master') {
+        prdcmp="${prdcmp}/${env.BRANCH_NAME}"
+    }
+
+    return "${org}/${prdcmp}:${env.BUILD_NUMBER}".toLowerCase()
+}
+
+def notifyBitbucket() {
+    step([$class: 'StashNotifier'])
+}
+
+def buildInfoFactory() {
+    def buildInfo = Artifactory.newBuildInfo()
+
+    if(isDevelopOrMaster()){
+        buildInfo.retention(maxBuilds: 5, deleteBuildArtifacts: true)
+    } else {
+        buildInfo.retention(maxBuilds: 1, maxDays: 7, deleteBuildArtifacts: true)
+    }
+
+    buildInfo.env.filter.addInclude("*")
+    buildInfo.env.collect()
+
+    return buildInfo

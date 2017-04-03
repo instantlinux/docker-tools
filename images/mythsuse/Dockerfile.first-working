@@ -1,0 +1,88 @@
+FROM opensuse:latest
+
+# Set correct environment variables
+ENV \
+	HOME="/root" \
+	TERM=xterm \
+	LANG=en_US.UTF-8 \
+	LANGUAGE=en_US:en \
+	LC_ALL=en_US.UTF-8 \
+	APACHE_RUN_USER=www-data \
+	APACHE_RUN_GROUP=www-data \
+	APACHE_LOG_DIR="/var/log/apache2" \
+	APACHE_LOCK_DIR="/var/lock/apache2" \
+	APACHE_PID_FILE="/var/run/apache2.pid" 
+
+# Expose ports
+EXPOSE 3389 5000/udp 5002/udp 5004/udp 6543 6544 6760 65001 65001/udp 
+
+# Add local files from git repo
+ADD src/ /root/
+
+# set volumes
+VOLUME /home/mythtv /var/log/apache2 /var/log/mythtv
+
+RUN zypper in -y curl
+
+# chfn workaround - Known issue within Dockers
+RUN ln -s -f /bin/true /usr/bin/chfn && \
+
+# add repos
+zypper --gpg-auto-import-keys ar -f \
+  http://packman.inode.at/suse/openSUSE_Leap_42.2/ packman && \
+zypper ar -G ftp://ovulator/opensuse/depot/42.2-x86_64 local && \
+zypper --gpg-auto-import-keys ref -s && \
+
+zypper --non-interactive in wget less net-tools xrdp supervisor \
+  java-1_7_0-openjdk mate-desktop x11vnc xvfb-run glibc-i18ndata \
+  apache2 php5 mariadb-client \
+  mythtv-backend mythweb python-mythtv && \
+
+# mv startup file(s) and make executable
+mv /root/xrdp.ini /etc/xrdp/xrdp.ini && \
+mkdir /etc/my_init.d && \
+mv /root/001-fix-the-time.sh /etc/my_init.d/001-fix-the-time.sh && \
+mv /root/002-fix-the-config-etc.sh /etc/my_init.d/002-fix-the-config-etc.sh && \
+mv /root/003-configure-the-database.sh /etc/my_init.d/003-configure-the-database.sh && \
+mv /root/004-bring-up-rdp.sh /etc/my_init.d/004-bring-up-rdp.sh && \
+mv /root/005-bring-up-the-backend.sh /etc/my_init.d/005-bring-up-the-backend.sh && \
+mv /root/006-bring-up-mythweb.sh /etc/my_init.d/006-bring-up-mythweb.sh && \
+chmod +x /etc/my_init.d/* && \
+
+# Configure apache
+# sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php/7.0/apache2/php.ini && \
+# sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php/7.0/apache2/php.ini && \
+echo 'checkpoint 3' && \
+mv /root/ports.conf /etc/apache2/ports.conf && \
+mv /root/000-default-mythbuntu.conf /etc/apache2/vhosts.d/000-default-myth.conf && \
+mv /root/mythweb.conf /etc/apache2/vhosts.d/mythweb.conf  && \
+
+# Tweak my.cnf
+# mv -f /etc/my.cnf /etc/my.cnf.orig && \
+mv /root/my.cnf /etc/my.cnf && \
+echo 'checkpoint 4' && \
+
+# set mythtv to uid99 and gid100
+usermod -u 2021 mythtv && \
+usermod -g 100 mythtv && \
+
+# create/place required files/folders
+mkdir -p /home/mythtv/.mythtv /var/lib/mythtv /var/log/mythtv /root/.mythtv && \
+
+# set a password for user mythtv and add to required groups
+echo "mythtv:mythtv" | chpasswd && \
+usermod -s /bin/bash -d /home/mythtv mythtv && \
+
+# set permissions for files/folders
+echo 'checkpoint 5' && \
+chown -R mythtv:users /var/lib/mythtv /var/log/mythtv # && \
+
+RUN localedef -i en_US -f UTF-8 en_US.UTF-8 ; \
+
+# clean up
+zypper clean -y && \
+rm -rf /tmp/* /var/tmp/* \
+/usr/share/man /usr/share/groff /usr/share/info \
+/usr/share/lintian /usr/share/linda /var/cache/man && \
+(( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
+(( find /usr/share/doc -empty|xargs rmdir || true ))

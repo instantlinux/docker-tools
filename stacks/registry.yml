@@ -1,0 +1,26 @@
+version: "3"
+services:
+
+  app:
+    hostname: registry
+    ports:
+    - 5000:5000
+    volumes:
+    - /var/dvol/registry:/var/lib/registry
+    - /root/certs:/certs
+    image: registry:2
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/domain.key
+      TZ: US/Pacific
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == mckinley
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

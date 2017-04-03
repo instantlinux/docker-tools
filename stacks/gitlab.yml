@@ -1,0 +1,32 @@
+version: "3"
+services:
+
+  app:
+    hostname: git
+    ports:
+    - 18080:80
+    - 18443:443
+    - 8999:22
+    volumes:
+    - /var/dvol/gitlab/config:/etc/gitlab
+    - /var/dvol/gitlab/logs:/var/log/gitlab
+    - /var/dvol/gitlab/data:/var/opt/gitlab
+    image: dockerhub.instantlinux.net:5000/gitlab-ce:8.16.4-ce.0
+    environment:
+      TZ: US/Pacific
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == mckinley
+    ulimits:
+      sigpending: 62793
+      nproc: 131072
+      nofile: 60000
+      core: 0
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

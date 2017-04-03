@@ -1,0 +1,17 @@
+<Configuration>
+  <LocalHostName>my-unique-identifier-goes-here</LocalHostName>
+  <Database>
+    <PingHost>1</PingHost>
+    <Host>localhost</Host>
+    <UserName>mythtv</UserName>
+    <Password>mythtv</Password>
+    <DatabaseName>myth28</DatabaseName>
+    <Port>3306</Port>
+  </Database>
+  <WakeOnLAN>
+    <Enabled>0</Enabled>
+    <SQLReconnectWaitTime>0</SQLReconnectWaitTime>
+    <SQLConnectRetry>5</SQLConnectRetry>
+    <Command>echo 'WOLsqlServerCommand not set'</Command>
+  </WakeOnLAN>
+</Configuration>

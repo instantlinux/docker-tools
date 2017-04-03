@@ -1,0 +1,29 @@
+version: "3"
+services:
+
+  guac:
+    hostname: guac
+    ports:
+    - 16080:8080
+    environment:
+      MYSQL_HOSTNAME: mdb00
+      MYSQL_DATABASE: guacamole
+      MYSQL_USER: guacamole_user
+      MYSQL_PASSWORD: To1V4HdXqd
+      GUACD_HOSTNAME: guacd
+    image: glyptodon/guacamole:0.9.11-incubating
+    deploy:
+      replicas: 1
+    networks:
+      app_net:
+  guacd:
+    hostname: guacd
+    image: glyptodon/guacd:0.9.11-incubating
+    deploy:
+      replicas: 1
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

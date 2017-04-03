@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  jenkins-master:
+    image: jenkins-master
+    environment:
+       TZ: US/Pacific
+    deploy:
+      labels:
+        com.df.notify: "true"
+        com.df.distribute: "true"
+        com.df.serviceDomain: "ci.net"
+        com.df.servicePath: "/"
+        com.df.port: 2080
+      placement:
+        constraints:
+          - node.hostname == mckinley
+    ports:
+      - 2080:8080
+      - 2085:8082
+    networks:
+      - jenkinsnet
+      - app_net
+    volumes:
+      - jenkinsdata:/var/jenkins_home
+      - jenkinsbackup:/var/jenkins_backup
+      # root on host!!
+      - /var/run/docker.sock:/var/run/docker.sock
+  jenkins-slave:
+    image: dockerhub.instantlinux.net:5000/jenkins-slave:20170402
+    environment:
+       TZ: US/Pacific
+       SWARM_MASTER_URL: http://jenkins-master:8080/
+       SWARM_JENKINS_USER: jenkins
+       SWARM_JENKINS_PASSWORD: jenkins
+    deploy:
+      mode: replicated
+      replicas: 2
+    networks:
+      - jenkinsnet
+    volumes:
+      # TODO: don't mount /var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  jenkinsdata:
+      external: true
+  jenkinsbackup:
+      external: true
+networks:
+  jenkinsnet:
+    external: true
+  app_net:
+    external: true
