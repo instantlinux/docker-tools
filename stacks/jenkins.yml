@@ -27,7 +27,7 @@ services:
       # root on host!!
       - /var/run/docker.sock:/var/run/docker.sock
   jenkins-slave:
-    image: dockerhub.instantlinux.net:5000/jenkins-slave:20170402
+    image: dockerhub.instantlinux.net:5000/jenkins-slave:20170403
     environment:
        TZ: US/Pacific
        SWARM_MASTER_URL: http://jenkins-master:8080/
