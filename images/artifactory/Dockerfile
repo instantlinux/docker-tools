@@ -20,10 +20,15 @@ RUN \
 #   '-e RUNTIME_OPTS="-Xmx256m"' when starting a container.
 RUN echo 'export CATALINA_OPTS="$RUNTIME_OPTS"' > bin/setenv.sh
 
-RUN mkdir -p /artifactory
+RUN mkdir -p /artifactory/etc
 ENV ARTIFACTORY_HOME /artifactory
 
+ADD http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.35/mysql-connector-java-5.1.35.jar /usr/local/tomcat/lib/
+
+COPY storage.properties /artifactory/etc/
+
 VOLUME /artifactory/data
+VOLUME /artifactory/etc
 VOLUME /artifactory/logs
 VOLUME /artifactory/backup
 WORKDIR /artifactory

@@ -4,19 +4,21 @@ services:
   app:
     hostname: artifactory
     ports:
-    - 18180:8080
+    - 18180:8081
     volumes:
-    - /var/dvol/artifactory/data:/artifactory/data
-    - /var/dvol/artifactory/logs:/artifactory/logs
-    - /var/dvol/artifactory/backup:/artifactory/backup
-    image: dockerhub.instantlinux.net:5000/artifactory:5.2.0
+    - /var/dvol/artifactory/data:/var/opt/jfrog/artifactory
+    - /var/dvol/artifactory/mysql-connector-java-5.1.40.jar:/opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-5.1.40-bin.jar
+    image: docker.bintray.io/jfrog/artifactory-oss:5.2.0
     environment:
       TZ: US/Pacific
+      DB_TYPE: mysql
+      DB_HOST: mdb01.ci.net
+      DB_PASSWORD: redacted
     deploy:
       replicas: 1
       placement:
         constraints:
-        - node.hostname == denali
+        - node.hostname == vinson
     networks:
       app_net:
 
