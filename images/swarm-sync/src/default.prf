@@ -1,0 +1,5 @@
+# Path specifications for unison
+root = /var
+root = ssh://peer//var
+path = swarm-sync
+include common

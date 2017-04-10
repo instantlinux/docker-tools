@@ -1,0 +1,44 @@
+version: "3"
+services:
+
+  primary:
+    image: dockerhub.instantlinux.net:5000/swarm-sync:latest
+    environment:
+      SYNC_INTERVAL: "2"
+      TZ: US/Pacific
+    # TODO: get rid of this keyfile, use secrets
+    env_file:
+      - ../../.docker/swarm-sync.pem.env
+    deploy:
+      placement:
+        constraints:
+          - node.labels.swarm-sync == primary
+      replicas: 1
+    volumes:
+      - synclogs:/var/log/unison
+      - /var/lib/docker/share:/var/swarm-sync
+    networks:
+      sync:
+
+  peer:
+    image: dockerhub.instantlinux.net:5000/swarm-sync:latest
+    environment:
+      SYNC_ROLE: peer
+    env_file:
+      - ../../.docker/swarm-sync.pub.env
+    deploy:
+      placement:
+        constraints:
+          - node.labels.swarm-sync == peer
+      replicas: 1      
+    volumes:
+      - /var/lib/docker/share:/var/swarm-sync
+    networks:
+      sync:
+
+networks:
+  sync:
+
+volumes:
+  synclogs:
+    external: true
