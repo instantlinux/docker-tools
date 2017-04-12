@@ -13,9 +13,9 @@ services:
       placement:
         constraints:
           - node.labels.swarm-sync == primary
-      replicas: 1
     volumes:
       - synclogs:/var/log/unison
+      - syncarchive:/root/.unison
       - /var/lib/docker/share:/var/swarm-sync
     networks:
       sync:
@@ -30,7 +30,6 @@ services:
       placement:
         constraints:
           - node.labels.swarm-sync == peer
-      replicas: 1      
     volumes:
       - /var/lib/docker/share:/var/swarm-sync
     networks:
@@ -41,4 +40,6 @@ networks:
 
 volumes:
   synclogs:
+    external: true
+  syncarchive:
     external: true

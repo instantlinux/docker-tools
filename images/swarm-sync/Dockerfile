@@ -15,9 +15,10 @@ EXPOSE 22
 
 COPY src/ /root/src/
 RUN rm -fr /var/cache/debconf /var/lib/apt/lists/* /var/log/* && \
-    mkdir /var/log/unison
+    mkdir /var/log/unison /root/.unison
 
 VOLUME /var/swarm-sync
+VOLUME /root/.unison
 VOLUME /var/log/unison
 
 ENTRYPOINT ["/root/src/entrypoint.sh"]

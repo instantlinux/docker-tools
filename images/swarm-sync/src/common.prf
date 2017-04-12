@@ -1,6 +1,8 @@
 # Directives for unison
 ignore = Name .Xauthority
 ignore = Name lost+found
+ignore = Name *socket
+
 auto   = true
 batch  = true
 confirmbigdel = true

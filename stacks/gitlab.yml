@@ -8,17 +8,16 @@ services:
     - 18443:443
     - 8999:22
     volumes:
-    - /var/dvol/gitlab/config:/etc/gitlab
-    - /var/dvol/gitlab/logs:/var/log/gitlab
-    - /var/dvol/gitlab/data:/var/opt/gitlab
+    - /var/lib/docker/share/gitlab/config:/etc/gitlab
+    - /var/lib/docker/share/gitlab/logs:/var/log/gitlab
+    - /var/lib/docker/share/gitlab/data:/var/opt/gitlab
     image: dockerhub.instantlinux.net:5000/gitlab-ce:8.16.4-ce.0
     environment:
       TZ: US/Pacific
     deploy:
-      replicas: 1
       placement:
         constraints:
-        - node.hostname == mckinley
+        - node.labels.swarm-sync-member == true
     ulimits:
       sigpending: 62793
       nproc: 131072

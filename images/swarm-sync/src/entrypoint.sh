@@ -1,5 +1,5 @@
 #! /bin/bash
-mkdir -m 700 /root/.ssh /root/.unison
+mkdir -m 700 /root/.ssh
 if [ $SYNC_ROLE == "primary" ]; then
   echo "0-59/$SYNC_INTERVAL * * * *   root  /root/src/swarm-sync.sh" \
    >/etc/cron.d/swarm-sync
@@ -10,7 +10,7 @@ if [ $SYNC_ROLE == "primary" ]; then
   chmod 400 /root/.ssh/swarm-sync-sshkey.rsa
 
   cp /root/src/*.prf /root/.unison
-  sleep 5
+  sleep 10
   ssh-keyscan peer >> /root/.ssh/known_hosts
   cron
 else

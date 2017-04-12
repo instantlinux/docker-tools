@@ -6,7 +6,7 @@ services:
     ports:
     - 5000:5000
     volumes:
-    - /var/dvol/registry:/var/lib/registry
+    - /var/lib/docker/share/registry:/var/lib/registry
     - /root/certs:/certs
     image: registry:2
     environment:
@@ -14,10 +14,9 @@ services:
       REGISTRY_HTTP_TLS_KEY: /certs/domain.key
       TZ: US/Pacific
     deploy:
-      replicas: 1
       placement:
         constraints:
-        - node.hostname == mckinley
+        - node.labels.swarm-sync-member == true
     networks:
       app_net:
 

@@ -15,7 +15,6 @@ services:
       DB_HOST: mdb01.ci.net
       DB_PASSWORD: redacted
     deploy:
-      replicas: 1
       placement:
         constraints:
         - node.labels.swarm-sync-member == true

@@ -12,8 +12,6 @@ services:
     command: >
       /usr/bin/garbd -a gcomm://mdb01.ci.net:4567
       -g cluster01 -o pc.wait_prim=no
-    deploy:
-      replicas: 1
     networks:
       app_net:
 

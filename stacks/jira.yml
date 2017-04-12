@@ -6,16 +6,15 @@ services:
     ports:
     - 17080:8080
     volumes:
-    - /var/dvol/jira01/home:/var/atlassian/jira
-    - /var/dvol/jira01/logs:/opt/atlassian/jira/logs
+    - /var/lib/docker/share/jira01/home:/var/atlassian/jira
+    - /var/lib/docker/share/jira01/logs:/opt/atlassian/jira/logs
     image: dockerhub.instantlinux.net:5000/atlassian-jira:7.3.3
     environment:
       TZ: US/Pacific
     deploy:
       placement:
         constraints:
-        - node.hostname == mckinley
-      replicas: 1
+        - node.labels.swarm-sync == primary
     networks:
       app_net:
 

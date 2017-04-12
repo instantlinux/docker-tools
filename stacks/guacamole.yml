@@ -12,15 +12,11 @@ services:
       MYSQL_PASSWORD: To1V4HdXqd
       GUACD_HOSTNAME: guacd
     image: glyptodon/guacamole:0.9.11-incubating
-    deploy:
-      replicas: 1
     networks:
       app_net:
   guacd:
     hostname: guacd
     image: glyptodon/guacd:0.9.11-incubating
-    deploy:
-      replicas: 1
     networks:
       app_net:
 

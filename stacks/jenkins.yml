@@ -14,7 +14,7 @@ services:
         com.df.port: 2080
       placement:
         constraints:
-          - node.hostname == mckinley
+        - node.labels.swarm-sync == primary
     ports:
       - 2080:8080
       - 2085:8082
