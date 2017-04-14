@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  db_first:
+    image: percona/percona-xtradb-cluster:5.7.17
+    environment:
+      TZ: US/Pacific
+      MYSQL_ROOT_PASSWORD: test
+      CLUSTER_NAME: cluster01
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == primary
+    ports:
+      - 13306:3306
+    networks:
+      - dbcluster
+      - app_net
+    volumes:
+      - /var/dvol/xtradb/data:/var/lib/mysql
+      - /var/dvol/xtradb/etc:/etc/mysql
+      - /var/dvol/xtradb/logs:/var/log/mysql
+  db_peer:
+    image: percona/percona-xtradb-cluster:5.7.17
+    environment:
+      TZ: US/Pacific
+      MYSQL_ROOT_PASSWORD: test
+      CLUSTER_NAME: cluster01
+      CLUSTER_JOIN: db_first
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync != primary
+    ports:
+      - 13406:3306
+    networks:
+      - dbcluster
+      - app_net
+    volumes:
+      - /var/dvol/xtradb/data:/var/lib/mysql
+      - /var/dvol/xtradb/etc:/etc/mysql
+      - /var/dvol/xtradb/logs:/var/log/mysql
+  garbd:
+    image: gregnuj/garbd:latest
+    command: >
+      /usr/bin/garbd -a gcomm://db_first:4567
+      -g cluster01 -o pc.wait_prim=no
+    networks:
+      - dbcluster
+
+networks:
+  app_net:
+    external: true
+  dbcluster:
+    external: true

@@ -1,4 +1,8 @@
 version: "3"
+# Synchronize two swarm nodes
+#  Note that the stack has to be redeployed any time a new volume
+#  mount is added underneath the top-level share
+
 services:
 
   primary:

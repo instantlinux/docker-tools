@@ -1,20 +1,19 @@
 version: "3"
-# image origin cptactionhank/atlassian-jira:7.3.3
 services:
   app:
     hostname: jira
+    image: cptactionhank/atlassian-jira:7.3.3
+    environment:
+      TZ: US/Pacific
     ports:
     - 17080:8080
     volumes:
     - /var/lib/docker/share/jira01/home:/var/atlassian/jira
     - /var/lib/docker/share/jira01/logs:/opt/atlassian/jira/logs
-    image: dockerhub.instantlinux.net:5000/atlassian-jira:7.3.3
-    environment:
-      TZ: US/Pacific
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync == primary
+        - node.labels.swarm-sync-member == true
     networks:
       app_net:
 

@@ -3,16 +3,16 @@ services:
 
   app:
     hostname: registry
-    ports:
-    - 5000:5000
-    volumes:
-    - /var/lib/docker/share/registry:/var/lib/registry
-    - /root/certs:/certs
     image: registry:2
     environment:
       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
       REGISTRY_HTTP_TLS_KEY: /certs/domain.key
       TZ: US/Pacific
+    ports:
+    - 5000:5000
+    volumes:
+    - /var/lib/docker/share/registry:/var/lib/registry
+    - /root/certs:/certs
     deploy:
       placement:
         constraints:

@@ -2,7 +2,10 @@ version: "3"
 services:
 
   app:
+    image: gitlab/gitlab-ce:8.16.4-ce.0
     hostname: git.instantlinux.net
+    environment:
+      TZ: US/Pacific
     ports:
     - 18080:80
     - 18443:443
@@ -11,9 +14,6 @@ services:
     - /var/lib/docker/share/gitlab/config:/etc/gitlab
     - /var/lib/docker/share/gitlab/logs:/var/log/gitlab
     - /var/lib/docker/share/gitlab/data:/var/opt/gitlab
-    image: dockerhub.instantlinux.net:5000/gitlab-ce:8.16.4-ce.0
-    environment:
-      TZ: US/Pacific
     deploy:
       placement:
         constraints:
