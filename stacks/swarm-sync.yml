@@ -44,6 +44,4 @@ networks:
 
 volumes:
   synclogs:
-    external: true
   syncarchive:
-    external: true

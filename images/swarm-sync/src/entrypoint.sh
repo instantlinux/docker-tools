@@ -9,7 +9,11 @@ if [ $SYNC_ROLE == "primary" ]; then
   # cp /var/run/secrets/swarm-sync-sshkey /root/.ssh/swarm-sync-sshkey.rsa
   chmod 400 /root/.ssh/swarm-sync-sshkey.rsa
 
-  cp /root/src/*.prf /root/.unison
+  if [ ! -e /root/.unison/common.prf ]; then
+    # configuration files files are *.prf; don't overwrite after initial
+    # installation
+    cp /root/src/*.prf /root/.unison
+  fi
   sleep 10
   ssh-keyscan peer >> /root/.ssh/known_hosts
   cron
