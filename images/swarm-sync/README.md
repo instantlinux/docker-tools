@@ -1,12 +1,13 @@
 ## swarm-sync
 
-This provides sync for persistent storage between two swarm nodes,
+This HA tool provides sync for persistent storage between two swarm nodes,
 with automatic recovery after a failure of either node.
 
 If you don't have a SAN or cloud-infrastructure to support persistent
-volumes, build a stack using this container. Then you can build
-additional stacks with their volumes mounted from subdirectories
-of /var/lib/docker/share.
+volumes, build a stack using this container. Then your other stacks can
+reference volume mount points as subdirectories of /var/lib/docker/share.
+
+At present this is far easier to set up than other clustering technologies.
 
 ## Usage
 
@@ -27,3 +28,8 @@ Then use this compose-file constraint in your stack definitions:
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
+
+For monitoring, put nagios-nrpe-swarm-sync.cfg into your /etc/nagios
+directory and add an NRPE check_swarm_sync check to the primary host's
+list of services. Set the warning/critical values as appropriate for
+your polling frequency in the cfg file.

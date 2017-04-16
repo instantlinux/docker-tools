@@ -1,5 +1,9 @@
 # !/bin/bash
 
 unison
-[ $? != 0 ] && echo "`date --rfc-3339=seconds` Error during unison run" \
-  >> /var/log/unison/unison.log
+if [ $? != 0 ]; then
+  echo "`date --rfc-3339=seconds` Error during unison run" \
+   >> /var/log/unison/unison.log
+else
+  echo "`date --rfc-3339=seconds` ok" > /var/log/unison/unison-status.txt
+fi

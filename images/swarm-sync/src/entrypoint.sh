@@ -14,8 +14,16 @@ if [ $SYNC_ROLE == "primary" ]; then
     # installation
     cp /root/src/*.prf /root/.unison
   fi
-  sleep 10
-  ssh-keyscan peer >> /root/.ssh/known_hosts
+  RETRIES=10
+  while [ ! -s /root/.ssh/known_hosts ]; do
+    sleep 5
+    ssh-keyscan peer >> /root/.ssh/known_hosts
+    RETRIES=$((RETRIES - 1))
+    if [ $RETRIES == 0 ]; then
+      echo "Could not reach sshd on peer after 10 tries"
+      exit 1
+    fi
+  done
   cron
 else
   /etc/init.d/ssh start

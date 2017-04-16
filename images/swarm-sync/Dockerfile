@@ -7,18 +7,13 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SYNC_INTERVAL=5 \
     TZ=US/Pacific
 
-RUN \
-  apt-get -yqq update && \
-  apt-get install -yqq unison openssh-server cron
+RUN apt-get -yq update && \
+    apt-get install -yq --no-install-recommends unison openssh-server cron && \
+    rm -fr /var/cache/debconf /var/lib/apt/lists/* /var/log/* && \
+    mkdir /var/log/unison /root/.unison
 USER root
 EXPOSE 22
 
 COPY src/ /root/src/
-RUN rm -fr /var/cache/debconf /var/lib/apt/lists/* /var/log/* && \
-    mkdir /var/log/unison /root/.unison
-
-VOLUME /var/swarm-sync
-VOLUME /root/.unison
-VOLUME /var/log/unison
-
+VOLUME ["/var/swarm-sync", "/root/.unison", "/var/log/unison"]
 ENTRYPOINT ["/root/src/entrypoint.sh"]

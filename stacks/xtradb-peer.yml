@@ -1,15 +1,38 @@
 version: "3"
 
+# same services as xtradb-bootstrap but with CLUSTER_JOIN in first node
+# as well as peers
+
 services:
+  db_first:
+    image: percona/percona-xtradb-cluster:5.7.17
+    environment:
+      TZ: US/Pacific
+      CLUSTER_NAME: cluster01
+      CLUSTER_JOIN: db_peer
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == primary
+    ports:
+      - 13306:3306
+    networks:
+      - dbcluster
+      - app_net
+    volumes:
+      - /var/dvol/xtradb/data:/var/lib/mysql
+      - /var/dvol/xtradb/etc:/etc/mysql
+      - /var/dvol/xtradb/logs:/var/log/mysql
   db_peer:
     image: percona/percona-xtradb-cluster:5.7.17
     environment:
       TZ: US/Pacific
-      MYSQL_ROOT_PASSWORD: test
       CLUSTER_NAME: cluster01
-      CLUSTER_JOIN: db_peer
     deploy:
       mode: global
+      placement:
+        constraints:
+        - node.labels.swarm-sync != primary
     ports:
       - 13406:3306
     networks:
