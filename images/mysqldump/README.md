@@ -20,16 +20,16 @@ the host directory /var/dvol/backup/mysql.
 	- dbcluster
       volumes:
 	- /var/dvol/backup/mysql:/var/backup
-	- /var/dvol/backup/etc/.my.cnf:/home/mysqldump/.my.cnf
-	- /var/dvol/backup/logs:/var/log
+	- /var/dvol/backup/etc/my.cnf:/home/mysqldump/.my.cnf
+	- logs:/var/log
 
 Before running it, grant access to a mysql user thus:
 
     mysql> GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO
       '$USER'@'10.%' IDENTIFIED BY '$PSWD';
 
-Make sure the /var/dvol/backup/{mysql,etc,logs} directories exist,
-and that your /var/dvol/backup/etc/.my.cnf file contains the $PSWD
+Make sure the /var/dvol/backup/{mysql,etc} directories exist,
+and that your /var/dvol/backup/etc/my.cnf file contains the $PSWD
 you've set:
 
     [client]

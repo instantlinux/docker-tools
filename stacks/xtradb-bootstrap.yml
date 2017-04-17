@@ -7,19 +7,20 @@ services:
       TZ: US/Pacific
       MYSQL_ROOT_PASSWORD: test
       CLUSTER_NAME: cluster01
+    ports:
+    - 13306:3306
+    volumes:
+    - /var/dvol/xtradb/data:/var/lib/mysql
+    - /var/dvol/xtradb/etc:/etc/mysql
+    - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync == primary
-    ports:
-      - 13306:3306
     networks:
-      - dbcluster
-      - app_net
-    volumes:
-      - /var/dvol/xtradb/data:/var/lib/mysql
-      - /var/dvol/xtradb/etc:/etc/mysql
-      - /var/dvol/xtradb/logs:/var/log/mysql
+      dbcluster:
+      app_net:
+
   db_peer:
     image: percona/percona-xtradb-cluster:5.7.17
     environment:
@@ -27,26 +28,27 @@ services:
       MYSQL_ROOT_PASSWORD: test
       CLUSTER_NAME: cluster01
       CLUSTER_JOIN: db_first
+    ports:
+    - 13406:3306
+    volumes:
+    - /var/dvol/xtradb/data:/var/lib/mysql
+    - /var/dvol/xtradb/etc:/etc/mysql
+    - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync != primary
-    ports:
-      - 13406:3306
     networks:
-      - dbcluster
-      - app_net
-    volumes:
-      - /var/dvol/xtradb/data:/var/lib/mysql
-      - /var/dvol/xtradb/etc:/etc/mysql
-      - /var/dvol/xtradb/logs:/var/log/mysql
+      dbcluster:
+      app_net:
+
   garbd:
     image: gregnuj/garbd:latest
     command: >
       /usr/bin/garbd -a gcomm://db_first:4567
       -g cluster01 -o pc.wait_prim=no
     networks:
-      - dbcluster
+      dbcluster:
 
 networks:
   app_net:

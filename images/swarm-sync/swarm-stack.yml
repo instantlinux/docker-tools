@@ -1,0 +1,46 @@
+version: "3"
+# Synchronize two swarm nodes
+#  Note that the stack has to be redeployed any time a new volume
+#  mount is added underneath the top-level share
+
+services:
+
+  primary:
+    image: dockerhub.instantlinux.net:5000/swarm-sync:latest
+    environment:
+      SYNC_INTERVAL: "2"
+      TZ: US/Pacific
+    # TODO: get rid of this keyfile, use secrets
+    env_file:
+    - ../../.docker/swarm-sync.pem.env
+    volumes:
+    - logs:/var/log/unison
+    - syncarchive:/root/.unison
+    - /var/lib/docker/share:/var/swarm-sync
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == primary
+    networks:
+      sync:
+
+  peer:
+    image: dockerhub.instantlinux.net:5000/swarm-sync:latest
+    environment:
+      SYNC_ROLE: peer
+    env_file:
+    - ../../.docker/swarm-sync.pub.env
+    volumes:
+    - /var/lib/docker/share:/var/swarm-sync
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == peer
+    networks:
+      sync:
+
+networks:
+  sync:
+volumes:
+  logs:
+  syncarchive:

@@ -1,7 +1,7 @@
 #! /bin/bash
 touch /var/log/mysqldump.log /home/$USERNAME/.my.cnf
 chown $USERNAME /var/backup /var/log/mysqldump.log /home/$USERNAME/.my.cnf
-echo "$MINUTE $HOUR * * *   $USERNAME  /root/src/mysql-backup.sh $KEEP_DAYS $SERVERS" \
+echo "$MINUTE $HOUR * * *   $USERNAME  /usr/local/bin/mysql-backup.sh $KEEP_DAYS $SERVERS" \
    >/etc/cron.d/mysql-backup
 
 # TODO: generate .my.cnf from docker secrets

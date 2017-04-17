@@ -23,8 +23,6 @@ log_entry () {
  return 0
 }
 
-LOG=$CARE_LOG
-
 log_entry info START
 
 # Grants required for bkp user:

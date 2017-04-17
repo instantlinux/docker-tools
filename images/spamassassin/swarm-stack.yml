@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  app:
+    image: dockerhub.instantlinux.net:5000/spamassassin:latest
+    ports:
+    - 783:783
+    volumes:
+    - /var/lib/docker/share/spamd/etc/local.cf:/etc/mail/spamassassin/local.cf:ro
+    - home:/var/lib/spamassassin
+    - logs:/var/log
+    deploy:
+      mode: global
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true
+volumes:
+  home:
+  logs:

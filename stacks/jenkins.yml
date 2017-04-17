@@ -2,51 +2,46 @@ version: "3"
 
 services:
   jenkins-master:
-    image: jenkins-master
+    image: dockerhub.instantlinux.net:5000/jenkins-master:latest
     environment:
-       TZ: US/Pacific
+      TZ: US/Pacific
+    ports:
+    - 2080:8080
+    - 2085:8082
+    volumes:
+    - jenkinsdata:/var/jenkins_home
+    - jenkinsbackup:/var/jenkins_backup
+    # TODO: don't mount /var/run/docker.sock
+    # root on host!!
+    - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      jenkinsnet:
+      app_net:
     deploy:
-      labels:
-        com.df.notify: "true"
-        com.df.distribute: "true"
-        com.df.serviceDomain: "ci.net"
-        com.df.servicePath: "/"
-        com.df.port: 2080
       placement:
         constraints:
         - node.labels.swarm-sync == primary
-    ports:
-      - 2080:8080
-      - 2085:8082
-    networks:
-      - jenkinsnet
-      - app_net
-    volumes:
-      - jenkinsdata:/var/jenkins_home
-      - jenkinsbackup:/var/jenkins_backup
-      # root on host!!
-      - /var/run/docker.sock:/var/run/docker.sock
+
   jenkins-slave:
     image: dockerhub.instantlinux.net:5000/jenkins-slave:20170403
     environment:
-       TZ: US/Pacific
-       SWARM_MASTER_URL: http://jenkins-master:8080/
-       SWARM_JENKINS_USER: jenkins
-       SWARM_JENKINS_PASSWORD: jenkins
+      TZ: US/Pacific
+      SWARM_MASTER_URL: http://jenkins-master:8080/
+      SWARM_JENKINS_USER: jenkins
+      SWARM_JENKINS_PASSWORD: jenkins
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: replicated
       replicas: 2
     networks:
-      - jenkinsnet
-    volumes:
-      # TODO: don't mount /var/run/docker.sock
-      - /var/run/docker.sock:/var/run/docker.sock
+      jenkinsnet:
 
 volumes:
   jenkinsdata:
-      external: true
+    external: true
   jenkinsbackup:
-      external: true
+    external: true
 networks:
   jenkinsnet:
     external: true
