@@ -11,8 +11,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get -yq update && \
     apt-get -y --no-install-recommends install \
-     cron curl gcc libc6-dev libmail-dkim-perl libnet-ident-perl make \
-     pyzor razor spamassassin && \
+     cron curl gcc libc6-dev libdbd-mysql-perl libmail-dkim-perl \
+     libnet-ident-perl make pyzor razor spamassassin && \
     mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist
 
 # Distributed Checksum Clearinghouse - requires a source-compile

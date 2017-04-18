@@ -4,9 +4,7 @@ if [ $SYNC_ROLE == "primary" ]; then
   echo "0-59/$SYNC_INTERVAL * * * *   root  /root/src/swarm-sync.sh" \
    >/etc/cron.d/swarm-sync
 
-  # TODO: install docker 17.03 for secrets
-  echo $SYNC_SSHPEM | sed 's/,/\n/g' > /root/.ssh/swarm-sync-sshkey.rsa
-  # cp /var/run/secrets/swarm-sync-sshkey /root/.ssh/swarm-sync-sshkey.rsa
+  cp /var/run/secrets/swarm-sync_sshkey /root/.ssh/swarm-sync-sshkey.rsa
   chmod 400 /root/.ssh/swarm-sync-sshkey.rsa
 
   if [ ! -e /root/.unison/common.prf ]; then

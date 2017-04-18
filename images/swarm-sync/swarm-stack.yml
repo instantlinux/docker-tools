@@ -1,4 +1,4 @@
-version: "3"
+version: "3.1"
 # Synchronize two swarm nodes
 #  Note that the stack has to be redeployed any time a new volume
 #  mount is added underneath the top-level share
@@ -10,9 +10,6 @@ services:
     environment:
       SYNC_INTERVAL: "2"
       TZ: US/Pacific
-    # TODO: get rid of this keyfile, use secrets
-    env_file:
-    - ../../.docker/swarm-sync.pem.env
     volumes:
     - logs:/var/log/unison
     - syncarchive:/root/.unison
@@ -23,6 +20,8 @@ services:
         - node.labels.swarm-sync == primary
     networks:
       sync:
+    secrets:
+    - swarm-sync_sshkey
 
   peer:
     image: dockerhub.instantlinux.net:5000/swarm-sync:latest
@@ -44,3 +43,6 @@ networks:
 volumes:
   logs:
   syncarchive:
+secrets:
+  swarm-sync_sshkey:
+    external: true
