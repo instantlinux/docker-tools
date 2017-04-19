@@ -3,7 +3,7 @@ echo "$MINUTE $HOUR * * *   root   sa-update &&\
   kill -HUP \`cat /var/run/spamd.pid\`" > /etc/cron.d/sa-update
 cron
 
-mkdir /var/run/dcc
+mkdir -p /var/run/dcc
 /var/dcc/libexec/dccifd -tREP,20 -tCMN,5, -llog -wwhiteclnt -Uuserdirs \
   -SHELO -Smail_host -SSender -SList-ID
 
