@@ -1,6 +1,5 @@
 HOST=`basename \`pwd\``
 DOMAIN=ci.net
-#IP=192.168.2.82
 
 docker run --detach --restart always --name $HOST \
     --network host \

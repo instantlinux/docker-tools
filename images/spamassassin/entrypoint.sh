@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "$MINUTE $HOUR * * *   root   sa-update &&\
+echo "$CRON_MINUTE $CRON_HOUR * * *   root   sa-update &&\
   kill -HUP \`cat /var/run/spamd.pid\`" > /etc/cron.d/sa-update
 cron
 
@@ -18,6 +18,6 @@ su $USERNAME bash -c "
 
 cd /var/log
 spamd --allowed-ips=0.0.0.0/0 --helper-home-dir=/var/lib/spamassassin \
-  --ip-address --nouser-config --pidfile=/var/run/spamd.pid --syslog=file \
-  --username=$USERNAME
+  --ip-address --pidfile=/var/run/spamd.pid --syslog=file \
+  --username=$USERNAME $EXTRA_OPTIONS
 touch spamd.log && tail -f spamd.log

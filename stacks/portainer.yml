@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  app:
+    # Not working yet with TLS; probably a bug in the distributed image
+    image: portainer/portainer:1.12.4
+    ports:
+    - 9000:9000
+    volumes:
+    - /var/lib/docker/share/portainer/data:/data
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

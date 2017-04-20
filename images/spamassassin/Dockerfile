@@ -3,9 +3,9 @@ MAINTAINER Rich Braun <richb@instantlinux.net>
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=US/Pacific \
-    HOUR=1 \
-    MINUTE=30 \
+    CRON_HOUR=1 CRON_MINUTE=30 \
     USERNAME=debian-spamd \
+    EXTRA_OPTIONS=--nouser-config \
     PYZOR_SITE=public.pyzor.org:24441 \
     DCC_VERSION=1.3.159
 
