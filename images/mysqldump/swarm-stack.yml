@@ -1,24 +1,28 @@
-version: "3"
+version: "3.1"
 
 services:
   app:
-    image: dockerhub.instantlinux.net:5000/mysqldump:20170416
+    image: dockerhub.instantlinux.net:5000/mysqldump:20170422
     environment:
       TZ: US/Pacific
       SERVERS: xdb00
     volumes:
     - /var/dvol/backup/mysql:/var/backup
-    - /var/dvol/backup/etc/my.cnf:/home/mysqldump/.my.cnf
     - logs:/var/log
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync == primary
     networks:
-    - dbcluster
+      dbcluster:
+    secrets:
+      - mysql-backup
 
 networks:
   dbcluster:
     external: true
 volumes:
   logs:
+secrets:
+  mysql-backup:
+    external: true

@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+  app:
+    image: dockerhub.instantlinux.net:5000/garbd2:latest
+    ports:
+    - 3306:3306
+    - 4444:4444
+    - 4567:4567
+    - 4568:4568
+    command: >
+      /usr/bin/garbd -a gcomm://mdb01.ci.net:4567
+      -g cluster01 -o pc.wait_prim=no
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

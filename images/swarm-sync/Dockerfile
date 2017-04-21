@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SYNC_ROLE=primary \
     SYNC_SSHKEY= \
     SYNC_INTERVAL=5 \
+    SECRET=swarm-sync_sshkey \
     TZ=US/Pacific
 
 RUN apt-get -yq update && \

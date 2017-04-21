@@ -1,10 +1,13 @@
 #!groovy
+// Pipeline for docker-image build
+//  created by richb@instantlinux.net 20-apr-2017
+
 def registry = 'dockerhub.instantlinux.net:5000'
 def notify = 'richb@instantlinux.net'
 
 pipeline {
   parameters {
-    string(name: 'Service', defaultValue: 'jenkins-master',
+    string(name: 'Service', defaultValue: 'foundation',
            description: 'Service image to test/deploy')
     string(name: 'BaseEnv', defaultValue: 'dev',
            description: 'Environment to test/deploy')

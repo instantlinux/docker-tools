@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  app:
+    image: dockerhub.instantlinux.net:5000/blacklist:latest
+    environment:
+      RBL_DOMAIN: blacklist.ci.net
+      NS_SERVERS: node1.ci.net node2.ci.net node3.ci.net
+      DB_HOST: xdb00
+    ports:
+    - 53:53/udp
+    volumes:
+    - data:/var/lib/rbldns
+    networks:
+      app_net:
+    secrets:
+    - mysql-blacklist-user
+
+networks:
+  app_net:
+    external: true
+volumes:
+  data:
+secrets:
+  mysql-blacklist-user:
+    external: true

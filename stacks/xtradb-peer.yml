@@ -4,7 +4,7 @@ version: "3"
 # as well as peers
 
 services:
-  db_first:
+  bootstrap:
     image: percona/percona-xtradb-cluster:5.7.17
     environment:
       TZ: US/Pacific
@@ -14,7 +14,7 @@ services:
     - 13306:3306
     volumes:
     - /var/dvol/xtradb/data:/var/lib/mysql
-    - /var/dvol/xtradb/etc:/etc/mysql
+    - /var/dvol/xtradb/etc:/etc/mysql:ro
     - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       placement:
@@ -33,7 +33,7 @@ services:
     - 13406:3306
     volumes:
     - /var/dvol/xtradb/data:/var/lib/mysql
-    - /var/dvol/xtradb/etc:/etc/mysql
+    - /var/dvol/xtradb/etc:/etc/mysql:ro
     - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       mode: global
@@ -47,7 +47,7 @@ services:
   garbd:
     image: gregnuj/garbd:latest
     command: >
-      /usr/bin/garbd -a gcomm://db_first:4567
+      /usr/bin/garbd -a gcomm://bootstrap:4567
       -g cluster01 -o pc.wait_prim=no
     networks:
       dbcluster:

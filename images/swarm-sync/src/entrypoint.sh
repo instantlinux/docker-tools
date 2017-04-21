@@ -4,8 +4,9 @@ if [ $SYNC_ROLE == "primary" ]; then
   echo "0-59/$SYNC_INTERVAL * * * *   root  /root/src/swarm-sync.sh" \
    >/etc/cron.d/swarm-sync
 
-  cp /var/run/secrets/swarm-sync_sshkey /root/.ssh/swarm-sync-sshkey.rsa
-  chmod 400 /root/.ssh/swarm-sync-sshkey.rsa
+  cp /var/run/secrets/$SECRET /var/run/$SECRET.rsa
+  chmod 400 /var/run/$SECRET.rsa
+  ln -s /var/run/$SECRET.rsa /root/.ssh/swarm-sync.rsa
 
   if [ ! -e /root/.unison/common.prf ]; then
     # configuration files files are *.prf; don't overwrite after initial

@@ -1,4 +1,4 @@
-version: "3"
+version: "3.1"
 
 services:
   jenkins-master:
@@ -36,6 +36,8 @@ services:
       replicas: 2
     networks:
       jenkinsnet:
+    secrets:
+      - repo-push
 
 volumes:
   jenkinsdata:
@@ -46,4 +48,7 @@ networks:
   jenkinsnet:
     external: true
   app_net:
+    external: true
+secrets:
+  repo-push:
     external: true

@@ -17,24 +17,24 @@ the host directory /var/dvol/backup/mysql.
 	  constraints:
 	  - node.labels.swarm-sync == primary
       networks:
-	- dbcluster
+	dbcluster:
       volumes:
-	- /var/dvol/backup/mysql:/var/backup
-	- /var/dvol/backup/etc/my.cnf:/home/mysqldump/.my.cnf
-	- logs:/var/log
+      - /var/dvol/backup/mysql:/var/backup
+      - logs:/var/log
+      secrets:
+      - mysql-backup
 
 Before running it, grant access to a mysql user thus:
 
     mysql> GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO
       '$USER'@'10.%' IDENTIFIED BY '$PSWD';
 
-Make sure the /var/dvol/backup/{mysql,etc} directories exist,
-and that your /var/dvol/backup/etc/my.cnf file contains the $PSWD
-you've set:
+Make sure the /var/dvol/backup/mysql directory exists, and that
+your mysql-backup secret contains the $PSWD you've set:
 
-    [client]
-    username=bkp
-    password=xxx
+    # docker secret create mysql-backup -
+    user=bkp
+    password=$PSWD
 
 Optionally, add this role user to your Docker host ($UID can be overridden if
 desired, in the service definition):

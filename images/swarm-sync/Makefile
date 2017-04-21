@@ -3,6 +3,8 @@
 # Usage:
 #  PRIMARY=host1 PEER=host2 make
 
+include ../../lib/build/Makefile.docker_image
+
 TEMPDIR := $(shell mktemp -d -t tempdir.XXXXX)
 SHARED_ROOT = /var/lib/docker/share
 PUBENV = .docker/swarm-sync.pub.env
@@ -33,5 +35,3 @@ nagios_nrpe:
 
 $(SHARED_ROOT):
 	sudo mkdir $(SHARED_ROOT)
-clean:
-	@find . -name '*~' -exec rm {} \;

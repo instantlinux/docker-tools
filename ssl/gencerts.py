@@ -142,8 +142,8 @@ subjectAltName = @alt_names
         with open('%s-opts' % fqdn, 'w') as f:
             f.write(opts % {
                 'port': self.port, 'ca': self.ca_file,
-                'ssl': DOCKER_SSL_PATH, 'cert': self.keyname(fqdn, suffix),
-                'key': self.certname(fqdn, suffix)})
+                'ssl': DOCKER_SSL_PATH, 'key': self.keyname(fqdn, suffix),
+                'cert': self.certname(fqdn, suffix)})
 
     @staticmethod
     def keyname(fqdn, suffix):

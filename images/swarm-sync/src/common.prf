@@ -14,5 +14,5 @@ times  = true
 prefer = newer
 silent = true
 
-sshargs = -i /root/.ssh/swarm-sync-sshkey.rsa
+sshargs = -i /root/.ssh/swarm-sync.rsa
 logfile = /var/log/unison/unison.log

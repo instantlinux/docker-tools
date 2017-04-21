@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  app:
+    image: splunk/splunk:6.5.2
+    hostname: splunk.ci.net
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_USER: root
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_ADD: tcp 1514
+    ports:
+    - 17180:8000
+    - 1514:1514
+    - 8088:8088
+    - 8089:8089
+    - 9997:9997
+    volumes:
+    - /var/dvol/splunk/etc:/opt/splunk/etc
+    - /var/dvol/splunk/var:/opt/splunk/var
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == primary
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

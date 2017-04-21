@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  db_first:
+  bootstrap:
     image: percona/percona-xtradb-cluster:5.7.17
     environment:
       TZ: US/Pacific
@@ -11,12 +11,13 @@ services:
     - 13306:3306
     volumes:
     - /var/dvol/xtradb/data:/var/lib/mysql
-    - /var/dvol/xtradb/etc:/etc/mysql
+    - /var/dvol/xtradb/etc:/etc/mysql:ro
     - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync == primary
+        # node.hostname == vinson
     networks:
       dbcluster:
       app_net:
@@ -27,17 +28,20 @@ services:
       TZ: US/Pacific
       MYSQL_ROOT_PASSWORD: test
       CLUSTER_NAME: cluster01
-      CLUSTER_JOIN: db_first
+#      CLUSTER_JOIN: bootstrap
+      CLUSTER_JOIN: 10.0.0.6
     ports:
     - 13406:3306
     volumes:
     - /var/dvol/xtradb/data:/var/lib/mysql
-    - /var/dvol/xtradb/etc:/etc/mysql
+    - /var/dvol/xtradb/etc:/etc/mysql:ro
     - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync != primary
+        # node.labels.swarm-sync != primary
+        # node.hostname == mckinley
+        - node.hostname == vinson
     networks:
       dbcluster:
       app_net:
@@ -45,8 +49,12 @@ services:
   garbd:
     image: gregnuj/garbd:latest
     command: >
-      /usr/bin/garbd -a gcomm://db_first:4567
+      /usr/bin/garbd -a gcomm://10.0.3.4:4567
       -g cluster01 -o pc.wait_prim=no
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == denali
     networks:
       dbcluster:
 

@@ -1,0 +1,37 @@
+# Standard Makefile for Docker image
+#   created by richb@instantlinux.net 20-Apr-2017
+
+VENV=python_env
+VDIR=$(PWD)/$(VENV)
+
+analysis: flake8
+	  @echo "Running static analysis"
+
+test_functional:
+	@echo "Running functional verification of running image"
+
+flake8: test_requirements
+	@echo "Running flake8 code analysis"
+	(. $(VDIR)/bin/activate ; flake8 --exclude=python_env .)
+
+python_env: $(VDIR)/bin/python
+
+test_requirements: python_env
+	@echo "Installing test requirements"
+	(if [ -f requirements/test.xt ]; then \
+	  . $(VDIR)/bin/activate && \
+	  pip install -r requirements/test.txt -r requirements/common.txt; \
+	 fi)
+
+$(VDIR)/bin/python:
+	@echo "Creating virtual environment"
+	virtualenv --system-site-packages $(VENV)
+
+clean:
+	@echo "Cleaning out generated files"
+	@rm -rf ./app/{.coverage,htmlcov,coverage.xml}
+	@find . -name \*.pyc -exec rm {} \;
+	@find . -name \*.log -exec rm {} \;
+	@find . -name \*~ -exec rm {} \;
+	@find . -name results.xml -exec rm {} \;
+	@find . -name __pycache__ -exec rm -fr {} \;

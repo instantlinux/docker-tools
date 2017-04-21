@@ -3,8 +3,7 @@ MAINTAINER Rich Braun "richb@instantlinux.net"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=US/Pacific \
-    HOUR=3 \
-    MINUTE=30 \
+    HOUR=3 MINUTE=30 \
     KEEP_DAYS=31 \
     SERVERS=dbhost \
     USERNAME=mysqldump \
@@ -24,7 +23,6 @@ RUN \
   touch /home/$USERNAME/.my.cnf
 
 COPY src/ /usr/local/bin/
-VOLUME /var/backup
-VOLUME /var/log
+VOLUME /var/backup /var/log
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT /usr/local/bin/entrypoint.sh

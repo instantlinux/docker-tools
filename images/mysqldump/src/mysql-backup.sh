@@ -28,10 +28,10 @@ log_entry info START
 # Grants required for bkp user:
 # GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO '$USER'@'192.168.%' IDENTIFIED BY '$PSWD';
 
-DUMPOPTS="--flush-logs --force -R --skip-opt --quick --single-transaction \
+DUMPOPTS="--force --skip-opt --quick --single-transaction \
  --lock-for-backup --add-drop-table --set-charset --create-options \
  --no-autocommit --extended-insert --routines"
-SCHEMA_DUMP_OPTS=" --flush-logs --force --no-data -R --triggers --events --routines" 
+SCHEMA_DUMP_OPTS=" --force --no-data --triggers --events --routines" 
 DBNAME_QUERY="SELECT schema_name FROM information_schema.schemata \
  WHERE schema_name NOT IN ('sys','information_schema','performance_schema')"
 
@@ -82,7 +82,7 @@ do
       BACKUP_TARGET=$DESTDIR/$HOST/$DAY/$DBNAME-backup.sql
 
       log_entry info " -- starting dump to $BACKUP_TARGET"
-      ( $MYSQLDUMP -u $USER $DUMPOPTS -h $HOST --databases $DBNAME >$BACKUP_TARGET && $COMPRESS $BACKUP_TARGET & )
+      ( $MYSQLDUMP -u $USER $DUMPOPTS -h $HOST --databases $DBNAME >$BACKUP_TARGET && nice $COMPRESS $BACKUP_TARGET & )
     done
 done
 
