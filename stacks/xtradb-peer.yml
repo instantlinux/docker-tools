@@ -1,54 +1,24 @@
-version: "3"
-
-# same services as xtradb-bootstrap but with CLUSTER_JOIN in first node
-# as well as peers
+version: "3.2"
 
 services:
-  bootstrap:
+  peer:
     image: percona/percona-xtradb-cluster:5.7.17
     environment:
       TZ: US/Pacific
-      CLUSTER_NAME: cluster01
-      CLUSTER_JOIN: db_peer
-    ports:
-    - 13306:3306
-    volumes:
-    - /var/dvol/xtradb/data:/var/lib/mysql
-    - /var/dvol/xtradb/etc:/etc/mysql:ro
-    - /var/dvol/xtradb/logs:/var/log/mysql
-    deploy:
-      placement:
-        constraints:
-        - node.labels.swarm-sync == primary
-    networks:
-      dbcluster:
-      app_net:
-
-  db_peer:
-    image: percona/percona-xtradb-cluster:5.7.17
-    environment:
-      TZ: US/Pacific
+      DISCOVERY_SERVICE: lb01.ci.net:2379
+      ETCD_HOST: lb01.ci.net:2379
       CLUSTER_NAME: cluster01
     ports:
-    - 13406:3306
+    - target: 3306
+      published: 13306
+      protocol: tcp
+      mode: host
     volumes:
     - /var/dvol/xtradb/data:/var/lib/mysql
     - /var/dvol/xtradb/etc:/etc/mysql:ro
     - /var/dvol/xtradb/logs:/var/log/mysql
     deploy:
       mode: global
-      placement:
-        constraints:
-        - node.labels.swarm-sync != primary
-    networks:
-      dbcluster:
-      app_net:
-
-  garbd:
-    image: gregnuj/garbd:latest
-    command: >
-      /usr/bin/garbd -a gcomm://bootstrap:4567
-      -g cluster01 -o pc.wait_prim=no
     networks:
       dbcluster:
 

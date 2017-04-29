@@ -1,0 +1,22 @@
+version: "3.2"
+
+services:
+  app:
+    image: dockerhub.instantlinux.net:5000/rsyslogd:latest
+    hostname: rsyslogd.docker
+    volumes:
+    - /var/lib/docker/share/syslog/etc/logrotate.d:/etc/logrotate.d:ro
+    - /var/lib/docker/share/syslog/etc/rsyslog.d:/etc/rsyslog.d:ro
+    - /var/lib/docker/share/syslog/log:/var/log
+    ports:
+    - 514:514
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

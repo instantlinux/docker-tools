@@ -6,13 +6,17 @@ honeypot-ip.py
 
   Looks for IP address in last Received header of incoming email
   message on stdin. Performs insert-update on the DNS blacklist
-  database entry for that IP.
+  database entry for that IP. Since spammers usually send from
+  multiple IPs in a subnet, a range of addresses can be specified.
+  First-pass of this code enables a fixed-size block to be specified;
+  TODO we can query BGP tables or GeoIP databases to make this a
+  bit smarter.
 
 Usage:
   honeypot.py [--db-config=FILE] [--db-host=HOST] [--db-name=DB]
-              [--db-pass=PW] [--db-user=USER]
-              [--db-table=TABLE] [--honeypot=EMAIL]... [--notes=STR]
-              [--relay=PAT] [-v]...
+              [--db-pass=PW] [--db-user=USER] [--db-table=TABLE]
+              [--cidr-min-size=N] [--honeypot=EMAIL]... [--notes=STR]
+              [--pipe-stdout] [--relay=PAT] [-q] [-v]...
 
 Options:
   --db-config=FILE     Database config file [default: ~/.my.cnf]
@@ -21,8 +25,11 @@ Options:
   --db-pass=PW         Database password (use --db-config instead!)
   --db-user=USER       Database user [default: blacklist]
   --db-table=TABLE     Database table [default: ips]
+  --cidr-min-size=N    Minimum CIDR address block size [default: 32]
   --honeypot=EMAIL     Honeypot email address
   --notes=STR          Remarks about this entry
+  --pipe-stdout, -o    Copy stdin to stdout
+  --quiet, -q          Quiet
   --relay=PAT          Relay server accepting outside email
   --verbose -v         Verbosity
 """
@@ -44,6 +51,7 @@ SQLBase = declarative_base()
 
 
 class HoneypotMsg(object):
+
     def __init__(self, args):
         self.dsn = {
             'host': args['--db-host'],
@@ -54,8 +62,12 @@ class HoneypotMsg(object):
         if args['--db-config']:
             self._read_config(args['--db-config'])
         self.db_table = args['--db-table']
+        print args
+        self.cidr_min_size = int(args['--cidr-min-size'])
         self.honeypots = args['--honeypot']
         self.notes = args['--notes']
+        self.pipe_stdout = args['--pipe-stdout']
+        self.quiet = args['--quiet']
         if args['--relay']:
             self.relay = re.compile(args['--relay'])
         else:
@@ -106,15 +118,23 @@ class HoneypotMsg(object):
                 print 'Message recipient %s is allowed' % recipient
         return retval
 
-    def insert_ip(self, ip):
-        lookup = self.db_session.query(IP).get(ip)
+    def insert_ip(self, ip, cidr_size):
+        if cidr_size > 32 or cidr_size < 16:
+            raise ValueError("CIDR block length must be 16 to 32")
+        ip_net = ((
+            int(socket.inet_aton(ip).encode('hex'), 16) >> 32 - cidr_size)
+            << 32 - cidr_size)
+        ip_val = socket.inet_ntoa(hex(ip_net)[2:].decode('hex'))
+        if cidr_size < 32:
+            ip_val += '/%d' % cidr_size
+        lookup = self.db_session.query(IP).get(ip_val)
         if lookup:
             count = lookup.count + 1
         else:
             count = 1
         if self.verbose:
-            print 'Inserting %s with count %d' % (ip, count)
-        record = IP(ip, notes=self.notes, count=count)
+            print 'Inserting %s with count %d' % (ip_val, count)
+        record = IP(ip_val, notes=self.notes, count=count)
         self.db_session.merge(record)
         self.db_session.commit()
 
@@ -148,7 +168,10 @@ def main():
     obj = HoneypotMsg(docopt.docopt(__doc__))
     msg = email.message_from_file(sys.stdin)
     if obj.is_honeypot(msg):
-        obj.insert_ip(obj.find_received_ip(msg, obj.relay))
+        obj.insert_ip(obj.find_received_ip(msg, obj.relay),
+                      obj.cidr_min_size)
+    if obj.pipe_stdout:
+        sys.stdout.write(msg.as_string())
 
 
 if __name__ == '__main__':

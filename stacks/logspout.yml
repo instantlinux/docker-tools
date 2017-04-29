@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+  app:
+    image: gliderlabs/logspout:latest
+    environment:
+      SYSLOG_FORMAT: rfc3164
+      TZ: US/Pacific
+    command: syslog+tcp://syslog:601
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: global
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    external: true

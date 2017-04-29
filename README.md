@@ -21,4 +21,4 @@ includes:
 * mt-daapd - iTunes server
 * mythsuse - MythTV backend
 
-Contents created 2017 under [Apache 2.0 License|https://www.apache.org/licenses/LICENSE-2.0] by Rich Braun.
+Contents created 2017 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.

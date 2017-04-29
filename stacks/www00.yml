@@ -1,0 +1,51 @@
+version: "3.2"
+services:
+
+  app:
+    image: nginx:1.13.0-alpine
+    ports:
+    - target: 443
+      published: 19443
+      protocol: tcp
+      mode: host
+    - target: 80
+      published: 19080
+      protocol: tcp
+      mode: host
+    volumes:
+    - /var/lib/docker/share/www00/etc/nginx/conf.d:/etc/nginx/conf.d:ro
+    - /var/lib/docker/share/common/pki/ca:/etc/ssl/ca:ro
+    - /var/lib/docker/share/common/pki/certs:/etc/ssl/certs:ro
+    environment:
+      TZ: US/Pacific
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
+      replicas: 2
+    networks:
+      app_net:
+    secrets:
+    - desktop.ci.net-server-key.pem
+    - git.instantlinux.net-server-key.pem
+    - jenkins.ci.net-server-key.pem
+    - jira.ci.net-server-key.pem
+    - repo.ci.net-server-key.pem
+    - splunk.ci.net-server-key.pem
+
+networks:
+  app_net:
+    external: true
+secrets:
+  desktop.ci.net-server-key.pem:
+    external: true
+  git.instantlinux.net-server-key.pem:
+    external: true
+  jenkins.ci.net-server-key.pem:
+    external: true
+  jira.ci.net-server-key.pem:
+    external: true
+  repo.ci.net-server-key.pem:
+    external: true
+  splunk.ci.net-server-key.pem:
+    external: true

@@ -39,9 +39,9 @@ insert into the MySQL ips table upon receipt of any known spam message.
 Example:
 
   :0fw
-  #| /usr/local/bin/honeypot-ip.py --db-config ~/.my.cnf \
+  #| /usr/local/bin/honeypot-ip.py --db-config ~/.my.cnf -q \
     --honeypot honeyforbees@instantlinux.net \
-    --relay 'by mx-caprica.?\.easydns\.com'
+    --relay 'by mx-caprica.?\.easydns\.com' --cidr-min-size 32
 
 Add a .my.cnf file with db credentials:
 
@@ -53,3 +53,12 @@ Add a .my.cnf file with db credentials:
 
 This script can also be invoked as a spamfilter under postfix; use
 the --pipe-stdout command option for that use case.
+
+In the local.cf file for spamassassin (separate Docker image), define
+these rules for your local blacklist:
+
+    score    HONEY_RCVD_IN_RBL  4.5
+    header   HONEY_RCVD_IN_RBL  eval:check_rbl('bl', 'blacklist.yourdomain.com.', '127.0.0.2')
+    describe HONEY_RCVD_IN_RBL  Seen in rbldnsd by honeypot address
+    tflags   HONEY_RCVD_IN_RBL  net
+    reuse    HONEY_RCVD_IN_RBL

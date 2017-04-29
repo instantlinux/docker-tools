@@ -18,7 +18,7 @@ python_env: $(VDIR)/bin/python
 
 test_requirements: python_env
 	@echo "Installing test requirements"
-	(if [ -f requirements/test.xt ]; then \
+	(if [ -f requirements/test.txt ]; then \
 	  . $(VDIR)/bin/activate && \
 	  pip install -r requirements/test.txt -r requirements/common.txt; \
 	 fi)

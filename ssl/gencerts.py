@@ -23,7 +23,7 @@ Options:
   --config-file=FILE  OpenSSL config [default: openssl.cnf]
   --cn-client=STR     CN for client [default: docker-client]
   --cn-root=STR       CN for root [default: docker-CA]
-  --client-ip=IP      Client IP to authorize [default: 127.0.0.1]
+  --client-ip=IP      Client IP to authorize
   --client-name=FQDN  Client name to authorize
   --days=N            Key expiration, days [default: 3650]
   --directory=PATH    Path for SSL files [default: ~/.docker/tls]
@@ -44,7 +44,6 @@ import docopt
 import os.path
 import subprocess
 
-LOCALHOST = '127.0.0.1'
 DOCKER_SSL_PATH = '/etc/docker/ssl'
 OPENSSL_PATH = '/usr/bin/openssl'
 
@@ -83,13 +82,13 @@ class GenCerts(object):
             'ca': self.ca_file, 'size': self.key_size,
             'encrypt': '-aes256' if self.encrypted_ca else ''})
         openssl('req -new -x509 -days %(days)d -key %(ca)s-key.pem '
-                '-out %(ca)s.pem -subj /CN=%(cn_root)s%(locale)s' % {
+                '-out %(ca)s.pem -subj "/CN=%(cn_root)s%(locale)s"' % {
                     'days': self.days,
                     'ca': self.ca_file,
                     'cn_root': self.cn_root,
                     'locale': self.subject_locale})
 
-    def gen_client_key(self, fqdn, suffix):
+    def gen_key_and_cert(self, fqdn, suffix):
         openssl('genrsa %(encrypt)s -out %(key)s.pem %(size)d' % {
             'key': self.keyname(fqdn, suffix), 'size': self.key_size,
             'encrypt': '-aes256' if self.ask_passphrase else ''})
@@ -100,7 +99,7 @@ class GenCerts(object):
                     'cert': self.certname(fqdn, suffix),
                     'cn': fqdn, 'config_file': self.config_file,
                     'locale': self.subject_locale})
-        openssl('x509 -req -in %(cert)s.csr -CA %(ca)s.pem '
+        openssl('x509 -req -in %(cert)s.csr -CA %(ca)s.pem -days %(days)d '
                 '-CAkey %(ca)s-key.pem -CAcreateserial -out '
                 '%(cert)s.pem -extensions v3_req -extfile %(config_file)s' % {
                     'cert': self.certname(fqdn, suffix),
@@ -109,7 +108,7 @@ class GenCerts(object):
                     'config_file': self.config_file})
 
     def create_config_file(self, filename, alt_names, alt_ips):
-        template = """[req]
+        config_header = r"""[req]
 req_extensions = v3_req
 distinguished_name = req_distinguished_name
 
@@ -118,6 +117,8 @@ distinguished_name = req_distinguished_name
 [v3_req]
 basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+"""
+        alt_template = r"""
 extendedKeyUsage = serverAuth, clientAuth
 subjectAltName = @alt_names
 
@@ -125,12 +126,16 @@ subjectAltName = @alt_names
 %(dns)s
 %(ip)s
 """
-        dns_items = '\n'.join(
-            ['DNS.%d = %s' % (k + 1, v) for k, v in enumerate(alt_names)])
-        ip_items = '\n'.join(
-            ['IP.%d = %s' % (k + 1, v) for k, v in enumerate(alt_ips)])
         with open(filename, 'w') as f:
-            f.write(template % {'dns': dns_items, 'ip': ip_items})
+            f.write(config_header)
+            if alt_names or alt_ips:
+                dns_items = '\n'.join(
+                    ['DNS.%d = %s' % (k + 1, v) for k, v
+                     in enumerate(alt_names)])
+                ip_items = '\n'.join(
+                    ['IP.%d = %s' % (k + 1, v) for k, v
+                     in enumerate(alt_ips)])
+                f.write(alt_template % {'dns': dns_items, 'ip': ip_items})
 
     def docker_opts(self, fqdn, suffix):
         opts = """DOCKER_OPTS="\\
@@ -175,15 +180,16 @@ def main():
             'ca': gencerts.ca_file})
     gencerts.create_config_file(
         gencerts.config_file, gencerts.client_names,
-        gencerts.client_ips + [LOCALHOST])
+        gencerts.client_ips)
     for fqdn in gencerts.client_names:
-        gencerts.gen_client_key(fqdn, 'client')
+        gencerts.gen_key_and_cert(fqdn, 'client')
         if gencerts.verbose > 1:
             openssl('x509 -noout -issuer -subject -dates -in %(cert)s.pem' % {
                 'cert': GenCerts.certname(fqdn, 'client')})
     for fqdn in gencerts.host_names:
-        gencerts.gen_client_key(fqdn, 'server')
-        gencerts.docker_opts(fqdn, 'server')
+        gencerts.gen_key_and_cert(fqdn, 'server')
+        if gencerts.client_ips:
+            gencerts.docker_opts(fqdn, 'server')
         if gencerts.verbose:
             print 'export DOCKER_HOST=tcp://%s:%d' % (fqdn, gencerts.port)
             print 'export DOCKER_CERT_PATH=%s' % gencerts.directory
