@@ -1,0 +1,19 @@
+version: "3.1"
+
+services:
+
+  app:
+    image: dockerhub.instantlinux.net:5000/ez-ipupdate:latest
+    environment:
+      HOST: dolores.ci.net
+    networks:
+      app_net:
+    secrets:
+    - ez-ipupdate-user
+
+networks:
+  app_net:
+    external: true
+secrets:
+  ez-ipupdate-user:
+    external: true
