@@ -1,0 +1,29 @@
+version: "3"
+
+# start with export ADV=nodeX HOST=etc0X (node1 etc0X etc)
+
+services:
+  app:
+    image: elcolio/etcd:latest
+    restart: always
+    hostname: ${HOST:-etcd}
+    volumes:
+    - data:/data
+    ports:
+    - 2379:2379
+    - 2380:2380
+    - 4001:4001
+    - 7001:7001
+    network_mode: host
+    command: >
+      -name ${HOST}
+      -advertise-client-urls http://${ADV:-localhost}:2379,http://{$ADV:-localhost}:4001
+      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
+      -initial-advertise-peer-urls http://{$ADV:-localhost}:2380
+      -listen-peer-urls http://0.0.0.0:2380
+      -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
+    -initial-cluster etcd00=http://node1:2380,etcd01=http://node2:2380,etcd02=http://node3:2380 \
+    -initial-cluster-state new
+
+volumes:
+  data:

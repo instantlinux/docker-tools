@@ -1,0 +1,40 @@
+version: "3.1"
+
+services:
+  app:
+    image: dockerhub.instantlinux.net:5000/weewx:latest
+    restart: always
+    environment:
+      ALTITUDE: 100, foot
+      DB_HOST: mdb01.ci.net
+      DB_USER: wx
+      LATITUDE: 37.75
+      LONGITUDE: -122.4
+      LOCATION: The Castro, San Francisco, CA
+      RSYNC_HOST: web01.ci.net
+      SKIN: WeeGreen
+      STATION_ID: KCASANFR366
+      SYSLOG_DEST: "@@syslog.ci.net:601"
+      TZ: US/Pacific
+      TZ_CODE: 4
+      XTIDE_LOCATION: San Francisco
+    tmpfs:
+    - /var/www/weewx
+    devices:
+    - /dev/ttyUSB0:/dev/ttyUSB0
+    network_mode: bridge
+    secrets:
+    - weewx-db-password
+    - weewx-rsync-sshkey
+    - weewx-wunderground-apikey
+    - weewx-wunderground-password
+
+secrets:
+  weewx-db-password:
+    file: /var/lib/docker/.secrets/weewx-db-password
+  weewx-rsync-sshkey:
+    file: /var/lib/docker/.secrets/weewx-rsync-sshkey
+  weewx-wunderground-apikey:
+    file: /var/lib/docker/.secrets/weewx-wunderground-apikey
+  weewx-wunderground-password:
+    file: /var/lib/docker/.secrets/weewx-wunderground-password

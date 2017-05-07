@@ -9,4 +9,8 @@ Devices such as Roku, Sonos and other brands of audio players or
 applications such as the Amarok music play for Linux will be able to connect
 to this service using mDNS/DNS-SD (Avahi).
 
-Run this with --net=host in order to support mDNS.
+Requires --net=host in order to support mDNS. See the docker-compose.yml
+file for an example. To start, invoke this command:
+
+    docker-compuse up -d
+
