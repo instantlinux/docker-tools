@@ -15,7 +15,7 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   wee_config_device --set-interval $LOGGING_INTERVAL
   wee_config_device --set-rain-year-start $RAIN_YEAR_START
   wee_config_device --set-tz-code $TZ_CODE
-  sed -i -e 's:-/var/log/messages:$SYSLOG_DEST/' /etc/rsyslog.conf
+  sed -i -e "s+-/var/log/messages+$SYSLOG_DEST+" /etc/rsyslog.conf
 
   sed --in-place=.bak -e "s/location = DESC/location = \"$LOCATION\"/" \
   -e "s/latitude = 90.0/latitude = $LATITUDE/" \
