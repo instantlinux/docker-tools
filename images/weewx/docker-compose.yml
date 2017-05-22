@@ -31,10 +31,10 @@ services:
 
 secrets:
   weewx-db-password:
-    file: /var/lib/docker/.secrets/weewx-db-password
+    file: /var/adm/admin/secrets/weewx-db-password
   weewx-rsync-sshkey:
-    file: /var/lib/docker/.secrets/weewx-rsync-sshkey
+    file: /var/adm/admin/secrets/weewx-rsync-sshkey
   weewx-wunderground-apikey:
-    file: /var/lib/docker/.secrets/weewx-wunderground-apikey
+    file: /var/adm/admin/secrets/weewx-wunderground-apikey
   weewx-wunderground-password:
-    file: /var/lib/docker/.secrets/weewx-wunderground-password
+    file: /var/adm/admin/secrets/weewx-wunderground-password

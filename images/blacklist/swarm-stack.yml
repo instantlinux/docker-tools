@@ -11,14 +11,13 @@ services:
     - 53:53/udp
     volumes:
     - data:/var/lib/rbldns
-    networks:
-      app_net:
     secrets:
     - mysql-blacklist-user
 
 networks:
-  app_net:
-    external: true
+  default:
+    external:
+      name: app_net
 volumes:
   data:
 secrets:

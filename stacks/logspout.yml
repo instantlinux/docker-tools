@@ -11,9 +11,8 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: global
-    networks:
-      app_net:
 
 networks:
-  app_net:
-    external: true
+  default:
+    external:
+      name: app_net

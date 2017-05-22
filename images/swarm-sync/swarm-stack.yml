@@ -19,7 +19,7 @@ services:
         constraints:
         - node.labels.swarm-sync == primary
     networks:
-      sync:
+    - sync
     secrets:
     - swarm-sync_sshkey
 
@@ -36,7 +36,7 @@ services:
         constraints:
         - node.labels.swarm-sync == peer
     networks:
-      sync:
+    - sync
 
 networks:
   sync:

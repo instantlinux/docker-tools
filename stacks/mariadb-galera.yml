@@ -1,0 +1,44 @@
+version: "3.2"
+
+services:
+  peer:
+    hostname: "{{.Service.Name}}-{{.Task.Slot}}"
+    image: dockerhub.instantlinux.net:5000/mariadb-galera:latest
+    environment:
+      DISCOVERY_SERVICE: lb01.ci.net:2379
+      CLUSTER_NAME: test01
+    ports:
+    - target: 3306
+      published: 18306
+      protocol: tcp
+      mode: host
+    volumes:
+    - data:/var/lib/mysql
+    - logs:/var/log/mysql
+    - /var/lib/docker/volumes/admin/_data/services/xtradb/etc/:/etc/mysql/my.cnf.d:ro
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 20
+      # update_config:
+      #   parallelism: 1
+      #   delay: 30s
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    secrets:
+    - mysql-root-password
+
+volumes:
+  data:
+  logs:
+networks:
+  default:
+    external:
+      name: dbcluster
+secrets:
+  mysql-root-password:
+    external: true

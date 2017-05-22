@@ -16,12 +16,11 @@ services:
         constraints:
         - node.labels.swarm-sync-member == true
       replicas: 2
-    networks:
-      app_net:
 
 networks:
-  app_net:
-    external: true
+  default:
+    external:
+      name: app_net
 volumes:
   home:
   logs:

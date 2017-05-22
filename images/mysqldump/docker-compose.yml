@@ -2,10 +2,11 @@ version: "3.1"
 
 services:
   app:
-    image: dockerhub.instantlinux.net:5000/mysqldump:20170422
+    image: dockerhub.instantlinux.net:5000/mysqldump:latest
     environment:
       TZ: US/Pacific
       SERVERS: xdb00
+      LOCK_FOR_BACKUP: "true"
     volumes:
     - /var/dvol/backup/mysql:/var/backup
     - logs:/var/log
@@ -14,7 +15,7 @@ services:
         constraints:
         - node.labels.swarm-sync == primary
     secrets:
-      - mysql-backup
+    - mysql-backup
 
 networks:
   default:

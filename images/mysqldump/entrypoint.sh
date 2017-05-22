@@ -4,7 +4,8 @@ cat /var/run/secrets/mysql-backup >> /home/$USERNAME/.my.cnf
 
 touch /var/log/mysqldump.log
 chown $USERNAME /var/backup /var/log/mysqldump.log /home/$USERNAME/.my.cnf
-echo "$MINUTE $HOUR * * *   $USERNAME  /usr/local/bin/mysql-backup.sh $KEEP_DAYS $SERVERS" \
+echo "LOCK_FOR_BACKUP=$LOCK_FOR_BACKUP
+$MINUTE $HOUR * * *   $USERNAME  /usr/local/bin/mysql-backup.sh $KEEP_DAYS $SERVERS" \
    >/etc/cron.d/mysql-backup
 
 cron

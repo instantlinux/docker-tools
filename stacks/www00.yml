@@ -23,8 +23,6 @@ services:
         constraints:
         - node.labels.swarm-sync-member == true
       replicas: 2
-    networks:
-      app_net:
     secrets:
     - desktop.ci.net-server-key.pem
     - git.instantlinux.net-server-key.pem
@@ -34,8 +32,9 @@ services:
     - splunk.ci.net-server-key.pem
 
 networks:
-  app_net:
-    external: true
+  default:
+    external:
+      name: app_net
 secrets:
   desktop.ci.net-server-key.pem:
     external: true

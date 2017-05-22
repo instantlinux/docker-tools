@@ -1,0 +1,33 @@
+# Example git-pull updates a named volume 'admin' from git repo 'admin'
+# once per minute on each swarm node
+
+version: "3.1"
+services:
+
+  app:
+    image: dockerhub.instantlinux.net:5000/git-pull:latest
+    environment:
+      GIT_COMMIT: master
+      GIT_HOST: git.instantlinux.net:8999
+      GIT_REPO: ssh://git@git.instantlinux.net:8999/richb/admin.git
+      INTERVAL: 60
+    volumes:
+    - admin:/git
+    secrets:
+    - git-deploy_sshkey
+    deploy:
+      mode: global
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+volumes:
+  admin:
+    external: true
+networks:
+  default:
+    external:
+      name: app_net
+secrets:
+  git-deploy_sshkey:
+    external: true

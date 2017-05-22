@@ -25,11 +25,13 @@ log_entry () {
 
 log_entry info START
 
+[ -z "$LOCK_FOR_BACKUP" ] || OPT_LOCK_FOR_BACKUP=--lock-for-backup
+
 # Grants required for bkp user:
 # GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO '$USER'@'192.168.%' IDENTIFIED BY '$PSWD';
 
 DUMPOPTS="--force --skip-opt --quick --single-transaction \
- --lock-for-backup --add-drop-table --set-charset --create-options \
+ $OPT_LOCK_FOR_BACKUP --add-drop-table --set-charset --create-options \
  --no-autocommit --extended-insert --routines"
 SCHEMA_DUMP_OPTS=" --force --no-data --triggers --events --routines" 
 DBNAME_QUERY="SELECT schema_name FROM information_schema.schemata \

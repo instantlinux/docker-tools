@@ -1,4 +1,4 @@
-## Practical Docker for the home
+## Practical Docker Tools
 
 This repo is a collection of images and swarm stack definitions for
 managing a small software-dev shop using free software. So far it
@@ -7,13 +7,15 @@ includes:
 **Developer infrastructure**
 * artifactory
 * gitlab
+* git-pull
 * jenkins
 * jira
-* xtradb
+* mariadb (clustered)
 
 **Networking and support**
 * blacklist - a local rbldnsd for spam control
 * ez-ipupdate - Dynamic DNS client
+* guacamole - authenticated remote-desktop server
 * mysqldump - per-database alternative to xtrabackup
 * spamassassin - spam control
 * splunk - the free version

@@ -1,0 +1,39 @@
+version: "3.2"
+
+services:
+  peer:
+    hostname: "{{.Service.Name}}-{{.Task.Slot}}"
+    image: dockerhub.instantlinux.net:5000/mariadb-galera:latest
+    environment:
+      DISCOVERY_SERVICE: lb01.ci.net:2379
+      CLUSTER_NAME: cluster01
+    ports:
+    - target: 3306
+      published: 13306
+      protocol: tcp
+      mode: host
+    volumes:
+    - data:/var/lib/mysql
+    - logs:/var/log/mysql
+    - db_etc:/etc/mysql/my.cnf.d:ro
+    secrets:
+    - mysql-root-password
+    deploy:
+      mode: global
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+
+volumes:
+  data:
+  logs:
+  db_etc:
+    external: true
+networks:
+  default:
+    external:
+      name: dbcluster
+secrets:
+  mysql-root-password:
+    external: true

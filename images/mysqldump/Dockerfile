@@ -5,9 +5,11 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=US/Pacific \
     HOUR=3 MINUTE=30 \
     KEEP_DAYS=31 \
-    SERVERS=dbhost \
-    USERNAME=mysqldump \
-    UID=210
+    LOCK_FOR_BACKUP= \
+    SERVERS=dbhost
+
+ARG UID=210
+ARG USERNAME=mysqldump
 
 RUN \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8507EFA5 && \
@@ -22,7 +24,7 @@ RUN \
   rm -fr /var/cache/debconf /var/lib/apt/lists/* /var/log/* && \
   touch /home/$USERNAME/.my.cnf
 
-COPY src/ /usr/local/bin/
+COPY *.sh /usr/local/bin/
 VOLUME /var/backup /var/log
 
 ENTRYPOINT /usr/local/bin/entrypoint.sh

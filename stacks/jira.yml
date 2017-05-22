@@ -14,9 +14,8 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
-    networks:
-      app_net:
 
 networks:
-  app_net:
-    external: true
+  default:
+    external:
+      name: app_net

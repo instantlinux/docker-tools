@@ -23,9 +23,8 @@ services:
       nproc: 131072
       nofile: 60000
       core: 0
-    networks:
-      app_net:
 
 networks:
-  app_net:
-    external: true
+  default:
+    external:
+      name: app_net

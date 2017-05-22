@@ -7,23 +7,7 @@ This Docker compose service definition will cause a dump to happen
 at the default hour (3:30am in $TZ) from a server named xdb00 onto
 the host directory /var/dvol/backup/mysql.
 
-    app:
-      image: mysqldump
-      environment:
-	TZ: US/Pacific
-	SERVERS: xdb00
-      deploy:
-	placement:
-	  constraints:
-	  - node.labels.swarm-sync == primary
-      networks:
-	dbcluster:
-      volumes:
-      - /var/dvol/backup/mysql:/var/backup
-      - logs:/var/log
-      secrets:
-      - mysql-backup
-
+### Usage
 Before running it, grant access to a mysql user thus:
 
     mysql> GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO
@@ -46,3 +30,13 @@ the directory you will find a subdirectory xdb00, and within that a
 separate directory for each day of the month. If you set $KEEP_DAYS
 to 7, it will keep a directory for each day of the week. Backups older
 than $KEEP_DAYS will be automatically removed.
+
+### Variables
+
+| HOUR | cron-syntax backup hour (3) |
+| KEEP_DAYS | days of snapshots to keep (31) |
+| LOCK_FOR_BACKUP | true if using Percona, blank for MariaDB |
+| MINUTE | cron-syntax minutes past hour (30) |
+| SERVERS | servers to back up (dbhost) |
+| TZ | time zone (US/Pacific) |
+
