@@ -12,6 +12,8 @@ upload the new public key to your git server.
 
 ### Variables
 
+| Variable | Description |
+| -------- | ----------- |
 |DEST| destination directory under /git |
 |GIT_COMMIT| branch name or hash |
 |GIT_HOST| hostname of git repo (for keyscan) |
@@ -19,5 +21,6 @@ upload the new public key to your git server.
 |INTERVAL| polling interval, 0 for one-shot|
 
 ### Secrets
-
+| Secret | Description |
+| ------ | ----------- |
 |git-deploy_sshkey| private half of deploy keypair|

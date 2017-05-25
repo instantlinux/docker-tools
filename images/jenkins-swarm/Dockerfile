@@ -3,7 +3,7 @@ FROM dockerhub.instantlinux.net:5000/foundation:16.04.20170402
 ## adapted from https://github.com/blacklabelops/jenkins-swarm
 ## MAINTAINER Steffen Bleul <sbl@blacklabelops.com>
 
-MAINTAINER Rich Braun <richb@instantlinux.net>
+MAINTAINER Rich Braun <docker@instantlinux.net>
 
 # Jenkins Swarm Version
 ARG SWARM_VERSION=2.2

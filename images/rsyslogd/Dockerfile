@@ -1,5 +1,5 @@
 FROM alpine:3.5
-MAINTAINER Rich Braun "richb@instantlinux.net"
+MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV TZ=US/Pacific
 RUN apk add --update gzip logrotate rsyslog rsyslog-mysql tar xz && \

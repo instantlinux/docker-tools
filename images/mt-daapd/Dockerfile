@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Rich Braun <richb@instantlinux.net>
+MAINTAINER Rich Braun <docker@instantlinux.net>
 
 ENV SERVER_BANNER="Firefly Media on Ubuntu"
 RUN apt-get -yq update && apt-get install -yq --no-install-recommends \

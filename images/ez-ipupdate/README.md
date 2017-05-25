@@ -6,7 +6,7 @@ First create a secret:
 
     echo user:pw | docker secret create ez-ipupdate-user -
 
-Then deploy this service, see the example swarm-stack.yml. Available
+Then deploy this service, see the example docker-compose.yml. Available
 environment variables are:
 
 | Variable | Description |

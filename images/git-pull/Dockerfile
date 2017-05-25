@@ -1,5 +1,5 @@
 FROM alpine:3.5
-MAINTAINER Rich Braun <richb@instantlinux.net>
+MAINTAINER Rich Braun <docker@instantlinux.net>
 
 ENV DEST=. \
     GIT_COMMIT=master \

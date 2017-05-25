@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER Rich Braun "richb@instantlinux.net"
+MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=US/Pacific \

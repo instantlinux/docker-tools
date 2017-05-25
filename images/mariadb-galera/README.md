@@ -14,17 +14,19 @@ improvement over what else is out there circa May 2017.
 
 ### Variables
 
-|  CLUSTER_NAME | cluster name |
-|  DISCOVERY_SERVICE | etcd host list, e.g. etcd1:2379,etcd2:2379 |
-|  TZ | timezone (US/Pacific) |
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+| CLUSTER_NAME | (required) | cluster name |
+| DISCOVERY_SERVICE | | etcd host list, e.g. etcd1:2379,etcd2:2379 |
+| TZ | US/Pacific | timezone |
 
 ### Usage
 
 Create a root password:
-
-   PW=`uuidgen` ; echo $PW
-   echo $PW | docker secret create mysql-root-password -
-
+~~~
+PW=`uuidgen` ; echo $PW
+echo $PW | docker secret create mysql-root-password -
+~~~
 Set any local my.cnf values in files under a volume mount for
 /etc/mysql/my.cnf.d.
 
@@ -37,6 +39,7 @@ connections directly to each cluster member for troubleshooting, if you're
 running a recent version of Docker you can override the ingress
 load-balancer thus:
 
+~~~
     version: "3.2"
     services:
       db:
@@ -46,7 +49,7 @@ load-balancer thus:
 	  published: <port>
 	  protocol: tcp
 	  mode: host
-
+~~~
 You'll need a separate load-balancer for serving your published port.
 
 ### Logging

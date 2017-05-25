@@ -1,17 +1,21 @@
 FROM opensuse:latest
+MAINTAINER Rich Braun "docker@instantlinux.net"
 
 # Set correct environment variables
 ENV \
-	HOME="/root" \
-	TERM=xterm \
-	LANG=en_US.UTF-8 \
-	LANGUAGE=en_US:en \
-	LC_ALL=en_US.UTF-8 \
-	APACHE_RUN_USER=www-data \
-	APACHE_RUN_GROUP=www-data \
-	APACHE_LOG_DIR="/var/log/apache2" \
-	APACHE_LOCK_DIR="/var/lock/apache2" \
-	APACHE_PID_FILE="/var/run/apache2.pid" 
+    APACHE_LOCK_DIR="/var/lock/apache2" \
+    APACHE_LOG_DIR="/var/log/apache2" \
+    APACHE_PID_FILE="/var/run/apache2.pid" \
+    APACHE_RUN_USER=www-data \
+    APACHE_RUN_GROUP=www-data \
+    HOME="/root" \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8 \
+    TERM=xterm
+
+ARG MYTHTV_UID=2021
+ARG MYTHTV_GID=100
 
 # Expose ports
 EXPOSE 3389 5000/udp 5002/udp 5004/udp 6543 6544 6760 65001 65001/udp 
@@ -38,8 +42,8 @@ mv /root/000-default-myth-opensuse.conf /etc/apache2/vhosts.d/000-default-myth.c
 mv /root/mythweb-opensuse.conf /etc/apache2/vhosts.d/mythweb.conf && \
 mv /root/my.cnf /etc/my.cnf && \
 
-usermod -u 2021 mythtv && \
-usermod -g 100 mythtv && \
+usermod -u $MYTHTV_UID mythtv && \
+usermod -g $MYTHTV_GID mythtv && \
 
 # create/place required files/folders
 mkdir -p /home/mythtv/.mythtv /var/lib/mythtv /var/log/mythtv /root/.mythtv && \
@@ -54,7 +58,5 @@ zypper clean && \
 rm -rf /tmp/* /var/tmp/* /var/cache/zypp \
 /usr/share/man /usr/share/groff /usr/share/info \
 /usr/share/lintian /usr/share/linda /var/cache/man
-# (( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
-# (( find /usr/share/doc -empty|xargs rmdir || true ))
 
 ENTRYPOINT ["/root/entrypoint.sh"]

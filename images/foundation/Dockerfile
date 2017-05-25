@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Rich Braun "richb@instantlinux.net"
+MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV DEBIAN_FRONTEND=noninteractive
 

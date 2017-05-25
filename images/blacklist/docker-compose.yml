@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   app:
-    image: dockerhub.instantlinux.net:5000/blacklist:latest
+    image: instantlinux/blacklist:latest
     environment:
       RBL_DOMAIN: blacklist.ci.net
       NS_SERVERS: node1.ci.net node2.ci.net node3.ci.net

@@ -1,5 +1,5 @@
 FROM debian:wheezy
-MAINTAINER Rich Braun "richb@instantlinux.net"
+MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     SYNC_ROLE=primary \
