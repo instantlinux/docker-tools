@@ -1,16 +1,13 @@
-FROM debian:wheezy
+FROM alpine:3.6
 MAINTAINER Rich Braun "docker@instantlinux.net"
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    SYNC_ROLE=primary \
+ENV SYNC_ROLE=primary \
     SYNC_SSHKEY= \
     SYNC_INTERVAL=5 \
-    SECRET=swarm-sync_sshkey \
-    TZ=US/Pacific
+    SECRET=swarm-sync_sshkey
 
-RUN apt-get -yq update && \
-    apt-get install -yq --no-install-recommends unison openssh-server cron && \
-    rm -fr /var/cache/debconf /var/lib/apt/lists/* /var/log/* && \
+RUN apk add --update dcron openssh-client openssh-server unison && \
+    rm -fr /var/log/* /var/cache/apk/* && \
     mkdir /var/log/unison /root/.unison
 USER root
 EXPOSE 22

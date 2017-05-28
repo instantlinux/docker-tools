@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM debian:jessie-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 
 ENV SERVER_BANNER="Firefly Media on Ubuntu"

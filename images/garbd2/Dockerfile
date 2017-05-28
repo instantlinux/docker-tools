@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie-slim
 MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV DEBIAN_FRONTEND=noninteractive

@@ -5,7 +5,7 @@ version: "3.1"
 services:
 
   app:
-    image: dockerhub.instantlinux.net:5000/git-pull:latest
+    image: instantlinux/git-pull:latest
     environment:
       GIT_COMMIT: master
       GIT_HOST: git.instantlinux.net:8999

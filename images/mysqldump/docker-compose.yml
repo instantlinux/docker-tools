@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   app:
-    image: dockerhub.instantlinux.net:5000/mysqldump:latest
+    image: ${REGISTRY_URI:-instantlinux}/mysqldump:latest
     environment:
       TZ: US/Pacific
       SERVERS: xdb00

@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    image: dockerhub.instantlinux.net:5000/spamassassin:latest
+    image: ${REGISTRY_URI:-instantlinux}/spamassassin:latest
     environment:
       EXTRA_OPTIONS: --nouser-config --sql-config
     ports:

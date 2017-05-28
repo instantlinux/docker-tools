@@ -44,11 +44,11 @@ load-balancer thus:
     services:
       db:
         ...
-	ports:
-	- target: 3306
-	  published: <port>
-	  protocol: tcp
-	  mode: host
+        ports:
+        - target: 3306
+          published: <port>
+          protocol: tcp
+          mode: host
 ~~~
 You'll need a separate load-balancer for serving your published port.
 

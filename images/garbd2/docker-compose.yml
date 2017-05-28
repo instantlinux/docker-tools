@@ -2,7 +2,7 @@ version: "3"
 services:
 
   app:
-    image: dockerhub.instantlinux.net:5000/garbd2:latest
+    image: ${REGISTRY_URI:-instantlinux}/garbd2:latest
     ports:
     - 3306:3306
     - 4444:4444

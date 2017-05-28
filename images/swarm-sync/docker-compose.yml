@@ -6,7 +6,7 @@ version: "3.1"
 services:
 
   primary:
-    image: dockerhub.instantlinux.net:5000/swarm-sync:latest
+    image: ${REGISTRY_URI:-instantlinux}/swarm-sync:latest
     environment:
       SYNC_INTERVAL: "2"
       TZ: US/Pacific
@@ -14,17 +14,15 @@ services:
     - logs:/var/log/unison
     - syncarchive:/root/.unison
     - /var/lib/docker/share:/var/swarm-sync
+    secrets:
+    - swarm-sync_sshkey
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync == primary
-    networks:
-    - sync
-    secrets:
-    - swarm-sync_sshkey
 
   peer:
-    image: dockerhub.instantlinux.net:5000/swarm-sync:latest
+    image: ${REGISTRY_URI:-instantlinux}/swarm-sync:latest
     environment:
       SYNC_ROLE: peer
     env_file:
@@ -35,11 +33,7 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync == peer
-    networks:
-    - sync
 
-networks:
-  sync:
 volumes:
   logs:
   syncarchive:

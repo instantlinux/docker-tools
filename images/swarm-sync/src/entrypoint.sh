@@ -1,18 +1,18 @@
-#! /bin/bash
+#! /bin/sh
 mkdir -m 700 /root/.ssh
 if [ $SYNC_ROLE == "primary" ]; then
+  mkdir -p /etc/cron.d
   echo "0-59/$SYNC_INTERVAL * * * *   root  /root/src/swarm-sync.sh" \
    >/etc/cron.d/swarm-sync
 
-  cp /var/run/secrets/$SECRET /var/run/$SECRET.rsa
-  chmod 400 /var/run/$SECRET.rsa
-  ln -s /var/run/$SECRET.rsa /root/.ssh/swarm-sync.rsa
+  cp /run/secrets/$SECRET /run/$SECRET.rsa
+  chmod 400 /run/$SECRET.rsa
+  ln -s /run/$SECRET.rsa /root/.ssh/swarm-sync.rsa
 
-  if [ ! -e /root/.unison/common.prf ]; then
-    # configuration files files are *.prf; don't overwrite after initial
-    # installation
-    cp /root/src/*.prf /root/.unison
-  fi
+  # configuration files files are *.prf; don't overwrite after initial
+  # installation
+  [ -e /root/.unison/common.prf ] || cp /root/src/*.prf /root/.unison
+
   RETRIES=10
   while [ ! -s /root/.ssh/known_hosts ]; do
     sleep 5
@@ -25,7 +25,8 @@ if [ $SYNC_ROLE == "primary" ]; then
   done
   cron
 else
-  /etc/init.d/ssh start
+  ssh-keygen -A
+  /usr/sbin/sshd
   echo "$SYNC_SSHKEY" >>/root/.ssh/authorized_keys
 fi
 touch /var/log/unison/unison.log

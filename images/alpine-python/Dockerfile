@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.6
 MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ARG PYTHON_PIP_VERSION=9.0.1

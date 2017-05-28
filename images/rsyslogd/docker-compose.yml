@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   app:
-    image: dockerhub.instantlinux.net:5000/rsyslogd:latest
+    image: ${REGISTRY_URI:-instantlinux}/rsyslogd:latest
     hostname: rsyslogd.docker
     volumes:
     - /var/lib/docker/share/syslog/etc/logrotate.d:/etc/logrotate.d:ro
