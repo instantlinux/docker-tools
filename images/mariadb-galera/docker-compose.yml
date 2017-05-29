@@ -20,6 +20,10 @@ services:
     - mysql-root-password
     deploy:
       mode: global
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 20
     ulimits:
       nofile:
         soft: 20000

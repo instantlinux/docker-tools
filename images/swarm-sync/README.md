@@ -43,4 +43,3 @@ your polling frequency in the cfg file.
 | SYNC_INTERVAL | 5 | frequency, in minutes |
 | SYNC_ROLE | primary | role, primary or secondary |
 | SYNC_SSHKEY |  | public key |
-| TZ | US/Pacific | time zone|

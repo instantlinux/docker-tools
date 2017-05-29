@@ -66,12 +66,14 @@ tflags   HONEY_RCVD_IN_RBL  net
 reuse    HONEY_RCVD_IN_RBL
 
 ### Variables
-| CFG_NAME | config name (default: dsbl) |
-| DB_NAME | database name (blacklist) |
-| DB_HOST | database host or IP (dbhost) |
-| DB_USER | db user (blacklister) |
-| HOMEDIR | home directory (/var/lib/rbldns) |
-| NS_SERVERS | upstream nameservers having NS records (127.0.0.1) |
-| RBL_DOMAIN | domain name to serve (blacklist.mydomain.com) |
-| TZ | time zone (US/Pacific) |
-| USERNAME | username to run as (rbldns) | 
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+| CFG_NAME | dsbl | config name (default: dsbl) |
+| DB_NAME | blacklist | database name (blacklist) |
+| DB_HOST | dbhost | database host or IP (dbhost) |
+| DB_USER | blacklister | db user (blacklister) |
+| HOMEDIR | /var/lib/rbldns | home directory |
+| NS_SERVERS | 127.0.0.1 | upstream nameservers having NS records |
+| RBL_DOMAIN | blacklist.mydomain.com | domain name to serve |
+| TZ | US/Pacific | time zone |
+| USERNAME | rbldns | username to run as |

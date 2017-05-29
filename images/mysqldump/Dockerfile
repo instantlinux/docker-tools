@@ -1,15 +1,15 @@
-FROM debian:jessie
+FROM debian:jessie-slim
 MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=US/Pacific \
     HOUR=3 MINUTE=30 \
     KEEP_DAYS=31 \
     LOCK_FOR_BACKUP= \
-    SERVERS=dbhost
+    SERVERS=dbhost \
+    USERNAME=mysqldump \
+    TZ=US/Pacific
 
 ARG UID=210
-ARG USERNAME=mysqldump
 
 RUN \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8507EFA5 && \

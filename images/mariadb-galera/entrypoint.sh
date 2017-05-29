@@ -136,7 +136,7 @@ else
       flag=0
       break
     else
-      echo >&2 ">> Node $i is unhealty. Proceed to the next node."
+      echo ">> Node $i is unhealthy. Proceed to the next node."
     fi
   done
 
@@ -153,11 +153,11 @@ else
     URL="http://$healthy_etcd/v2/keys/galera/$CLUSTER_NAME"
 
     set +e
-    echo >&2 ">> Waiting for $TTL seconds to read non-expired keys.."
+    echo "`date +%T` >> Waiting for $TTL to read non-expired keys.."
     sleep $TTL
 
     # Read the list of registered IP addresses
-    echo >&2 ">> Retrieving list of keys for $CLUSTER_NAME"
+    echo "`date +%T` >> Retrieving list of keys for $CLUSTER_NAME"
     addr=$(curl -s $URL | jq -r '.node.nodes[]?.key' | awk -F'/' '{print $(NF)}')
     cluster_join=$(join , $addr)
 
@@ -166,22 +166,22 @@ else
 
     echo
     if [ -z $cluster_join ]; then
-      echo >&2 ">> KV store is empty. This is a the first node to come up."
+      echo "`date +%T` >> KV store is empty. This is the first node to come up."
       echo
-      echo >&2 ">> Registering $ipaddr in http://$healthy_etcd"
+      echo "`date +%T` >> Registering $ipaddr in http://$healthy_etcd"
       curl -s $URL/$ipaddr/ipaddress -X PUT -d "value=$ipaddr" -d ttl=$(($TTL * 3))
     else
       curl -s ${URL}?recursive=true\&sorted=true > /tmp/out
       running_nodes=$(cat /tmp/out | jq -r '.node.nodes[].nodes[]? | select(.key | contains ("wsrep_local_state_comment")) | select(.value == "Synced") | .key' | awk -F'/' '{print $(NF-1)}' | tr "\n" ' '| sed -e 's/[[:space:]]*$//')
-      echo
-      echo ">> Running nodes: [${running_nodes}]"
+      echo 
+      echo "`date +%T` >> Running nodes: [${running_nodes}]"
 
       if [ -z "$running_nodes" ]; then
         # if there is no Synced node, determine the sequence number.
         TMP=/var/lib/mysql/$(hostname).err
-        echo >&2 ">> There is no node in synced state."
-        echo >&2 ">> It's unsafe to bootstrap unless the sequence number is the latest."
-        echo >&2 ">> Determining the Galera last committed seqno using --wsrep-recover.."
+        echo "`date +%T` >> There is no node in synced state."
+        echo " >> It's unsafe to bootstrap unless the sequence number is the latest."
+        echo " >> Determining the Galera last committed seqno using --wsrep-recover.."
         echo
 
         mysqld_safe --wsrep-cluster-address=gcomm:// --wsrep-recover --skip-syslog
@@ -195,7 +195,7 @@ else
 
         echo
         if [ ! -z $seqno ]; then
-          echo ">> Reporting seqno:$seqno to ${healthy_etcd}."
+          echo "`date +%T` >> Reporting seqno:$seqno to ${healthy_etcd}."
           WAIT=$(($TTL * 2))
           curl -s $URL/$ipaddr/seqno -X PUT -d "value=$seqno&ttl=$WAIT"
         else
@@ -206,11 +206,11 @@ else
         rm $TMP
 
         echo
-        echo ">> Sleeping for $TTL seconds to wait for other nodes to report."
+        echo "`date +%T` >> Sleeping for $TTL seconds to wait for other nodes to report."
         sleep $TTL
 
         echo
-        echo >&2 ">> Retrieving list of seqno for $CLUSTER_NAME"
+        echo  "`date +%T` >> Retrieving list of seqno for $CLUSTER_NAME"
         bootstrap_flag=1
 
         # Retrieve seqno from etcd
@@ -220,7 +220,7 @@ else
         for i in $cluster_seqno; do
           if [ $i -gt $seqno ]; then
             bootstrap_flag=0
-            echo >&2 ">> Found another node holding a greater seqno ($i/$seqno)"
+            echo  "`date +%T` >> Found another node holding a greater seqno ($i/$seqno)"
           fi
         done
 
@@ -229,11 +229,11 @@ else
           # Find the earliest node to report if there is no higher seqno
           node_to_bootstrap=$(cat /tmp/out | jq -c '.node.nodes[].nodes[]?' | grep seqno | tr ',:\"' ' ' | sort -k 11 | head -1 | awk -F'/' '{print $(NF-1)}')
           if [ "$node_to_bootstrap" == "$ipaddr" ]; then
-            echo >&2 ">> This node is safe to bootstrap."
+            echo  "`date +%T` >> This node is safe to bootstrap."
             cluster_join=
           else
-            echo >&2 ">> Based on timestamp, $node_to_bootstrap is the chosen node to bootstrap."
-            echo >&2 ">> Wait again for $TTL seconds to look for a bootstrapped node."
+            echo  ">> Based on timestamp, $node_to_bootstrap is the chosen node to bootstrap."
+            echo  ">> Wait again for $TTL seconds to look for a bootstrapped node."
             sleep $TTL
             curl -s ${URL}?recursive=true\&sorted=true > /tmp/out
 
@@ -247,14 +247,14 @@ else
               cluster_join=$(join , $running_nodes2)
             else
               echo
-              echo >&2 ">> Bailing, unable to find a bootstrapped node to join."
+              echo  ">> Bailing, unable to find a bootstrapped node to join."
 	      sleep 60
               exit 1
             fi
           fi
         else
-          echo >&2 ">> Refusing to start for now because there is a node holding higher seqno."
-          echo >&2 ">> Wait again for $TTL seconds to look for a bootstrapped node."
+          echo  ">> Refusing to start for now because there is a node holding higher seqno."
+          echo  ">> Wait again for $TTL seconds to look for a bootstrapped node."
           sleep $TTL
 
           # Look for a synced node again
@@ -268,7 +268,7 @@ else
             cluster_join=$(join , $running_nodes3)
           else
             echo
-            echo >&2 ">> Bailing, unable to find a bootstrapped node to join."
+            echo  ">> Bailing, unable to find a bootstrapped node to join."
 	    sleep 60
             exit 1
           fi
@@ -281,10 +281,10 @@ else
     set -e
 
     echo
-    echo >&2 ">> Cluster address is gcomm://$cluster_join"
+    echo ">> Cluster address is gcomm://$cluster_join"
   else
     echo
-    echo >&2 '>> Bailing, no healthy etcd host detected. Refused to start.'
+    echo '>> Bailing, no healthy etcd host detected. Refused to start.'
     exit 1
   fi
 fi

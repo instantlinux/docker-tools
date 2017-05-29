@@ -1,9 +1,7 @@
 #! /bin/sh
 mkdir -m 700 /root/.ssh
 if [ $SYNC_ROLE == "primary" ]; then
-  mkdir -p /etc/cron.d
-  echo "0-59/$SYNC_INTERVAL * * * *   root  /root/src/swarm-sync.sh" \
-   >/etc/cron.d/swarm-sync
+  echo "0-59/$SYNC_INTERVAL * * * *   /root/src/swarm-sync.sh" | crontab -
 
   cp /run/secrets/$SECRET /run/$SECRET.rsa
   chmod 400 /run/$SECRET.rsa
@@ -23,7 +21,7 @@ if [ $SYNC_ROLE == "primary" ]; then
       exit 1
     fi
   done
-  cron
+  crond
 else
   ssh-keygen -A
   /usr/sbin/sshd

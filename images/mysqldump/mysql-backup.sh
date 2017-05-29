@@ -66,7 +66,7 @@ fi
 for HOST in $@
 do
     [ -d $DESTDIR/$HOST/$DAY ] || mkdir -p -m 2750 $DESTDIR/$HOST/$DAY
- # Delete any lingering files that are over KEEP_DAYS old:
+    # Delete any lingering files that are over KEEP_DAYS old:
     /usr/bin/find $DESTDIR/$HOST/* -type f -mtime +$KEEP_DAYS -exec rm {} \; 2>&1 > /dev/null
     DBNAMES=`$MYSQL -h $HOST -se "$DBNAME_QUERY"`
     for DBNAME in $DBNAMES; do
@@ -87,6 +87,8 @@ do
       ( $MYSQLDUMP -u $USER $DUMPOPTS -h $HOST --databases $DBNAME >$BACKUP_TARGET && nice $COMPRESS $BACKUP_TARGET & )
     done
 done
+
+echo "`date --rfc-3339=seconds` invoked" > $DESTDIR/$HOST/mysqldump-status.txt
 
 log_entry info FINISHED
 exit 0

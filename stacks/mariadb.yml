@@ -6,7 +6,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:latest
     environment:
       DISCOVERY_SERVICE: lb01.ci.net:2379
-      CLUSTER_NAME: test01
+      CLUSTER_NAME: xdb00
     ports:
     - target: 3306
       published: 18306
@@ -16,21 +16,18 @@ services:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
     - /var/lib/docker/volumes/admin/_data/services/xtradb/etc/:/etc/mysql/my.cnf.d:ro
+    secrets:
+    - mysql-root-password
     deploy:
       mode: global
       restart_policy:
         condition: any
         delay: 10s
         max_attempts: 20
-      # update_config:
-      #   parallelism: 1
-      #   delay: 30s
     ulimits:
       nofile:
         soft: 20000
         hard: 40000
-    secrets:
-    - mysql-root-password
 
 volumes:
   data:
