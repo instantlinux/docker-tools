@@ -1,8 +1,18 @@
 ## Practical Docker Tools
 
 This repo is a collection of images and swarm stack definitions for
-managing a small software-dev shop using free software. So far it
-includes:
+managing a small software-dev shop using free software. Contents:
+
+| Directory | Description |
+| --------- | ----------- |
+| containers | special-case containers needing a script |
+| images | images which are published to Docker Hub |
+| lib/build | build makefile and tools |
+| services | docker-compose services that can't run in swarm |
+| ssl | PKI certificate tools |
+| stacks | swarm stacks in docker-compose format |
+
+Stack definitions include:
 
 **Developer infrastructure**
 * artifactory
@@ -16,8 +26,12 @@ includes:
 * blacklist - a local rbldnsd for spam control
 * ez-ipupdate - Dynamic DNS client
 * guacamole - authenticated remote-desktop server
+* logspout - central logging for Docker
 * mysqldump - per-database alternative to xtrabackup
-* spamassassin - spam control
+* postfix - compact general-purpose image in 11MB
+* postfix-python - postfix with spam-control scripts
+* rsyslogd - logger in a 13MB image
+* spamassassin - spam control daemon
 * splunk - the free version
 * swarm-sync - poor-man's SAN for persistent storage
 

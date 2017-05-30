@@ -62,7 +62,6 @@ class HoneypotMsg(object):
         if args['--db-config']:
             self._read_config(args['--db-config'])
         self.db_table = args['--db-table']
-        print args
         self.cidr_min_size = int(args['--cidr-min-size'])
         self.honeypots = args['--honeypot']
         self.notes = args['--notes']

@@ -1,0 +1,29 @@
+version: "3.1"
+
+services:
+
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/postfix:latest
+    volumes:
+    - etc:/etc/postfix/postfix.d:ro
+    - certs:/etc/ssl/certs:ro
+    - spool:/var/spool/postfix
+    ports:
+    - 3525:25
+    secrets:
+     - postfix-sasl-passwd
+     - webmail.ci.net-server-key.pem 
+
+volumes:
+  certs:
+  etc:
+  spool:
+networks:
+  default:
+    external:
+      name: app_net
+secrets:
+  postfix-sasl-passwd:
+    external: true
+  webmail.ci.net-server-key.pem:
+    external: true
