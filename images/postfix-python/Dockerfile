@@ -1,4 +1,4 @@
-FROM dockerhub.instantlinux.net:5000/postfix:latest
+FROM instantlinux/postfix:latest
 MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \

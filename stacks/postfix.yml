@@ -15,6 +15,7 @@ services:
     - /var/lib/docker/share/common/pki/certs:/etc/ssl/certs:ro
     - spool:/var/spool/postfix
     ports:
+    - 3425:25
     - 3525:3525
     secrets:
     - mysql-blacklist-user

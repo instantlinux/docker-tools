@@ -1,7 +1,6 @@
 ## DNS blacklist for spamassassin
 
-This is based on [Running Your Own RBL DNS
-Blacklist](http://www.blue-quartz.com/rbl/) using the Debian rbldnsd
+This is based on [Running Your Own RBL DNS Blacklist](http://www.blue-quartz.com/rbl/) using the Debian rbldnsd
 package adapted from scripts published by Herb Rubin some years
 ago. This attempts to counter large-scale botnets (with hundreds of
 thousands of scattered IP addresses) that spammers use to bypass the
@@ -17,43 +16,22 @@ minutes will add to this protection.
 ### Usage
 Before running it, grant access to a mysql user thus:
 ~~~bash
-USER=blacklister
-PSWD=xxx
-mysql> GRANT SELECT,UPDATE,INSERT,CREATE ON `blacklist`.* TO
-  '$USER'@'10.%' IDENTIFIED BY '$PSWD';
+    USER=blacklister
+    PSWD=xxx
+    mysql> GRANT SELECT,UPDATE,INSERT,CREATE ON `blacklist`.* TO
+     '$USER'@'10.%' IDENTIFIED BY '$PSWD';
 ~~~
 Add a mysql-blacklist-user that contains the $PSWD you've set:
 ~~~bash
-# docker secret create mysql-blacklist -
-user=blacklister
-password=$PSWD
+    # docker secret create mysql-blacklist -
+    user=blacklister
+    password=$PSWD
 ~~~
 Decide on a subdomain name, such as blacklist.yourdomain.com. See
 docker-compose.yml for an example; set that name as an environment variable
 RBL_DOMAIN. To delegate to this subdomain, list hosts where you'll
 be running this in environment variable NS_SERVERS (if you're running
 a swarm cluster, this will be the DNS names of the cluster nodes).
-
-Then to add new IPs into the blacklist, set up procmail to run the
-honeypot-ip.py parser script (included here under src directory) to
-insert into the MySQL ips table upon receipt of any known spam message.
-Example:
-~~~bash
-:0fw
-#| /usr/local/bin/honeypot-ip.py --db-config ~/.my.cnf -q \
-  --honeypot honeyforbees@instantlinux.net \
-  --relay 'by mx-caprica.?\.easydns\.com' --cidr-min-size 32
-~~~
-Add a .my.cnf file with db credentials:
-~~~
-[client]
-host=xdb00
-database=blacklist
-user=blacklist
-password=xxx
-~~~
-This script can also be invoked as a spamfilter under postfix; use
-the --pipe-stdout command option for that use case.
 
 In the local.cf file for spamassassin (separate Docker image), define
 these rules for your local blacklist:
@@ -64,6 +42,29 @@ header   HONEY_RCVD_IN_RBL  eval:check_rbl('bl', 'blacklist.yourdomain.com.', '1
 describe HONEY_RCVD_IN_RBL  Seen in rbldnsd by honeypot address
 tflags   HONEY_RCVD_IN_RBL  net
 reuse    HONEY_RCVD_IN_RBL
+
+(Below items are performed by scripts in postfix-python image.)
+
+Then to add new IPs into the blacklist, set up procmail to run the
+honeypot-ip.py parser script (included here under src directory) to
+insert into the MySQL ips table upon receipt of any known spam message.
+Example:
+~~~bash
+    :0fw
+    #| /usr/local/bin/honeypot-ip.py --db-config ~/.my.cnf -q \
+      --honeypot honeyforbees@instantlinux.net \
+      --relay 'by mx-caprica.?\.easydns\.com' --cidr-min-size 32
+~~~
+Add a .my.cnf file with db credentials:
+~~~
+    [client]
+    host=xdb00
+    database=blacklist
+    user=blacklist
+    password=xxx
+~~~
+This script can also be invoked as a spamfilter under postfix; use
+the --pipe-stdout command option for that use case.
 
 ### Variables
 | Variable | Default | Description |
