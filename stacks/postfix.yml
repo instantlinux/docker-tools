@@ -25,7 +25,7 @@ services:
       mode: global
       placement:
         constraints:
-        - node.labels.swarm-sync == primary
+        - node.labels.swarm-sync-member == true
 
 volumes:
   spool:

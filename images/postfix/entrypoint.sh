@@ -16,6 +16,7 @@ if [ -s postfix.cf ]; then
   done < postfix.cf
 fi
 for item in *.map; do
+  [ -e $item ] || continue
   cp $item ../`basename $item .map`
   postmap ../`basename $item .map`
 done
@@ -30,5 +31,6 @@ fi
 if [ -x /usr/local/bin/postfix-extras.sh ]; then
   . /usr/local/bin/postfix-extras.sh
 fi
+meta_directory=/etc/postfix /usr/lib/postfix/post-install create-missing
 /usr/lib/postfix/master &
 rm -f /var/run/rsyslogd.pid && rsyslogd -n
