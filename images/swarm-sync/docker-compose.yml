@@ -28,6 +28,7 @@ services:
     env_file:
     - ../../.docker/swarm-sync.pub.env
     volumes:
+    - syncarchive:/root/.unison
     - /var/lib/docker/share:/var/swarm-sync
     deploy:
       placement:
