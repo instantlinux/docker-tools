@@ -8,7 +8,7 @@ services:
       SERVERS: xdb00
       LOCK_FOR_BACKUP: "true"
     volumes:
-    - /var/dvol/backup/mysql:/var/backup
+    - backup:/var/backup
     - logs:/var/log
     deploy:
       placement:
@@ -17,12 +17,14 @@ services:
     secrets:
     - mysql-backup
 
+volumes:
+  logs:
+  backup:
+    external: true
 networks:
   default:
     external:
       name: dbcluster
-volumes:
-  logs:
 secrets:
   mysql-backup:
     external: true

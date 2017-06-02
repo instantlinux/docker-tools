@@ -1,0 +1,27 @@
+version: "3"
+services:
+
+  app:
+    image: gfjardim/crashplan:latest
+    hostname: docker-backup
+    environment:
+      TZ: US/Pacific
+      VNC_PASSWD: crashplan
+    volumes:
+    - config:/config
+    - backup:/backup
+    ports:
+    - 4280:4280
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == primary
+
+volumes:
+  config:
+  backup:
+    external: true
+networks:
+  default:
+    external:
+      name: app_net
