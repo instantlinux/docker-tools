@@ -1,1 +1,1 @@
-include ../../lib/build/Makefile.docker_image
+include ../../lib/build/Makefile.python_app

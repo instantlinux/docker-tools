@@ -7,8 +7,7 @@ ENV DEST=. \
     GIT_REPO=uri \
     INTERVAL=0
 
-RUN apk add --update git openssh-client && \
-    rm -rf /var/cache/apk/*
+RUN apk add --no-cache --update git openssh-client
 
 VOLUME /git
 

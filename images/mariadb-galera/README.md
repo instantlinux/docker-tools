@@ -1,31 +1,33 @@
 ## mariadb-galera
 
-MariaDB 10.2 with Galera clustering support, for deployment under Swarm
-using Docker's named volumes for data persistence.
+MariaDB 10.2 with Galera clustering support, for deployment under
+Swarm using Docker's named volumes for data persistence. This has a
+robust bootstrap script intended to closely follow Galera's
+documentation.
 
-Current status: in development; still needs improvements in the
-entrypoint bootstrap script to ensure all defined nodes wait long
-enough for each other to start up and elect the most-current instance
-for synchronization.  Indeed, bash is the wrong language for this
-work: this script originates from Percona but needs to be thrown out
-and started over in python. That said, this version will bring up a
-cluster most of the time without fiddling with the compose file--an
-improvement over what else is out there circa May 2017.
+Current status: in development to handle edge cases upon cluster restart
 
 ### Variables
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
+| CLUSTER_JOIN | | join address--usually not needed |
 | CLUSTER_NAME | (required) | cluster name |
+| CLUSTER_SIZE | 3 | expected number of nodes |
 | DISCOVERY_SERVICE | | etcd host list, e.g. etcd1:2379,etcd2:2379 |
+| REINSTALL_OK | | set to any value to enable reinstall over old volume |
+| ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
+| TTL | 10 | longevity of keys posted to etcd |
 | TZ | US/Pacific | timezone |
+| XTRABACKUP_PASSWORD | | password for SST transfers (deprecated) |
+| XTRABACKUP_SECRET | xtradb-root-password | name of secret for password |
 
 ### Usage
 
 Create a root password:
 ~~~
-PW=`uuidgen` ; echo $PW
-echo $PW | docker secret create mysql-root-password -
+    PW=`uuidgen` ; echo $PW
+    echo $PW | docker secret create mysql-root-password -
 ~~~
 Set any local my.cnf values in files under a volume mount for
 /etc/mysql/my.cnf.d.
@@ -50,7 +52,7 @@ load-balancer thus:
           protocol: tcp
           mode: host
 ~~~
-You'll need a separate load-balancer for serving your published port.
+You may want a separate load-balancer for serving your published port.
 
 ### Logging
 
@@ -65,17 +67,17 @@ without problems (like split-brain, or just never coming up) upon a
 simple "docker stack deploy ; docker stack rm ; docker stack deploy"
 repeated test cycle. This is an attempt to address that problem, using
 a minimal distro (tried Alpine Linux, wound up having to use debian
-jessie-slim), using MariaDB (I like it better than MySQL / Percona
+jessie-slim), with MariaDB (I like it better than MySQL / Percona
 solutions, after a few years of running MariaDB and a decade+ of
 running MySQL).
 
 Galera is finicky upon restarts so this requires a robust script to ensure
 proper conditions.
 
-This container image is intended to be run in a 3-, 5-node, or larger configuration.
-It requires a stable etcd configuration for node discovery and master election at
-restart.
+This container image is intended to be run in a 3-, 5-node, or larger
+configuration.  It requires a stable etcd configuration for node
+discovery and master election at restart.
 
 ### Credits
 
-Thanks to ashraf-s9s of severalnines for the healthcheck and etcd scripts.
+Thanks to ashraf-s9s of severalnines for the healthcheck script.

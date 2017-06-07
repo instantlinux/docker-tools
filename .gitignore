@@ -1,4 +1,12 @@
 *~
+*.pyc
+.cache
+.coverage
+__pycache__
+coverage.xml
+htmlcov
+python_env
+results.xml
 OBS
 # honeypot-ip.py is copied from blacklist image
 images/postfix-python/src/honeypot-ip.py

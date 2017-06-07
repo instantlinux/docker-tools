@@ -20,6 +20,14 @@ pipeline {
         sh "git rev-parse HEAD > git_commit.log"
       }
     }
+    stage('Unit Tests') {
+      steps {
+        dir("images/${params.Service}") {
+          sh "make test"
+          junit "**/*.xml"
+        }
+      }
+    }
     stage('Create Image') {
       steps {
         script {

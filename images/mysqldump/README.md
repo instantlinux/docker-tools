@@ -5,7 +5,7 @@ the MySQL databases in a Percona Galera cluster.
 
 This Docker compose service definition will cause a dump to happen
 at the default hour (3:30am in $TZ) from a server named xdb00 onto
-the host directory /var/dvol/backup/mysql.
+a subdirectory "mysql" in volume "backup".
 
 ### Usage
 Before running it, grant access to a mysql user thus:
@@ -13,9 +13,10 @@ Before running it, grant access to a mysql user thus:
     mysql> GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO
       '$USER'@'10.%' IDENTIFIED BY '$PSWD';
 ~~~
-Make sure the /var/dvol/backup/mysql directory exists, and that
+Make sure the named volume "backup" exists, and that
 your mysql-backup secret contains the $PSWD you've set:
 ~~~
+    # docker volume create backup
     # docker secret create mysql-backup - <<EOT
     user=bkp
     password=$PSWD

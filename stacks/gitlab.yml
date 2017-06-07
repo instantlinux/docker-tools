@@ -12,8 +12,9 @@ services:
     - 8999:22
     volumes:
     - /var/lib/docker/share/gitlab/config:/etc/gitlab
-    - /var/lib/docker/share/gitlab/logs:/var/log/gitlab
     - /var/lib/docker/share/gitlab/data:/var/opt/gitlab
+    - backup:/var/opt/gitlab/backups
+    - logs:/var/log/gitlab
     deploy:
       placement:
         constraints:
@@ -24,6 +25,10 @@ services:
       nofile: 60000
       core: 0
 
+volumes:
+  backup:
+    external: true
+  logs:
 networks:
   default:
     external:

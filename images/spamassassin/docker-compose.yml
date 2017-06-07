@@ -12,10 +12,10 @@ services:
     - home:/var/lib/spamassassin
     - logs:/var/log
     deploy:
+      mode: global
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
-      replicas: 2
 
 networks:
   default:
