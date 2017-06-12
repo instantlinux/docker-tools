@@ -171,7 +171,8 @@ class MariaDBCluster(object):
 
         self._invoke(
             'sed -i "s/safe_to_bootstrap.*/safe_to_bootstrap: %d/" %s' %
-            (value, os.path.join(self.data_dir, 'grastate.dat')))
+            (value, os.path.join(self.data_dir, 'grastate.dat')),
+            ignore_errors=False)
 
     def wait_checkin(self, retry_interval=5):
         """wait for all cluster nodes to check in
@@ -214,7 +215,7 @@ class MariaDBCluster(object):
         uuid_pat = re.compile('[a-z0-9]*-[a-z0-9]*:-*[0-9]', re.I)
         filename = os.path.join(self.data_dir, '%s.err' % self.my_hostname)
         self._invoke('mysqld_safe --wsrep-cluster-address=gcomm:// '
-                     '--wsrep-recover --skip-syslog')
+                     '--wsrep-recover --skip-syslog', ignore_errors=False)
         with open(filename, 'r') as f:
             for line in f:
                 match = re.match(uuid_pat, line)
@@ -243,16 +244,18 @@ class MariaDBCluster(object):
 
         script_setusers = r"""
         SET @@SESSION.SQL_LOG_BIN=0;
-        DELETE FROM mysql.user;
         CREATE USER 'root'@'%%' IDENTIFIED BY '%(mysql_root_password)s';
         GRANT ALL ON *.* TO 'root'@'%%' WITH GRANT OPTION;
+        DROP USER 'root'@'::1';
+        DROP USER 'root'@'127.0.0.1';
+        DROP USER 'root'@'localhost';
+        DROP USER 'root'@'%(hostname)s';
         CREATE USER 'xtrabackup'@'localhost' IDENTIFIED BY
           '%(xtrabackup_password)s';
         GRANT RELOAD,LOCK TABLES,REPLICATION CLIENT ON *.* TO
           'xtrabackup'@'localhost';
         DROP DATABASE IF EXISTS test;
         FLUSH PRIVILEGES;
-        SELECT user,host FROM mysql.user;
         """
 
         logging.info({'action': '_install_new_database', 'status': 'start'})
@@ -262,31 +265,31 @@ class MariaDBCluster(object):
         start_time = time.time()
         proc = self._run_background(
             'exec /usr/sbin/mysqld %s --skip-networking' % opts)
-        while time.time() - start_time > timeout:
+        while time.time() - start_time < timeout:
             time.sleep(1)
-            if self._invoke('%s -e "SELECT 1;"' % mysql_client) == ['1', '1']:
+            if self._invoke('%s -e "SELECT 1;"' % mysql_client
+                            ).split() == ['1', '1']:
                 break
         if time.time() - start_time > timeout:
             logging.error({'action': '_install_new_database',
                            'message': 'timeout', 'status': 'error'})
+            # Leave node up long enough to diagnose
             time.sleep(60)
             exit(1)
         sys.stdout.write(self._invoke(
             'mysql_tzinfo_to_sql /usr/share/zoneinfo | '
             'sed "s/Local time zone must be set--see zic manual page/FCTY/" | '
-            '%s mysql' % mysql_client))
+            '%s mysql' % mysql_client, ignore_errors=False))
         sys.stdout.write(self._invoke('%(mysql)s -e "%(script)s"' % {
             'mysql': mysql_client,
             'script': script_setusers % {
                 'mysql_root_password': self.root_password,
-                'xtrabackup_password': self.xtrabackup_password
-            }}))
+                'xtrabackup_password': self.xtrabackup_password,
+                'hostname': self.my_hostname.replace('_', '\_')
+            }}, ignore_errors=False, suppress_log=True))
         proc.terminate()
         proc.wait()
         logging.info({'action': '_install_new_database', 'status': 'ok'})
-        # TODO
-        sys.stdout.write(self._invoke('ps -eaux'))
-        sys.stdout.write(self._invoke('echo lookforthis'))
 
     def start_database(self, cluster_address='', wsrep_new_cluster=False,
                        cmdarg=None):
@@ -460,14 +463,28 @@ class MariaDBCluster(object):
             pass
 
     @staticmethod
-    def _invoke(command):
+    def _invoke(command, ignore_errors=True, suppress_log=False):
         """invoke a shell command and return its stdout"""
 
-        # TODO
-        if 'SHOW STATUS LIKE' not in command:
-            logging.info({'action': '_invoke', 'command': command})
+        log_info = {'action': '_invoke', 'command': command}
+        if '-u root -p' in command:
+            log_info['command'] = '[redacted]..' + command[28:]
         proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-        return proc.communicate()[0]
+        retval = proc.communicate()[0]
+        if proc.returncode == 0:
+            if not (suppress_log or 'SHOW STATUS LIKE' in command):
+                logging.info(dict(log_info, **{
+                    'status': 'ok',
+                    'returncode': proc.returncode,
+                    'output': retval}))
+        else:
+            logging.error(dict(log_info, **{
+                'status': 'error',
+                'returncode': proc.returncode,
+                'output': retval}))
+            if not ignore_errors:
+                raise AssertionError('Command returned %d' % proc.returncode)
+        return retval
 
     @staticmethod
     def _run_background(command):

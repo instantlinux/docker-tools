@@ -29,9 +29,18 @@ services:
         soft: 20000
         hard: 40000
 
+  etcd-browser:
+    image: buddho/etcd-browser:latest
+    environment:
+      ETCD_HOST: 172.18.0.1
+    ports:
+    - 7080:8000
+
 volumes:
   data:
   logs:
+  db_etc:
+    external: true
 networks:
   default:
     external:
