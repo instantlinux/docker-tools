@@ -5,7 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/mysqldump:latest
     environment:
       TZ: US/Pacific
-      SERVERS: xdb00
+      SERVERS: ${DB_HOST:-db}
       LOCK_FOR_BACKUP: "true"
     volumes:
     - backup:/var/backup

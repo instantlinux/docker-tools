@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   jenkins-master:
-    image: dockerhub.instantlinux.net:5000/jenkins-master:latest
+    image: ${REGISTRY_URI:-instantlinux}/jenkins-master:latest
     environment:
       TZ: US/Pacific
     ports:
@@ -23,7 +23,7 @@ services:
         - node.labels.swarm-sync == primary
 
   jenkins-slave:
-    image: dockerhub.instantlinux.net:5000/jenkins-slave:20170403
+    image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:20170403
     environment:
       TZ: US/Pacific
       SWARM_MASTER_URL: http://jenkins-master:8080/

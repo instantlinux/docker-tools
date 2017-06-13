@@ -5,16 +5,14 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/rsyslogd:latest
     hostname: rsyslogd.docker
     volumes:
-    - /var/lib/docker/share/syslog/etc/logrotate.d:/etc/logrotate.d:ro
-    - /var/lib/docker/share/syslog/etc/rsyslog.d:/etc/rsyslog.d:ro
-    - /var/lib/docker/share/syslog/log:/var/log
+    - ${ADMIN_PATH:-/opt}/rsyslogd/etc/logrotate.d:/etc/logrotate.d:ro
+    - ${ADMIN_PATH:-/opt}/rsyslogd/etc/rsyslog.d:/etc/rsyslog.d:ro
+    - logs:/var/log
     ports:
     - 514:514
-    deploy:
-      placement:
-        constraints:
-        - node.labels.swarm-sync-member == true
 
+volumes:
+  logs:
 networks:
   default:
     external:

@@ -6,10 +6,10 @@ services:
     ports:
     - 16080:8080
     environment:
-      MYSQL_HOSTNAME: xdb00
+      MYSQL_HOSTNAME: ${DB_HOST:-db}
       MYSQL_DATABASE: guacamole
       MYSQL_USER: guacamole_user
-      MYSQL_PASSWORD: To1V4HdXqd
+      MYSQL_PASSWORD: ${GUACAMOLE_DBPASS:-guacamole}
       GUACD_HOSTNAME: guacd
     image: glyptodon/guacamole:0.9.11-incubating
   guacd:

@@ -8,7 +8,7 @@ services:
     ports:
     - 783:783
     volumes:
-    - /var/lib/docker/share/spamd/etc/local.cf:/etc/mail/spamassassin/local.cf:ro
+    - ${ADMIN_PATH:-/opt}/spamassassin/etc/local.cf:/etc/mail/spamassassin/local.cf:ro
     - home:/var/lib/spamassassin
     - logs:/var/log
     deploy:
@@ -16,6 +16,11 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k
+        max-file: 10
 
 networks:
   default:

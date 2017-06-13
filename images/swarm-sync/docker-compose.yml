@@ -20,6 +20,8 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync == primary
+    depends_on:
+    - peer
 
   peer:
     image: ${REGISTRY_URI:-instantlinux}/swarm-sync:latest

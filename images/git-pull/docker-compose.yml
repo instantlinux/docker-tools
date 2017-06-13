@@ -5,11 +5,11 @@ version: "3.1"
 services:
 
   app:
-    image: instantlinux/git-pull:latest
+    image: ${REGISTRY_URI:-instantlinux}/git-pull:latest
     environment:
       GIT_COMMIT: master
-      GIT_HOST: git.instantlinux.net:8999
-      GIT_REPO: ssh://git@git.instantlinux.net:8999/richb/admin.git
+      GIT_HOST: ${GIT_HOST:-github.com}
+      GIT_REPO: ${GIT_REPO:-ssh://git@github.com:myrepo/admin.git}
       INTERVAL: 60
     volumes:
     - admin:/git

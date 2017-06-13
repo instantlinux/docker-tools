@@ -4,9 +4,9 @@ services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/blacklist:latest
     environment:
-      RBL_DOMAIN: blacklist.ci.net
-      NS_SERVERS: node1.ci.net node2.ci.net node3.ci.net
-      DB_HOST: xdb00
+      RBL_DOMAIN: ${RBL_DOMAIN:-blacklist.mydomain.com}
+      NS_SERVERS: ${NS_SERVERS:-ns.mydomain.com}
+      DB_HOST: ${DB_HOST:-db}
     ports:
     - 53:53/udp
     volumes:

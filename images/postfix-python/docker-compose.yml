@@ -5,20 +5,27 @@ services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/postfix-python:latest
     environment:
-      DB_HOST: xdb00
-      CIDR_MIN_SIZE: 27
+      DB_HOST: ${DB_HOST:-db}
+      CIDR_MIN_SIZE: ${CIDR_MIN_SIZE:-32}
+      HONEYPOT_ADDRS: ${HONEYPOT_ADDRS:-none}
       INBOUND_RELAY: by mx-caprica.?\.easydns\.com
-      SPAMC_HOST: spamd00.ci.net
+      SPAMC_HOST: ${SPAMC_HOST:-spamd}
     volumes:
-    - /var/lib/docker/volumes/admin/_data/services/postfix/etc/:/etc/postfix/postfix.d:ro
+    - ${ADMIN_PATH:-/opt}/postfix/etc/:/etc/postfix/postfix.d:ro
     - /var/lib/docker/share/common/pki/certs:/etc/ssl/certs:ro
     - spool:/var/spool/postfix
     ports:
-    - 3525:25
+    - 3425:25
+    - 3525:3525
     secrets:
     - mysql-blacklist-user
     - postfix-sasl-passwd
     - webmail.ci.net-server-key.pem 
+    deploy:
+      mode: global
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
 
 volumes:
   spool:

@@ -455,7 +455,8 @@ class MariaDBCluster(object):
 
         try:
             if _set_wsrep_key(KEY_WSREP_LOCAL_STATE_COMMENT) == 'Synced':
-                self._update_cluster_address()
+                if self.cluster_size > 1:
+                    self._update_cluster_address()
                 self.discovery.set_key(KEY_HEALTH, STATUS_OK)
             else:
                 self.discovery.set_key(KEY_HEALTH, STATUS_DEGRADED)

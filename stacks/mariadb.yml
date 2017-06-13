@@ -5,8 +5,8 @@ services:
     hostname: "{{.Service.Name}}-{{.Task.Slot}}"
     image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:latest
     environment:
-      CLUSTER_NAME: xdb00
-      DISCOVERY_SERVICE: lb01.ci.net:2379
+      CLUSTER_NAME: ${CLUSTER_NAME:-cluster01}
+      DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
     ports:
     - target: 3306
       published: 18306
@@ -15,7 +15,7 @@ services:
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
-    - /var/lib/docker/volumes/admin/_data/services/xtradb/etc/:/etc/mysql/my.cnf.d:ro
+    - ${ADMIN_PATH:-/opt}/xtradb/etc/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
     deploy:

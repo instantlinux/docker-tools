@@ -17,10 +17,8 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync == primary
-        # node.hostname == vinson
     networks:
       dbcluster:
-      # app_net:
 
   db_peer:
     image: percona/percona-xtradb-cluster:5.7.17
@@ -29,7 +27,6 @@ services:
       MYSQL_ROOT_PASSWORD: test
       CLUSTER_NAME: cluster01
       CLUSTER_JOIN: bootstrap
-      # CLUSTER_JOIN: 10.0.0.6
     ports:
     - 13406:3306
     volumes:
@@ -40,11 +37,9 @@ services:
       placement:
         constraints:
         # node.labels.swarm-sync != primary
-        # node.hostname == mckinley
         - node.hostname == vinson
     networks:
       dbcluster:
-      # app_net:
 
   garbd:
     image: gregnuj/garbd:latest
@@ -59,7 +54,5 @@ services:
       dbcluster:
 
 networks:
-  app_net:
-    external: true
   dbcluster:
     external: true

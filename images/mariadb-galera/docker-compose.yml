@@ -5,8 +5,8 @@ services:
     hostname: "{{.Service.Name}}-{{.Task.Slot}}"
     image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:latest
     environment:
-      DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
       CLUSTER_NAME: ${CLUSTER_NAME:-cluster01}
+      DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
     ports:
     - target: 3306
       published: 3306

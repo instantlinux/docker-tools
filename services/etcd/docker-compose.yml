@@ -1,12 +1,13 @@
 version: "3"
 
-# start with export ADV=nodeX INSTANCE=etc0X (node1 etc0X etc)
+# define DNS entries to resolve node1 / node2 / node3 (docker host IPs)
+#  optionally specify $ADV host/ip and $CLUSTER name
 
 services:
-  app:
+  etcdinfra0:
     image: elcolio/etcd:latest
     restart: always
-    hostname: ${INSTANCE:-etcd}
+    hostname: ${ADV:-etcdinfra0}
     volumes:
     - data:/data
     ports:
@@ -16,13 +17,15 @@ services:
     - 7001:7001
     network_mode: host
     command: >
-      -name ${INSTANCE}
-      -advertise-client-urls http://${ADV:-localhost}:2379,http://{$ADV:-localhost}:4001
+      -name ${ADV:-etcdinfra0}
+      -advertise-client-urls
+         http://${ADV:-etcdinfra0}:2379,http://${ADV:-etcdinfra0}:4001
       -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
-      -initial-advertise-peer-urls http://{$ADV:-localhost}:2380
+      -initial-advertise-peer-urls http://{$ADV:-etcdinfra0}:2380
       -listen-peer-urls http://0.0.0.0:2380
       -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
-      -initial-cluster etcd00=http://node1:2380,etcd01=http://node2:2380,etcd02=http://node3:2380 \
+      -initial-cluster
+         node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380
       -initial-cluster-state new
 
 volumes:
