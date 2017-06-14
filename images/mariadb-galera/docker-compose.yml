@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.1"
 
 services:
   peer:
@@ -8,21 +8,20 @@ services:
       CLUSTER_NAME: ${CLUSTER_NAME:-cluster01}
       DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
     ports:
-    - target: 3306
-      published: 3306
-      protocol: tcp
-      mode: host
+    - ${TCP_PORT:-3306}:3306
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
-    - db_etc:/etc/mysql/my.cnf.d:ro
+    - ${ADMIN_PATH:-/opt}/xtradb/etc/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
     deploy:
       mode: global
+      labels:
+      - ${LABEL:-service_type=mariadb}
       restart_policy:
         condition: any
-        delay: 10s
+        delay: 20s
         max_attempts: 20
     ulimits:
       nofile:
@@ -31,7 +30,11 @@ services:
 
 volumes:
   data:
+    labels:
+     - ${LABEL:-service_type=mariadb}
   logs:
+    labels:
+     - ${LABEL:-service_type=mariadb}
   db_etc:
     external: true
 networks:

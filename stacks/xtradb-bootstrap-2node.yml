@@ -27,6 +27,7 @@ services:
       MYSQL_ROOT_PASSWORD: test
       CLUSTER_NAME: cluster01
       CLUSTER_JOIN: bootstrap
+      # CLUSTER_JOIN: 10.0.3.13
     ports:
     - 13406:3306
     volumes:

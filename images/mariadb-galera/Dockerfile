@@ -25,18 +25,20 @@ RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     groupadd -g $GID mysql && \
     useradd -u $UID -g $GID -s /bin/false -c "MariaDB" -d /none mysql && \
     apt-get -yq update && apt-get -yq install --no-install-recommends \
-     curl jq mariadb-server mariadb-client && \
+     curl jq mariadb-server mariadb-client net-tools netcat && \
     pip install -r /root/common.txt && \
     apt-get clean; rm -fr /var/log/* /var/lib/mysql/*
 
-EXPOSE 3306 4567 4568
+EXPOSE 3306 4444 4567/udp 4567 4568
 VOLUME /var/lib/mysql
 
 COPY src/healthcheck.sh /usr/local/bin/
 COPY wsrep.cnf my.cnf /etc/mysql/
 
-HEALTHCHECK --interval=10s --timeout=3s --retries=15 \
+# TODO: fix healthcheck.sh to handle long-duration bootstrap
+HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
     CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
+
 ENTRYPOINT /root/entrypoint.py
 COPY src/entrypoint.py /root/
 

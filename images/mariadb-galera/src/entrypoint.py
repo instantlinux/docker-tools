@@ -12,8 +12,9 @@
 #
 # License: https://www.apache.org/licenses/LICENSE-2.0
 
-import os
 import logging
+import os
+import pwd
 import random
 import re
 import socket
@@ -26,15 +27,18 @@ import etcd
 # Constants
 DEFAULT_CLUSTER_SIZE = 3
 ETCD_PREFIX = '/galera'
+LOG_DIR = '/var/log/mysql'
 
 KEY_CLUSTER_UPDATE_TIMER = 'update_timer'
 KEY_HEALTH = 'health'
+KEY_HOSTNAME = 'hostname'
 KEY_RECOVERED_POSITION = 'recovered_position'
 KEY_SAFE_TO_BOOTSTRAP = 'safe_to_bootstrap'
 KEY_WSREP_GCOMM_UUID = 'wsrep_gcomm_uuid'
 KEY_WSREP_LOCAL_STATE_COMMENT = 'wsrep_local_state_comment'
 
 STATUS_DEGRADED = 'degraded'
+STATUS_DONOR = 'donor'
 STATUS_INIT = 'initializing'
 STATUS_INSTALL = 'installing'
 STATUS_NEW = 'new'
@@ -43,9 +47,8 @@ STATUS_RESTARTING = 'restarting'
 
 DEFAULT_TTL = 10
 TTL_DIR = 900
-TTL_INITIALIZING = 600
 TTL_LOCK = 90
-TTL_STACK_UP = 60
+TTL_STACK_UP = 600
 TTL_UPDATE_TIMER = 90
 
 
@@ -70,7 +73,6 @@ class MariaDBCluster(object):
         except KeyError:
             self.cluster_size = DEFAULT_CLUSTER_SIZE
         self.reinstall_ok = 'REINSTALL_OK' in os.environ
-        self.ttl_initializing = TTL_INITIALIZING
         self.ttl_lock = TTL_LOCK
         self.ttl_stack_up = TTL_STACK_UP
         self.ttl_update_timer = TTL_UPDATE_TIMER
@@ -98,6 +100,8 @@ class MariaDBCluster(object):
         else:
             self.health = STATUS_INIT
             discovery.set_key(KEY_HEALTH, self.health, ttl=self.ttl_stack_up)
+            discovery.set_key(KEY_HOSTNAME, self.my_hostname,
+                              ttl=self.ttl_stack_up)
             try:
                 discovery.set_key(KEY_SAFE_TO_BOOTSTRAP,
                                   self._is_safe_to_boot(),
@@ -198,7 +202,7 @@ class MariaDBCluster(object):
         if len(retval) >= self.cluster_size:
             logging.info(dict(retval, **{
                 'action': 'wait_checkin', 'status': 'ok',
-                'peers': ','.join(instances)}))
+                'peers': ','.join(health_status.keys())}))
             return retval
         logging.error(dict(retval, **{
             'action': 'wait_checkin', 'status': 'error'}))
@@ -304,6 +308,10 @@ class MariaDBCluster(object):
             command += ' --wsrep-new-cluster'
         if cmdarg:
             command += ' %s' % cmdarg
+        os.chown(LOG_DIR, pwd.getpwnam('mysql').pw_uid, -1)
+        if cluster_address:
+            assert self._peer_reachable(cluster_address.split(',')[0]), (
+                'Network connectivity problem for %s' % cluster_address)
         logging.info({
             'action': 'start_database',
             'status': 'start',
@@ -356,7 +364,7 @@ class MariaDBCluster(object):
         recoverable_nodes = 0
         for ipv4, peer in peer_state.iteritems():
             # Leader election
-            if peer.get(KEY_HEALTH) == STATUS_NEW:
+            if not peer or peer.get(KEY_HEALTH) == STATUS_NEW:
                 continue
             if int(peer.get(KEY_SAFE_TO_BOOTSTRAP, 0)) == 1:
                 safe_to_bootstrap += 1
@@ -453,15 +461,28 @@ class MariaDBCluster(object):
             self.discovery.set_key(key, val, ttl=self.discovery.ttl)
             return val
 
+        self.discovery.set_key(KEY_HOSTNAME, self.my_hostname)
         try:
-            if _set_wsrep_key(KEY_WSREP_LOCAL_STATE_COMMENT) == 'Synced':
+            status = _set_wsrep_key(KEY_WSREP_LOCAL_STATE_COMMENT)
+            if status == 'Synced':
                 if self.cluster_size > 1:
                     self._update_cluster_address()
                 self.discovery.set_key(KEY_HEALTH, STATUS_OK)
+            elif status == 'Donor/Desynced':
+                self.discovery.set_key(KEY_HEALTH, STATUS_DONOR)
             else:
                 self.discovery.set_key(KEY_HEALTH, STATUS_DEGRADED)
         except IndexError:
             pass
+
+    def _peer_reachable(self, ipv4):
+        """confirm that a peer can be reached"""
+
+        try:
+            self._invoke('ping -c 2 -w 2 %s' % ipv4, ignore_errors=False)
+        except AssertionError:
+            return False
+        return True
 
     @staticmethod
     def _invoke(command, ignore_errors=True, suppress_log=False):
@@ -509,6 +530,9 @@ class DiscoveryService(object):
         self.ttl_dir = TTL_DIR
         self.locks = {}
 
+    def __del__(self):
+        self.delete_key(self.ipv4)
+
     def set_key(self, keyname, value, ttl=None):
         logging.debug({'action': 'set_key', 'keyname': keyname,
                        'value': value})
@@ -555,9 +579,28 @@ class DiscoveryService(object):
                       for child in item.children]
             return retval
         else:
-            logging.debug(dict(log_info, **{
-                'value': item.value}))
+            logging.debug(dict(log_info, **{'value': item.value}))
             return item.value
+
+    def delete_key(self, keyname, ipv4=None):
+        log_info = {
+            'action': 'delete_key',
+            'keyname': keyname,
+            'ipv4': ipv4
+        }
+        key_path = '%(prefix)s/%(cluster)s' % {
+            'prefix': self.prefix, 'cluster': self.cluster}
+        if ipv4:
+            key_path += '/' + ipv4
+        if keyname:
+            key_path += '/' + keyname
+        try:
+            self.etcd.delete(key_path, recursive=True)
+            logging.debug(dict(log_info, **{'status': 'ok'}))
+        except etcd.EtcdKeyNotFound:
+            logging.debug(dict(log_info, **{
+                'status': 'error',
+                'message': 'not_found'}))
 
     def get_key_recursive(self, keyname, ipv4=None, nest_level=0):
         """Fetch all keys under the given node """
@@ -594,8 +637,8 @@ class LoggingDictFormatter(logging.Formatter):
     @staticmethod
     def _dict_to_str(values):
         """Convert a dict to string key1=val key2=val ... """
-        return ' '.join(['%s=%s' % (key, val)
-                         for key, val in values.iteritems()])
+        return ' '.join(sorted(['%s=%s' % (key, str(val).strip())
+                                for key, val in values.iteritems()]))
 
 
 def setup_logging(level=logging.INFO, output=sys.stdout):
@@ -635,11 +678,11 @@ def main():
         cluster.start(first_node, initial_state=STATUS_INSTALL,
                       cluster_address=first_node, install_ok=True)
 
-    elif STATUS_OK in peers.values():
+    elif STATUS_OK in peers.values() or STATUS_DONOR in peers.values():
         # At least one instance is synchronized, join them
         cluster.start_database(cluster_address=','.join(
-            [peer for peer, status in peers.iteritems()
-             if status == STATUS_OK]))
+            sorted([peer for peer, status in peers.iteritems()
+                    if status in (STATUS_OK, STATUS_DONOR)])))
     else:
         # Cluster is down
         cluster.restart_database(peers.keys())
@@ -647,7 +690,9 @@ def main():
     while True:
         cluster.report_status()
         time.sleep(cluster.discovery.ttl * 0.8)
-        assert cluster.proc.returncode is None, 'MariaDB daemon died'
+        cluster.proc.poll()
+        assert cluster.proc.returncode is None, (
+            'MariaDB daemon died (%d)' % cluster.proc.returncode)
 
 
 if __name__ == '__main__':

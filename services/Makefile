@@ -1,6 +1,6 @@
 HOSTS = mckinley vinson denali
 SERVICES = etcd mt-daapd weewx
-REGISTRY := dockerhub.instantlinux.net:5000
+REGISTRY_URI := dockerhub.instantlinux.net:5000
 
 ADV = node1
 ifeq ($(HOST), denali)
@@ -18,5 +18,5 @@ denali: etcd
 
 $(SERVICES)::
 	@echo Starting $@
-	@if [ $@ != "etcd" ]; then docker pull $(REGISTRY)/$@:latest; fi
+	@if [ $@ != "etcd" ]; then docker pull $(REGISTRY_URI)/$@:latest; fi
 	cd $@ ; ADV=$(ADV) docker-compose up -d

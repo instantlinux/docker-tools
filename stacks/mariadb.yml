@@ -12,6 +12,9 @@ services:
       published: 18306
       protocol: tcp
       mode: host
+    - 4444:4444
+    - 4567:4567/udp
+    - 4567-4568:4567-4568
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
@@ -32,9 +35,9 @@ services:
   etcd-browser:
     image: buddho/etcd-browser:latest
     environment:
-      ETCD_HOST: 172.18.0.1
+      ETCD_HOST: 172.19.0.1
     ports:
-    - 7080:8000
+    - ${PORT_ETCD_VIEW:-8000}:8000
 
 volumes:
   data:

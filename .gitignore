@@ -2,6 +2,7 @@
 *.pyc
 .cache
 .coverage
+.deploy
 __pycache__
 coverage.xml
 htmlcov

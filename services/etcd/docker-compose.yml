@@ -21,7 +21,7 @@ services:
       -advertise-client-urls
          http://${ADV:-etcdinfra0}:2379,http://${ADV:-etcdinfra0}:4001
       -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
-      -initial-advertise-peer-urls http://{$ADV:-etcdinfra0}:2380
+      -initial-advertise-peer-urls http://${ADV:-etcdinfra0}:2380
       -listen-peer-urls http://0.0.0.0:2380
       -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
       -initial-cluster
