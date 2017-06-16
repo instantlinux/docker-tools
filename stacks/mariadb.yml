@@ -12,9 +12,6 @@ services:
       published: 18306
       protocol: tcp
       mode: host
-    - 4444:4444
-    - 4567:4567/udp
-    - 4567-4568:4567-4568
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
@@ -46,8 +43,6 @@ volumes:
     external: true
 networks:
   default:
-    external:
-      name: dbcluster
 secrets:
   mysql-root-password:
     external: true

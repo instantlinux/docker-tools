@@ -39,8 +39,6 @@ volumes:
     external: true
 networks:
   default:
-    external:
-      name: dbcluster
 secrets:
   mysql-root-password:
     external: true

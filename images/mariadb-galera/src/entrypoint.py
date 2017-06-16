@@ -47,7 +47,7 @@ STATUS_RESTARTING = 'restarting'
 
 DEFAULT_TTL = 10
 TTL_DIR = 900
-TTL_LOCK = 90
+TTL_LOCK = 45
 TTL_STACK_UP = 600
 TTL_UPDATE_TIMER = 90
 
@@ -312,6 +312,13 @@ class MariaDBCluster(object):
         if cluster_address:
             assert self._peer_reachable(cluster_address.split(',')[0]), (
                 'Network connectivity problem for %s' % cluster_address)
+        while True:
+            # skew startup of concurrent launches by self.ttl_lock seconds
+            try:
+                self.discovery.acquire_lock('bootstrap', ttl=self.ttl_lock)
+            except etcd.EtcdLockExpired:
+                pass
+            break
         logging.info({
             'action': 'start_database',
             'status': 'start',
@@ -327,38 +334,35 @@ class MariaDBCluster(object):
         """start database
         Bootstrap if running on the node elected as leader (param 'ipv4')
 
-        Otherwise wait for bootstrap lock release and join cluster
+        Otherwise join cluster
         """
 
+        log_info = {'action': 'start', 'leader': ipv4}
         if self.my_ipv4 == ipv4:
-            # acquire lock if elected as leader
-            self.discovery.acquire_lock('bootstrap', ttl=self.ttl_lock)
-            self.discovery.set_key(KEY_HEALTH, initial_state)
+            self.discovery.set_key(KEY_HEALTH, initial_state,
+                                   ttl=self.ttl_stack_up)
             if initial_state == STATUS_INSTALL and install_ok:
                 self._install_new_database()
             self.start_database(wsrep_new_cluster=True)
-            self.discovery.release_lock('bootstrap')
         else:
             # join other nodes after first is up
-            while (self.discovery.get_key(ipv4, KEY_HEALTH) in
-                   [STATUS_NEW, STATUS_INIT]):
+            # TODO: may need a timeout, currently relying on healthcheck
+            logging.info(dict(log_info, **{'status': 'waiting'}))
+            while self.discovery.get_key(KEY_HEALTH, ipv4=ipv4) != STATUS_OK:
                 time.sleep(1)
-            self.discovery.acquire_lock('bootstrap', ttl=self.ttl_lock)
             if self.health == STATUS_NEW:
                 if not (initial_state == STATUS_INSTALL or install_ok):
-                    logging.error({
-                        'action': 'start',
+                    logging.error(dict(log_info, **{
                         'status': 'error',
-                        'message': 'missing_data_reinstall_is_not_ok'})
+                        'message': 'missing_data_reinstall_is_not_ok'}))
                     raise ClusterDegradedError('Missing database')
             self.start_database(cluster_address=cluster_address)
-            self.discovery.release_lock('bootstrap')
 
     def restart_database(self, node_list):
         """Restart down cluster"""
 
         peer_state = {ipv4: self.discovery.get_key_recursive('', ipv4=ipv4)
-                      for ipv4 in node_list}
+                      for ipv4 in sorted(node_list)}
         safe_to_bootstrap = 0
         recovered_position = -1
         recoverable_nodes = 0
@@ -521,8 +525,7 @@ class DiscoveryService(object):
         self.ipv4 = socket.gethostbyname(socket.gethostname())
         self.etcd = etcd.Client(host=nodes, allow_reconnect=True,
                                 lock_prefix='/%s/_locks' % cluster)
-        self.prefix = ETCD_PREFIX
-        self.cluster = cluster
+        self.prefix = ETCD_PREFIX + '/' + cluster
         try:
             self.ttl = int(os.environ['TTL'])
         except KeyError:
@@ -533,18 +536,18 @@ class DiscoveryService(object):
     def __del__(self):
         self.delete_key(self.ipv4)
 
-    def set_key(self, keyname, value, ttl=None):
+    def set_key(self, keyname, value, my_host=True, ttl=None):
+        """set a key under /galera/<cluster>/<my_host>"""
+
         logging.debug({'action': 'set_key', 'keyname': keyname,
                        'value': value})
+        key_path = self.prefix + '/' + self.ipv4 if my_host else self.prefix
         try:
-            self.etcd.write('%(prefix)s/%(cluster)s/%(ipv4)s' % {
-                'prefix': self.prefix, 'cluster': self.cluster,
-                'ipv4': self.ipv4}, None, dir=True, ttl=self.ttl_dir)
+            self.etcd.write(key_path, None, dir=True, ttl=self.ttl_dir)
         except etcd.EtcdNotFile:
             pass
-        self.etcd.write('%(prefix)s/%(cluster)s/%(ipv4)s/%(keyname)s' % {
-                            'prefix': self.prefix, 'cluster': self.cluster,
-                            'ipv4': self.ipv4, 'keyname': keyname
+        self.etcd.write('%(key_path)s/%(keyname)s' % {
+                            'key_path': key_path, 'keyname': keyname
                         },
                         value, ttl=ttl if ttl else DEFAULT_TTL)
 
@@ -554,20 +557,12 @@ class DiscoveryService(object):
         returns: scalar value or list of child keys
         """
 
-        log_info = {
-            'action': 'get_key',
-            'keyname': keyname,
-            'ipv4': ipv4
-        }
-        key_path = '%(prefix)s/%(cluster)s' % {
-            'prefix': self.prefix, 'cluster': self.cluster}
-        if ipv4:
-            key_path += '/' + ipv4
-        if keyname:
-            key_path += '/' + keyname
+        log_info = {'action': 'get_key', 'keyname': keyname, 'ipv4': ipv4}
+        key_path = self.prefix + '/' + ipv4 if ipv4 else self.prefix
+        key_path += '/' + keyname if keyname else ''
         try:
             item = self.etcd.read(key_path)
-        except etcd.EtcdKeyNotFound:
+        except (etcd.EtcdKeyNotFound, etcd.EtcdNotDir):
             logging.debug(dict(log_info, **{
                 'status': 'error',
                 'message': 'not_found'}))
@@ -583,17 +578,9 @@ class DiscoveryService(object):
             return item.value
 
     def delete_key(self, keyname, ipv4=None):
-        log_info = {
-            'action': 'delete_key',
-            'keyname': keyname,
-            'ipv4': ipv4
-        }
-        key_path = '%(prefix)s/%(cluster)s' % {
-            'prefix': self.prefix, 'cluster': self.cluster}
-        if ipv4:
-            key_path += '/' + ipv4
-        if keyname:
-            key_path += '/' + keyname
+        log_info = {'action': 'delete_key', 'keyname': keyname, 'ipv4': ipv4}
+        key_path = self.prefix + '/' + ipv4 if ipv4 else self.prefix
+        key_path += '/' + keyname if keyname else ''
         try:
             self.etcd.delete(key_path, recursive=True)
             logging.debug(dict(log_info, **{'status': 'ok'}))
@@ -617,14 +604,20 @@ class DiscoveryService(object):
     def acquire_lock(self, lock_name, ttl=DEFAULT_TTL):
         """acquire cluster lock - used upon electing leader"""
 
-        logging.info({'action': 'acquire_lock', 'lock_name': lock_name})
+        logging.info({'action': 'acquire_lock',
+                      'lock_name': lock_name, 'ttl': ttl})
         self.locks[lock_name] = etcd.Lock(self.etcd, lock_name)
-        self.locks[lock_name].acquire(lock_ttl=ttl)
+        # TODO: make this an atomic mutex with etcd3 (currently using etcd2)
+        while self.get_key('lock-%s' % lock_name):
+            time.sleep(0.25)
+        self.set_key('lock-%s' % lock_name, self.ipv4, my_host=False, ttl=ttl)
+        self.locks[lock_name].acquire(lock_ttl=2)
 
     def release_lock(self, lock_name):
         """release cluster lock"""
 
         logging.info({'action': 'release_lock', 'lock_name': lock_name})
+        self.delete_key('lock-%s' % lock_name)
         self.locks[lock_name].release()
 
 
@@ -683,16 +676,24 @@ def main():
         cluster.start_database(cluster_address=','.join(
             sorted([peer for peer, status in peers.iteritems()
                     if status in (STATUS_OK, STATUS_DONOR)])))
+
+    elif cluster.health == STATUS_INIT and peers.values().count(
+            STATUS_NEW) == cluster.cluster_size - 1:
+        # Single instance plus new ones: resume installation on leader
+        cluster.start(cluster.my_ipv4)
+
     else:
         # Cluster is down
         cluster.restart_database(peers.keys())
 
-    while True:
+    while cluster.proc.returncode is None:
         cluster.report_status()
         time.sleep(cluster.discovery.ttl * 0.8)
         cluster.proc.poll()
-        assert cluster.proc.returncode is None, (
-            'MariaDB daemon died (%d)' % cluster.proc.returncode)
+
+    logging.error({'action': 'main', 'status': 'failed',
+                   'returncode': cluster.proc.returncode})
+    raise AssertionError('MariaDB daemon died (%d)' % cluster.proc.returncode)
 
 
 if __name__ == '__main__':
