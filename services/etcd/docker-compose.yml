@@ -26,7 +26,7 @@ services:
       -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
       -initial-cluster
          node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380
-      -initial-cluster-state new
+      -initial-cluster-state existing
 
 volumes:
   data:

@@ -7,7 +7,7 @@ services:
     ports:
     - 9000:9000
     volumes:
-    - /var/lib/docker/share/portainer/data:/data
+    - ${SHARE_PATH}/portainer/data:/data
     deploy:
       placement:
         constraints:

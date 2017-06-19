@@ -37,7 +37,7 @@ SCHEMA_DUMP_OPTS=" --force --no-data --triggers --events --routines"
 DBNAME_QUERY="SELECT schema_name FROM information_schema.schemata \
  WHERE schema_name NOT IN ('sys','information_schema','performance_schema')"
 
-DESTDIR=/var/backup/
+DESTDIR=/var/backup/mysql
 COMPRESS="bzip2 -f"
 COMPRESS_EXT="bz2"
 OLD_EXT="gz"

@@ -2,7 +2,7 @@ HOST=`basename \`pwd\``
 DOMAIN=`hostname -d`
 IP=192.168.2.116
 GATEWAY=192.168.2.252
-DBSERVER=mdb00
+DBSERVER=db00
 DBNAME=myth28
 
 docker run --detach --restart always --name $HOST \

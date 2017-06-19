@@ -11,7 +11,7 @@ services:
     ports:
     - 5000:5000
     volumes:
-    - /var/lib/docker/share/registry:/var/lib/registry
+    - ${SHARE_PATH}/registry:/var/lib/registry
     - /root/certs:/certs
     deploy:
       placement:

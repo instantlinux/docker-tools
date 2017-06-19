@@ -11,8 +11,8 @@ services:
     - 18443:443
     - 8999:22
     volumes:
-    - /var/lib/docker/share/gitlab/config:/etc/gitlab
-    - /var/lib/docker/share/gitlab/data:/var/opt/gitlab
+    - ${SHARE_PATH}/gitlab/config:/etc/gitlab
+    - ${SHARE_PATH}/gitlab/data:/var/opt/gitlab
     - backup:/var/opt/gitlab/backups
     - logs:/var/log/gitlab
     deploy:

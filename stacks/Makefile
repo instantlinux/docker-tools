@@ -15,6 +15,7 @@ default: $(DEPLOY)
 	@touch .deploy/$(@F)
 
 admin: .deploy/admin
+artifactory: .deploy/artifactory
 db00: .deploy/db00
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
@@ -22,6 +23,7 @@ jenkins: .deploy/jenkins
 jira: .deploy/jira
 logspout: .deploy/logspout
 mariadb: .deploy/mariadb
+mysqldump: .deploy/mysqldump
 postfix: .deploy/postfix
 registry: .deploy/registry
 spamassassin: .deploy/spamassassin

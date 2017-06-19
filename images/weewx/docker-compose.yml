@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       ALTITUDE: 100, foot
-      DB_HOST: mdb01.ci.net
+      DB_HOST: db00.ci.net
       DB_USER: wx
       LATITUDE: 37.75
       LONGITUDE: -122.4

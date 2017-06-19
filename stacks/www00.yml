@@ -14,8 +14,8 @@ services:
       mode: host
     volumes:
     - ${ADMIN_PATH:-/opt}/www00/etc/nginx/conf.d:/etc/nginx/conf.d:ro
-    - /var/lib/docker/share/common/pki/ca:/etc/ssl/ca:ro
-    - /var/lib/docker/share/common/pki/certs:/etc/ssl/certs:ro
+    - ${SHARE_PATH}/common/pki/ca:/etc/ssl/ca:ro
+    - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
     environment:
       TZ: US/Pacific
     deploy:

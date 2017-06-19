@@ -12,7 +12,7 @@ services:
     environment:
       TZ: US/Pacific
       DB_TYPE: mysql
-      DB_HOST: mdb01.ci.net
+      DB_HOST: xdb00.ci.net
       DB_PASSWORD: redacted
     deploy:
       placement:

@@ -11,13 +11,12 @@ services:
       protocol: tcp
       mode: host
     volumes:
-    - /var/lib/docker/share/jira01/home:/var/atlassian/jira
-    - /var/lib/docker/share/jira01/logs:/opt/atlassian/jira/logs
+    - ${SHARE_PATH}/jira01/home:/var/atlassian/jira
+    - ${SHARE_PATH}/jira01/logs:/opt/atlassian/jira/logs
     deploy:
       placement:
         constraints:
-        # node.labels.swarm-sync-member == true
-        - node.labels.swarm-sync == peer
+        - node.labels.swarm-sync-member == true
 
 networks:
   default:

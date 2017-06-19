@@ -1,6 +1,6 @@
 DOM = ci.net
 WEB_HOSTS = desktop.$(DOM) jenkins.$(DOM) jira.$(DOM) monitor.$(DOM) \
-	 repo.$(DOM) splunk.$(DOM) webmail.$(DOM) www.$(DOM) \
+	 owncloud.$(DOM) repo.$(DOM) splunk.$(DOM) webmail.$(DOM) www.$(DOM) \
 	 git.instantlinux.net homebase.instantlinux.net
 DOCKER_HOSTS = mckinley.$(DOM) vinson.$(DOM) denali.$(DOM)
 DOCKER_CLIENTS = transcend.ci.net portainer

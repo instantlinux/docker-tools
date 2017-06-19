@@ -6,7 +6,6 @@ services:
     environment:
       TZ: US/Pacific
       SERVERS: ${DB_HOST:-db}
-      LOCK_FOR_BACKUP: "true"
     volumes:
     - backup:/var/backup
     - logs:/var/log
