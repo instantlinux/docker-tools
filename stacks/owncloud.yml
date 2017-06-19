@@ -1,0 +1,23 @@
+version: "3"
+services:
+
+  app:
+    image: owncloud:9.1.6
+    hostname: owncloud.ci.net
+    environment:
+      TZ: US/Pacific
+    ports:
+    - ${PORT_OWNCLOUD:-18280}:80
+    volumes:
+    - ${SHARE_PATH}/owncloud/html:/var/www/html
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
+
+volumes:
+  html:
+networks:
+  default:
+    external:
+      name: app_net
