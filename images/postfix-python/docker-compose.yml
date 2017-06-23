@@ -12,7 +12,7 @@ services:
       SPAMC_HOST: ${SPAMC_HOST:-spamd}
     volumes:
     - ${ADMIN_PATH:-/opt}/postfix/etc/:/etc/postfix/postfix.d:ro
-    - /var/lib/docker/share/common/pki/certs:/etc/ssl/certs:ro
+    - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
     - spool:/var/spool/postfix
     ports:
     - 3425:25

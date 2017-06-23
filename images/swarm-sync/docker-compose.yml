@@ -13,7 +13,7 @@ services:
     volumes:
     - logs:/var/log/unison
     - syncarchive:/root/.unison
-    - /var/lib/docker/share:/var/swarm-sync
+    - ${SHARE_PATH}:/var/swarm-sync
     secrets:
     - swarm-sync_sshkey
     deploy:
@@ -31,7 +31,7 @@ services:
     - ../../.docker/swarm-sync.pub.env
     volumes:
     - syncarchive:/root/.unison
-    - /var/lib/docker/share:/var/swarm-sync
+    - ${SHARE_PATH}:/var/swarm-sync
     deploy:
       placement:
         constraints:

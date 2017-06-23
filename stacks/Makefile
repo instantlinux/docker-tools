@@ -16,7 +16,10 @@ default: $(DEPLOY)
 
 admin: .deploy/admin
 artifactory: .deploy/artifactory
+cloud: .deploy/cloud
+crashplan: .deploy/crashplan
 db00: .deploy/db00
+dovecot: .deploy/dovecot
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
 jenkins: .deploy/jenkins

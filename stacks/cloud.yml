@@ -2,14 +2,16 @@ version: "3"
 services:
 
   app:
-    image: owncloud:9.1.6
-    hostname: owncloud.ci.net
+    image: nextcloud:12.0.0
+    hostname: cloud.ci.net
     environment:
       TZ: US/Pacific
     ports:
-    - ${PORT_OWNCLOUD:-18280}:80
+    - ${PORT_CLOUD:-18280}:80
     volumes:
-    - ${SHARE_PATH}/owncloud/html:/var/www/html
+    - ${SHARE_PATH}/cloud/html:/var/www/html
+    - ${PHOTOS_PATH}/richb:/var/www/html/data/richb/files/Photos
+    - ${PHOTOS_PATH}/chitof:/var/www/html/data/chitof/files/Photos
     deploy:
       placement:
         constraints:

@@ -1,4 +1,6 @@
 version: "3"
+# For VNC console, see URI http://swarm01:4280/vnc.html
+
 services:
 
   app:
@@ -9,7 +11,13 @@ services:
       VNC_PASSWD: ${VNC_PASSWD:-crashplan}
     volumes:
     - config:/config
-    - backup:/backup
+    - backup:/backup:ro
+    - /etc/RCS:/backup/etc/RCS:ro
+    - /home:/backup/home:ro
+    - /var/lib/docker/share:/backup/share:ro
+    - /var/lib/docker/swarm:/backup/swarm:ro
+    - dovecot_inbox:/backup/inbox:ro
+    - dovecot_webmail:/backup/webmail:ro
     ports:
     - 4280:4280
     deploy:
@@ -20,6 +28,10 @@ services:
 volumes:
   config:
   backup:
+    external: true
+  dovecot_inbox:
+    external: true
+  dovecot_webmail:
     external: true
 networks:
   default:

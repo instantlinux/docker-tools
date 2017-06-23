@@ -8,6 +8,8 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 mkdir -p -m 700 /var/run/postfix && chown postfix /var/run/postfix
+mkdir -p /var/spool/mail && chmod 1777 /var/spool/mail
+
 cd /etc/postfix/postfix.d
 if [ -s postfix.cf ]; then
   while read item; do
@@ -22,6 +24,7 @@ for item in *.map; do
 done
 [ -f master.cf ] && cp master.cf ..
 [ -f aliases ] && cp aliases .. && newaliases
+[ -x users.sh ] && ./users.sh
 cd ..
 if [ -s /run/secrets/$SASL_PASSWD_SECRET ]; then
   cp /run/secrets/$SASL_PASSWD_SECRET sasl_passwd

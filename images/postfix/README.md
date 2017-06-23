@@ -15,6 +15,8 @@ will be added/updated into main.cf (via postconf).
 
 * Define any map files such as virtusertable as *.map.
 
+* Define local users (if not using directory service) as users.sh.
+
 See etc-example directory and docker-compose.yml.
 
 ### Variables
