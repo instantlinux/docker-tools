@@ -15,8 +15,8 @@ services:
     - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
     - spool:/var/spool/postfix
     ports:
-    - 3425:25
-    - 3525:3525
+    - ${PORT_POSTFIX_INTERNAL:-25}:25
+    - ${PORT_POSTFIX_EXTERNAL:-3525}:3525
     secrets:
     - mysql-blacklist-user
     - postfix-sasl-passwd

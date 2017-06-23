@@ -1,7 +1,7 @@
 ## dovecot
 
 The dovecot imapd daemon in a small Alpine Linux container, with
-postfix for local delivery.
+postfix for local delivery and procmail for filtering.
 
 ### Usage
 
