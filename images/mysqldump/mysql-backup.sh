@@ -69,6 +69,8 @@ do
     # Delete any lingering files that are over KEEP_DAYS old:
     /usr/bin/find $DESTDIR/$HOST/* -type f -mtime +$KEEP_DAYS -exec rm {} \; 2>&1 > /dev/null
     DBNAMES=`$MYSQL -h $HOST -se "$DBNAME_QUERY"`
+    STATFILE=$DESTDIR/$HOST/mysqldump-status.txt
+
     for DBNAME in $DBNAMES; do
       # Schema only
       # Delete any lingering files from a previous incarnation (or incantation) of this script, compressed or otherwise:
@@ -84,11 +86,9 @@ do
       BACKUP_TARGET=$DESTDIR/$HOST/$DAY/$DBNAME-backup.sql
 
       log_entry info " -- starting dump to $BACKUP_TARGET"
-      ( $MYSQLDUMP -u $USER $DUMPOPTS -h $HOST --databases $DBNAME >$BACKUP_TARGET && nice $COMPRESS $BACKUP_TARGET & )
+      ( $MYSQLDUMP -u $USER $DUMPOPTS -h $HOST --databases $DBNAME >$BACKUP_TARGET && nice $COMPRESS $BACKUP_TARGET && echo "`date --rfc-3339=seconds` dumped $DBNAME" > $STATFILE & )
     done
 done
-
-echo "`date --rfc-3339=seconds` invoked" > $DESTDIR/$HOST/mysqldump-status.txt
 
 log_entry info FINISHED
 exit 0

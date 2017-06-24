@@ -1,7 +1,8 @@
 ## mysqldump
 
 This dockerizes a simple script I wrote in 2008 to perform a daily dump of
-the MySQL databases in a Percona Galera cluster.
+the MySQL databases in a Percona Galera cluster. The image is compatible
+with recent versions of MariaDB (10.x) and XtraDB (5.7.x).
 
 This Docker compose service definition will cause a dump to happen
 at the default hour (3:30am in $TZ) from a server named xdb00 onto
