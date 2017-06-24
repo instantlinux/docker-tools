@@ -1,4 +1,5 @@
-FROM instantlinux/postfix:latest
+#FROM instantlinux/postfix:latest
+FROM postfix:latest
 MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV LDAP_PASSWD_SECRET=ldap-ro-password

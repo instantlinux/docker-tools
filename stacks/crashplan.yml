@@ -11,7 +11,7 @@ services:
       VNC_PASSWD: ${VNC_PASSWD:-crashplan}
     volumes:
     - config:/config
-    - backup:/backup:ro
+    - backup:/backup
     - /etc/RCS:/backup/etc/RCS:ro
     - /home:/backup/home:ro
     - /var/lib/docker/share:/backup/share:ro

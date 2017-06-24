@@ -189,26 +189,29 @@ class MariaDBCluster(object):
         """
 
         while self.discovery.get_key(KEY_HEALTH, ipv4=self.my_ipv4):
-            instances = self.discovery.get_key('')
-            health_status = {
-                item: self.discovery.get_key(KEY_HEALTH, ipv4=item)
-                for item in instances
-            }
-            retval = dict((key, val) for key, val in
-                          health_status.iteritems() if val)
+            retval = self._cluster_health()
             if len(retval) == self.cluster_size:
                 break
             time.sleep(retry_interval)
         if len(retval) >= self.cluster_size:
             logging.info(dict(retval, **{
                 'action': 'wait_checkin', 'status': 'ok',
-                'peers': ','.join(health_status.keys())}))
+                'peers': ','.join(retval.keys())}))
             return retval
         logging.error(dict(retval, **{
             'action': 'wait_checkin', 'status': 'error'}))
         raise ClusterDegradedError(
             'Insufficient number (%d) of nodes (need %d)' %
             (len(retval), self.cluster_size))
+
+    def _cluster_health(self):
+        instances = self.discovery.get_key('')
+        health_status = {
+            item: self.discovery.get_key(KEY_HEALTH, ipv4=item)
+            for item in instances
+        }
+        return dict((key, val) for key, val in
+                    health_status.iteritems() if val)
 
     def _get_recovered_position(self):
         """parse recovered position using wsrep-recover
@@ -318,7 +321,11 @@ class MariaDBCluster(object):
                 self.discovery.acquire_lock('bootstrap', ttl=self.ttl_lock)
             except etcd.EtcdLockExpired:
                 pass
-            break
+            if STATUS_DONOR in self._cluster_health():
+                # perform only SST join at a time, loop until others done
+                time.sleep(5)
+            else:
+                break
         logging.info({
             'action': 'start_database',
             'status': 'start',
@@ -465,7 +472,12 @@ class MariaDBCluster(object):
             self.discovery.set_key(key, val, ttl=self.discovery.ttl)
             return val
 
-        self.discovery.set_key(KEY_HOSTNAME, self.my_hostname)
+        log_info = {'action': 'report_status', 'status': 'warn'}
+
+        try:
+            self.discovery.set_key(KEY_HOSTNAME, self.my_hostname)
+        except etcd.EtcdException as ex:
+            logging.warn(dict(log_info, **{'message': ex.message}))
         try:
             status = _set_wsrep_key(KEY_WSREP_LOCAL_STATE_COMMENT)
             if status == 'Synced':
@@ -478,6 +490,8 @@ class MariaDBCluster(object):
                 self.discovery.set_key(KEY_HEALTH, STATUS_DEGRADED)
         except IndexError:
             pass
+        except etcd.EtcdException as ex:
+            logging.warn(dict(log_info, **{'message': ex.message}))
 
     def _peer_reachable(self, ipv4):
         """confirm that a peer can be reached"""
