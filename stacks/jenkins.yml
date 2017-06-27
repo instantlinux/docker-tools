@@ -4,10 +4,10 @@ services:
   jenkins-master:
     image: ${REGISTRY_URI:-instantlinux}/jenkins-master:latest
     environment:
-      TZ: US/Pacific
+      TZ: ${TZ:-US/Pacific}
     ports:
-    - 2080:8080
-    - 2085:8082
+    - ${PORT_JENKINS:-2080}:8080
+    - ${PORT_JENKINS_AGENT:-2085}:8082
     volumes:
     - jenkinsdata:/var/jenkins_home
     - jenkinsbackup:/var/jenkins_backup
@@ -25,7 +25,7 @@ services:
   jenkins-slave:
     image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:20170403
     environment:
-      TZ: US/Pacific
+      TZ: ${TZ:-US/Pacific}
       SWARM_MASTER_URL: http://jenkins-master:8080/
       SWARM_JENKINS_USER: jenkins
       SWARM_JENKINS_PASSWORD: jenkins

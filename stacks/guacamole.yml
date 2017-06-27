@@ -4,7 +4,7 @@ services:
   guac:
     hostname: guac
     ports:
-    - 16080:8080
+    - ${PORT_GUACAMOLE:-16080}:8080
     environment:
       MYSQL_HOSTNAME: ${DB_HOST:-db}
       MYSQL_DATABASE: guacamole

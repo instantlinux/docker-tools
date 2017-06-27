@@ -11,10 +11,10 @@ services:
     volumes:
     - data:/data
     ports:
-    - 2379:2379
-    - 2380:2380
-    - 4001:4001
-    - 7001:7001
+    - ${PORT_ETCD_CLIENT:-2379}:2379
+    - ${PORT_ETCD_PEER:-2380}:2380
+    - ${PORT_ETCD_LEGACY1:-4001}:4001
+    - ${PORT_ETCD_LEGACY2:-7001}:7001
     network_mode: host
     command: >
       -name ${ADV:-etcdinfra0}
@@ -26,7 +26,7 @@ services:
       -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
       -initial-cluster
          node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380
-      -initial-cluster-state existing
+      -initial-cluster-state ${CLUSTER_STATE:-existing}
 
 volumes:
   data:

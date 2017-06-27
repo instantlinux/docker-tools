@@ -10,11 +10,11 @@ services:
       SPLUNK_ENABLE_LISTEN: 9997
       SPLUNK_ADD: tcp 1514
     ports:
-    - 17180:8000
-    - 1514:1514
-    - 8088:8088
-    - 8089:8089
-    - 9997:9997
+    - ${PORT_SPLUNK_HTTP:-17180}:8000
+    - ${PORT_SPLUNK_SYSLOG:-1514}:1514
+    - ${PORT_SPLUNK_HEC:-8088}:8088
+    - ${PORT_SPLUNK_API:-8089}:8089
+    - ${PORT_SPLUNK_FWD:-9997}:9997
     volumes:
     - /var/dvol/splunk/etc:/opt/splunk/etc
     - /var/dvol/splunk/var:/opt/splunk/var

@@ -6,7 +6,7 @@ services:
     environment:
       EXTRA_OPTIONS: --nouser-config --sql-config
     ports:
-    - 783:783
+    - ${PORT_SPAMASSASSIN:-783}:783
     volumes:
     - ${ADMIN_PATH:-/opt}/spamassassin/etc/local.cf:/etc/mail/spamassassin/local.cf:ro
     - home:/var/lib/spamassassin

@@ -10,6 +10,7 @@ services:
       HONEYPOT_ADDRS: ${HONEYPOT_ADDRS:-none}
       INBOUND_RELAY: by mx-caprica.?\.easydns\.com
       SPAMC_HOST: ${SPAMC_HOST:-spamd}
+      TZ: ${TZ:-US/Pacific}
     volumes:
     - ${ADMIN_PATH:-/opt}/postfix/etc/:/etc/postfix/postfix.d:ro
     - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
@@ -26,6 +27,11 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k
+        max-file: 10
 
 volumes:
   spool:

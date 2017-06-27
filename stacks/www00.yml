@@ -17,7 +17,7 @@ services:
     - ${SHARE_PATH}/common/pki/ca:/etc/ssl/ca:ro
     - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
     environment:
-      TZ: US/Pacific
+      TZ: ${TZ:-US/Pacific}
     deploy:
       placement:
         constraints:

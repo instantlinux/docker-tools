@@ -9,7 +9,7 @@ services:
     - ${ADMIN_PATH:-/opt}/rsyslogd/etc/rsyslog.d:/etc/rsyslog.d:ro
     - logs:/var/log
     ports:
-    - 514:514
+    - ${PORT_RSYSLOGD:-514}:514
 
 volumes:
   logs:

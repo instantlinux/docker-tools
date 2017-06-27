@@ -1,15 +1,12 @@
-version: "3.2"
+version: "3"
 services:
   app:
     hostname: jira
     image: cptactionhank/atlassian-jira:7.3.3
     environment:
-      TZ: US/Pacific
+      TZ: ${TZ:-US/Pacific}
     ports:
-    - target: 8080
-      published: 15080
-      protocol: tcp
-      mode: host
+    - ${PORT_JIRA:-15080}:8080
     volumes:
     - ${SHARE_PATH}/jira01/home:/var/atlassian/jira
     - ${SHARE_PATH}/jira01/logs:/opt/atlassian/jira/logs

@@ -7,7 +7,7 @@ services:
     image: gfjardim/crashplan:latest
     hostname: docker-backup
     environment:
-      TZ: US/Pacific
+      TZ: ${TZ:-US/Pacific}
       VNC_PASSWD: ${VNC_PASSWD:-crashplan}
     volumes:
     - config:/config
@@ -19,7 +19,7 @@ services:
     - dovecot_inbox:/backup/inbox:ro
     - dovecot_webmail:/backup/webmail:ro
     ports:
-    - 4280:4280
+    - ${PORT_CRASHPLAN_VNC:-4280}:4280
     deploy:
       placement:
         constraints:

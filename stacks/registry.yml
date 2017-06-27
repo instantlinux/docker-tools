@@ -7,9 +7,9 @@ services:
     environment:
       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
       REGISTRY_HTTP_TLS_KEY: /certs/domain.key
-      TZ: US/Pacific
+      TZ: ${TZ:-US/Pacific}
     ports:
-    - 5000:5000
+    - ${PORT_REGISTRY:-5000}:5000
     volumes:
     - ${SHARE_PATH}/registry:/var/lib/registry
     - /root/certs:/certs
