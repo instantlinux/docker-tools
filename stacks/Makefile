@@ -32,6 +32,7 @@ registry: .deploy/registry
 spamassassin: .deploy/spamassassin
 swarm-sync: .deploy/swarm-sync
 www00: .deploy/www00
+wwwext: .deploy/wwwext
 
 net_create::
 	docker network create dbcluster --driver overlay $(LABELS)

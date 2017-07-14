@@ -1,19 +1,21 @@
 version: "3.2"
 services:
 
+# This serves nginx for Internet-facing internal services
+
   app:
-    image: nginx:1.13.0-alpine
+    image: nginx:1.13.3-alpine
     ports:
     - target: 443
-      published: 19443
+      published: 19444
       protocol: tcp
       mode: host
     - target: 80
-      published: 19080
+      published: 19081
       protocol: tcp
       mode: host
     volumes:
-    - ${ADMIN_PATH:-/opt}/www00/etc/nginx/conf.d:/etc/nginx/conf.d:ro
+    - ${ADMIN_PATH:-/opt}/wwwext/etc/nginx/conf.d:/etc/nginx/conf.d:ro
     - ${SHARE_PATH}/common/pki/ca:/etc/ssl/ca:ro
     - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
     environment:
@@ -24,19 +26,22 @@ services:
         - node.labels.swarm-sync-member == true
       replicas: 2
     secrets:
+    - cloud.ci.net-server-key.pem
     - desktop.ci.net-server-key.pem
     - git.instantlinux.net-server-key.pem
     - jenkins.ci.net-server-key.pem
     - jira.ci.net-server-key.pem
     - monitor.ci.net-server-key.pem
     - repo.ci.net-server-key.pem
-    - splunk.ci.net-server-key.pem
+    - webmail.ci.net-server-key.pem
 
 networks:
   default:
     external:
       name: app_net
 secrets:
+  cloud.ci.net-server-key.pem:
+    external: true
   desktop.ci.net-server-key.pem:
     external: true
   git.instantlinux.net-server-key.pem:
@@ -49,5 +54,5 @@ secrets:
     external: true
   repo.ci.net-server-key.pem:
     external: true
-  splunk.ci.net-server-key.pem:
+  webmail.ci.net-server-key.pem:
     external: true
