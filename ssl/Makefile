@@ -1,7 +1,7 @@
 DOM = ci.net
 WEB_HOSTS = cloud.$(DOM) desktop.$(DOM) jenkins.$(DOM) jira.$(DOM) monitor.$(DOM) \
-	 repo.$(DOM) splunk.$(DOM) webmail.$(DOM) www.$(DOM) \
-	 git.instantlinux.net homebase.instantlinux.net
+	 repo.$(DOM) splunk.$(DOM) authtotp.$(DOM) webmail.$(DOM) www.$(DOM) \
+	 git.instantlinux.net homebase.instantlinux.net www.instantlinux.net
 DOCKER_HOSTS = mckinley.$(DOM) vinson.$(DOM) denali.$(DOM)
 DOCKER_CLIENTS = transcend.ci.net portainer
 CERT_INFO = --subj-city='San Francisco' --subj-state=CA \

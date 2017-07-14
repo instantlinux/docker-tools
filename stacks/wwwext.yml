@@ -24,8 +24,9 @@ services:
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
-      replicas: 2
+      replicas: 1
     secrets:
+    - authtotp.ci.net-server-key.pem
     - cloud.ci.net-server-key.pem
     - desktop.ci.net-server-key.pem
     - git.instantlinux.net-server-key.pem
@@ -34,12 +35,16 @@ services:
     - monitor.ci.net-server-key.pem
     - repo.ci.net-server-key.pem
     - webmail.ci.net-server-key.pem
+    - www.ci.net-server-key.pem
+    - www.instantlinux.net-server-key.pem
 
 networks:
   default:
     external:
       name: app_net
 secrets:
+  authtotp.ci.net-server-key.pem:
+    external: true
   cloud.ci.net-server-key.pem:
     external: true
   desktop.ci.net-server-key.pem:
@@ -55,4 +60,8 @@ secrets:
   repo.ci.net-server-key.pem:
     external: true
   webmail.ci.net-server-key.pem:
+    external: true
+  www.ci.net-server-key.pem:
+    external: true
+  www.instantlinux.net-server-key.pem:
     external: true

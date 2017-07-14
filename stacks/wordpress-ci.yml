@@ -13,10 +13,16 @@ services:
     - ${SHARE_PATH}/wordpress-ci/env
     volumes:
     - ${SHARE_PATH}/wordpress-ci/html:/var/www/html
+    - ${ADMIN_PATH}/wordpress/ci-php.ini:/usr/local/etc/php/conf.d/ci-php.ini
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync-member == true
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k
+        max-file: 10
 
 networks:
   default:

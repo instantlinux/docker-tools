@@ -16,6 +16,8 @@ default: $(DEPLOY)
 
 admin: .deploy/admin
 artifactory: .deploy/artifactory
+authelia: .deploy/authelia
+blacklist: .deploy/blacklist
 cloud: .deploy/cloud
 crashplan: .deploy/crashplan
 db00: .deploy/db00
