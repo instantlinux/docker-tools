@@ -1,5 +1,5 @@
 HOSTS = mckinley vinson denali
-SERVICES = etcd mt-daapd weewx
+SERVICES = etcd mt-daapd ntpd weewx
 REGISTRY_URI := dockerhub.instantlinux.net:5000
 
 ADV = node1
@@ -12,11 +12,13 @@ endif
 
 default: $(HOST)
 
-mckinley: etcd mt-daapd weewx
+mckinley: etcd mt-daapd ntpd weewx
 vinson: etcd mt-daapd
 denali: etcd
 
 $(SERVICES)::
 	@echo Starting $@
-	@if [ $@ != "etcd" ]; then docker pull $(REGISTRY_URI)/$@:latest; fi
+	@if [ $@ != "etcd" ] && [ $@ != 'ntpd']; then \
+           docker pull $(REGISTRY_URI)/$@:latest; \
+        fi
 	cd $@ ; ADV=$(ADV) docker-compose up -d

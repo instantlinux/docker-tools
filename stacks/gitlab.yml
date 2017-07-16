@@ -8,8 +8,8 @@ services:
       TZ: US/Pacific
     ports:
     - ${PORT_GITLAB_HTTP:-18080}:80
-    - 18443:443
     - ${PORT_GITLAB_SSH:-8999}:22
+    # ${PORT_GITLAB_HTTPS:-443}:443
     volumes:
     - ${SHARE_PATH}/gitlab/config:/etc/gitlab
     - ${SHARE_PATH}/gitlab/data:/var/opt/gitlab
