@@ -5,8 +5,8 @@ services:
     image: alpine:3.6
     command: sh -c 'mkdir -p /var/lib/ntp/drift; exec /usr/sbin/ntpd -dn -I eth0'
     volumes:
-    - ${ADMIN_PATH:-/opt}/ntp.conf:/etc/ntp.conf:ro
-    - ${ADMIN_PATH:-/opt}/ntp.keys:/etc/ntp.keys:ro
+    - ${ADMIN_PATH:-/opt}/ntpd/ntp.conf:/etc/ntp.conf:ro
+    - ${ADMIN_PATH:-/opt}/ntpd/ntp.keys:/etc/ntp.keys:ro
     ports:
     - 123/udp:123/udp
     cap_add:
