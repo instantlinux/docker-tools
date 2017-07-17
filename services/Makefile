@@ -18,7 +18,7 @@ denali: etcd
 
 $(SERVICES)::
 	@echo Starting $@
-	@if [ $@ != "etcd" ] && [ $@ != 'ntpd']; then \
+	@if [ $@ != "etcd" ] && [ $@ != 'ntpd' ]; then \
            docker pull $(REGISTRY_URI)/$@:latest; \
         fi
 	cd $@ ; ADV=$(ADV) docker-compose up -d

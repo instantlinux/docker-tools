@@ -1,0 +1,24 @@
+version: "3"
+services:
+  app:
+    image: wordpress:4.8.0-php7.1-apache
+    ports:
+    - ${PORT_WORDPRESS_IL:-8080}:80
+    environment:
+      TZ: ${TZ:-US/Pacific}
+      WORDPRESS_DB_HOST: db-wordpress.svc.ci.net
+      WORDPRESS_DB_NAME: wordpress_il
+      WORDPRESS_DB_USER: wordpress
+    env_file:
+    - ${SHARE_PATH}/wordpress-il/env
+    volumes:
+    - ${SHARE_PATH}/wordpress-il/html:/var/www/html
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
+
+networks:
+  default:
+    external:
+      name: app_net

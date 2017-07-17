@@ -31,6 +31,8 @@ postfix: .deploy/postfix
 registry: .deploy/registry
 spamassassin: .deploy/spamassassin
 swarm-sync: .deploy/swarm-sync
+wordpress-ci: .deploy/wordpress-ci
+wordpress-il: .deploy/wordpress-il
 www00: .deploy/www00
 wwwext: .deploy/wwwext
 
