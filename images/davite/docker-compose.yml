@@ -8,8 +8,6 @@ services:
       SMTP_PORT: '25'
       SMTP_SMARTHOST: smtp.ci.net
       TCP_PORT: ''
-      URL_PATH: /davite
-      TZ: US/Pacific
     volumes:
     - ${SHARE_PATH}/davite:/var/adm/DaVite_Data
     ports:
@@ -18,9 +16,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.hostname == mckinley
-        # TODO
-        # node.labels.swarm-sync-member == true
+        - node.labels.swarm-sync-member == true
 
 networks:
   default:
