@@ -20,6 +20,7 @@ authelia: .deploy/authelia
 blacklist: .deploy/blacklist
 cloud: .deploy/cloud
 crashplan: .deploy/crashplan
+davite: .deploy/davite
 db00: .deploy/db00
 dovecot: .deploy/dovecot
 ez-ipupdate: .deploy/ez-ipupdate
