@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/davite:latest
+    environment:
+      HOSTNAME: davite.ci.net
+      SMTP_PORT: '25'
+      SMTP_SMARTHOST: smtp.ci.net
+      TCP_PORT: ''
+      URL_PATH: /davite
+      TZ: US/Pacific
+    volumes:
+    - ${SHARE_PATH}/davite:/var/adm/DaVite_Data
+    ports:
+    - ${PORT_DAVITE:-8080}:80
+    hostname: davite.ci.net
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == mckinley
+        # TODO
+        # node.labels.swarm-sync-member == true
+
+networks:
+  default:
+    external:
+      name: app_net

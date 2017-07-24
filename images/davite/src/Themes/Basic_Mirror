@@ -1,0 +1,105 @@
+<html>
+</head>
+<title>DaVite Invitation System</title>
+</head>
+
+<body background=<:= $BACKGROUND :> link=red vlink=red alink=red bgcolor=yellow>
+
+<table cellpadding=0 cellspacing=0 border=0 cellpadding=0 cellspacing=0 border=0 bgcolor=black width=100%>
+  <tr>
+    <td rowspan=2><img src=<:=$DATA:>/Pics/Logo.gif></td>
+    <td rowspan=2 width=2%>&nbsp;</td>
+    <td colspan=2 valign=top align=right>
+      <font size=+2 face=times,palatino,serif color=yellow>
+        DaVite Invitation System
+      </font>
+    </td>
+    <td rowspan=2 width=3%>
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td valign=bottom align=left>
+      <: TOOLBAR :>
+    </td>
+    <td valign=bottom align=right>
+      <font color=yellow>
+        ...software by <a href=http://MarginalHacks.com/Hacks/DaVite/>Marginal Hacks</a>
+      </font>
+    </td>
+  </tr>
+</table>
+
+<br>
+  <center>
+    <table width=90%>
+      <tr>
+        <td width=30%><hr></td>
+        <td align=center><font color=red size=+3><:= $EVENT_NAME :></font></td>
+        <td width=30%><hr></td>
+      </tr>
+    </table>
+  </center>
+
+
+<table width=95%>
+  <tr valign=top>
+    <td align=right colspan=3>
+      <i><font color=purple size=+1><:= $GREETING :></font></i><p>
+    </td>
+  </tr>
+  <tr valign=top>
+    <td>
+      <font size=-1>
+        <:= $NOTES :>
+      </font>
+    </td>
+    <td width=35%>
+      <: SHOW_DETAILS :>
+    </td>
+    <td align=center>
+<? if $IMAGE ?>
+      <table cellpadding=5 bgcolor=black><tr><td>
+        <img src=<:= $IMAGE :>>
+      </td></tr></table>
+      <i><:= $CAPTION :></i>
+<? endif // $IMAGE ?>
+    </td>
+  </tr>
+</table>
+
+<p><br>
+<table cellpadding=10 width=95%>
+<tr valign=top><td width=50%>
+  <table width=80%><tr><td bgcolor=black>
+    <font color=yellow size=+1>&nbsp;Guest replies:</font><br>
+  </td></tr></table>
+<font size=-1>
+<table width=100%><tr>
+<td>yes: <:=$Y:></td>
+<td>maybe: <:=$M:></td>
+<td>no: <:=$N:></td>
+<td>not replied: <:=$U:></td>
+</tr></table>
+<:= $INVITE_LINK :>
+<p>
+
+<: SHOW_GUESTS :>
+
+</font>
+</td><td valign=top>
+  <table width=85%><tr><td bgcolor=black>
+    <font color=yellow size=+1>&nbsp;Reply here:</font><br>
+  </td></tr></table>
+  <table><tr><td>
+  <font size=-1>
+  <i><:= $IF_NOT :></i><p>
+  </font>
+  <b>Will you attend?</b><br>
+
+  <: REPLY_HERE :>
+
+  </td></tr></table>
+</td></tr>
+</table>
+
