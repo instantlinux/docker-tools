@@ -1,0 +1,39 @@
+version: "3.1"
+
+services:
+
+  appsuite:
+    image: ${REGISTRY_URI:-instantlinux}/open-xchange-appsuite:latest
+    hostname: oxserver
+    environment:
+      TZ: ${TZ:-US/Pacific}
+    volumes:
+    - ${SHARE_PATH:-/opt}/ox-appsuite/data:/ox/store
+    - ${SHARE_PATH:-/opt}/ox-appsuite/etc:/ox/etc
+    - logs:/var/logs/open-xchange
+    - apache:/var/logs/apache2
+    ports:
+    - ${PORT_OX_APPSUITE:-18480}:80
+    secrets:
+    - ox-db-password
+    - ox-admin-password
+    - ox-master-password
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync-member == true
+
+networks:
+  default:
+    external:
+      name: app_net
+volumes:
+  apache:
+  logs:
+secrets:
+  ox-db-password:
+    external: true
+  ox-admin-password:
+    external: true
+  ox-master-password:
+    external: true
