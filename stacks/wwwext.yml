@@ -29,6 +29,7 @@ services:
     - authtotp.ci.net-server-key.pem
     - cloud.ci.net-server-key.pem
     - desktop.ci.net-server-key.pem
+    - docs.ci.net-server-key.pem
     - git.instantlinux.net-server-key.pem
     - jenkins.ci.net-server-key.pem
     - jira.ci.net-server-key.pem
@@ -48,6 +49,8 @@ secrets:
   cloud.ci.net-server-key.pem:
     external: true
   desktop.ci.net-server-key.pem:
+    external: true
+  docs.ci.net-server-key.pem:
     external: true
   git.instantlinux.net-server-key.pem:
     external: true

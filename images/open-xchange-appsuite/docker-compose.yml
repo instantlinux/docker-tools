@@ -9,7 +9,7 @@ services:
       TZ: ${TZ:-US/Pacific}
     volumes:
     - ${SHARE_PATH:-/opt}/ox-appsuite/data:/ox/store
-    - ${SHARE_PATH:-/opt}/ox-appsuite/etc:/ox/etc
+    - ${ADMIN_PATH:-/opt}/ox-appsuite/etc:/ox/etc:ro
     - logs:/var/logs/open-xchange
     - apache:/var/logs/apache2
     ports:

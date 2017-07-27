@@ -27,8 +27,7 @@ RUN sed -i -e "s/{{ VERSION }}/${OX_VERSION}/" \
     mkdir -p /usr/share/man/man1 && \
     apt-get update && \
     apt-get install -y \
-        vim \
-        open-xchange \
+        hunspell open-xchange \
         open-xchange-admin \
         open-xchange-appsuite \
         open-xchange-appsuite-backend \
@@ -36,6 +35,8 @@ RUN sed -i -e "s/{{ VERSION }}/${OX_VERSION}/" \
         open-xchange-appsuite-l10n-* \
         open-xchange-appsuite-manifest \
         open-xchange-authentication-database \
+        open-xchange-caldav \
+        open-xchange-carddav \
         open-xchange-documentconverter-api \
         open-xchange-documents-backend \
         open-xchange-documents-help-en-us \
@@ -43,7 +44,8 @@ RUN sed -i -e "s/{{ VERSION }}/${OX_VERSION}/" \
         open-xchange-documents-ui-static \
         open-xchange-grizzly \
         open-xchange-l10n-* \
-        oxldapsync && \
+        open-xchange-passwordchange-database \
+        oxldapsync vim && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY proxy_http.conf /etc/apache2/conf-available/proxy_http.conf

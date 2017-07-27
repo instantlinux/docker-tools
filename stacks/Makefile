@@ -22,6 +22,7 @@ cloud: .deploy/cloud
 crashplan: .deploy/crashplan
 davite: .deploy/davite
 db00: .deploy/db00
+docs: .deploy/docs
 dovecot: .deploy/dovecot
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab

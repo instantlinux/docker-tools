@@ -46,7 +46,7 @@ if [ "$FIRST_TIME" == 1 ]; then
     --adminuser=${OX_ADMIN_MASTER_LOGIN} \
     --adminpass=${OX_MASTER_PASSWORD} \
     --name=${OX_SERVER_NAME}; do
-      echo "Waiting OX to start..."
+      echo "--Waiting on registerserver"
       sleep 5
   done;
 
@@ -76,9 +76,11 @@ if [ "$FIRST_TIME" == 1 ]; then
     --quota=1024 \
     --surname=Admin \
     --username=${OX_CONTEXT_ADMIN_LOGIN}; do
-      echo "Waiting for mysql..."
+      echo "--waiting on createcontext"
       sleep 5
   done
   cp -a /opt/open-xchange/etc/. ${OX_ETCBACKUP}
 fi
-apachectl -d /etc/apache2 -DFOREGROUND
+apachectl -d /etc/apache2 -k start
+exec bash -c 'while [ 1 == 1 ]; 
+  do tail -500f /var/log/open-xchange/open-xchange.log.0; sleep 5; done'
