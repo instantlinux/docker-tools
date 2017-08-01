@@ -1,0 +1,23 @@
+---
+- name: Disable local repo
+  file:
+    path: /etc/apt/sources.list.d/instantlinux.list
+    state: absent
+
+- name: Disable local sources
+  replace:
+    dest: /etc/apt/sources.list
+    replace: "# deb ftp://ovulator.ci.net removed"
+    regexp: "^deb ftp://ovulator.ci.net/.*(updates|backports|iverse).*"
+
+- name: Ensure repos available
+  apt_repository:
+    repo: "{{ item }}"
+    filename: ubuntu
+  with_items:
+    - deb http://mirrors.accretive-networks.net/ubuntu/ xenial universe
+    - deb http://mirrors.accretive-networks.net/ubuntu/ xenial multiverse
+    - deb http://mirrors.accretive-networks.net/ubuntu/ xenial-updates main restricted
+    - deb http://mirrors.accretive-networks.net/ubuntu/ xenial-updates universe
+    - deb http://mirrors.accretive-networks.net/ubuntu/ xenial-updates multiverse
+    - deb http://mirrors.accretive-networks.net/ubuntu/ xenial-backports main restricted universe multiverse

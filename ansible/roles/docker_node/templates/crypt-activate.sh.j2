@@ -1,0 +1,11 @@
+#! /bin/bash
+KEYDIR={{ masterkey.path }}/keys/`hostname -s`
+[ -d $KEYDIR ] || mount {{ masterkey.path }}
+VOLS="{{ ' '.join(volumes.data01.keys()|sort) }}"
+for VOL in $VOLS; do
+  cryptsetup luksOpen /dev/data01/$VOL luks-$VOL --key-file $KEYDIR/$VOL
+done
+for VOL in `grep mapper/luks /etc/fstab | awk {'print $2'}`; do
+ mount $VOL
+done
+umount {{ masterkey.path }}

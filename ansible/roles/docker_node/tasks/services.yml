@@ -1,0 +1,34 @@
+---
+# services.yml
+
+# Configure ancillary services
+
+- name: Server hostname
+  copy:
+    dest: /etc/hostname
+    content: "{{ ansible_hostname }}\n"
+
+- name: Syslog host setup
+  template:
+    dest: /etc/rsyslog.d/custom.conf
+    src: rsyslog-custom.conf.j2
+  notify: Restart rsyslogd
+
+- name: NTP keys
+  template:
+    dest: /etc/ntp.keys
+    src: ntp.keys.j2
+  notify: Restart ntpd
+
+- name: NTP config
+  template:
+    dest: /etc/ntp.conf
+    src: ntp.conf.j2
+  notify: Restart ntpd
+
+- name: Set nrpe.d
+  file:
+    path: /etc/nrpe.d
+    src: /var/lib/docker/volumes/admin/_data/services/nrpe/etc
+    state: link
+    force: yes

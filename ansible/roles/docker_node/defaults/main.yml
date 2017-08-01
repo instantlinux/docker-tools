@@ -1,0 +1,70 @@
+# defaults
+
+docker:
+  certs_dir: /root/certs
+  thinpool:
+    size: 2000
+    meta_size: 100
+    autoextend_threshold: 80
+    autoextend_percent: 20
+  options:
+    hosts:
+    - tcp://0.0.0.0:2376
+    - unix:///var/run/docker.sock
+    tlscacert: /root/certs/ca.pem
+    tlscert: /root/certs/docker-tls-cert.pem
+    tlskey: /root/certs/docker-tls-key.pem
+    tls: true
+    storage-driver: devicemapper
+    storage-opts:
+    - dm.thinpooldev=/dev/mapper/data01-thinpool
+    - dm.use_deferred_removal=false
+    - dm.use_deferred_deletion=false
+
+kernel:
+  version: 4.11.10
+  short_ver: "041110"
+  long_ver: 4.11.10-041110.201707121132
+  origin: http://kernel.ubuntu.com/~kernel-ppa/mainline
+
+masterkey:
+  path: /master
+  host: 10.10.0.2
+  sshkey_private: /root/.ssh/master.pem
+  user: master
+
+ntp:
+  servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+
+syslog:
+  host: syslog
+  port: 514
+
+local_groups:
+  docker: 485
+  nagcmd: 486
+  nagios: 499
+  nrpe: 552
+  repo: 565
+
+local_users:
+  repo:
+    uid: 2012
+    comment: Repository manager
+    group: repo
+
+volumes:
+  data01:
+    backup:
+      size: 100
+      inodes: 100
+      path: /var/lib/docker/volumes/backup/_data
+
+network_mounts:
+  nfs:/service:
+    path: /var/mounted
+    options: _netdev,ro,soft
+    type: nfs

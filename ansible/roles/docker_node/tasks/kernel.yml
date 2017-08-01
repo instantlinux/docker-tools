@@ -1,0 +1,16 @@
+---
+# kernel.yml
+#
+# Grab and install desired kernel.version from Ubuntu PPA site
+
+- name: Updated kernel headers (all)
+  apt:
+    deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-headers-{{
+      kernel.version }}-{{ kernel.short_ver }}_{{ kernel.long_ver }}_all.deb"
+
+- name: Updated generic kernel headers (amd64)
+  apt:
+    deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-headers-{{
+      kernel.version }}-{{ kernel.short_ver }}-generic_{{
+      kernel.long_ver }}_amd64.deb"
+  notify: Updated kernel image (amd64)

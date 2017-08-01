@@ -1,0 +1,76 @@
+---
+# security.yml
+
+# This is heavily customized: replace with your own security policies
+
+- name: Define group ids
+  group:
+    name: "{{ item.key }}"
+    gid: "{{ item.value }}"
+  with_dict: "{{ local_groups }}"
+
+- name: Define users
+  user:
+    name: "{{ item.key }}"
+    comment: "{{ item.value.comment if 'comment' in item.value else '' }}"
+    uid: "{{ item.value.uid }}"
+    group: "{{ item.value.group }}"
+    groups: "{{ item.value.groups if 'groups' in item.value else '' }}"
+    password: "{{ vault_users[item.key]['password'] if item.key in 
+               vault_users and 'password' in vault_users[item.key] else '*' }}"
+    shell: "{{ item.value.shell if 'shell' in item.value else '/bin/bash' }}"
+  with_dict: "{{ local_users }}"
+  no_log: true
+
+- name: Define authenticator tokens
+  template:
+    dest: /home/{{ item.key }}/.google_authenticator
+    src: google_authenticator.j2
+    owner: "{{ item.key }}"
+    mode: 0400
+  with_dict: "{{ vault_users }}"
+  no_log: true
+
+- name: Add google-authenticator to PAM sshd
+  lineinfile:
+    dest: /etc/pam.d/sshd
+    line: auth   required   pam_google_authenticator.so
+
+- name: Allow password auth in sshd
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: PasswordAuthentication yes
+    regexp: "^PasswordAuthentication .*"
+  notify: Restart sshd
+
+- name: Activate sshd ChallengeResponse auth
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^ChallengeResponseAuthentication .*"
+    line: ChallengeResponseAuthentication yes
+  notify: Restart sshd
+
+- name: Root .ssh directory
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: 0700
+
+- name: Masterlock private key
+  copy:
+    dest: /root/.ssh/masterlock.pem
+    content: "{{ vault_ssh_keys_private.masterlock }}"
+    mode: 0400
+
+- name: Add authorized keys for user
+  authorized_key:
+    user: richb
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+  - ../files/keys/ssh_public/richb/*.pub
+
+- name: Adjust TCP keepalive to preserve management sessions
+  sysctl:
+    name: net.ipv4.tcp_keepalive_time
+    value: 86400
+    sysctl_set: yes

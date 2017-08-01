@@ -1,0 +1,63 @@
+---
+# volumes.yml
+#
+# This is heavily customized, replace with your own volume definitions
+
+- name: Create mount points
+  file:
+    dest: "{{ item.value.path }}"
+    state: directory
+    recurse: true
+  with_dict: "{{ volumes.data01 | combine(network_mounts) }}"
+
+- name: Create volumes
+  lvol:
+    lv: "{{ item.key }}"
+    vg: data01
+    size: "{{ item.value.size }}"
+  with_dict: "{{ volumes.data01 }}"
+
+# name: Crypt table entries
+#  crypt:
+#    name: luks-{{ item.key }}
+#    backing_device: data01-{{ item.key }}
+#    password: "{{ masterkey.path }}/{{ hostname }}/keys/{{ item.key }}"
+#  with_dict: "{{ volumes.data01 }}"
+
+- name: crypt-setup boot script
+  template:
+    src: crypt-activate.sh.j2
+    dest: /etc/crypt-activate.sh
+    mode: 0755
+
+- name: Master key mount point
+  file:
+    path: "{{ masterkey.path }}"
+    state: directory
+
+- name: Master key mount
+  mount:
+    fstype: fuse.sshfs
+    path: "{{ masterkey.path }}"
+    src: "{{ masterkey.user }}@{{ masterkey.host }}:{{ masterkey.path }}"
+    opts: _netdev,noauto,ro,IdentityFile={{ masterkey.sshkey_private }}
+    state: present
+
+- name: Systemd unit file for crypt-vols
+  copy:
+    dest: /etc/systemd/system/crypt-vols.service
+    src: crypt-vols.service
+
+- name: Enable crypt-vols
+  systemd:
+    name: crypt-vols
+    enabled: yes
+
+- name: Network mounts
+  mount:
+    fstype: "{{ item.value.type }}"
+    path: "{{ item.value.path }}"
+    src: "{{ item.key }}"
+    opts: "{{ item.value.options }}"
+    state: present
+  with_dict: "{{ network_mounts }}"

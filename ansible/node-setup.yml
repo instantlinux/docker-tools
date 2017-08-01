@@ -1,0 +1,9 @@
+---
+# set up a Docker node
+
+- hosts: test
+  become: true
+  vars_files:
+  - local_vars.yml
+  roles:
+  - docker_node

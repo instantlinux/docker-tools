@@ -1,0 +1,12 @@
+---
+# join.yml
+
+# TODO - this is not yet tested
+
+- name: Query engine
+  command: docker info
+  register: engine_info
+
+- name: Join to swarm
+  command: docker swarm join --token {{ join_token }} {{ join_address }}
+  when: engine_info.stdout.find('Swarm: active') == -1

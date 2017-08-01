@@ -1,0 +1,105 @@
+---
+
+- name: Directory for registry certs
+  file:
+    dest: "{{ docker.certs_dir }}"
+    state: directory
+    mode: 0700
+
+- name: Docker TLS CA cert
+  copy:
+    dest: "{{ docker.certs_dir }}/ca.pem"
+    src: certs/instantlinux-ca.pem
+    mode: 0400
+
+- name: Docker TLS cert
+  copy:
+    dest: "{{ docker.certs_dir }}/docker-tls-cert.pem"
+    src: certs/docker-tls-cert.pem
+    mode: 0400
+
+- name: Docker TLS key
+  copy:
+    dest: "{{ docker.certs_dir }}/docker-tls-key.pem"
+    content: "{{ vault_cert_keys.docker_tls }}"
+    mode: 0400
+
+- name: Registry SSL cert
+  copy:
+    dest: "{{ docker.certs_dir }}/domain.crt"
+    src: certs/registry-cert.pem
+    mode: 0400
+
+- name: Registry SSL key
+  copy:
+    dest: "{{ docker.certs_dir }}/domain.key"
+    content: "{{ vault_cert_keys.registry }}"
+    mode: 0400
+
+- name: Thin pool create
+  lvol:
+    lv: thinpool
+    vg: data01
+    size: "{{ docker.thinpool.size }}"
+
+- name: Thin pool meta
+  lvol:
+    lv: thinpoolmeta
+    vg: data01
+    size: "{{ docker.thinpool.meta_size }}"
+
+- name: Convert thinpool
+  command: >
+    lvconvert -y --zero n -c 512K --thinpool data01/thinpool
+      --poolmetadata data01/thinpoolmeta
+  args:
+    creates: /dev/mapper/data01-thinpool_tdata
+
+- name: LVM profile path
+  file:
+    dest: /etc/lvm/profile
+    state: directory
+
+- name: Define thinpool autoextend
+  template:
+    dest: /etc/lvm/profile/data01-thinpool.profile
+    src: thinpool.profile.j2
+  notify: Activate thinpool autoextend
+
+- name: Docker configuration path
+  file:
+    dest: /etc/docker
+    state: directory
+
+- name: Docker options
+  copy:
+    dest: /etc/docker/daemon.json
+    content: "{{ docker.options|to_nice_json }}"
+  notify: Restart docker
+
+- name: Docker repo key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+
+- name: Docker repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial edge
+    filename: docker
+
+- name: Docker engine package
+  apt:
+    name: docker-ce
+    update_cache: yes
+
+- name: Deal with conflicting systemd-unit option if present
+  lineinfile:
+    dest: /etc/systemd/system/multi-user.target.wants/docker.service
+    regexp: "ExecStart=.*"
+    line: ExecStart=/usr/bin/dockerd
+  notify: Reload systemd
+
+- name: Docker service
+  service:
+    name: docker
+    state: started

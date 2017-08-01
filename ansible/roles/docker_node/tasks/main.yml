@@ -1,0 +1,24 @@
+---
+# main.yml
+
+# Set up all packages, volumes, security definitions and services
+#  for a docker swarm node
+
+- name: include_vars
+  include_vars:
+    file: "{{ item }}.yml"
+  with_items:
+  - vault
+
+- include: security.yml
+- include: repos.yml
+- include: kernel.yml
+
+- name: Install system packages
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ ubuntu_packages }}"
+
+- include: services.yml
+- include: volumes.yml
+- include: docker.yml

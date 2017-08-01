@@ -1,5 +1,6 @@
 *~
 *.pyc
+*.retry
 .cache
 .coverage
 .deploy
