@@ -1,0 +1,30 @@
+# These are only examples: override these with your own volumes
+#  and network mounts
+
+vg: data01
+fs_type: ext4
+
+volumes:
+  data01:
+    backup:
+      size: 100
+      inodes: 100
+      path: /var/lib/docker/volumes/backup/_data
+
+network_mounts:
+  nfs:/service:
+    path: /var/mounted
+    options: _netdev,ro,soft
+    type: nfs
+
+masterkey:
+  path: /master
+  host: 10.10.0.2
+  sshkey_private: /root/.ssh/master.pem
+  user: master
+
+ubuntu_packages:
+  - cifs-utils
+  - cryptsetup
+  - nfs-client
+  - sshfs

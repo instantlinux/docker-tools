@@ -32,12 +32,3 @@
   shell: >
     lvchange --metadataprofile data01-thinpool data01/thinpool &&
     lvs -o+seg_monitor
-
-# This (slow) installation is defined here as a handler because the 
-#  apt module lacks an idempotency check to prevent re-downloading
-
-- name: Updated kernel image (amd64)
-  apt:
-    deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-image-{{
-      kernel.version }}-{{ kernel.short_ver }}-generic_{{
-      kernel.long_ver }}_amd64.deb"

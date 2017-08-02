@@ -20,5 +20,4 @@
   with_items: "{{ ubuntu_packages }}"
 
 - include: services.yml
-- include: volumes.yml
 - include: docker.yml

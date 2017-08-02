@@ -1,38 +1,39 @@
 ---
+# docker.yml - configure Docker
 
 - name: Directory for registry certs
   file:
-    dest: "{{ docker.certs_dir }}"
+    dest: "{{ docker.certs.path }}"
     state: directory
     mode: 0700
 
 - name: Docker TLS CA cert
   copy:
-    dest: "{{ docker.certs_dir }}/ca.pem"
-    src: certs/instantlinux-ca.pem
+    dest: "{{ docker.certs.path }}/{{ docker.certs.ca_root }}"
+    src: certs/{{ docker.certs.ca_root }}
     mode: 0400
 
 - name: Docker TLS cert
   copy:
-    dest: "{{ docker.certs_dir }}/docker-tls-cert.pem"
+    dest: "{{ docker.certs.path }}/docker-tls-cert.pem"
     src: certs/docker-tls-cert.pem
     mode: 0400
 
 - name: Docker TLS key
   copy:
-    dest: "{{ docker.certs_dir }}/docker-tls-key.pem"
+    dest: "{{ docker.certs.path }}/docker-tls-key.pem"
     content: "{{ vault_cert_keys.docker_tls }}"
     mode: 0400
 
 - name: Registry SSL cert
   copy:
-    dest: "{{ docker.certs_dir }}/domain.crt"
+    dest: "{{ docker.certs.path }}/domain.crt"
     src: certs/registry-cert.pem
     mode: 0400
 
 - name: Registry SSL key
   copy:
-    dest: "{{ docker.certs_dir }}/domain.key"
+    dest: "{{ docker.certs.path }}/domain.key"
     content: "{{ vault_cert_keys.registry }}"
     mode: 0400
 
@@ -98,6 +99,27 @@
     regexp: "ExecStart=.*"
     line: ExecStart=/usr/bin/dockerd
   notify: Reload systemd
+
+- name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
+  copy:
+    dest: /etc/systemd/system/docker-permissions.service
+    src: docker-permissions.service
+
+- name: Systemd unit file for post-startup docker commands
+  copy:
+    dest: /etc/systemd/system/docker-local@.service
+    src: docker-local@.service
+
+- name: docker-nonat script for MythTV
+  copy:
+    dest: /usr/local/bin/docker-nonat.sh
+    src: docker-nonat.sh
+    mode: 0755
+  
+- name: Enable docker-permissions.service
+  systemd:
+    name: docker-permissions
+    enabled: yes
 
 - name: Docker service
   service:

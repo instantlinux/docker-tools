@@ -1,7 +1,11 @@
 ---
 # set up a Docker node
 
-- hosts: test
+# Usage:
+#  
+#  ansible-playbook node-setup.yml
+
+- hosts: swarm_nodes
   become: true
   vars_files:
   - local_vars.yml

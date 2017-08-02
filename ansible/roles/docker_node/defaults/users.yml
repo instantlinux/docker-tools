@@ -1,0 +1,13 @@
+local_groups:
+  docker: 485
+  mysql: 493
+  nagcmd: 486
+  nagios: 499
+  nrpe: 552
+  repo: 565
+
+local_users:
+  - name: repo
+    uid: 2012
+    comment: Repository manager
+    group: repo

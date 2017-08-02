@@ -8,6 +8,23 @@
     dest: /etc/hostname
     content: "{{ ansible_hostname }}\n"
 
+- name: Network bridge /dev/br0
+  template:
+    dest: /etc/network/interfaces.d/{{ network.bridge }}
+    src: interface.j2
+
+- name: Remove extraneous lines from network/interfaces
+  lineinfile:
+    line: "# auto {{ network.interface }} - removed, see interfaces.d"
+    path: /etc/network/interfaces
+    regexp: "^auto {{ network.interface }}.*"
+
+- name: Remove extraneous lines from network/interfaces
+  lineinfile:
+    line: "# iface {{ network.interface }} - removed"
+    path: /etc/network/interfaces
+    regexp: "^iface {{ network.interface }}.*"
+
 - name: Syslog host setup
   template:
     dest: /etc/rsyslog.d/custom.conf

@@ -11,15 +11,18 @@
 
 - name: Define users
   user:
-    name: "{{ item.key }}"
-    comment: "{{ item.value.comment if 'comment' in item.value else '' }}"
-    uid: "{{ item.value.uid }}"
-    group: "{{ item.value.group }}"
-    groups: "{{ item.value.groups if 'groups' in item.value else '' }}"
-    password: "{{ vault_users[item.key]['password'] if item.key in 
-               vault_users and 'password' in vault_users[item.key] else '*' }}"
-    shell: "{{ item.value.shell if 'shell' in item.value else '/bin/bash' }}"
-  with_dict: "{{ local_users }}"
+    name: "{{ item.name }}"
+    comment: "{{ item.comment if 'comment' in item else '' }}"
+    uid: "{{ item.uid }}"
+    createhome: "{{ item.createhome if 'createhome' in item else 'yes' }}"
+    group: "{{ item.group }}"
+    groups: "{{ item.groups if 'groups' in item else '' }}"
+    home: "{{ item.home if 'home' in item else '/home/%s' % item.name }}"
+    non_unique: "{{ item.non_unique if 'non_unique' in item else 'no' }}"
+    password: "{{ vault_users[item.name]['password'] if item.name in 
+               vault_users and 'password' in vault_users[item.name] else '*' }}"
+    shell: "{{ item.shell if 'shell' in item else '/bin/bash' }}"
+  with_items: "{{ local_users }}"
   no_log: true
 
 - name: Define authenticator tokens
@@ -62,15 +65,23 @@
     content: "{{ vault_ssh_keys_private.masterlock }}"
     mode: 0400
 
-- name: Add authorized keys for user
+# Look for ssh key files: keys/ssh_public/<user>-*.pub
+
+- name: Add authorized keys for users
   authorized_key:
-    user: richb
+    user: "{{ item.split('/')[-1:][0].split('-')[0] }}"
     key: "{{ lookup('file', item) }}"
   with_fileglob:
-  - ../files/keys/ssh_public/richb/*.pub
+  - keys/ssh_public/*.pub
 
 - name: Adjust TCP keepalive to preserve management sessions
   sysctl:
     name: net.ipv4.tcp_keepalive_time
     value: 86400
     sysctl_set: yes
+
+- name: Install rrsync for rsnapshot backups
+  copy:
+    dest: /usr/local/bin/rrsync
+    src: rrsync
+    mode: 0755

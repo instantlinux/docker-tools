@@ -1,0 +1,16 @@
+# Created 19-Mar-17 by richb
+
+[Unit]
+Description=Post-startup docker commands
+Conflicts=shutdown.target
+Wants=network-online.target
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash -c "/usr/local/bin/docker-nonat.sh %I `host %I |cut -d ' ' -f 4` 192.168.2.252"
+
+[Install]
+WantedBy=multi-user.target
