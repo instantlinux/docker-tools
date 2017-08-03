@@ -88,17 +88,18 @@
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial edge
     filename: docker
 
+- name: Deal with conflicting systemd-unit option if present
+  lineinfile:
+    dest: /lib/systemd/system/docker.service
+    regexp: "ExecStart=.*"
+    line: ExecStart=/usr/bin/dockerd
+  ignore_errors: true
+  notify: Reload systemd
+
 - name: Docker engine package
   apt:
     name: docker-ce
     update_cache: yes
-
-- name: Deal with conflicting systemd-unit option if present
-  lineinfile:
-    dest: /etc/systemd/system/multi-user.target.wants/docker.service
-    regexp: "ExecStart=.*"
-    line: ExecStart=/usr/bin/dockerd
-  notify: Reload systemd
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
   copy:

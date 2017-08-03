@@ -1,0 +1,119 @@
+---
+# encrypted.yml
+
+- name: include_vars
+  include_vars:
+    file: vault.yml
+
+# Generate LUKS volumes
+
+- name: Master key mount point
+  file:
+    path: "{{ masterkey.path }}"
+    state: directory
+
+- name: Check for known_hosts entry
+  command: ssh-keygen -F {{ masterkey.host }}
+  register: key_exists
+  ignore_errors: true
+
+- name: Add known_hosts entry for keyserver
+  shell: ssh-keyscan {{ masterkey.host }} >> /root/.ssh/known_hosts
+  when: key_exists.rc != 0
+
+- name: Masterlock private key
+  copy:
+    dest: /root/.ssh/masterlock.pem
+    content: "{{ vault_ssh_keys_private.masterlock }}"
+    mode: 0400
+
+- name: Master key mount
+  mount:
+    fstype: fuse.sshfs
+    path: "{{ masterkey.path }}"
+    src: "{{ masterkey.user }}@{{ masterkey.host }}:{{ masterkey.path }}"
+    opts: _netdev,noauto,ro,IdentityFile={{ masterkey.sshkey_private }}
+    state: mounted
+
+- name: LUKS format volumes
+  shell: >
+    cryptsetup isLuks /dev/{{ vg }}/{{ item.key }} ||
+    cryptsetup luksFormat --batch-mode --verbose --key-file={{
+      masterkey.path }}/keys/{{ ansible_hostname }}/{{
+      item.key }} /dev/{{ vg }}/{{ item.key }}
+  register: luks_format
+  changed_when: ("Command successful" in luks_format.stdout)
+  with_dict: "{{ volumes[vg] }}"
+
+# Encountered bug in ansible crypttab module, lineinfile is good enough
+- name: Create crypttab
+  copy:
+    content: ""
+    dest: /etc/crypttab.setup
+    mode: 0644
+    force: no
+
+- name: Crypt table entries
+  lineinfile:
+    line: "{{ 'luks-%-16s /dev/mapper/%s-%-16s %s/keys/%s/%-12s luks' % (
+          item.key, vg, item.key, masterkey.path, ansible_hostname,
+          item.key) }}"
+    path: /etc/crypttab.setup
+    regexp: "^luks-{{ item.key }}.*"
+  with_dict: "{{ volumes[vg] }}"
+
+# For unattended boot, we have a custom startup script, so we don't
+#  leave /etc/crypttab in place (Ubuntu systemd will otherwise
+#  insist on entering passphrase at reboot)
+
+- name: Temporary crypttab symlink
+  file:
+    path: /etc/crypttab
+    src: crypttab.setup
+    state: link
+    force: true
+
+- name: LUKS start volumes
+  command: cryptdisks_start luks-{{ item.key }}
+  register: luks_start
+  changed_when: ("(started)" in luks_start.stdout)
+  with_dict: "{{ volumes[vg] }}"
+
+- name: Create filesystem
+  filesystem:
+    dev: /dev/mapper/luks-{{ item.key }}
+    fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
+    opts: "{{ '-N %s000' % item.value.inodes if 'inodes' in item.value 
+      else '' }}"
+  with_dict: "{{ volumes[vg] }}"
+
+- name: Remove temporary crypttab symlink
+  file:
+    path: /etc/crypttab
+    state: absent
+
+- name: crypt-setup boot script
+  template:
+    src: crypt-activate.sh.j2
+    dest: /etc/crypt-activate.sh
+    mode: 0755
+
+- name: Systemd unit file for crypt-vols
+  copy:
+    dest: /etc/systemd/system/crypt-vols.service
+    src: crypt-vols.service
+
+- name: Enable crypt-vols
+  systemd:
+    name: crypt-vols
+    enabled: yes
+
+- name: Add fstab entries
+  mount:
+    fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
+    path: "{{ item.value.path }}"
+    src: "/dev/mapper/luks-{{ item.key }}"
+    opts: "{{ item.value.options if 'options' in item.value else '_netdev,noauto' }}"
+    state: present
+  with_dict: "{{ volumes[vg] }}"
+

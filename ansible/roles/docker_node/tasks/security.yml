@@ -59,12 +59,6 @@
     state: directory
     mode: 0700
 
-- name: Masterlock private key
-  copy:
-    dest: /root/.ssh/masterlock.pem
-    content: "{{ vault_ssh_keys_private.masterlock }}"
-    mode: 0400
-
 # Look for ssh key files: keys/ssh_public/<user>-*.pub
 
 - name: Add authorized keys for users

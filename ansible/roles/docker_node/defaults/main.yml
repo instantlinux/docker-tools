@@ -19,7 +19,7 @@ docker:
     - dm.use_deferred_removal=false
     - dm.use_deferred_deletion=false
     tls: true
-    tlscacert: /root/certs/ca.pem
+    tlscacert: /root/certs/ca-root.pem
     tlscert: /root/certs/docker-tls-cert.pem
     tlskey: /root/certs/docker-tls-key.pem
     tlsverify: true
@@ -42,11 +42,11 @@ network_mode: dhcp
 network:
   bridge: br0
   interface: enp0s3
-  address: "{{ hostvars[ansible_fqdn]['ansible_default_ipv4']['address'] }}"
-  netmask: "{{ hostvars[ansible_fqdn]['ansible_default_ipv4']['netmask'] }}"
-  gateway: "{{ hostvars[ansible_fqdn]['ansible_default_ipv4']['gateway'] }}"
-  nameservers: "{{ hostvars[ansible_fqdn]['ansible_dns']['nameservers'] }}"
-  search: "{{ hostvars[ansible_fqdn]['ansible_dns']['search'] }}"
+  address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+  netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
+  gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
+  nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
+  search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
   
 ntp:
   servers:

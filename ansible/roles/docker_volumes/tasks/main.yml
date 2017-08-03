@@ -13,7 +13,8 @@
     dest: "{{ item.value.path }}"
     state: directory
     recurse: true
-  with_dict: "{{ volumes[vg] | combine(network_mounts) }}"
+  with_dict: "{{ volumes[vg] | combine(network_mounts) |
+                 combine(local_volumes) }}"
 
 - name: Create volumes
   lvol:
@@ -22,83 +23,13 @@
     size: "{{ item.value.size }}"
   with_dict: "{{ volumes[vg] }}"
 
-- name: LUKS format volumes
-  shell: >
-    cryptsetup isLuks /dev/{{ vg }}/{{ item.key }} ||
-    cryptsetup luksFormat --batch-mode --verbose --key-file={{
-      masterkey.path }}/keys/{{ ansible_hostname }}/{{
-      item.key }} /dev/{{ vg }}/{{ item.key }}
-  register: luks_format
-  changed_when: ("Command successful" in luks_format.stdout)
-  with_dict: "{{ volumes[vg] }}"
+- include: encrypted.yml
 
-# Encountered bug in ansible crypttab module, lineinfile is good enough
-- name: Create crypttab
-  copy:
-    content: ""
-    dest: /etc/crypttab
-    mode: 0644
-    force: no
-
-- name: Crypt table entries
-  lineinfile:
-    line: luks-{{ item.key }}  /dev/mapper/{{ vg }}-{{ item.key
-      }}  {{ masterkey.path }}/keys/{{ ansible_hostname }}/{{ item.key
-      }}  luks
-    path: /etc/crypttab
-    regexp: "^luks-{{ item.key }}.*"
-  with_dict: "{{ volumes[vg] }}"
-
-- name: LUKS start volumes
-  command: cryptdisks_start luks-{{ item.key }}
-  register: luks_start
-  changed_when: ("(started)" in luks_start.stdout)
-  with_dict: "{{ volumes[vg] }}"
-
-- name: Create filesystem
-  filesystem:
-    dev: /dev/mapper/luks-{{ item.key }}
+- name: Network and local fstab entries
+  mount:
     fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
-    opts: "{{ '-N %s000' % item.value.inodes if 'inodes' in item.value 
-      else '' }}"
-    # fstype: ext4
-    # opts: "{{ '-N %s000' % item.value.inodes }}"
-  with_dict: "{{ volumes[vg] }}"
-
-- name: crypt-setup boot script
-  template:
-    src: crypt-activate.sh.j2
-    dest: /etc/crypt-activate.sh
-    mode: 0755
-
-- name: Master key mount point
-  file:
-    path: "{{ masterkey.path }}"
-    state: directory
-
-- name: Master key mount
-  mount:
-    fstype: fuse.sshfs
-    path: "{{ masterkey.path }}"
-    src: "{{ masterkey.user }}@{{ masterkey.host }}:{{ masterkey.path }}"
-    opts: _netdev,noauto,ro,IdentityFile={{ masterkey.sshkey_private }}
-    state: present
-
-- name: Systemd unit file for crypt-vols
-  copy:
-    dest: /etc/systemd/system/crypt-vols.service
-    src: crypt-vols.service
-
-- name: Enable crypt-vols
-  systemd:
-    name: crypt-vols
-    enabled: yes
-
-- name: Network mounts
-  mount:
-    fstype: "{{ item.value.type }}"
     path: "{{ item.value.path }}"
     src: "{{ item.key }}"
-    opts: "{{ item.value.options }}"
-    state: present
-  with_dict: "{{ network_mounts }}"
+    opts: "{{ item.value.options if 'options' in item.value else 'default' }}"
+    state: mounted
+  with_dict: "{{ network_mounts | combine(local_volumes) }}"

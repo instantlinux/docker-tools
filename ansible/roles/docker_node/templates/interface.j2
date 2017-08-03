@@ -1,10 +1,10 @@
 auto {{ network.bridge }}
 iface {{ network.bridge }} inet {{ network_mode }}
 {% if network_mode == 'static' %}
+ bridge_ports {{ network.interface }}
  address {{ network.address }}
  netmask {{ network.netmask }}
  gateway {{ network.gateway }}
  dns-nameservers {{ ' '.join(network.nameservers) }}
  dns-search {{ ' '.join(network.search) }}
 {% endif %}
-

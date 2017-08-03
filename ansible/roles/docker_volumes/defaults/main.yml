@@ -11,6 +11,12 @@ volumes:
       inodes: 100
       path: /var/lib/docker/volumes/backup/_data
 
+local_volumes:
+  tmpfs:
+    path: /tmp
+    options: nodev,nosuid,nodiratime,size=1000M
+    type: tmpfs
+
 network_mounts:
   nfs:/service:
     path: /var/mounted
