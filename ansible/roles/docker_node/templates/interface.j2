@@ -1,3 +1,4 @@
+{{ ansible_managed | comment }}
 auto {{ network.bridge }}
 iface {{ network.bridge }} inet {{ network_mode }}
 {% if network_mode == 'static' %}

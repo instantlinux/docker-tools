@@ -37,6 +37,13 @@
     content: "{{ vault_cert_keys.registry }}"
     mode: 0400
 
+- name: Also add registry SSL cert to system's trusted CA root
+  copy:
+    dest: "{{ system_paths.ca_certs }}/docker-local.crt"
+    src: certs/registry-cert.pem
+    mode: 0400
+  notify: Update CA certificates
+
 - name: Thin pool create
   lvol:
     lv: thinpool
@@ -67,17 +74,6 @@
     src: thinpool.profile.j2
   notify: Activate thinpool autoextend
 
-- name: Docker configuration path
-  file:
-    dest: /etc/docker
-    state: directory
-
-- name: Docker options
-  copy:
-    dest: /etc/docker/daemon.json
-    content: "{{ docker.options|to_nice_json }}"
-  notify: Restart docker
-
 - name: Docker repo key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
@@ -88,6 +84,23 @@
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial edge
     filename: docker
 
+- name: Temporarily disable systemctl start
+  copy:
+    content: "#/bin/sh\necho Disabled by ansible: systemctl start\nexit 101\n"
+    dest: /usr/sbin/policy-rc.d
+  changed_when: false
+
+- name: Docker engine package
+  apt:
+    name: docker-ce
+    update_cache: yes
+
+- name: Docker options
+  copy:
+    content: "{{ docker.options|to_nice_json }}"
+    dest: /etc/docker/daemon.json
+  notify: Restart docker
+
 - name: Deal with conflicting systemd-unit option if present
   lineinfile:
     dest: /lib/systemd/system/docker.service
@@ -95,11 +108,6 @@
     line: ExecStart=/usr/bin/dockerd
   ignore_errors: true
   notify: Reload systemd
-
-- name: Docker engine package
-  apt:
-    name: docker-ce
-    update_cache: yes
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
   copy:
@@ -110,6 +118,12 @@
   copy:
     dest: /etc/systemd/system/docker-local@.service
     src: docker-local@.service
+
+- name: Reenable systemctl start
+  file:
+    dest: /usr/sbin/policy-rc.d
+    state: absent
+  changed_when: false
 
 - name: docker-nonat script for MythTV
   copy:

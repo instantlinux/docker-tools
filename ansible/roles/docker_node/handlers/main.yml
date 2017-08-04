@@ -32,3 +32,6 @@
   shell: >
     lvchange --metadataprofile data01-thinpool data01/thinpool &&
     lvs -o+seg_monitor
+
+- name: Update CA certificates
+  command: update-ca-certificates

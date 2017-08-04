@@ -1,4 +1,5 @@
 #! /bin/bash
+{{ ansible_managed | comment }}
 KEYDIR={{ masterkey.path }}/keys/`hostname -s`
 [ -d $KEYDIR ] || mount {{ masterkey.path }}
 VOLS="{{ ' '.join(volumes.data01.keys()|sort) }}"

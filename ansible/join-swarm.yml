@@ -1,0 +1,47 @@
+---
+
+- hosts: swarm_managers
+  become: true
+  tasks:
+    - name: determine swarm status
+      shell: "docker info | egrep '^Swarm: ' | cut -d ' ' -f2"
+      register: swarm_status
+
+    - name: create swarm_manager_operational group
+      add_host:
+        hostname: "{{ item }}"
+        groups: swarm_manager_up
+      with_items: "{{ play_hosts }}"
+      when: "'active' in swarm_status.stdout_lines"
+      run_once: true
+
+- hosts: swarm_manager_up[0]
+  become: true
+  vars:
+    iface: br0
+  tasks:
+    - name: Fetch swarm manager token
+      shell: docker swarm join-token -q manager
+      register: swarm_manager_token
+
+    - name: Fetch swarm worker token
+      shell: docker swarm join-token -q worker
+      register: swarm_worker_token
+
+    - name: Fetch manager ips
+      add_host:
+        hostname: "{{ hostvars[item]['ansible_' + iface]['ipv4']['address'] }}"
+        groups: swarm_manager_ips
+      with_items: "{{ play_hosts }}"
+
+- hosts: swarm_nodes
+  become: true
+  vars:
+    join_token: "{{ hostvars[groups['swarm_managers'][0]
+                    ]['swarm_worker_token']['stdout'] }}"
+    iface: br0
+  tasks:
+  - name: Join worker nodes to swarm
+    command: >
+      docker swarm join --token={{ join_token }}
+      --advertise-addr={{ iface }}:2377 {{ groups['swarm_manager_ips'][0] }}:2377

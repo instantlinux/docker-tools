@@ -15,6 +15,7 @@
 - name: Check for known_hosts entry
   command: ssh-keygen -F {{ masterkey.host }}
   register: key_exists
+  changed_when: false
   ignore_errors: true
 
 - name: Add known_hosts entry for keyserver
@@ -72,6 +73,7 @@
     src: crypttab.setup
     state: link
     force: true
+  changed_when: false
 
 - name: LUKS start volumes
   command: cryptdisks_start luks-{{ item.key }}
@@ -91,6 +93,7 @@
   file:
     path: /etc/crypttab
     state: absent
+  changed_when: false
 
 - name: crypt-setup boot script
   template:

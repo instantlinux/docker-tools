@@ -9,6 +9,8 @@ docker:
     meta_size: 100
     autoextend_threshold: 80
     autoextend_percent: 20
+  local_volumes: /var/lib/docker/volumes
+  share_path: /var/lib/docker/share
   options:
     hosts:
     - tcp://0.0.0.0:2376
@@ -32,16 +34,21 @@ kernel:
 
 ubuntu_packages:
   - bridge-utils
+  - dnsutils
   - libpam-google-authenticator
   - nagios-nrpe-server
   - python
   - python-pip
   - thin-provisioning-tools
 
+system_paths:
+  ca_certs: /usr/local/share/ca-certificates
+  nrpe: /etc/nagios/nrpe.d
+
 network_mode: dhcp
 network:
   bridge: br0
-  interface: enp0s3
+  interface: enp1s0
   address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
   netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
   gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
