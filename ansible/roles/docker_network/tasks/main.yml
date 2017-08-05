@@ -1,0 +1,22 @@
+---
+- name: Install system packages
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ ubuntu_packages }}"
+
+- name: Network bridge /dev/br0
+  template:
+    dest: /etc/network/interfaces.d/{{ network.bridge }}
+    src: interface.j2
+
+- name: Remove extraneous lines from network/interfaces
+  replace:
+    path: /etc/network/interfaces
+    regexp: '^auto {{ network.interface }}$'
+    replace: '# auto {{ network.interface }} - removed, see interfaces.d'
+
+- name: Remove extraneous lines from network/interfaces
+  replace:
+    path: /etc/network/interfaces
+    regexp: '^iface {{ network.interface }} inet .*'
+    replace: '# iface {{ network.interface }} - removed'

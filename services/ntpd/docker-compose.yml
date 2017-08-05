@@ -8,7 +8,7 @@ services:
     - ${ADMIN_PATH:-/opt}/ntpd/ntp.conf:/etc/ntp.conf:ro
     - ${ADMIN_PATH:-/opt}/ntpd/ntp.keys:/etc/ntp.keys:ro
     ports:
-    - 123/udp:123/udp
+    - 123:123/udp
     cap_add:
     - SYS_TIME
     - SYS_NICE

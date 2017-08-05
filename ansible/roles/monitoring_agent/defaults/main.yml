@@ -1,0 +1,17 @@
+---
+nagios_defaults:
+  allowed_hosts:
+  - localhost
+  nrpe_path: /etc/nagios/nrpe.d
+  nrpe_service: nagios-nrpe-server
+  nrpe_user: nagios
+  plugins_path: /usr/local/lib/nagios
+  plugins_sudo:
+  - check_smartmon.py
+
+nagios_override: {}
+nagios: "{{ nagios_defaults | combine(nagios_override) }}"
+
+ubuntu_packages:
+  - nagios-nrpe-server
+  - smartmontools

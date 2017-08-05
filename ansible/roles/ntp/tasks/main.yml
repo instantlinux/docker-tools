@@ -1,0 +1,12 @@
+---
+- name: NTP keys
+  template:
+    dest: /etc/ntp.keys
+    src: ntp.keys.j2
+  notify: Restart ntpd
+
+- name: NTP config
+  template:
+    dest: /etc/ntp.conf
+    src: ntp.conf.j2
+  notify: Restart ntpd

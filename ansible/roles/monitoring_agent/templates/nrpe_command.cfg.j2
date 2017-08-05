@@ -1,0 +1,6 @@
+{{ ansible_managed | comment }}
+{% for key, item in nrpe_commands.iteritems()|sort %}
+command[{{ key }}]={{ nagios.plugins_path }}/{{ item.plugin
+   if 'plugin' in item else 'check_%s' % key }} {{ item.options
+   if 'options' in item else '' }}
+{% endfor %}

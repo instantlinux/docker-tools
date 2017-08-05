@@ -3,49 +3,8 @@
 
 # Configure ancillary services
 
-- name: Server hostname
-  copy:
-    dest: /etc/hostname
-    content: "{{ ansible_hostname }}\n"
-
-- name: Network bridge /dev/br0
-  template:
-    dest: /etc/network/interfaces.d/{{ network.bridge }}
-    src: interface.j2
-
-- name: Remove extraneous lines from network/interfaces
-  replace:
-    path: /etc/network/interfaces
-    regexp: '^auto {{ network.interface }}$'
-    replace: '# auto {{ network.interface }} - removed, see interfaces.d'
-
-- name: Remove extraneous lines from network/interfaces
-  replace:
-    path: /etc/network/interfaces
-    regexp: '^iface {{ network.interface }} inet .*'
-    replace: '# iface {{ network.interface }} - removed'
-
 - name: Syslog host setup
   template:
     dest: /etc/rsyslog.d/custom.conf
     src: rsyslog-custom.conf.j2
   notify: Restart rsyslogd
-
-- name: NTP keys
-  template:
-    dest: /etc/ntp.keys
-    src: ntp.keys.j2
-  notify: Restart ntpd
-
-- name: NTP config
-  template:
-    dest: /etc/ntp.conf
-    src: ntp.conf.j2
-  notify: Restart ntpd
-
-- name: Set nrpe.d
-  file:
-    path: "{{ system_paths.nrpe }}"
-    src: "{{ docker.local_volumes }}/admin/_data/services/nrpe/etc"
-    state: link
-    force: yes

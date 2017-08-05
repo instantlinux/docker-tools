@@ -1,7 +1,5 @@
 ---
 # main.yml
-#
-# This is heavily customized, replace with your own volume definitions
 
 - name: Install system packages
   apt:
@@ -12,7 +10,7 @@
   file:
     dest: "{{ item.value.path }}"
     state: directory
-    recurse: true
+    recurse: True
   with_dict: "{{ volumes[vg] | combine(network_mounts) |
                  combine(local_volumes) }}"
 
@@ -20,8 +18,12 @@
   lvol:
     lv: "{{ item.key }}"
     vg: "{{ vg }}"
+    shrink: no
     size: "{{ item.value.size }}"
   with_dict: "{{ volumes[vg] }}"
+  notify:
+  - Cryptsetup resize
+  - Filesystem resize
 
 - include: encrypted.yml
 

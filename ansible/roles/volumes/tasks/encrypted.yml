@@ -15,17 +15,17 @@
 - name: Check for known_hosts entry
   command: ssh-keygen -F {{ masterkey.host }}
   register: key_exists
-  changed_when: false
-  ignore_errors: true
+  changed_when: False
+  ignore_errors: True
 
 - name: Add known_hosts entry for keyserver
   shell: ssh-keyscan {{ masterkey.host }} >> /root/.ssh/known_hosts
   when: key_exists.rc != 0
 
-- name: Masterlock private key
+- name: LUKS master ssh key
   copy:
-    dest: /root/.ssh/masterlock.pem
-    content: "{{ vault_ssh_keys_private.masterlock }}"
+    dest: "{{ masterkey.sshkey_private }}"
+    content: "{{ vault_ssh_keys_private.masterkey }}"
     mode: 0400
 
 - name: Master key mount
@@ -72,8 +72,8 @@
     path: /etc/crypttab
     src: crypttab.setup
     state: link
-    force: true
-  changed_when: false
+    force: True
+  changed_when: False
 
 - name: LUKS start volumes
   command: cryptdisks_start luks-{{ item.key }}
@@ -85,7 +85,7 @@
   filesystem:
     dev: /dev/mapper/luks-{{ item.key }}
     fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
-    opts: "{{ '-N %s000' % item.value.inodes if 'inodes' in item.value 
+    opts: "{{ '-N %s000' % item.value.inodes if 'inodes' in item.value
       else '' }}"
   with_dict: "{{ volumes[vg] }}"
 
@@ -93,7 +93,7 @@
   file:
     path: /etc/crypttab
     state: absent
-  changed_when: false
+  changed_when: False
 
 - name: crypt-setup boot script
   template:
@@ -120,3 +120,7 @@
     state: present
   with_dict: "{{ volumes[vg] }}"
 
+- name: Unmount master key
+  mount:
+    path: "{{ masterkey.path }}"
+    state: unmounted

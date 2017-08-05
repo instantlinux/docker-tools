@@ -1,0 +1,6 @@
+---
+
+- name: Restart NRPE
+  service:
+    name: "{{ nagios.nrpe_service }}"
+    state: restarted

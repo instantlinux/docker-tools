@@ -3,33 +3,33 @@
 
 - name: Directory for registry certs
   file:
-    dest: "{{ docker.certs.path }}"
-    state: directory
     mode: 0700
+    path: "{{ docker.certs.path }}"
+    state: directory
 
 - name: Docker TLS CA cert
   copy:
     dest: "{{ docker.certs.path }}/{{ docker.certs.ca_root }}"
-    src: certs/{{ docker.certs.ca_root }}
     mode: 0400
+    src: certs/{{ docker.certs.ca_root }}
 
 - name: Docker TLS cert
   copy:
     dest: "{{ docker.certs.path }}/docker-tls-cert.pem"
-    src: certs/docker-tls-cert.pem
     mode: 0400
+    src: certs/docker-tls-cert.pem
 
 - name: Docker TLS key
   copy:
-    dest: "{{ docker.certs.path }}/docker-tls-key.pem"
     content: "{{ vault_cert_keys.docker_tls }}"
+    dest: "{{ docker.certs.path }}/docker-tls-key.pem"
     mode: 0400
 
 - name: Registry SSL cert
   copy:
     dest: "{{ docker.certs.path }}/domain.crt"
-    src: certs/registry-cert.pem
     mode: 0400
+    src: certs/registry-cert.pem
 
 - name: Registry SSL key
   copy:
@@ -40,59 +40,60 @@
 - name: Also add registry SSL cert to system's trusted CA root
   copy:
     dest: "{{ system_paths.ca_certs }}/docker-local.crt"
-    src: certs/registry-cert.pem
     mode: 0400
+    src: certs/registry-cert.pem
   notify: Update CA certificates
 
 - name: Thin pool create
   lvol:
     lv: thinpool
-    vg: data01
+    shrink: False
     size: "{{ docker.thinpool.size }}"
+    vg: "{{ vg }}"
 
 - name: Thin pool meta
   lvol:
     lv: thinpoolmeta
-    vg: data01
+    vg: "{{ vg }}"
     size: "{{ docker.thinpool.meta_size }}"
 
 - name: Convert thinpool
   command: >
-    lvconvert -y --zero n -c 512K --thinpool data01/thinpool
-      --poolmetadata data01/thinpoolmeta
+    lvconvert -y --zero n -c 512K --thinpool {{ vg }}/thinpool
+      --poolmetadata {{ vg }}/thinpoolmeta
   args:
-    creates: /dev/mapper/data01-thinpool_tdata
+    creates: /dev/mapper/{{ vg }}-thinpool_tdata
 
 - name: LVM profile path
   file:
-    dest: /etc/lvm/profile
+    path: /etc/lvm/profile
     state: directory
 
 - name: Define thinpool autoextend
   template:
-    dest: /etc/lvm/profile/data01-thinpool.profile
+    dest: /etc/lvm/profile/{{ vg }}-thinpool.profile
     src: thinpool.profile.j2
   notify: Activate thinpool autoextend
 
 - name: Docker repo key
   apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    id: "{{ docker.apt_repo.key }}"
+    url: "{{ docker.apt_repo.url }}"
 
 - name: Docker repo
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial edge
     filename: docker
+    repo: "{{ docker.apt_repo.repo }}"
 
 - name: Temporarily disable systemctl start
   copy:
     content: "#/bin/sh\necho Disabled by ansible: systemctl start\nexit 101\n"
     dest: /usr/sbin/policy-rc.d
-  changed_when: false
+  changed_when: False
 
 - name: Docker engine package
   apt:
-    name: docker-ce
+    name: "{{ docker.apt_repo.package_name }}"
     update_cache: yes
 
 - name: Docker options
@@ -103,10 +104,10 @@
 
 - name: Deal with conflicting systemd-unit option if present
   lineinfile:
-    dest: /lib/systemd/system/docker.service
-    regexp: "ExecStart=.*"
     line: ExecStart=/usr/bin/dockerd
-  ignore_errors: true
+    path: /lib/systemd/system/docker.service
+    regexp: "ExecStart=.*"
+  ignore_errors: True
   notify: Reload systemd
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
@@ -119,22 +120,40 @@
     dest: /etc/systemd/system/docker-local@.service
     src: docker-local@.service
 
+# TODO parse fstab seeking last luks line
+
+- name: Add RequiresMountsFor to docker.service
+  replace:
+    dest: /lib/systemd/system/docker.service
+    regexp: "^Requires=docker.socket$"
+    replace: >
+      Requires=docker.socket # Next line added by Ansible
+      \nRequiresMountsFor=/var/lib/docker/share/user
+
 - name: Reenable systemctl start
   file:
-    dest: /usr/sbin/policy-rc.d
+    path: /usr/sbin/policy-rc.d
     state: absent
-  changed_when: false
+  changed_when: False
 
 - name: docker-nonat script for MythTV
   copy:
     dest: /usr/local/bin/docker-nonat.sh
-    src: docker-nonat.sh
     mode: 0755
-  
+    src: docker-nonat.sh
+
 - name: Enable docker-permissions.service
   systemd:
-    name: docker-permissions
     enabled: yes
+    name: docker-permissions
+
+- name: Download docker-compose
+  get_url:
+    checksum: sha256:{{ docker.compose.sha256 }}
+    dest: /usr/local/bin/docker-compose
+    mode: 0755
+    url: https://github.com/docker/compose/releases/download/{{
+      docker.compose.version }}/docker-compose-Linux-x86_64
 
 - name: Docker service
   service:

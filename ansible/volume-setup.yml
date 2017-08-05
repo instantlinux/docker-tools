@@ -1,20 +1,18 @@
 ---
-# volumesetup.yml
+# volume-setup.yml
 
 # Set up a volumes for a Docker node
 #  This has support for creating/mounting LUKS encrypted volumes
 #  Keys are stored on a remote server accessed via sshfs
 
 # Usage:
-#  
+#
 #  ansible-playbook volume-setup.yml
 #
 # Note that any existing running containers will not have access to volumes
 # created/modified by this playbook; they must be restarted.
 
 - hosts: swarm_nodes
-  become: true
-  vars_files:
-  - local_vars.yml
+  become: True
   roles:
-  - docker_volumes
+  - volumes

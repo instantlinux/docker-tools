@@ -4,12 +4,6 @@
 # Set up all packages, volumes, security definitions and services
 #  for a docker swarm node
 
-- name: include_vars
-  include_vars:
-    file: "{{ item }}.yml"
-  with_items:
-  - vault
-
 - include: security.yml
 - include: repos.yml
 - include: kernel.yml

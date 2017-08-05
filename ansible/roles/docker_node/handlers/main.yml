@@ -8,11 +8,6 @@
     name: docker
     state: restarted
 
-- name: Restart ntpd
-  service:
-    name: ntp
-    state: restarted
-
 - name: Restart rsyslogd
   service:
     name: rsyslog
@@ -30,7 +25,7 @@
 
 - name: Activate thinpool autoextend
   shell: >
-    lvchange --metadataprofile data01-thinpool data01/thinpool &&
+    lvchange --metadataprofile {{ vg }}-thinpool {{ vg }}/thinpool &&
     lvs -o+seg_monitor
 
 - name: Update CA certificates

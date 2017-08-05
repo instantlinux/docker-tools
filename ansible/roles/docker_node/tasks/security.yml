@@ -19,11 +19,11 @@
     groups: "{{ item.groups if 'groups' in item else '' }}"
     home: "{{ item.home if 'home' in item else '/home/%s' % item.name }}"
     non_unique: "{{ item.non_unique if 'non_unique' in item else 'no' }}"
-    password: "{{ vault_users[item.name]['password'] if item.name in 
+    password: "{{ vault_users[item.name]['password'] if item.name in
                vault_users and 'password' in vault_users[item.name] else '*' }}"
     shell: "{{ item.shell if 'shell' in item else '/bin/bash' }}"
   with_items: "{{ local_users }}"
-  no_log: true
+  no_log: True
 
 - name: Define authenticator tokens
   template:
@@ -32,7 +32,7 @@
     owner: "{{ item.key }}"
     mode: 0400
   with_dict: "{{ vault_users }}"
-  no_log: true
+  no_log: True
 
 - name: Add google-authenticator to PAM sshd
   lineinfile:

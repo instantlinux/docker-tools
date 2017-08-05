@@ -2,12 +2,13 @@
 # set up a Docker node
 
 # Usage:
-#  
+#
 #  ansible-playbook node-setup.yml
 
 - hosts: swarm_nodes
-  become: true
-  vars_files:
-  - local_vars.yml
+  become: True
   roles:
   - docker_node
+  - { role: docker_network, tags: network }
+  - { role: monitoring_agent, tags: nagios }
+  - { role: ntp, tags: ntp }

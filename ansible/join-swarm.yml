@@ -1,47 +1,69 @@
 ---
+# join-swarm.yml
+#
+# Usage:
+#  Define groups for swarm_nodes and swarm_managers, then to join the node(s):
+#
+#  ansible-playbook join-swarm.yml
 
 - hosts: swarm_managers
-  become: true
+  become: True
   tasks:
-    - name: determine swarm status
-      shell: "docker info | egrep '^Swarm: ' | cut -d ' ' -f2"
+    - name: Determine swarm status
+      command: >
+        docker info --format {% raw %}"{{ json .Swarm.LocalNodeState
+        }}"{% endraw %}
       register: swarm_status
+      changed_when: False
 
-    - name: create swarm_manager_operational group
+    - name: Create swarm_manager_up group
       add_host:
         hostname: "{{ item }}"
         groups: swarm_manager_up
       with_items: "{{ play_hosts }}"
-      when: "'active' in swarm_status.stdout_lines"
-      run_once: true
+      changed_when: False
+      when: swarm_status.stdout == '"active"'
+      run_once: True
 
 - hosts: swarm_manager_up[0]
-  become: true
+  become: True
   vars:
     iface: br0
   tasks:
     - name: Fetch swarm manager token
-      shell: docker swarm join-token -q manager
+      command: docker swarm join-token -q manager
       register: swarm_manager_token
+      changed_when: False
 
     - name: Fetch swarm worker token
-      shell: docker swarm join-token -q worker
+      command: docker swarm join-token -q worker
       register: swarm_worker_token
+      changed_when: False
 
     - name: Fetch manager ips
       add_host:
         hostname: "{{ hostvars[item]['ansible_' + iface]['ipv4']['address'] }}"
         groups: swarm_manager_ips
       with_items: "{{ play_hosts }}"
+      changed_when: False
 
 - hosts: swarm_nodes
-  become: true
+  become: True
   vars:
-    join_token: "{{ hostvars[groups['swarm_managers'][0]
-                    ]['swarm_worker_token']['stdout'] }}"
     iface: br0
+    join_token: "{{ hostvars[groups['swarm_manager_up'][0]
+                    ]['swarm_worker_token']['stdout'] }}"
   tasks:
-  - name: Join worker nodes to swarm
-    command: >
-      docker swarm join --token={{ join_token }}
-      --advertise-addr={{ iface }}:2377 {{ groups['swarm_manager_ips'][0] }}:2377
+    - name: Determine swarm status
+      command: >
+        docker info --format {% raw %}"{{ json .Swarm.LocalNodeState
+        }}"{% endraw %}
+      register: swarm_status
+      changed_when: False
+
+    - name: Join worker nodes to swarm
+      command: >
+        docker swarm join --token={{ join_token }}
+          --advertise-addr={{ iface }}:2377
+          {{ groups['swarm_manager_ips'][0] }}:2377
+      when: swarm_status.stdout != '"active"'

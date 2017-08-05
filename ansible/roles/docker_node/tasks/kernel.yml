@@ -6,13 +6,13 @@
 - name: Check current kernel version
   command: uname -r
   register: kernel_version
-  changed_when: false
+  changed_when: False
 
 - name: Updated kernel headers (all)
   apt:
     deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-headers-{{
       kernel.version }}-{{ kernel.short_ver }}_{{ kernel.long_ver }}_all.deb"
-  when: "kernel_version.stdout != '%s-%s-generic' % (kernel.version, kernel.short_ver)"
+  when: kernel_version.stdout != '%s-%s-generic' % (kernel.version, kernel.short_ver)
 
 - name: Updated generic kernel headers (amd64)
   apt:
