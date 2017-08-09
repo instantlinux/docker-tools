@@ -1,19 +1,10 @@
 ---
 # main.yml
 
-# This is somewhat customized: apply your own settings
-
 - name: Install system packages
   apt:
     name: "{{ item }}"
   with_items: "{{ ubuntu_packages }}"
-
-- name: Symlink nrpe.d
-  file:
-    path: "{{ nagios.nrpe_path }}"
-    src: "{{ docker.local_volumes }}/admin/_data/services/nrpe/etc"
-    state: link
-    force: yes
 
 - name: Local nagios plugins path
   file:
@@ -24,15 +15,15 @@
 - name: Install NRPE plugins
   copy:
     dest: "{{ nagios.plugins_path }}"
-    src: plugins/
     mode: 0755
+    src: plugins/
   notify: Restart NRPE
 
 - name: Add NRPE to sudoers
   template:
-    src: nrpe_sudoer.j2
     dest: /etc/sudoers.d/nrpe
     mode: 0440
+    src: nrpe_sudoer.j2
     validate: "/usr/sbin/visudo -cf %s"
 
 - name: Allow from nagios server hosts
@@ -40,4 +31,10 @@
     dest: /etc/nagios/nrpe.cfg
     line: allowed_hosts={{ ','.join(nagios.allowed_hosts) }}
     regexp: "^allowed_hosts=.*"
+  notify: Restart NRPE
+
+- name: Add local nrpe definitions
+  template:
+    dest: "{{ nagios.nrpe_path }}"
+    src: nrpe_command.cfg.j2
   notify: Restart NRPE

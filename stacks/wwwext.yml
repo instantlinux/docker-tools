@@ -23,8 +23,8 @@ services:
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync-member == true
-      replicas: 1
+        - ${LABEL_WORKER:-node.role == worker}
+      replicas: 2
     secrets:
     - authtotp.ci.net-server-key.pem
     - cloud.ci.net-server-key.pem

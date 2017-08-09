@@ -41,16 +41,24 @@ docker_override: {}
 docker: "{{ docker_defaults | combine(docker_override) }}"
 
 kernel:
-  long_ver: 4.11.10-041110.201707121132
+  long_ver: 4.4.79-040479.201707271932
   origin: http://kernel.ubuntu.com/~kernel-ppa/mainline
-  short_ver: "041110"
-  version: 4.11.10
+  short_ver: "040479"
+  version: 4.4.79
 
 ubuntu_packages:
   - libpam-google-authenticator
   - python
   - python-pip
   - thin-provisioning-tools
+
+ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
+
+ubuntu_repos:
+  - deb {{ ubuntu_repo_uri }} xenial main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} xenial-updates main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} xenial-backports main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} xenial-security main restricted universe multiverse
 
 system_paths:
   ca_certs: /usr/local/share/ca-certificates

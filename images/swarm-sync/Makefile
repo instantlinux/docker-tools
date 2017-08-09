@@ -7,20 +7,21 @@ include ../../lib/build/Makefile.docker_image
 
 TEMPDIR := $(shell mktemp -d -t tempdir.XXXXX)
 SHARED_ROOT = /var/lib/docker/share
-PUBENV = .docker/swarm-sync.pub.env
+KEY_NAME ?= swarm-sync
+PUBENV = .docker/$(KEY_NAME).pub.env
 NRPE_PATH = /etc/nrpe.d
 
 default: $(HOME)/$(PUBENV) $(SHARED_ROOT) label_nodes
 
-$(HOME)/.docker/swarm-sync.pub.env:
+$(HOME)/.docker/$(KEY_NAME).pub.env:
 	@bash -c "cd $(TEMPDIR) && umask 077 && \
-	 ssh-keygen -b 2048 -f swarm-sync -N '' -q && \
+	 ssh-keygen -b 2048 -f $(KEY_NAME) -N '' -q && \
 	 echo -n 'SYNC_SSHKEY=no-pty,no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command=\"/usr/bin/unison -server\" ' > $(HOME)/$(PUBENV) && \
-	 cat swarm-sync.pub >> $(HOME)/$(PUBENV) && \
-	 docker secret create swarm-sync_sshkey swarm-sync || rm $(HOME)/$(PUBENV)"
+	 cat $(KEY_NAME).pub >> $(HOME)/$(PUBENV) && \
+	 docker secret create $(KEY_NAME)_sshkey $(KEY_NAME) || rm $(HOME)/$(PUBENV)"
 	@rm -r $(TEMPDIR)
 	@echo "For ssh keypair, see $(PUBENV)"
-	@docker secret inspect swarm-sync_sshkey
+	@docker secret inspect $(KEY_NAME)_sshkey
 
 label_nodes:
 	@docker node update --label-add swarm-sync=primary $(PRIMARY)

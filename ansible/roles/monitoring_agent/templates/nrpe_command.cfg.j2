@@ -1,6 +1,7 @@
 {{ ansible_managed | comment }}
 {% for key, item in nrpe_commands.iteritems()|sort %}
-command[{{ key }}]={{ nagios.plugins_path }}/{{ item.plugin
-   if 'plugin' in item else 'check_%s' % key }} {{ item.options
-   if 'options' in item else '' }}
+command[check_{{ key }}]={{ '/usr/bin/sudo ' if item.sudo is defined
+   and item.sudo else ''}}{{ nagios.plugins_path }}/{{ item.plugin
+   if item.plugin is defined else 'check_%s' % key }} {{ item.options
+   if item.options is defined else '' }}
 {% endfor %}

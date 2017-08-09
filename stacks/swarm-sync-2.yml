@@ -1,0 +1,46 @@
+version: "3.1"
+# Synchronize primary with tertiary
+#  Note that the stack has to be redeployed any time a new volume
+#  mount is added underneath the top-level share
+
+services:
+
+  primary:
+    image: ${REGISTRY_URI:-instantlinux}/swarm-sync:latest
+    environment:
+      SECRET: swarm-sync-2_sshkey
+      SYNC_INTERVAL: "2"
+      TZ: US/Pacific
+    volumes:
+    - logs:/var/log/unison
+    - syncarchive:/root/.unison
+    - ${SHARE_PATH}:/var/swarm-sync
+    secrets:
+    - swarm-sync-2_sshkey
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == primary
+    depends_on:
+    - peer
+
+  peer:
+    image: ${REGISTRY_URI:-instantlinux}/swarm-sync:latest
+    environment:
+      SYNC_ROLE: peer
+    env_file:
+    - ../../.docker/swarm-sync-2.pub.env
+    volumes:
+    - syncarchive:/root/.unison
+    - ${SHARE_PATH}:/var/swarm-sync
+    deploy:
+      placement:
+        constraints:
+        - node.labels.swarm-sync == tertiary
+
+volumes:
+  logs:
+  syncarchive:
+secrets:
+  swarm-sync-2_sshkey:
+    external: true

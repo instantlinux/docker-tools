@@ -2,7 +2,7 @@
 nagios_defaults:
   allowed_hosts:
   - localhost
-  nrpe_path: /etc/nagios/nrpe.d
+  nrpe_path: /etc/nagios/nrpe_local.cfg
   nrpe_service: nagios-nrpe-server
   nrpe_user: nagios
   plugins_path: /usr/local/lib/nagios
@@ -11,6 +11,22 @@ nagios_defaults:
 
 nagios_override: {}
 nagios: "{{ nagios_defaults | combine(nagios_override) }}"
+
+nrpe_command_defaults:
+  disk_status: {}
+  netint_eth0:
+    plugin: check_netint.pl
+    options: -S 1000Mb -n eth0$ -efq
+  ntpd_running:
+    plugin: check_docker_syscod.sh
+    options: -n ntpd_app_1 -c 5,10 -m 5,7 -s
+  swarm_sync:
+    plugin: check_file_age
+    options: -w 1800 -c 7200 -f {{ docker.local_volumes 
+      }}/swarm-sync_logs/_data/unison-status.txt
+
+nrpe_command_override: {}
+nrpe_commands: "{{ nrpe_command_defaults | combine(nrpe_command_override) }}"
 
 ubuntu_packages:
   - nagios-nrpe-server

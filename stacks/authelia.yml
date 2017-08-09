@@ -2,7 +2,7 @@ version: '3'
 
 services:
   authelia:
-    image: clems4ever/authelia
+    image: clems4ever/authelia:v3.2.0
     volumes:
     - ${ADMIN_PATH:-/opt}/authelia/config.yml:/etc/authelia/config.yml:ro
     - ${SHARE_PATH}/authelia/store:/var/lib/authelia/store
@@ -11,7 +11,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync-member == true
+        - ${LABEL_WORKER:-node.role == worker}
 
   ldap:
     image: dinkel/openldap:latest

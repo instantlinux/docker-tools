@@ -3,6 +3,13 @@ version: "3"
 # define DNS entries to resolve node1 / node2 / node3 (docker host IPs)
 #  optionally specify $ADV host/ip and $CLUSTER name
 
+# to restart a cluster, generate a new DISCOVERY_TOKEN
+#  DISCOVERY_TOKEN=$(basename `curl -s 'https://discovery.etcd.io/new?size=3'`)
+#  export DISCOVERY_TOKEN
+# use the same value on each instance
+# remove the etcd_data volume, then from services dir invoke:
+#  make etcd
+
 services:
   etcdinfra0:
     image: elcolio/etcd:latest
@@ -20,13 +27,11 @@ services:
       -name ${ADV:-etcdinfra0}
       -advertise-client-urls
          http://${ADV:-etcdinfra0}:2379,http://${ADV:-etcdinfra0}:4001
+      -discovery https://discovery.etcd.io/${DISCOVERY_TOKEN}
       -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
       -initial-advertise-peer-urls http://${ADV:-etcdinfra0}:2380
       -listen-peer-urls http://0.0.0.0:2380
       -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
-      -initial-cluster
-         node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380
-      -initial-cluster-state ${CLUSTER_STATE:-existing}
 
 volumes:
   data:

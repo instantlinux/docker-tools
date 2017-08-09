@@ -26,6 +26,7 @@
   - Filesystem resize
 
 - include: encrypted.yml
+- include: cifs.yml
 
 - name: Network and local fstab entries
   mount:

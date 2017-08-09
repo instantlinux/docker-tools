@@ -7,6 +7,7 @@ services:
     environment:
       CLUSTER_NAME: ${CLUSTER_NAME:-cluster01}
       DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
+      CLUSTER_SIZE: 3
     ports:
     - target: 3306
       published: 19306

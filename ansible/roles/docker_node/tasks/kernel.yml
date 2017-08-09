@@ -10,20 +10,21 @@
 
 - name: Updated kernel headers (all)
   apt:
-    deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-headers-{{
-      kernel.version }}-{{ kernel.short_ver }}_{{ kernel.long_ver }}_all.deb"
+    deb: "{{ kernel.origin }}/v{{ kernel.version.strip('.0')
+      }}/linux-headers-{{ kernel.version }}-{{ kernel.short_ver
+      }}_{{ kernel.long_ver }}_all.deb"
   when: kernel_version.stdout != '%s-%s-generic' % (kernel.version, kernel.short_ver)
 
 - name: Updated generic kernel headers (amd64)
   apt:
-    deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-headers-{{
-      kernel.version }}-{{ kernel.short_ver }}-generic_{{
-      kernel.long_ver }}_amd64.deb"
+    deb: "{{ kernel.origin }}/v{{ kernel.version.strip('.0')
+      }}/linux-headers-{{ kernel.version }}-{{ kernel.short_ver
+      }}-generic_{{ kernel.long_ver }}_amd64.deb"
   when: kernel_version.stdout != '%s-%s-generic' % (kernel.version, kernel.short_ver)
 
 - name: Updated kernel image (amd64)
   apt:
-    deb: "{{ kernel.origin }}/v{{ kernel.version }}/linux-image-{{
-      kernel.version }}-{{ kernel.short_ver }}-generic_{{
-      kernel.long_ver }}_amd64.deb"
+    deb: "{{ kernel.origin }}/v{{ kernel.version.strip('.0')
+      }}/linux-image-{{ kernel.version }}-{{ kernel.short_ver
+      }}-generic_{{ kernel.long_ver }}_amd64.deb"
   when: kernel_version.stdout != '%s-%s-generic' % (kernel.version, kernel.short_ver)

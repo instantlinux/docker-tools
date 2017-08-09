@@ -26,11 +26,13 @@ docs: .deploy/docs
 dovecot: .deploy/dovecot
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
+guacamole: .deploy/guacamole
 jenkins: .deploy/jenkins
 jira: .deploy/jira
 logspout: .deploy/logspout
 mariadb: .deploy/mariadb
 mysqldump: .deploy/mysqldump
+portainer: .deploy/portainer
 postfix: .deploy/postfix
 registry: .deploy/registry
 spamassassin: .deploy/spamassassin

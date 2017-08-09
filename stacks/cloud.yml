@@ -9,13 +9,13 @@ services:
     ports:
     - ${PORT_CLOUD:-18280}:80
     volumes:
-    - ${SHARE_PATH}/cloud/html:/var/www/html
+    - ${SHARE_PATH:-/opt}/cloud/html:/var/www/html
     - ${PHOTOS_PATH}/richb:/var/www/html/data/richb/files/Photos
     - ${PHOTOS_PATH}/chitof:/var/www/html/data/chitof/files/Photos
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync-member == true
+        - ${LABEL_WORKER:-node.role == worker}
 
 volumes:
   html:

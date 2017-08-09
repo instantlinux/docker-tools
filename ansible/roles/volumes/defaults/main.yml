@@ -23,6 +23,11 @@ network_mounts:
     options: _netdev,ro,soft
     type: nfs
 
+cifs_credentials:
+  file: /etc/security/cifs-credentials.txt
+  local_user: www-data
+  remote_user: nobody
+
 masterkey:
   path: /master
   host: 10.10.0.2

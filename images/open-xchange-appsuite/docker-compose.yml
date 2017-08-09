@@ -21,7 +21,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync-member == true
+        - ${LABEL_WORKER:-node.role == worker}
 
 networks:
   default:

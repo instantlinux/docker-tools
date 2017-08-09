@@ -21,8 +21,8 @@ services:
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync-member == true
-      replicas: 2
+        - ${LABEL_WORKER:-node.role == worker}
+      replicas: 3
     secrets:
     - desktop.ci.net-server-key.pem
     - git.instantlinux.net-server-key.pem
