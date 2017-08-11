@@ -15,8 +15,3 @@ services:
   guacd:
     hostname: guacd
     image: glyptodon/guacd:0.9.11-incubating
-
-networks:
-  default:
-    external:
-      name: app_net

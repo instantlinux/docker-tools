@@ -2,3 +2,4 @@ Cheetah==2.4.4
 pillow==4.1.1
 pyserial==3.3
 PyUSB==1.0.0
+six==1.10.0

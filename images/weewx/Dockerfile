@@ -46,7 +46,8 @@ RUN apk add --no-cache --update \
     pip --version && \
     apk add --no-cache --virtual .fetch-deps \
       gcc git freetype-dev jpeg-dev musl-dev zlib-dev && \
-    pip install -r /root/common.txt && \
+    pip install --target /usr/lib/python2.7/site-packages \
+      -r /root/common.txt && \
     tar xf weewx.tar.gz --strip-components=1 && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
     git clone https://github.com/instantlinux/weewx-WeeGreen.git \
