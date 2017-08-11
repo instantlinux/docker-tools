@@ -1,10 +1,6 @@
 ---
 # encrypted.yml
 
-- name: include_vars
-  include_vars:
-    file: vault.yml
-
 # Generate LUKS volumes
 
 - name: Master key mount point

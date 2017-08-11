@@ -1,14 +1,17 @@
 ---
 
-network_mode: dhcp
-network:
+network_defaults:
   address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
   bridge: br0
   gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
   interface: enp1s0
+  mode: dhcp
   nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
   netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
+
+network_override: {}
+network: "{{ network_defaults | combine(network_override) }}"
 
 ubuntu_packages:
   - bridge-utils

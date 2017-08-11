@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 auto {{ network.bridge }}
-iface {{ network.bridge }} inet {{ network_mode }}
-{% if network_mode == 'static' %}
+iface {{ network.bridge }} inet {{ network.mode }}
+{% if network.mode == 'static' %}
  bridge_ports {{ network.interface }}
  address {{ network.address }}
  netmask {{ network.netmask }}

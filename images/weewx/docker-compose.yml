@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/weewx:latest
+    image: ${REGISTRY_URI:-instantlinux}/weewx:3.0.1
     restart: always
     environment:
       ALTITUDE: 100, foot

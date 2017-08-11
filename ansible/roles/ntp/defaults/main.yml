@@ -1,7 +1,14 @@
 ---
- 
-ntp:
+
+ntp_defaults:
   servers:
   - 0.pool.ntp.org
   - 1.pool.ntp.org
   - 2.pool.ntp.org
+  service:
+    enabled: yes
+    name: ntp
+    state: restarted
+
+ntp_override: {}
+ntp: "{{ ntp_defaults | combine(ntp_override) }}"

@@ -17,7 +17,6 @@
     dest: "{{ nagios.plugins_path }}"
     mode: 0755
     src: plugins/
-  notify: Restart NRPE
 
 - name: Add NRPE to sudoers
   template:
@@ -25,6 +24,7 @@
     mode: 0440
     src: nrpe_sudoer.j2
     validate: "/usr/sbin/visudo -cf %s"
+  notify: Restart NRPE
 
 - name: Allow from nagios server hosts
   lineinfile:
