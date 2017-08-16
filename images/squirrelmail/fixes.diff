@@ -1,0 +1,36 @@
+--- functions/imap_general.php.dist
++++ functions/imap_general.php
+@@ -488,11 +488,30 @@
+         $host=$imap_server_address;
+ 
+         if (($use_imap_tls == true) and (check_php_version(4,3)) and (extension_loaded('openssl'))) {
+-          /* Use TLS by prefixing "tls://" to the hostname */
+-          $imap_server_address = 'tls://' . $imap_server_address;
++            if (function_exists('stream_socket_client')) {
++                $stream_options = array(
++                    'ssl' => array(
++                         'cafile' => '/etc/ssl/certs/ca-certificates.crt',
++                         'verify_peer' => false,
++                         'verify_peer_name' => false,
++                         'verify_depth' => 20,
++                     ),
++                );
++                $server_address = 'ssl://' . $imap_server_address . ':' . $imap_port;
++                $ssl_context = @stream_context_create($stream_options);
++                $connect_timeout = ini_get('default_socket_timeout');
++                // null timeout is broken
++                if ($connect_timeout == 0)
++                    $connect_timeout = 15;
++                $imap_stream = @stream_socket_client($server_address, $error_number, $error_string, $connect_timeout, STREAM_CLIENT_CONNECT, $ssl_context);
++            } else {
++                $imap_stream = @fsockopen('ssl://' . $imap_server_address, $imap_port, $error_number, $error_string, 15);
++            }
+         }
++        else {
+ 
+-    $imap_stream = @fsockopen($imap_server_address, $imap_port, $error_number, $error_string, 15);
++            $imap_stream = @fsockopen($imap_server_address, $imap_port, $error_number, $error_string, 15);
++        }
+ 
+     /* Do some error correction */
+     if (!$imap_stream) {

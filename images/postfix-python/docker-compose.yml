@@ -35,10 +35,6 @@ services:
 
 volumes:
   spool:
-networks:
-  default:
-    external:
-      name: app_net
 secrets:
   mysql-blacklist-user:
     external: true

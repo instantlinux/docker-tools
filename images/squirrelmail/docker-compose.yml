@@ -1,0 +1,36 @@
+version: "3.1"
+
+services:
+  app:
+    # image: ${REGISTRY_URI:-instantlinux}/squirrelmail:latest
+    image: squirrelmail
+    environment:
+      DB_HOST: db00.ci.net
+      DB_NAME_ADDR: rbaddr
+      DOMAIN: pioneer.ci.net
+      IMAP_SERVER: swarm01.ci.net
+      MESSAGE_MOTD: Remote WebMail Access \&nbsp;\&nbsp; pioneer.ci.net  
+      ORGANIZATION: Community Internet
+      SMTP_PORT: 25
+      SMTP_SMARTHOST: smtp.ci.net
+    ports:
+    - ${PORT_SQUIRRELMAIL:-8080}:80
+    volumes:
+    - ${SHARE_PATH}/squirrelmail/attach:/var/local/squirrelmail/attach
+    - ${SHARE_PATH}/squirrelmail/data:/var/local/squirrelmail/data
+    secrets:
+    - squirrelmail-db-password
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == vinson
+        # TODO
+        # ${LABEL_WORKER:-node.role == worker}
+
+secrets:
+  squirrelmail-db-password:
+    external: true
+networks:
+  default:
+    external:
+      name: app_net
