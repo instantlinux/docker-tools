@@ -29,7 +29,6 @@ ARG APACHE_UID=48
 ARG VERSION=master
 ARG GIT_SSL_NO_VERIFY=true
 
-# COPY instantlinux-ca.pem /usr/local/share/ca-certificates/instantlinux-ca.crt
 COPY fixes.diff /tmp/
 RUN adduser -u $APACHE_UID -s /sbin/nologin -g "Apache" -D apache && \
     apk add --no-cache --update apache2 ca-certificates openssl php5 \
