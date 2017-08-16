@@ -1,6 +1,5 @@
 #! /bin/sh
-APACHEDIR=/var/www/localhost
-APACHECONF=/etc/apache2/conf.d
+DIR=/var/www/localhost/htdocs/squirrelmail
 PHPINI=/etc/php5/php.ini
 DB_PASS=`cat /run/secrets/$DB_PASSWD_SECRET`
 
@@ -11,7 +10,10 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
-cd $APACHEDIR/htdocs/squirrelmail
+sed -i -e "s:^DocumentRoot .*:DocumentRoot \"${DIR}\":" \
+    /etc/apache2/httpd.conf
+
+cd $DIR
 for file in config/config.php plugins/sasql/sasql_conf.php; do
   sed -e "s:{{ ATTACHMENT_DIR }}:$ATTACHMENT_DIR:" \
       -e "s/{{ BANNER_HEIGHT }}/$BANNER_HEIGHT/" \
@@ -41,18 +43,7 @@ sed -i \
     -e "s/^upload_max_filesize =.*/upload_max_filesize = $PHP_UPLOAD_MAX_FILESIZE/" \
     $PHPINI
 
-cat >$APACHECONF/squirrelmail.conf <<EOF
-LoadModule actions_module modules/mod_actions.so
-<Directory "$APACHEDIR/htdocs/squirrelmail">
-    Options MultiViews
-    AllowOverride None
-</Directory>
-EOF
-
 mkdir -p /run/apache2
 chown apache $ATTACHMENT_DIR $DATA_DIR
 
-while [ 1 == 1 ]; do
-  /usr/sbin/httpd -DFOREGROUND
-  sleep 5
-done
+/usr/sbin/httpd -DFOREGROUND

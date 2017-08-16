@@ -37,6 +37,7 @@ postfix: .deploy/postfix
 registry: .deploy/registry
 spamassassin: .deploy/spamassassin
 splunk: .deploy/splunk
+squirrelmail: .deploy/squirrelmail
 swarm-sync: .deploy/swarm-sync
 wordpress-ci: .deploy/wordpress-ci
 wordpress-il: .deploy/wordpress-il

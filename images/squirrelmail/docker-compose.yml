@@ -2,8 +2,7 @@ version: "3.1"
 
 services:
   app:
-    # image: ${REGISTRY_URI:-instantlinux}/squirrelmail:latest
-    image: squirrelmail
+    image: ${REGISTRY_URI:-instantlinux}/squirrelmail:latest
     environment:
       DB_HOST: db00.ci.net
       DB_NAME_ADDR: rbaddr
@@ -18,19 +17,20 @@ services:
     volumes:
     - ${SHARE_PATH}/squirrelmail/attach:/var/local/squirrelmail/attach
     - ${SHARE_PATH}/squirrelmail/data:/var/local/squirrelmail/data
+    - logs:/var/log/apache2
     secrets:
     - squirrelmail-db-password
     deploy:
       placement:
         constraints:
-        - node.hostname == vinson
-        # TODO
-        # ${LABEL_WORKER:-node.role == worker}
+        - ${LABEL_WORKER:-node.role == worker}
 
-secrets:
-  squirrelmail-db-password:
-    external: true
+volumes:
+  logs:
 networks:
   default:
     external:
       name: app_net
+secrets:
+  squirrelmail-db-password:
+    external: true
