@@ -8,15 +8,25 @@
   template:
     dest: /etc/network/interfaces.d/{{ network.bridge }}
     src: interface.j2
+  when: network.bridge
 
 - name: Remove extraneous lines from network/interfaces
   replace:
     path: /etc/network/interfaces
     regexp: '^auto {{ network.interface }}$'
     replace: '# auto {{ network.interface }} - removed, see interfaces.d'
+  when: network.bridge
 
 - name: Remove extraneous lines from network/interfaces
   replace:
     path: /etc/network/interfaces
     regexp: '^iface {{ network.interface }} inet .*'
     replace: '# iface {{ network.interface }} - removed'
+  when: network.bridge
+
+- name: Set up keepalived (VRRP)
+  template:
+    dest: /etc/keepalived/keepalived.conf
+    src: keepalived.conf.j2
+  notify: Restart keepalived
+  when: network.swarm_ip

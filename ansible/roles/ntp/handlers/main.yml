@@ -1,6 +1,6 @@
 ---
 - name: Restart ntpd
   service:
-    enabled: "{{ service.enabled }}"
-    name: "{{ service.name }}"
-    state: "{{ service.state }}"
+    enabled: "{{ ntp.service.enabled }}"
+    name: "{{ ntp.service.name }}"
+    state: restarted

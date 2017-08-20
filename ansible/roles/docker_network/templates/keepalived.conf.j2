@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+vrrp_script chk_docker {
+    interval 5
+    script "killall -0 dockerd"
+    fall 2
+    rise 2
+}
+
+{% for key, instance in vrrp.iteritems() %}
+vrrp_instance {{ key }} {
+    interface {{ instance.interface }}
+    priority {{ instance.priority }}
+    track_script {
+      chk_docker
+    }
+    virtual_ipaddress {
+        {{ instance.ip }}
+    }
+    virtual_router_id {{ instance.id }}
+}
+{% endfor %}

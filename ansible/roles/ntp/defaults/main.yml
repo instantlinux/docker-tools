@@ -12,3 +12,6 @@ ntp_defaults:
 
 ntp_override: {}
 ntp: "{{ ntp_defaults | combine(ntp_override) }}"
+
+ubuntu_packages:
+  - ntp
