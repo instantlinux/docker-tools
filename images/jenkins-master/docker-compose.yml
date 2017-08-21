@@ -1,0 +1,58 @@
+version: "3.1"
+
+services:
+  jenkins-master:
+    image: ${REGISTRY_URI:-instantlinux}/jenkins-master:latest
+    environment:
+      TZ: ${TZ:-US/Pacific}
+      ARTIFACTORY_URI: https://repo.ci.net/artifactory
+      ARTIFACTORY_USER: jenkins
+      JENKINS_URL: https://jenkins.ci.net
+      SMTP_ADMIN_ADDRESS: "Jenkins <jenkins@instantlinux.net>"
+      SMTP_SMARTHOST: smtp.ci.net
+    ports:
+    - ${PORT_JENKINS:-8080}:8080
+    volumes:
+    - ${SHARE_PATH:-/opt}/jenkins_home:/var/jenkins_home
+    - jenkinsbackup:/var/jenkins_backup
+    # TODO: don't mount /var/run/docker.sock
+    - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      placement:
+        constraints:
+        - ${LABEL_WORKER:-node.role == worker}
+    secrets:
+    - artifactory-user-password
+    - jenkins-admin-password
+
+  jenkins-slave:
+    image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:latest
+    environment:
+      TZ: ${TZ:-US/Pacific}
+      SWARM_MASTER_URL: http://jenkins-master:8080/
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+        - ${LABEL_WORKER:-node.role == worker}
+    secrets:
+      - jenkins-user-password
+      - repo-push
+
+volumes:
+  jenkinsdata:
+    external: true
+  jenkinsbackup:
+    external: true
+secrets:
+  artifactory-user-password:
+    external: true
+  jenkins-admin-password:
+    external: true
+  jenkins-user-password:
+    external: true
+  repo-push:
+    external: true

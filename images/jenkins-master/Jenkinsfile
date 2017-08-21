@@ -33,7 +33,7 @@ pipeline {
       steps {
         sh "if [ ! -d /opt/jenkins/.docker ]; then \
           mkdir /opt/jenkins/.docker ;\
-          cp /var/run/secrets/repo-push /opt/jenkins/.docker/config.json; fi"
+          cp /run/secrets/repo-push /opt/jenkins/.docker/config.json; fi"
         script {
           img.push "${params.BaseEnv}_build_${env.BUILD_NUMBER}_${git_commit}"
         }
