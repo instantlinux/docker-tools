@@ -24,13 +24,17 @@ DB_NAME_ADDR | contacts | db for addresses
 DB_PASSWD_SECRET | squirrelmail-db-password | name of secret
 DB_USER | sqmail | db username
 DOMAIN | domain.com | default From domain
+IMAP_AUTH_MECH | login | IMAP auth: login, plain, cram-md5, digest-md5
 IMAP_PORT | 993 | dovecot imapd port
 IMAP_SERVER | imap | hostname of imapd
 IMAP_TLS | true | use TLS or not
 MESSAGE_MOTD | "Remote WebMail Access" | 
 ORGANIZATION | "The IT Crowd" | Organization
+PROVIDER_NAME | "(Tech Support)" | Upper-right link text
+PROVIDER_URI | http://squirrelmail.org/ | Upper-right link
 PHP_POST_MAX_SIZE | 40M | Message max size
 PHP_UPLOAD_MAX_FILESIZE | 32M | Upload max size
+SMTP_AUTH_MECH | plain | SMTP auth: none or the above (see IMAP_AUTH)
 SMTP_SMARTHOST | smtp | Outbound email relay hostname
 SMTP_PORT | 587 | Port for sending emails (no auth)
 SMTP_TLS | false | use TLS or not for SMTP

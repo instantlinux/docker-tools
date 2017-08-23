@@ -26,11 +26,15 @@ for file in config/config.php plugins/sasql/sasql_conf.php; do
       -e "s/{{ DB_PASS }}/$DB_PASS/" \
       -e "s/{{ DB_USER }}/$DB_USER/" \
       -e "s/{{ DOMAIN }}/$DOMAIN/" \
+      -e "s/{{ IMAP_AUTH_MECH }}/$IMAP_AUTH_MECH/" \
       -e "s/{{ IMAP_PORT }}/$IMAP_PORT/" \
       -e "s/{{ IMAP_SERVER }}/$IMAP_SERVER/" \
       -e "s/{{ IMAP_TLS }}/$IMAP_TLS/" \
       -e "s/{{ MESSAGE_MOTD }}/$MESSAGE_MOTD/" \
       -e "s/{{ ORGANIZATION }}/$ORGANIZATION/" \
+      -e "s/{{ PROVIDER_NAME }}/PROVIDER_NAME/" \
+      -e "s+{{ PROVIDER_URI }}+PROVIDER_URI+" \
+      -e "s/{{ SMTP_AUTH_MECH }}/$SMTP_AUTH_MECH/" \
       -e "s/{{ SMTP_PORT }}/$SMTP_PORT/" \
       -e "s/{{ SMTP_SMARTHOST }}/$SMTP_SMARTHOST/" \
       -e "s/{{ SMTP_TLS }}/$SMTP_TLS/" \
