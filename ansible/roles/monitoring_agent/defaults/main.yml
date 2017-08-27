@@ -2,22 +2,30 @@
 nagios_defaults:
   allowed_hosts:
   - localhost
-  nrpe_path: /etc/nagios/nrpe_local.cfg
-  nrpe_service: nagios-nrpe-server
+  nrpe_cfg: "{{ '/etc/nagios' if ansible_os_family == 'Debian' else '/etc'
+    }}/nrpe.cfg"
+  nrpe_path: /etc/{{ 'nagios' if ansible_os_family == 'Debian'
+    else 'nrpe.d' }}/nrpe_local.cfg
+  nrpe_service: "{{ 'nagios-nrpe-server' if ansible_os_family == 'Debian'
+    else 'nrpe' }}"
   nrpe_user: nagios
-  plugins_path: /usr/local/lib/nagios
+  local_plugins_path: /usr/local/lib/nagios
   plugins_sudo:
   - check_smartmon.py
+  system_plugins_path: /usr/lib/nagios/plugins
 
 nagios_override: {}
 nagios: "{{ nagios_defaults | combine(nagios_override) }}"
 
 nrpe_command_defaults:
-  disk_status: {}
+  disk_status:
+    local: True
   netint_eth0:
+    local: True
     plugin: check_netint.pl
     options: -S 1000Mb -n eth0$ -efq
   ntpd_running:
+    local: True
     plugin: check_docker_syscod.sh
     options: -n ntpd_app_1 -c 5,10 -m 5,7 -s
   swarm_sync:
@@ -27,6 +35,16 @@ nrpe_command_defaults:
 
 nrpe_command_override: {}
 nrpe_commands: "{{ nrpe_command_defaults | combine(nrpe_command_override) }}"
+
+opensuse_packages:
+  - monitoring-plugins-load
+  - monitoring-plugins-procs
+  - nrpe
+  - smartmontools
+
+opensuse_repos:
+  - name: oss
+    repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
 
 ubuntu_packages:
   - nagios-nrpe-server

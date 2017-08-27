@@ -1,0 +1,71 @@
+---
+# main.yml
+
+# This is heavily customized: replace with your own security policies
+
+- include: packages.yml
+
+- name: Define group ids
+  group:
+    name: "{{ item.key }}"
+    gid: "{{ item.value }}"
+  with_dict: "{{ local_groups }}"
+
+- name: Define users
+  user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment if 'comment' in item else '' }}"
+    uid: "{{ item.uid }}"
+    createhome: "{{ item.createhome if 'createhome' in item else 'yes' }}"
+    group: "{{ item.group }}"
+    groups: "{{ item.groups if 'groups' in item else '' }}"
+    home: "{{ item.home if 'home' in item else '/home/%s' % item.name }}"
+    non_unique: "{{ item.non_unique if 'non_unique' in item else 'no' }}"
+    password: "{{ vault_users[item.name]['password'] if item.name in
+               vault_users and 'password' in vault_users[item.name] else '*' }}"
+    shell: "{{ item.shell if 'shell' in item else '/bin/bash' }}"
+  with_items: "{{ myth_users }}"
+  no_log: True
+
+- name: Define authenticator tokens
+  template:
+    dest: /home/{{ item.key }}/.google_authenticator
+    src: google_authenticator.j2
+    owner: "{{ item.key }}"
+    mode: 0400
+  with_dict: "{{ vault_users }}"
+  no_log: True
+
+- name: Add google-authenticator to PAM sshd
+  lineinfile:
+    dest: /etc/pam.d/sshd
+    line: auth   required   pam_google_authenticator.so
+
+- name: Allow password auth in sshd
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: PasswordAuthentication yes
+    regexp: "^PasswordAuthentication .*"
+  notify: Restart sshd
+
+- name: Activate sshd ChallengeResponse auth
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^ChallengeResponseAuthentication .*"
+    line: ChallengeResponseAuthentication yes
+  notify: Restart sshd
+
+- name: Root .ssh directory
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: 0700
+
+# Look for ssh key files: keys/ssh_public/<user>-*.pub
+
+- name: Add authorized keys for users
+  authorized_key:
+    user: "{{ item.split('/')[-1:][0].split('-')[0] }}"
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+  - keys/ssh_public/*.pub

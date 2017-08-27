@@ -1,0 +1,6 @@
+{{ ansible_managed | comment }}
+Section "InputClass"
+  Identifier "Disable evdev processing for MythTV, we use LIRC"
+  MatchProduct "{{ ir_device.product_name }}"
+  Option "Ignore" "on"
+EndSection

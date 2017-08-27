@@ -1,0 +1,69 @@
+---
+
+db_defaults:
+  host: db00
+  user: mythtv
+  name: mythtv
+  context: local
+
+ir_device:
+  device: /dev/lirc0
+  module: lirc_mceusb2
+  product_name: Media Center Ed. eHome Infrared Remote Transceiver (1784:0008)
+
+mythdb_overrides: {}
+db: "{{ db_defaults | combine(mythdb_overrides) }}"
+
+nvidia_driver:
+  checksum: d2cf81b5994a1728dc4851cdf0480cde0a34b040c94de0d5265edcfe3b90680a
+  download_uri: http://us.download.nvidia.com/XFree86/Linux-x86_64
+  version: 340.101
+
+opensuse_packages:
+  - ImageMagick-devel
+  - kdm
+  - libdvdcss
+  - liblirc_client0=0.9.0
+  - lirc=0.9.0
+  - lirc-remotes=0.9.0
+  - kernel-default
+  - kernel-devel
+  - kernel-headers
+  - kernel-source
+  - mythtv-frontend
+  - MozillaFirefox
+  - mariadb-client
+  - mythtv-base-themes
+  - mythtv-common
+  - nrpe
+  - nagios-plugins
+  - net-snmp
+  - ntp
+  - patterns-openSUSE-kde4
+  - perl-Crypt-DES
+  - perl-mythtv
+  - perl-Net-CIDR
+  - perl-Net-Server
+  - perl-Net-SNMP
+  - perl-TimeDate
+  - python-mysql
+  - python-mythtv
+  - rsyslog
+  - v4l-utils
+  - xdm
+  - xkeyboard-config
+  - xorg-x11-driver-input
+  - xorg-x11-driver-video
+  - xorg-x11-fonts
+
+opensuse_repo_defaults:
+  - name: oss
+    repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
+  - name: ossupd
+    repo: http://download.opensuse.org/update/leap/42.2/oss/
+  - name: packman
+    repo: http://packman.inode.at/suse/openSUSE_Leap_42.2/
+    flags: -f --keep-packages
+
+opensuse_repo_additions: []
+opensuse_repos: "{{ opensuse_repo_defaults + opensuse_repo_additions }}"

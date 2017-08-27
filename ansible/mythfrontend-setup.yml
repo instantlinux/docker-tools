@@ -1,0 +1,15 @@
+---
+# set up a MythTV frontend
+
+# Usage:
+#
+#  ansible-playbook frontend-setup.yml
+
+- hosts: mythfrontends
+  become: True
+  roles:
+  - users
+  - monitoring_agent
+  - mythfrontend
+  - ntp
+  - volumes

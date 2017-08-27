@@ -1,0 +1,8 @@
+{{ ansible_managed | comment }}
+DBHostName={{ db.host }}
+DBUserName={{ db.user }}
+DBPassword={{ vault_mythdb_password }}
+DBName={{ db.name }}
+DBType=QMYSQL3
+LocalHostName={{ db.context }}
+

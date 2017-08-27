@@ -5,6 +5,7 @@
   apt:
     name: "{{ item }}"
   with_items: "{{ ubuntu_packages }}"
+  when: ansible_os_family == 'Debian'
 
 - name: Create mount points
   file:
@@ -26,6 +27,8 @@
   - Filesystem resize
 
 - include: encrypted.yml
+  when: volumes[vg]
+
 - include: cifs.yml
 
 - name: Network and local fstab entries

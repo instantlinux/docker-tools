@@ -1,0 +1,22 @@
+---
+# autosuspend.yml
+#  This is an energy-saving feature
+#  Put the frontend to sleep (S3 suspend) when nobody's likely to watch
+
+- name: Daily wakeup_at script
+  template:
+    dest: /usr/local/bin/wakeup_at
+    mode: 0755
+    src: wakeup_at.j2
+
+- name: Cron S3 suspend/wakeup schedule
+  cron:
+    cron_file: wakeup_at
+    hour: "{{ suspend.hour }}"
+    job: >
+      /usr/local/bin/wakeup_at
+      {{ suspend.wake_hour }}:{{ suspend.wake_minute }}
+    minute: "{{ suspend.minute }}"
+    name: mythtv_suspend
+    user: root
+    weekday: "{{ suspend.weekday }}"

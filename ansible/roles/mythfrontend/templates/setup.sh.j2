@@ -1,0 +1,8 @@
+#! /bin/bash
+{{ ansible_managed | comment }}
+xset s off
+xset -dpms
+killall irxevent irexec
+irxevent -d
+irexec -d
+mythfrontend --logpath=/var/log/mythfrontend

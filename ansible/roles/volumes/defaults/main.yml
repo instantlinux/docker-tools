@@ -1,9 +1,11 @@
-# These are only examples: override these with your own volumes
-#  and network mounts
+---
+# These are only examples: in a group_vars file, override these with
+#  your own volumes and network mounts
 
 vg: data01
 fs_type: ext4
 
+# LUKS-encrypted volumes
 volumes:
   data01:
     backup:
@@ -11,12 +13,14 @@ volumes:
       inodes: 100
       path: /var/lib/docker/volumes/backup/_data
 
+# Unencrypted local volumes
 local_volumes:
   tmpfs:
     path: /tmp
     options: nodev,nosuid,nodiratime,size=1000M
     type: tmpfs
 
+# Network volumes
 network_mounts:
   nfs:/service:
     path: /var/mounted

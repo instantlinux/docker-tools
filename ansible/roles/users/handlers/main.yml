@@ -1,0 +1,9 @@
+---
+# main.yml
+
+# Handlers for service actions
+
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted

@@ -1,20 +1,17 @@
 ---
 # main.yml
 
-- name: Install system packages
-  apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
+- include: packages.yml
 
 - name: Local nagios plugins path
   file:
-    path: "{{ nagios.plugins_path }}"
+    path: "{{ nagios.local_plugins_path }}"
     recurse: True
     state: directory
 
-- name: Install NRPE plugins
+- name: Install local NRPE plugins
   copy:
-    dest: "{{ nagios.plugins_path }}"
+    dest: "{{ nagios.local_plugins_path }}"
     force: no
     mode: 0755
     src: plugins/
@@ -29,7 +26,7 @@
 
 - name: Allow from nagios server hosts
   lineinfile:
-    dest: /etc/nagios/nrpe.cfg
+    dest: "{{ nagios.nrpe_cfg }}"
     line: allowed_hosts={{ ','.join(nagios.allowed_hosts) }}
     regexp: "^allowed_hosts=.*"
   notify: Restart NRPE
@@ -39,3 +36,9 @@
     dest: "{{ nagios.nrpe_path }}"
     src: nrpe_command.cfg.j2
   notify: Restart NRPE
+
+- name: Enable NRPE service
+  service:
+    name: "{{ nagios.nrpe_service }}"
+    enabled: yes
+    state: started

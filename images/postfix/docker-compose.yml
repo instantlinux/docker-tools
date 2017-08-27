@@ -9,7 +9,7 @@ services:
     - certs:/etc/ssl/certs:ro
     - spool:/var/spool/postfix
     ports:
-    - 3525:25
+    - ${PORT_POSTFIX_EXTERNAL:-25}:25
     secrets:
      - postfix-sasl-passwd
      - webmail.ci.net-server-key.pem 
