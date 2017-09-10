@@ -46,6 +46,16 @@ kernel:
   short_ver: "040479"
   version: 4.4.79
 
+sysctl:
+  fs.inotify.max_user_watches: 65536
+
+syslog:
+  host: syslog
+  port: 514
+
+system_paths:
+  ca_certs: /usr/local/share/ca-certificates
+
 ubuntu_packages:
   - libpam-google-authenticator
   - python
@@ -59,13 +69,6 @@ ubuntu_repos:
   - deb {{ ubuntu_repo_uri }} xenial-updates main restricted universe multiverse
   - deb {{ ubuntu_repo_uri }} xenial-backports main restricted universe multiverse
   - deb {{ ubuntu_repo_uri }} xenial-security main restricted universe multiverse
-
-system_paths:
-  ca_certs: /usr/local/share/ca-certificates
-
-syslog:
-  host: syslog
-  port: 514
 
 local_group_defaults:
   docker: 485

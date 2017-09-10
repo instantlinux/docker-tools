@@ -28,3 +28,10 @@
       }}/linux-image-{{ kernel.version }}-{{ kernel.short_ver
       }}-generic_{{ kernel.long_ver }}_amd64.deb"
   when: kernel_version.stdout != '%s-%s-generic' % (kernel.version, kernel.short_ver)
+
+- name: Sysctl tuning parameters
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+  with_dict: "{{ sysctl }}"
