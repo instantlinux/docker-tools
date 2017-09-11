@@ -4,23 +4,29 @@ The MythTV backend built under OpenSuSE.
 
 ### Usage
 
-To run mythtv-setup, invoke an exec shell and enable sshd with xauth:
+This image must be run in network_mode:host in order to communicate with HD Homerun tuners; assign a new IP address and hostname for this application, and define it as a secondary IP address on your Docker host's primary interface.
+
+For configuration, see the example docker-compose.yml. Set environment variables and secrets as defined here, then run "docker-compose up -d".
+
+Reach mythtv-setup in the usual way; default password is mythtv:
 ~~~
-/usr/sbin/sshd-gen-keys-start
-/usr/sbin/sshd
+ssh -X mythtv@<host-ip>
+mythtv-setup
 ~~~
-Then invoke "ssh -X" to the IP address of the container, as user mythtv
-(same password) to run mythtv-setup in the normal way.
+Change the password by generating a new hashed password and setting mythtv-user-password secret.
+
 ### Variables
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| APACHE_LOCK_DIR | /var/lock/apache2 | |
-| APACHE_LOG_DIR | /var/log/apache2 | |
-| APACHE_PID_FILE | /var/run/apache2.pid | |
-| APACHE_RUN_GROUP | www-data | |
-| APACHE_RUN_USER | www-data | |
-| HOME | /root | |
-| LANG | en_US.UTF-8 | |
-| LANGUAGE | en_US:en | |
-| LC_ALL | en_US.UTF-8 | |
-| TERM | xterm | |
+Variable | Default | Description
+-------- | ------- | -----------
+APACHE_LOG_DIR | /var/log/apache2 | Apache logs
+DBNAME | mythtv | Database name
+DBSERVER | db00 | Database server hostname
+LANG | en_US.UTF-8 | 
+LANGUAGE | en_US.UTF-8 | 
+TZ | UTC | Time zone
+
+### Secrets
+Secret | Description
+------ | -----------
+mythtv-db-password | Password of MythTV db user
+mythtv-user-password | Hashed password of MythTV ssh user

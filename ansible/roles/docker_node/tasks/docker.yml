@@ -115,11 +115,6 @@
     dest: /etc/systemd/system/docker-permissions.service
     src: docker-permissions.service
 
-- name: Systemd unit file for post-startup docker commands
-  copy:
-    dest: /etc/systemd/system/docker-local@.service
-    src: docker-local@.service
-
 # TODO parse fstab seeking last luks line
 
 - name: Add RequiresMountsFor to docker.service
@@ -135,12 +130,6 @@
     path: /usr/sbin/policy-rc.d
     state: absent
   changed_when: False
-
-- name: docker-nonat script for MythTV
-  copy:
-    dest: /usr/local/bin/docker-nonat.sh
-    mode: 0755
-    src: docker-nonat.sh
 
 - name: Enable docker-permissions.service
   systemd:

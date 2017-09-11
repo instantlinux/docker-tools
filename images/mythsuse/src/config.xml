@@ -2,10 +2,10 @@
   <LocalHostName>my-unique-identifier-goes-here</LocalHostName>
   <Database>
     <PingHost>1</PingHost>
-    <Host>localhost</Host>
+    <Host>{{ DBSERVER }}</Host>
     <UserName>mythtv</UserName>
-    <Password>mythtv</Password>
-    <DatabaseName>myth28</DatabaseName>
+    <Password>{{ DBPASSWORD }}</Password>
+    <DatabaseName>{{ DBNAME }}</DatabaseName>
     <Port>3306</Port>
   </Database>
   <WakeOnLAN>

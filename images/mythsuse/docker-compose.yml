@@ -1,0 +1,31 @@
+version: "3.1"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/mythsuse:latest
+    hostname: ${HOSTNAME_MYTHTV:-mythtv}
+    restart: always
+    environment:
+      DBNAME: ${DB_MYTHTV:-mythtv}
+      DBSERVER: ${DB_HOST:-db00}
+      TZ: US/Pacific
+    network_mode: host
+    volumes:
+    - apache2:/var/log/apache2
+    - data:/var/mythdata
+    - home:/home/mythtv
+    - /var/mythtv:/var/mythtv
+    secrets:
+    - mythtv-db-password
+    - mythtv-user-password
+
+secrets:
+  mythtv-db-password:
+    file: /var/adm/admin/secrets/mythtv-db-password
+  mythtv-user-password:
+    file: /var/adm/admin/secrets/mythtv-user-password
+
+volumes:
+  apache2:
+  data:
+  home:
