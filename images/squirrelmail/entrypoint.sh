@@ -32,8 +32,8 @@ for file in config/config.php plugins/sasql/sasql_conf.php; do
       -e "s/{{ IMAP_TLS }}/$IMAP_TLS/" \
       -e "s/{{ MESSAGE_MOTD }}/$MESSAGE_MOTD/" \
       -e "s/{{ ORGANIZATION }}/$ORGANIZATION/" \
-      -e "s/{{ PROVIDER_NAME }}/PROVIDER_NAME/" \
-      -e "s+{{ PROVIDER_URI }}+PROVIDER_URI+" \
+      -e "s/{{ PROVIDER_NAME }}/$PROVIDER_NAME/" \
+      -e "s+{{ PROVIDER_URI }}+$PROVIDER_URI+" \
       -e "s/{{ SMTP_AUTH_MECH }}/$SMTP_AUTH_MECH/" \
       -e "s/{{ SMTP_PORT }}/$SMTP_PORT/" \
       -e "s/{{ SMTP_SMARTHOST }}/$SMTP_SMARTHOST/" \
