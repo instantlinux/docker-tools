@@ -26,6 +26,7 @@ docs: .deploy/docs
 dovecot: .deploy/dovecot
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
+git-dump: .deploy/git-dump
 guacamole: .deploy/guacamole
 jenkins: .deploy/jenkins
 jira: .deploy/jira
