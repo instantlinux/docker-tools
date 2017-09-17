@@ -1,6 +1,6 @@
 HOST = $(shell hostname -s)
 HOSTS = mckinley vinson denali
-SERVICES = etcd mt-daapd mythsuse ntpd weewx
+SERVICES = etcd mt-daapd mythsuse ntpd nut-upsd weewx
 REGISTRY_URI := dockerhub.instantlinux.net:5000
 
 # Before starting etcd, see notes in etcd/docker-compose.yml.
@@ -15,9 +15,9 @@ endif
 
 default: $(HOST)
 
-mckinley: etcd mt-daapd ntpd mythsuse weewx
+mckinley: etcd mt-daapd mythsuse ntpd nut-upsd weewx
 vinson: etcd mt-daapd
-denali: etcd
+denali: etcd nut-upsd
 
 $(SERVICES)::
 	@echo Starting $@
