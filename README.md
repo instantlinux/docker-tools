@@ -5,7 +5,6 @@ managing a small software-dev shop using free software. Contents:
 
 | Directory | Description |
 | --------- | ----------- |
-| containers | special-case containers needing a script |
 | images | images which are published to Docker Hub |
 | lib/build | build makefile and tools |
 | services | docker-compose services that can't run in swarm |
@@ -21,21 +20,32 @@ Stack definitions include:
 * jenkins
 * jira
 * mariadb (clustered)
+* wordpress
 
 **Networking and support**
-* blacklist - a local rbldnsd for spam control
+* authelia - single-signon multi-factor auth
+* cloud - nextcloud, private sync like Apple iCloud
+* crashplan - backups
+* docs - OX Appsuite, private cloud like Google Docs
 * ez-ipupdate - Dynamic DNS client
 * guacamole - authenticated remote-desktop server
 * logspout - central logging for Docker
 * mysqldump - per-database alternative to xtrabackup
-* postfix - compact general-purpose image in 11MB
-* postfix-python - postfix with spam-control scripts
+* nut-upsd - Network UPS Tools
 * rsyslogd - logger in a 13MB image
-* spamassassin - spam control daemon
 * splunk - the free version
 * swarm-sync - poor-man's SAN for persistent storage
 
+** Email**
+* blacklist - a local rbldnsd for spam control
+* dovecot - imapd server
+* postfix - compact general-purpose image in 11MB
+* postfix-python - postfix with spam-control scripts
+* squirrelmail - older version of Squirrelmail
+* spamassassin - spam control daemon
+
 **Entertainment**
+* davite - party-invites manager like eVite
 * mt-daapd - iTunes server
 * mythsuse - MythTV backend
 * weewx - Weather station software (Davis VantagePro2 etc.)

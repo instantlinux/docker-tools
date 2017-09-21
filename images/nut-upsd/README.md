@@ -22,13 +22,13 @@ Variable | Default | Description |
 -------- | ------- | ----------- |
 API_USER | upsmon| API user
 DESCRIPTION | UPS | user-assigned description
-DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html)
+DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html))
+GROUP | nut | local group
 NAME | ups | user-assigned config name
 PORT | auto | device port on host
 SECRET | nut-upsd-password | secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
-TZ | UTC | time zone
 USER | nut | local user
 
 ### Secrets
