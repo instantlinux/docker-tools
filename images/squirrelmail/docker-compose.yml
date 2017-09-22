@@ -7,7 +7,7 @@ services:
       DB_HOST: db00.ci.net
       DB_NAME_ADDR: rbaddr
       DOMAIN: pioneer.ci.net
-      IMAP_SERVER: swarm01.ci.net
+      IMAP_SERVER: swarm00.ci.net
       MESSAGE_MOTD: Remote WebMail Access \&nbsp;\&nbsp; pioneer.ci.net  
       ORGANIZATION: Community Internet
       SMTP_PORT: 25

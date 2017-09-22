@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/dnsmasq-pxeboot:latest
+    environment:
+      DHCP_RANGE: ${DHCP_RANGE}
+      DOMAIN: ${DOMAIN:-example.com}
+      DNS_ENABLE: "no"
+      DNS_SERVER: ${DNS_SERVERS:-8.8.8.8}
+      NTP_SERVER: ${NTP_SERVERS:-0.pool.ntp.org}
+      SUBNET1_GATEWAY: ${SUBNET1_GATEWAY:-192.168.1.1}
+      SUBNET1_INTERFACE: ${SUBNET1_INTERFACE:-eth0}
+    ports:
+    - ${PORT_DNSMASQ_DNS:-5354}:53/udp
+    - ${PORT_DNSMASQ_DHCP:-67}:67
+    - ${PORT_DNSMASQ_DHCP:-67}:67/udp
+    - ${PORT_DNSMASQ_TFTP:-69}:69/udp
+    volumes:
+    - ${SHARE_PATH}/dnsmasq-pxeboot/pxelinux:/tftpboot/pxelinux
+    - ${SHARE_PATH}/dnsmasq-pxeboot/data/misc:/var/lib/misc
+    - ${ADMIN_PATH}/dnsmasq-pxeboot/etc:/etc/dnsmasq.d/local
+    network_mode: host
+    cap_add:
+    - NET_ADMIN
+  

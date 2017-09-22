@@ -16,7 +16,7 @@ endif
 default: $(HOST)
 
 mckinley: etcd mt-daapd mythsuse ntpd nut-upsd weewx
-vinson: etcd mt-daapd
+vinson: dnsmasq-pxeboot etcd mt-daapd
 denali: etcd nut-upsd
 
 $(SERVICES)::
