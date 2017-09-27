@@ -16,7 +16,7 @@ if [ "$DHCP_ENABLE" == yes ]; then
   if [ "$TFTP_SERVER" == self ]; then
     TFTP_SERVER=$(ifconfig $SUBNET1_INTERFACE | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}')
   fi
-  for file in /etc/dhcpd.conf /etc/dhcpd.d/default.conf /etc/dhcpd.d/apc-rpdu.conf; do
+  for file in /etc/dhcpd.conf /etc/dhcpd.d/default.conf /etc/dhcpd.d/subnet.conf /etc/dhcpd.d/apc-rpdu.conf; do
     if [ ! -e $file ]; then
       sed -e "s:{{ DHCP_BOOT }}:$DHCP_BOOT:" \
         -e "s:{{ DHCP_LEASE_TIME }}:$DHCP_LEASE_TIME:" \
