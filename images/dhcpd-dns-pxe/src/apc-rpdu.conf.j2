@@ -1,0 +1,8 @@
+# For network-attached UPS units
+option space APC;
+option APC.cookie code 1 = string;
+class "apc-rpdu" {
+        match if substring (option vendor-class-identifier,0,3) = "APC";
+        vendor-option-space APC;
+        option APC.cookie "1APC";
+}

@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/dhcpd-dns-pxe:latest
+    environment:
+      DHCP_NETBIOS_NAME_SERVERS: ${DHCP_NETBIOS_NAME_SERVERS}
+      DHCP_SUBNET1: ${DHCP_SUBNET1:-192.168.1.0}
+      DOMAIN: ${DOMAIN:-example.com}
+      DNS_SERVER: ${DNS_SERVERS:-8.8.8.8}
+      DNS_UPSTREAM: ${DNS_UPSTREAM:-8.8.8.8}
+      NTP_SERVER: ${NTP_SERVERS:-0.pool.ntp.org}
+      PORT_DNSMASQ_DNS: ${PORT_DNSMASQ_DNS:-53}
+      SUBNET1_GATEWAY: ${SUBNET1_GATEWAY:-192.168.1.1}
+      SUBNET1_INTERFACE: ${SUBNET1_INTERFACE:-eth0}
+      TZ: ${TZ:-US/Pacific}
+    ports:
+    - ${PORT_DNSMASQ_DNS:-53}:53/udp
+    - 67:67/udp
+    - 69:69/udp
+    volumes:
+    - ${SHARE_PATH}/dhcpd-dns-pxe/pxelinux:/tftpboot/pxelinux
+    - ${SHARE_PATH}/dhcpd-dns-pxe/data/misc:/var/lib/misc
+    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dhcpd.d:/etc/dhcpd.d
+    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dnsmasq.d:/etc/dnsmasq.d
+    network_mode: host
+    cap_add:
+    - NET_ADMIN
+  

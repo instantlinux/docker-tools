@@ -1,0 +1,8 @@
+subnet {{ DHCP_SUBNET1 }} netmask {{ SUBNET1_NETMASK }} {
+  allow unknown-clients;
+  authoritative;
+  default-lease-time {{ DHCP_LEASE_TIME }};
+  {{ RANGE_OPTION }}
+  option routers {{ SUBNET1_GATEWAY }};
+  option subnet-mask {{ SUBNET1_NETMASK }};
+}
