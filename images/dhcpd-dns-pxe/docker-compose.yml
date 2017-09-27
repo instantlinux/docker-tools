@@ -5,6 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/dhcpd-dns-pxe:latest
     environment:
       DHCP_NETBIOS_NAME_SERVERS: ${DHCP_NETBIOS_NAME_SERVERS}
+      DHCP_RANGE: ${DHCP_RANGE}
       DHCP_SUBNET1: ${DHCP_SUBNET1:-192.168.1.0}
       DOMAIN: ${DOMAIN:-example.com}
       DNS_SERVER: ${DNS_SERVERS:-8.8.8.8}
@@ -19,11 +20,13 @@ services:
     - 67:67/udp
     - 69:69/udp
     volumes:
-    - ${SHARE_PATH}/dhcpd-dns-pxe/pxelinux:/tftpboot/pxelinux
-    - ${SHARE_PATH}/dhcpd-dns-pxe/data/misc:/var/lib/misc
+    - ${SHARE_PATH}/dhcpd-dns-pxe/pxelinux:/tftpboot/pxelinux:ro
     - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dhcpd.d:/etc/dhcpd.d
     - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dnsmasq.d:/etc/dnsmasq.d
+    - leases:/var/lib/misc
     network_mode: host
     cap_add:
     - NET_ADMIN
-  
+
+volumes:
+  leases:
