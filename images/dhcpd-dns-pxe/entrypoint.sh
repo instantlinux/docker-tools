@@ -29,6 +29,7 @@ if [ "$DHCP_ENABLE" == yes ]; then
         -e "s:{{ DHCP_NETBIOS_NAME_SERVERS }}:$DHCP_NETBIOS_NAME_SERVERS:" \
         -e "s:{{ NETBIOS_OPTION }}:$NETBIOS_OPTION:" \
         -e "s:{{ NTP_SERVER }}:$NTP_SERVER:" \
+        -e "s:{{ RANGE_OPTION }}:$RANGE_OPTION:" \
         -e "s:{{ SUBNET1_GATEWAY }}:$SUBNET1_GATEWAY:" \
         -e "s:{{ SUBNET1_NETMASK }}:$SUBNET1_NETMASK:" \
         -e "s:{{ TFTP_ENABLE }}:$TFTP_ENABLE:" \
@@ -45,9 +46,9 @@ if [ "$DHCP_ENABLE" == yes ]; then
   if [ ! -z "$LISTEN_ADDRESS" ]; then
       LISTEN_FLAG="-s $LISTEN_ADDRESS"
   fi
-  touch $DHCPD_LEASE_PATH/dhcpd.leases
-  chown $DHCP_USER $DHCPD_LEASE_PATH/dhcpd.leases
-  dhcpd -d -cf /etc/dhcpd.conf -lf $DHCPD_LEASE_PATH/dhcpd.leases \
+  touch $DHCP_LEASE_PATH/dhcpd.leases
+  chown $DHCP_USER $DHCP_LEASE_PATH/dhcpd.leases
+  dhcpd -d -cf /etc/dhcpd.conf -lf $DHCP_LEASE_PATH/dhcpd.leases \
     -user $DHCP_USER -group daemon $LISTEN_FLAG $SUBNET1_INTERFACE &
 fi
 
