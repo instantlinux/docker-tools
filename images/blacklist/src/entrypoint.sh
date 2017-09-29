@@ -15,9 +15,7 @@ su $USERNAME bash -c "
   [ -e whitelist ] || touch whitelist
   if [ ! -e forward ]; then
     echo '\$SOA' 3600 $RBL_DOMAIN $RBL_DOMAIN 0 600 300 86400 300 >forward
-    for NS in $NS_SERVERS; do
-      echo '\$NS' 3600 \$NS >>forward
-    done
+    echo '\$NS' 3600 \$NS_SERVERS >>forward
   fi"
 
 mysql --defaults-file=$HOMEDIR/.my.cnf <<EOT

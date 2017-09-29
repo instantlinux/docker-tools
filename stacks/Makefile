@@ -40,6 +40,7 @@ spamassassin: .deploy/spamassassin
 splunk: .deploy/splunk
 squirrelmail: .deploy/squirrelmail
 swarm-sync: .deploy/swarm-sync
+udp-nginx-proxy: .deploy/udp-nginx-proxy
 wordpress-ci: .deploy/wordpress-ci
 wordpress-il: .deploy/wordpress-il
 www00: .deploy/www00

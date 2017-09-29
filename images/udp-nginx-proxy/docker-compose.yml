@@ -2,13 +2,20 @@ version: "3"
 
 services:
   app:
-    # image: ${REGISTRY_URI:-instantlinux}/udp-nginx-proxy:latest
+    image: ${REGISTRY_URI:-instantlinux}/udp-nginx-proxy:latest
     image: udp-nginx-proxy
-    restart: always
     environment:
       BACKENDS: ${UDP_BACKENDS:-self}
-      INTERFACE: ${SUBNET1_INTERFACE:-eth0}
       PORT_BACKEND: ${PORT_UDPPROXY_BACKEND:-53}
     ports:
-    - ${PORT_UDP_DNS:-8888}:8888
-    network_mode: host
+    - 53:53/udp
+    deploy:
+      placement:
+        constraints:
+        - ${LABEL_WORKER:-node.role == worker}
+      replicas: 2
+
+networks:
+  default:
+    external:
+      name: app_net

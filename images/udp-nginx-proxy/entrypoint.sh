@@ -1,10 +1,18 @@
-#! /bin/sh -e
+#! /bin/sh -xe
 
 CONF=/usr/local/lib/udp.conf
 
 SELF_IP=$(ifconfig $INTERFACE | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}')
-if [ "$PORT_LISTEN" == self ]; then
-  PORT_LISTEN=$SELF_IP
+if [ "$IP_LISTEN" == self ]; then
+  if [ -z "$SELF_IP" ]; then
+    echo Could not determine IP for interface=$INTERFACE
+    exit 1
+  fi
+  LISTEN=$SELF_IP:$PORT_LISTEN
+elif [ ! -z "$IP_LISTEN" ]; then
+  LISTEN=$LISTEN_IP:$PORT_LISTEN
+else
+  LISTEN=$PORT_LISTEN
 fi
 
 if [ ! -s /usr/local/lib/udp.conf ]; then
@@ -21,7 +29,7 @@ EOF
   cat <<EOF >> $CONF
   }
   server {
-    listen $PORT_LISTEN udp;
+    listen $LISTEN udp;
     proxy_pass backends;
     proxy_responses 1;
     error_log stderr;
@@ -34,4 +42,4 @@ if [ ! -e /etc/nginx/.configured ]; then
   cat $CONF >> /etc/nginx/nginx.conf
   touch /etc/nginx/.configured
 fi
-exec /usr/sbin/nginx
+exec /usr/sbin/nginx -g 'daemon off;'

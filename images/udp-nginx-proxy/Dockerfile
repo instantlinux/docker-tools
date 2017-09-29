@@ -3,12 +3,12 @@ MAINTAINER Rich Braun "docker@instantlinux.net"
 
 ENV BACKENDS=self \
     INTERFACE=eth0 \    
-    IP_LISTEN=self \
+    IP_LISTEN= \
     PORT_BACKEND=53 \
     PORT_LISTEN=53
 
 RUN rm /etc/nginx/conf.d/default.conf
 EXPOSE 53
-VOLUMES /usr/local/lib
+VOLUME /usr/local/lib
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

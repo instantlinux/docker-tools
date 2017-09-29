@@ -3,6 +3,7 @@ services:
 
   app:
     image: alpine:3.6
+    restart: always
     command: sh -c 'mkdir -p /var/lib/ntp/drift; exec /usr/sbin/ntpd -dn -I eth0'
     volumes:
     - ${ADMIN_PATH:-/opt}/ntpd/ntp.conf:/etc/ntp.conf:ro
