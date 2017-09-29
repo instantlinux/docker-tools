@@ -1,6 +1,6 @@
 HOST = $(shell hostname -s)
 HOSTS = mckinley vinson denali
-SERVICES = dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd weewx
+SERVICES = dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd udp-nginx-proxy weewx
 REGISTRY_URI := dockerhub.instantlinux.net:5000
 
 # Before starting etcd, see notes in etcd/docker-compose.yml.
@@ -15,9 +15,9 @@ endif
 
 default: $(HOST)
 
-mckinley: dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd weewx
-vinson: dhcpd-dns-pxe etcd mt-daapd
-denali: dhcpd-dns-pxe etcd nut-upsd
+mckinley: dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd udp-nginx-proxy weewx
+vinson: dhcpd-dns-pxe etcd mt-daapd udp-nginx-proxy
+denali: dhcpd-dns-pxe etcd nut-upsd udp-nginx-proxy
 
 $(SERVICES)::
 	@echo Starting $@

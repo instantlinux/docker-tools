@@ -1,0 +1,79 @@
+#!groovy
+// Pipeline for docker-image build
+//  created by richb@instantlinux.net 20-apr-2017
+
+def registry = 'dockerhub.instantlinux.net:5000'
+def notify = 'richb@instantlinux.net'
+
+pipeline {
+  parameters {
+    string(name: 'Service', defaultValue: 'udp-nginx-proxy',
+           description: 'Service image to test/deploy')
+    string(name: 'BaseEnv', defaultValue: 'dev',
+           description: 'Environment to test/deploy')
+  }
+  agent { label 'swarm' }
+  stages {
+    stage('Static Code Analysis') {
+      steps {
+        sh "env ; cd images/${params.Service} && make analysis"
+        sh "git rev-parse HEAD > git_commit.log"
+      }
+    }
+    stage('Create Image') {
+      steps {
+        script {
+          git_commit=readFile('git_commit.log').take(7)
+          dir("images/${params.Service}") {
+	      // TODO pass build_arg label(s)
+            img = docker.build("${registry}/${params.Service\
+              }:${params.BaseEnv}_build_${env.BUILD_NUMBER}_${git_commit}")
+          }
+        }
+      }
+    }
+    stage('Push Image') {
+      steps {
+        sh "if [ ! -d /opt/jenkins/.docker ]; then \
+          mkdir /opt/jenkins/.docker ;\
+          cp /run/secrets/repo-push /opt/jenkins/.docker/config.json; fi"
+        script {
+          img.push "${params.BaseEnv}_build_${env.BUILD_NUMBER}_${git_commit}"
+        }
+      }
+    }
+    stage('Functional Tests') {
+      steps {
+        script {
+          dir("images/${params.Service}") {
+            sh "make test_functional"
+            img.push "latest"
+          }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      deleteDir()
+    }
+    success {
+      emailext (
+        to: notify,
+        subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} success",
+        body: "Build URL: ${env.BUILD_URL}.\n",
+        attachLog: true
+      )
+    }
+    failure {
+      sh "docker rmi ${registry}/${params.BaseEnv}/${params.Service\
+        }:build_${env.BUILD_NUMBER}"
+      emailext (
+        to: notify,
+        subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} failed",
+        body: "Failed build URL: ${env.BUILD_URL}.\n",
+        attachLog: true
+      )
+    }
+  }
+}

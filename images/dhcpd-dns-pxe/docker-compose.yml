@@ -3,6 +3,7 @@ version: "3"
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/dhcpd-dns-pxe:latest
+    restart: always
     environment:
       DHCP_NETBIOS_NAME_SERVERS: ${DHCP_NETBIOS_NAME_SERVERS}
       DHCP_RANGE: ${DHCP_RANGE}
