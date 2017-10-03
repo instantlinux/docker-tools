@@ -37,11 +37,12 @@
     content: "{{ vault_cert_keys.registry }}"
     mode: 0400
 
-- name: Also add registry SSL cert to system's trusted CA root
+- name: Add trusted root certificate(s)
   copy:
-    dest: "{{ system_paths.ca_certs }}/docker-local.crt"
+    dest: "{{ system_paths.ca_certs }}/docker-{{ item.strip('.pem') }}.crt"
     mode: 0400
-    src: certs/registry-cert.pem
+    src: certs/{{ item }}
+  with_items: "{{ system_certs }}"
   notify: Update CA certificates
 
 - name: Thin pool create

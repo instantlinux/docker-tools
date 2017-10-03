@@ -29,6 +29,7 @@ services:
     - jenkins.ci.net-server-key.pem
     - jira.ci.net-server-key.pem
     - monitor.ci.net-server-key.pem
+    - nexus.instantlinux.net-server-key.pem
     - repo.ci.net-server-key.pem
     - splunk.ci.net-server-key.pem
 
@@ -46,6 +47,8 @@ secrets:
   jira.ci.net-server-key.pem:
     external: true
   monitor.ci.net-server-key.pem:
+    external: true
+  nexus.instantlinux.net-server-key.pem:
     external: true
   repo.ci.net-server-key.pem:
     external: true

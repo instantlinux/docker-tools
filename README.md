@@ -20,6 +20,7 @@ Stack definitions include:
 * jenkins
 * jira
 * mariadb (clustered)
+* nexus
 * wordpress
 
 **Networking and support**

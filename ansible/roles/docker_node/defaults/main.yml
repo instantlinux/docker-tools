@@ -56,6 +56,10 @@ syslog:
 system_paths:
   ca_certs: /usr/local/share/ca-certificates
 
+system_certs:
+  - ca-root.pem
+  - registry-cert.pem
+  
 ubuntu_packages:
   - libpam-google-authenticator
   - python

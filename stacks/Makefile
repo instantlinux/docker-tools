@@ -33,6 +33,7 @@ jira: .deploy/jira
 logspout: .deploy/logspout
 mariadb: .deploy/mariadb
 mysqldump: .deploy/mysqldump
+nexus: .deploy/nexus
 portainer: .deploy/portainer
 postfix: .deploy/postfix
 registry: .deploy/registry

@@ -1,7 +1,8 @@
 DOM = ci.net
+DOM2 = instantlinux.net
 WEB_HOSTS = cloud.$(DOM) desktop.$(DOM) jenkins.$(DOM) jira.$(DOM) monitor.$(DOM) \
-	 repo.$(DOM) splunk.$(DOM) authtotp.$(DOM) webmail.$(DOM) www.$(DOM) \
-	 git.instantlinux.net homebase.instantlinux.net www.instantlinux.net
+	 nexus.$(DOM2) repo.$(DOM) splunk.$(DOM) authtotp.$(DOM) webmail.$(DOM) \
+	 www.$(DOM) git.$(DOM2) homebase.$(DOM2) www.$(DOM2)
 DOCKER_HOSTS = swarm01.$(DOM) mckinley.$(DOM) vinson.$(DOM) denali.$(DOM)
 DOCKER_CLIENTS = administrator portainer
 CERT_INFO = --subj-city='San Francisco' --subj-state=CA \
