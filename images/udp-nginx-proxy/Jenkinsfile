@@ -1,55 +1,53 @@
-#!groovy
+#!/usr/bin/env groovy
 // Pipeline for docker-image build
 //  created by richb@instantlinux.net 20-apr-2017
 
-def registry = 'dockerhub.instantlinux.net:5000'
+def baseEnv = 'dev'
+def registry = 'nexus.instantlinux.net'
 def notify = 'richb@instantlinux.net'
+def service = env.JOB_NAME.split('/', 2)[0]
 
 pipeline {
-  parameters {
-    string(name: 'Service', defaultValue: 'udp-nginx-proxy',
-           description: 'Service image to test/deploy')
-    string(name: 'BaseEnv', defaultValue: 'dev',
-           description: 'Environment to test/deploy')
-  }
   agent { label 'swarm' }
   stages {
     stage('Static Code Analysis') {
       steps {
-        sh "env ; cd images/${params.Service} && make analysis"
-        sh "git rev-parse HEAD > git_commit.log"
+	sh "env ; cd images/${service} && make analysis"
+	sh "git rev-parse HEAD > git_commit.log"
       }
     }
     stage('Create Image') {
       steps {
-        script {
-          git_commit=readFile('git_commit.log').take(7)
-          dir("images/${params.Service}") {
-	      // TODO pass build_arg label(s)
-            img = docker.build("${registry}/${params.Service\
-              }:${params.BaseEnv}_build_${env.BUILD_NUMBER}_${git_commit}")
-          }
-        }
+	script {
+	  gitCommit = readFile('git_commit.log').take(7)
+	  imageTag = "${baseEnv}_build_${env.BUILD_NUMBER}_${gitCommit}"
+	  dir("images/${service}") {
+	    img = docker.build("${registry}/${service}:${imageTag}")
+	  }
+	}
       }
     }
     stage('Push Image') {
       steps {
-        sh "if [ ! -d /opt/jenkins/.docker ]; then \
-          mkdir /opt/jenkins/.docker ;\
-          cp /run/secrets/repo-push /opt/jenkins/.docker/config.json; fi"
-        script {
-          img.push "${params.BaseEnv}_build_${env.BUILD_NUMBER}_${git_commit}"
-        }
+        withDockerRegistry([credentialsId: 'docker-registry',
+	                    url: "https://${registry}"]) {
+	  script {
+	    img.push imageTag
+          }
+	}
       }
     }
     stage('Functional Tests') {
       steps {
-        script {
-          dir("images/${params.Service}") {
-            sh "make test_functional"
-            img.push "latest"
+        withDockerRegistry([credentialsId: 'docker-registry',
+	                    url: "https://${registry}"]) {
+	  script {
+	    dir("images/${service}") {
+	      sh 'make test_functional'
+	      img.push 'latest'
+	    }
           }
-        }
+	}
       }
     }
   }
@@ -61,13 +59,12 @@ pipeline {
       emailext (
         to: notify,
         subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} success",
-        body: "Build URL: ${env.BUILD_URL}.\n",
+        body: "Build URL: ${env.BUILD_URL}.\nDocker Image ${registry}/${service}\n",
         attachLog: true
       )
     }
     failure {
-      sh "docker rmi ${registry}/${params.BaseEnv}/${params.Service\
-        }:build_${env.BUILD_NUMBER}"
+      sh "docker rmi ${registry}/${service}:${imageTag}"
       emailext (
         to: notify,
         subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} failed",

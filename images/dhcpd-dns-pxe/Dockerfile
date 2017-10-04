@@ -24,7 +24,7 @@ ENV DHCP_BOOT=pxelinux.0 \
     TFTP_SERVER=self \
     TZ=UTC
 
-RUN apk add --no-cache --update dhcp dnsmasq
+RUN apk add --no-cache --update dhcp==4.3.4-r3 dnsmasq==2.78
 
 EXPOSE 53/udp 67/udp 69/udp
 VOLUME $DHCP_LEASE_PATH $TFTP_ROOT /etc/dhcpd.d /etc/dnsmasq.d

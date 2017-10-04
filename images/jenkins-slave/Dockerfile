@@ -1,4 +1,4 @@
-FROM openjdk:8u121-jdk-alpine
+FROM openjdk:8u131-jdk-alpine
 
 ENV SWARM_CLIENT_EXECUTORS=4 \
     SWARM_CLIENT_JAR=/opt/jenkins-swarm/swarm-client.jar \
@@ -15,17 +15,18 @@ ENV SWARM_CLIENT_EXECUTORS=4 \
     SWARM_WORKDIR=/opt/jenkins \
     TZ=UTC
     
-ARG COMPOSE_VERSION=1.15
+ARG _CLIENT_VERSION=3.4
+ARG _COMPOSE_VERSION=1.16.1
+ARG _DOCKER_VERSION=17.05.0-r0
+ARG _TINI_VERSION=0.15.0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${_COMPOSE_VERSION}/docker-compose-Linux-x86_64
 ARG _PLUGIN_DOWNLOADS=https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client
-ARG _CLIENT_VERSION=3.4
 ARG _TINI_DOWNLOADS=https://github.com/krallin/tini/releases/download
-ARG _TINI_VERSION=0.15.0
 ARG DOCKER_GID=485
 ARG JENKINS_UID=1000
 ARG CLIENT_SHA=931b026d311023fe19c130211bef137f4873fafc19e4a41bca8fa41ffbb27a49
-ARG COMPOSE_SHA=0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
+ARG COMPOSE_SHA=1804b0ce6596efe707b9cab05d74b161833ed503f0535a937dd5d17bea8fc50a
 ARG TINI_SHA=4007655082f573603c02bc1d2137443c8e153af047ffd088d02ccc01e6f06170
 
 COPY requirements.txt /root/
@@ -35,12 +36,12 @@ RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $SWARM_WORKDIR -u $JENKINS_UID -G docker \
       -s /bin/bash $SWARM_JENKINS_USER && \
     apk add --update --no-cache \
-      bash curl docker gcc git gzip make python py-pip py-virtualenv tar \
-      tzdata uwsgi-python wget && \
+      bash curl docker==$_DOCKER_VERSION gcc git gzip make openssh-client \
+      python py-pip py-virtualenv tar tzdata uwsgi-python wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
-    curl -o ${SWARM_CLIENT_JAR} -fL \
-      ${_PLUGIN_DOWNLOADS}/${_CLIENT_VERSION}/swarm-client-${_CLIENT_VERSION}.jar  && \
+    curl -o $SWARM_CLIENT_JAR -fL \
+      $_PLUGIN_DOWNLOADS/$_CLIENT_VERSION/swarm-client-$_CLIENT_VERSION.jar && \
     curl -o /bin/tini -fL ${_TINI_DOWNLOADS}/v${_TINI_VERSION}/tini-static && \
     curl -L ${_COMPOSE_URL} -o /usr/local/bin/docker-compose && \
 

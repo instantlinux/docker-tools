@@ -31,12 +31,19 @@ if [ -n "$SWARM_CLIENT_NAME" ]; then
   swarm_node_name="-name '$SWARM_CLIENT_NAME'"
 fi
 
+if [ ! -s $SWARM_WORKDIR/.docker/config.json ]; then
+  umask 077
+  mkdir -p $SWARM_WORKDIR/.docker
+  echo -e '{ "auths": {\n  }\n}' > /dev/shm/config.json
+  ln -s /dev/shm/config.json $SWARM_WORKDIR/.docker/
+fi
+
 unset SWARM_JENKINS_USER
 unset SWARM_JENKINS_PASSWORD
 
 if [ "$1" == 'swarm' ]; then
   # Run the Swarm-Client according to environment variables.
-    exec $SWARM_JAVA_HOME/bin/java $SWARM_VM_PARAMETERS \
+  exec $SWARM_JAVA_HOME/bin/java $SWARM_VM_PARAMETERS \
     -jar $SWARM_CLIENT_JAR $SWARM_CLIENT_PARAMETERS  \
     -executors $SWARM_CLIENT_EXECUTORS -fsroot $SWARM_WORKDIR \
     -master $SWARM_MASTER_URL \

@@ -4,12 +4,12 @@ services:
   jenkins-master:
     image: ${REGISTRY_URI:-instantlinux}/jenkins-master:latest
     environment:
-      TZ: ${TZ:-US/Pacific}
       ARTIFACTORY_URI: https://repo.ci.net/artifactory
       ARTIFACTORY_USER: jenkins
       JENKINS_URL: https://jenkins.ci.net
       SMTP_ADMIN_ADDRESS: "Jenkins <jenkins@instantlinux.net>"
       SMTP_SMARTHOST: smtp.ci.net
+      TZ: ${TZ:-US/Pacific}
     ports:
     - ${PORT_JENKINS:-8080}:8080
     volumes:
@@ -23,13 +23,14 @@ services:
         - ${LABEL_WORKER:-node.role == worker}
     secrets:
     - artifactory-user-password
-    - jenkins-admin-password
 
   jenkins-slave:
     image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:latest
     environment:
-      TZ: ${TZ:-US/Pacific}
+      SWARM_JENKINS_SECRET: jenkins-agent-password
+      SWARM_JENKINS_USER: svc_jenkins
       SWARM_MASTER_URL: http://jenkins-master:8080/
+      TZ: ${TZ:-US/Pacific}
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     deploy:
@@ -39,6 +40,7 @@ services:
         constraints:
         - ${LABEL_WORKER:-node.role == worker}
     secrets:
+      - jenkins-agent-password
       - jenkins-user-password
       - repo-push
 
@@ -50,7 +52,7 @@ volumes:
 secrets:
   artifactory-user-password:
     external: true
-  jenkins-admin-password:
+  jenkins-agent-password:
     external: true
   jenkins-user-password:
     external: true
