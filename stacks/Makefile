@@ -37,6 +37,7 @@ nexus: .deploy/nexus
 portainer: .deploy/portainer
 postfix: .deploy/postfix
 registry: .deploy/registry
+rsyslogd: .deploy/rsyslogd
 spamassassin: .deploy/spamassassin
 splunk: .deploy/splunk
 squirrelmail: .deploy/squirrelmail
@@ -46,6 +47,7 @@ wordpress-ci: .deploy/wordpress-ci
 wordpress-il: .deploy/wordpress-il
 www00: .deploy/www00
 wwwext: .deploy/wwwext
+wx-nginx: .deploy/wx-nginx
 
 net_create::
 	docker network create dbcluster --driver overlay $(LABELS)

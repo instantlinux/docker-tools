@@ -1,7 +1,7 @@
 HOST = $(shell hostname -s)
 HOSTS = mckinley vinson denali
+REGISTRY_URI ?= nexus.instantlinux.net
 SERVICES = dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd weewx
-REGISTRY_URI := dockerhub.instantlinux.net:5000
 
 # Before starting etcd, see notes in etcd/docker-compose.yml.
 

@@ -32,8 +32,9 @@ environment variables are:
 | LOGGING_INTERVAL | 300 | sampling interval |
 | RAIN_YEAR_START | 7 | month to start collecting annual rain data |
 | RAPIDFIRE | True | enable Weather Underground realtime updates |
+| RSYNC_DEST | /usr/share/nginx/html | rsync destination path |
 | RSYNC_HOST | web01 | rsync destination host |
-| RSYNC_DEST | /var/www/htdocs/wx | rsync destination path |
+| RSYNC_PORT | 22 | rsync ssh port |
 | RSYNC_USER | wx | rsync username |
 | SKIN | standard | skin to enable |
 | STATION_ID | unset | Weather Underground station ID |

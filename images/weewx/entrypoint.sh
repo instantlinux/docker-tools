@@ -54,9 +54,10 @@ if [ ! -d /root/.ssh ]; then
   cat >/root/.ssh/config <<EOF
 Host $RSYNC_HOST
   IdentityFile /run/$SSHKEY
+  Port $RSYNC_PORT
   User $RSYNC_USER
 EOF
-  ssh-keyscan $RSYNC_HOST >>/root/.ssh/known_hosts
+  ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST >>/root/.ssh/known_hosts
 fi
 
 weewxd $HOMEDIR/weewx.conf|grep -v LOOP:
