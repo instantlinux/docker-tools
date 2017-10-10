@@ -1,6 +1,6 @@
 ## vsftpd
 
-This wraps an upload script along with vsftpd for publishing still images from network-attached webamcs to the Weather Underground webcam server.
+A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in Alpine.
 
 ### Usage
 
