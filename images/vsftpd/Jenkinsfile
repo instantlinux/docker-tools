@@ -12,42 +12,42 @@ pipeline {
   stages {
     stage('Static Code Analysis') {
       steps {
-	sh "env ; cd images/${service} && make analysis"
-	sh "git rev-parse HEAD > git_commit.log"
+        sh "env ; cd images/${service} && make analysis"
+        sh "git rev-parse HEAD > git_commit.log"
       }
     }
     stage('Create Image') {
       steps {
-	script {
-	  gitCommit = readFile('git_commit.log').take(7)
-	  imageTag = "${baseEnv}_build_${env.BUILD_NUMBER}_${gitCommit}"
-	  dir("images/${service}") {
-	    img = docker.build("${registry}/${service}:${imageTag}")
-	  }
-	}
+        script {
+          gitCommit = readFile('git_commit.log').take(7)
+          imageTag = "${baseEnv}_build_${env.BUILD_NUMBER}_${gitCommit}"
+          dir("images/${service}") {
+            img = docker.build("${registry}/${service}:${imageTag}")
+          }
+        }
       }
     }
     stage('Push Image') {
       steps {
         withDockerRegistry([credentialsId: 'docker-registry',
-	                    url: "https://${registry}"]) {
-	  script {
-	    img.push imageTag
+                            url: "https://${registry}"]) {
+          script {
+            img.push imageTag
           }
-	}
+        }
       }
     }
     stage('Functional Tests') {
       steps {
         withDockerRegistry([credentialsId: 'docker-registry',
-	                    url: "https://${registry}"]) {
-	  script {
-	    dir("images/${service}") {
-	      sh 'make test_functional'
-	      img.push 'latest'
-	    }
+                            url: "https://${registry}"]) {
+          script {
+            dir("images/${service}") {
+              sh 'make test_functional'
+              img.push 'latest'
+            }
           }
-	}
+        }
       }
     }
   }

@@ -1,5 +1,7 @@
 ## vsftpd
 
+[![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Image badge")
+
 A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in Alpine.
 
 ### Usage
@@ -8,11 +10,11 @@ The most-common directives can be specified in environment variables as shown be
 
 A single upload user can be specified via the FTPUSER_xxx variables. It is activated by defining ftp-user-password-secret thus:
 
-   python -c "import crypt,random,string; \
-     print crypt.crypt('YOURPASSWORD', '\$6\$' + ''.join( \
-       [random.choice(string.ascii_letters + string.digits) \
-     for _ in range(16)]))" | \
-   docker secret create ftp-user-password-secret -
+    python -c "import crypt,random,string; \
+      print crypt.crypt('YOURPASSWORD', '\$6\$' + ''.join( \
+	[random.choice(string.ascii_letters + string.digits) \
+      for _ in range(16)]))" | \
+    docker secret create ftp-user-password-secret -
 
 An example compose file is provided here in docker-compose.yml. This is for the common scenario of sharing from Docker swarm the contents of a network-attached volume as a read-only anonymous-ftp service.
 
