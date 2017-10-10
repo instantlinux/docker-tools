@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/vsftpd:latest
+    environment:
+      TZ: US/Pacific
+    volumes:
+    - ftp:/var/lib/ftp
+    ports:
+    - ${PORT_VSFTPD:-21}:21
+    - "30091-30100:30091-30100"
+    deploy:
+      placement:
+        constraints:
+        - ${LABEL_WORKER:-node.role == worker}
+
+volumes:
+  ftp:
+networks:
+  default:
+    external:
+      name: app_net

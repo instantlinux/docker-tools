@@ -5,16 +5,20 @@ Weather station software WeeWX
 This includes WeeGreen skin; see the [live site](http://wx.ci.net) for
 an example.
 
-First create secrets:
+### Usage
 
-    echo pw > ~/.docker/secrets/weewx-db-password
-    echo pw > ~/.docker/secrets/weewx-wunderground-password
-    echo apikey > ~/.docker/secrets/weewx-wunderground-apikey
-    cp rsync-sshkey.pem > ~/.docker/secrets/weewx-rsync-sshkey
+First create secrets as defined below, in /var/adm/admin/secrets.
 
 Then deploy this service, see the example docker-compose.yml (won't
 run in swarm if you need a devices section). Available
-environment variables are:
+environment variables are below.
+
+To create the external-facing web site, use the simple nginx.conf
+configuration provided here. You can run nginx under docker swarm with
+the wx-nginx.yml stack definition (see stacks directory at top level
+of this repo).
+
+### Variables
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
@@ -43,6 +47,15 @@ environment variables are:
 | TZ_CODE | 10 | Davis VantagePro timezone code see [index](https://www.manualslib.com/manual/586601/Davis-Vantage-Pro.html?page=39) |
 | WEEK_START | 6 | day of week to start weekly data (0 = Mon) |
 | XTIDE_LOCATION | unset | xtide setting, see [index](http://tides.mobilegeographics.com/) |
+
+### Secrets
+
+Secret | Description
+------ | -----------
+weewx-db-password | database password for MySQL
+weewx-rsync-sshkey | private ssh key for rsync upload
+weewx-wunderground-apikey | API key for Wunderground.com
+weewx-wunderground-password | password for Wunderground.com
 
 ### Notes
 
