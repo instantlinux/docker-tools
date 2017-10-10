@@ -1,4 +1,5 @@
 ## udp-nginx-proxy
+[![](https://images.microbadger.com/badges/version/instantlinux/udp-nginx-proxy.svg)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/udp-nginx-proxy.svg)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Image badge")
 
 The missing feature of haproxy: UDP, provided by nginx. The main
 use-case for this is to make more than one DNS server available at a

@@ -1,4 +1,5 @@
 ## OX App Suite docker image
+[![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge")
 
 Private-cloud online documents portal for spreadsheet, word-processing, presentations,email, calendar, and cloud file storage.
 

@@ -1,4 +1,5 @@
 ## jenkins-master
+[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge")
 
 An image with basic build tools for Jenkins executors. This will
 automatically phone-home to the jenkins-master image, using the

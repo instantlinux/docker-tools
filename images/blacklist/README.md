@@ -1,4 +1,5 @@
 ## DNS blacklist for spamassassin
+[![](https://images.microbadger.com/badges/version/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Image badge")
 
 This is based on [Running Your Own RBL DNS Blacklist](http://www.blue-quartz.com/rbl/) using the Debian rbldnsd
 package adapted from scripts published by Herb Rubin some years

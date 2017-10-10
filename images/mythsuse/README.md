@@ -1,4 +1,5 @@
 ## mythsuse
+[![](https://images.microbadger.com/badges/version/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Image badge")
 
 The MythTV backend built under OpenSuSE.
 

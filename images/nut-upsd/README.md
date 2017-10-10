@@ -1,4 +1,5 @@
 ## nut-upsd
+[![](https://images.microbadger.com/badges/version/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge")
 
 The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units.
 

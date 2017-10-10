@@ -1,5 +1,12 @@
 FROM nginx:1.13-alpine
 MAINTAINER Rich Braun "docker@instantlinux.net"
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.license=Apache-2.0 \
+    org.label-schema.name=udp-nginx-proxy \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV BACKENDS=self \
     INTERFACE=eth0 \    

@@ -1,4 +1,5 @@
 ## mariadb-galera
+[![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge")
 
 MariaDB 10.2 with Galera clustering support, for deployment under
 Swarm using Docker's named volumes for data persistence. This has a

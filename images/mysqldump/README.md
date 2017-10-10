@@ -1,4 +1,5 @@
 ## mysqldump
+[![](https://images.microbadger.com/badges/version/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge")
 
 This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. The image is compatible

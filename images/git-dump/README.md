@@ -1,4 +1,5 @@
 ## git-dump
+[![](https://images.microbadger.com/badges/version/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Image badge")
 
 This dockerizes a simple script I wrote years ago to create git bundle
 backups of a private git server.

@@ -1,4 +1,5 @@
 ## ez-ipupdate
+[![](https://images.microbadger.com/badges/version/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Image badge")
 
 Dynamic-DNS client - set up for Docker Swarm to ensure it's always running.
 

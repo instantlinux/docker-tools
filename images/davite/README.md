@@ -1,4 +1,5 @@
 ## davite
+[![](https://images.microbadger.com/badges/version/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Image badge")
 
 DaVITE is an event-invitations server modeled after eVite, written in
 2001 by David Madison. This image wraps it in a layer of the official

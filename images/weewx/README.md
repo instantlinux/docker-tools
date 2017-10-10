@@ -1,4 +1,5 @@
 ## weewx
+[![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Image badge")
 
 Weather station software WeeWX
 

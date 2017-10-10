@@ -1,6 +1,12 @@
 FROM debian:jessie-slim
-
 MAINTAINER Rich Braun <docker@instantlinux.net>
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.license=Apache-2.0 \
+    org.label-schema.name=open-xchange-appsuite \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG OX_VERSION=7.8.4
 ENV DEBIAN_FRONTEND=noninteractive \

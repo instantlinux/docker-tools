@@ -1,4 +1,11 @@
 FROM openjdk:8u131-jdk-alpine
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.license=Apache-2.0 \
+    org.label-schema.name=jenkins-slave \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV SWARM_CLIENT_EXECUTORS=4 \
     SWARM_CLIENT_JAR=/opt/jenkins-swarm/swarm-client.jar \

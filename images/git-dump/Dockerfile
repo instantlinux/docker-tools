@@ -1,5 +1,12 @@
 FROM alpine:3.6
 MAINTAINER Rich Braun "docker@instantlinux.net"
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.license=Apache-2.0 \
+    org.label-schema.name=git-dump \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV API_TOKEN_SECRET= \
     DEST_DIR=/var/backup/git \

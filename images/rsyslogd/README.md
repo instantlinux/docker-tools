@@ -1,4 +1,5 @@
 ## rsyslogd
+[![](https://images.microbadger.com/badges/version/instantlinux/rsyslogd.svg)](https://microbadger.com/images/instantlinux/rsyslogd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/rsyslogd.svg)](https://microbadger.com/images/instantlinux/rsyslogd "Image badge")
 
 Run your central rsyslog in a high-availability container on top of shared storage. Then send all that into Splunk or wherever.
 

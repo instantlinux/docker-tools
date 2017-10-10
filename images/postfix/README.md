@@ -1,4 +1,5 @@
 ## postfix
+[![](https://images.microbadger.com/badges/version/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Image badge")
 
 The postfix daemon in a small Alpine Linux container, with client
 support for separate spamassassin container.

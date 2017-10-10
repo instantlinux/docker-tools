@@ -1,4 +1,5 @@
 ## spamassassin
+[![](https://images.microbadger.com/badges/version/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge")
 
 This image includes pyzor, razor2 and dcc (with proper initialization of
 razor2 upon container start). The rules update can be scheduled to run at an

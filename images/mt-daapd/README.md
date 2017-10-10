@@ -1,4 +1,5 @@
 ## mt-daapd
+[![](https://images.microbadger.com/badges/version/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Image badge")
 
 This is Ron Pedde's [Firefly Media server](https://en.wikipedia.org/wiki/Firefly_Media_Server) which implements the Digital Audio Access Protocol for serving MP3 and other audio media formats from a directory mounted to this container onto a LAN.
 
