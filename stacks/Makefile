@@ -48,6 +48,7 @@ wordpress-il: .deploy/wordpress-il
 www00: .deploy/www00
 wwwext: .deploy/wwwext
 wx-nginx: .deploy/wx-nginx
+vsftpd: .deploy/vsftpd
 
 net_create::
 	docker network create dbcluster --driver overlay $(LABELS)

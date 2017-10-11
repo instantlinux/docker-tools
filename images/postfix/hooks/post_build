@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -X post https://hooks.microbadger.com/images/instantlinux/postfix/_9y_sBHfL0VKRuCeYfF1vWTrNQQ=

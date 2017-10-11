@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -X post https://hooks.microbadger.com/images/instantlinux/spamassassin/Rr_rvJvspqOzr1YF2HgycWVfcmE=

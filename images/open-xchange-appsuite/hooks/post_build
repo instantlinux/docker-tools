@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -X post https://hooks.microbadger.com/images/instantlinux/open-xchange-appsuite/SlpIdQuFjf7tlVJ_gK8b4X2ZC48=

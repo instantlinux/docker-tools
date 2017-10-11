@@ -6,7 +6,7 @@ services:
     environment:
       TZ: US/Pacific
     volumes:
-    - ftp:/var/lib/ftp
+    - ftp:/var/lib/ftp:nocopy
     ports:
     - ${PORT_VSFTPD:-21}:21
     - "30091-30100:30091-30100"

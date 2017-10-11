@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone

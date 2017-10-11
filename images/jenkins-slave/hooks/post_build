@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -X post https://hooks.microbadger.com/images/instantlinux/jenkins-slave/vugouuUekqYTe1IpcD39fy2B3ng=
