@@ -1,5 +1,5 @@
 ## git-dump
-[![](https://images.microbadger.com/badges/version/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Commit badge")
 
 This dockerizes a simple script I wrote years ago to create git bundle
 backups of a private git server.
@@ -50,3 +50,4 @@ projects at runtime, so you don't have to specify the REPOS parameter.
 | ------ | ----------- |
 | git-dump_sshkey | read-only key for git repos (override name above) |
 | xxx-api-token | API token for fetching project list from gitlab |
+[![](https://images.microbadger.com/badges/license/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "License badge")

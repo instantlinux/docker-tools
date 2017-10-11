@@ -1,5 +1,5 @@
 ## weewx
-[![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Commit badge")
 
 Weather station software WeeWX
 
@@ -74,3 +74,5 @@ can provide a way to send proper logging (via the rsyslogd
 process included in this image) to a central syslog service.
 
 
+
+[![](https://images.microbadger.com/badges/license/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "License badge")

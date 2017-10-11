@@ -1,5 +1,5 @@
 ## jenkins-master
-[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Commit badge")
 
 Builds a current (2.74) version of Jenkins, with the list of plugins
 shown in plugins.txt along with configuration settings defined in the ref
@@ -41,3 +41,5 @@ Name | Description
 ---- | -----------
 artifactory-user-password | password for artifactory repo access
 jenkins-admin-password | password for new Jenkins admin user
+
+[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "License badge")

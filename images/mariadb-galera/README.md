@@ -1,5 +1,5 @@
 ## mariadb-galera
-[![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
 
 MariaDB 10.2 with Galera clustering support, for deployment under
 Swarm using Docker's named volumes for data persistence. This has a
@@ -82,3 +82,5 @@ discovery and master election at restart.
 ### Credits
 
 Thanks to ashraf-s9s of severalnines for the healthcheck script.
+
+[![](https://images.microbadger.com/badges/license/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "License badge")

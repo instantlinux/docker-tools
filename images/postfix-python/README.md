@@ -1,5 +1,5 @@
 ## postfix-python
-[![](https://images.microbadger.com/badges/version/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Commit badge")
 
 Postfix with python support for blacklist utility.
 
@@ -22,3 +22,5 @@ Postfix with python support for blacklist utility.
 | Secret | Description |
 | ------ | ----------- |
 | mysql-blacklist-user | username and password for MySQL db |
+
+[![](https://images.microbadger.com/badges/license/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "License badge")

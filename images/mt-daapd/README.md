@@ -1,5 +1,5 @@
 ## mt-daapd
-[![](https://images.microbadger.com/badges/version/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Commit badge")
 
 This is Ron Pedde's [Firefly Media server](https://en.wikipedia.org/wiki/Firefly_Media_Server) which implements the Digital Audio Access Protocol for serving MP3 and other audio media formats from a directory mounted to this container onto a LAN.
 
@@ -9,3 +9,5 @@ Requires --net=host in order to support mDNS. See the docker-compose.yml file fo
 
     docker-compose up -d
 
+
+[![](https://images.microbadger.com/badges/license/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "License badge")

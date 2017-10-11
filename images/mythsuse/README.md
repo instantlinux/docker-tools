@@ -1,5 +1,5 @@
 ## mythsuse
-[![](https://images.microbadger.com/badges/version/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "Commit badge")
 
 The MythTV backend built under OpenSuSE.
 
@@ -31,3 +31,5 @@ Secret | Description
 ------ | -----------
 mythtv-db-password | Password of MythTV db user
 mythtv-user-password | Hashed password of MythTV ssh user
+
+[![](https://images.microbadger.com/badges/license/instantlinux/mythsuse.svg)](https://microbadger.com/images/instantlinux/mythsuse "License badge")

@@ -1,5 +1,5 @@
 ## OX App Suite docker image
-[![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Commit badge")
 
 Private-cloud online documents portal for spreadsheet, word-processing, presentations,email, calendar, and cloud file storage.
 
@@ -66,3 +66,5 @@ UI is available at http://yourhost/appsuite. One setting you will probably want 
 [GPLv2](https://www.open-xchange.com//fileadmin/user_upload/open-xchange/document/license/GNU_General_Public_License.pdf)
 
 
+
+[![](https://images.microbadger.com/badges/license/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "License badge")

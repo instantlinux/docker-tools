@@ -1,5 +1,5 @@
 ## DNS blacklist for spamassassin
-[![](https://images.microbadger.com/badges/version/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Commit badge")
 
 This is based on [Running Your Own RBL DNS Blacklist](http://www.blue-quartz.com/rbl/) using the Debian rbldnsd
 package adapted from scripts published by Herb Rubin some years
@@ -79,3 +79,5 @@ the --pipe-stdout command option for that use case.
 | RBL_DOMAIN | blacklist.mydomain.com | domain name to serve |
 | TZ | US/Pacific | time zone |
 | USERNAME | rbldns | username to run as |
+
+[![](https://images.microbadger.com/badges/license/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "License badge")

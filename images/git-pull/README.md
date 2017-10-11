@@ -1,5 +1,5 @@
 ## git-pull
-[![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Commit badge")
 
 Git pull, plain and simple (why wasn't there already a published
 container to do this)?
@@ -25,3 +25,5 @@ upload the new public key to your git server.
 | Secret | Description |
 | ------ | ----------- |
 |git-deploy_sshkey| private half of deploy keypair|
+
+[![](https://images.microbadger.com/badges/license/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "License badge")

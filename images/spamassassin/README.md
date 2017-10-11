@@ -1,5 +1,5 @@
 ## spamassassin
-[![](https://images.microbadger.com/badges/version/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Commit badge")
 
 This image includes pyzor, razor2 and dcc (with proper initialization of
 razor2 upon container start). The rules update can be scheduled to run at an
@@ -22,3 +22,4 @@ named volume. See the docker-compose.yml file here for an example.
 | PYZOR_SITE | public.pyzor.org:24441 | pyzor URI |
 | TZ |US/Pacific | time zone |
 | USERNAME | debian-spamd | user name to run as |
+[![](https://images.microbadger.com/badges/license/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "License badge")

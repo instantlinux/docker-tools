@@ -44,3 +44,4 @@ TZ | US/Pacific | time zone
 | Name | Description |
 | ---- | ----------- |
 | squirrelmail-db-password | password to the MySQL database|
+[![](https://images.microbadger.com/badges/license/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "License badge")

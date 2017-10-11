@@ -1,6 +1,6 @@
 ## vsftpd
 
-[![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Commit badge")
 
 A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in Alpine.
 
@@ -42,3 +42,5 @@ WRITE_ENABLE | YES | allow put/rm
 Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
+
+[![](https://images.microbadger.com/badges/license/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "License badge")

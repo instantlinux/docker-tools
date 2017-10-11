@@ -1,5 +1,5 @@
 ## mysqldump
-[![](https://images.microbadger.com/badges/version/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Commit badge")
 
 This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. The image is compatible
@@ -46,3 +46,5 @@ than $KEEP_DAYS will be automatically removed.
 | SERVERS | dbhost | servers to back up |
 | TZ | US/Pacific | time zone |
 
+
+[![](https://images.microbadger.com/badges/license/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "License badge")

@@ -1,5 +1,5 @@
 ## jenkins-master
-[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Commit badge")
 
 An image with basic build tools for Jenkins executors. This will
 automatically phone-home to the jenkins-master image, using the
@@ -33,3 +33,5 @@ Name | Description
 ---- | -----------
 jenkins-user-password | password for Jenkins user auth
 repo-push | Docker registry credential
+
+[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "License badge")

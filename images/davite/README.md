@@ -1,5 +1,5 @@
 ## davite
-[![](https://images.microbadger.com/badges/version/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Commit badge")
 
 DaVITE is an event-invitations server modeled after eVite, written in
 2001 by David Madison. This image wraps it in a layer of the official
@@ -25,3 +25,5 @@ you can then use to edit your event invitation
 
 DaVite is authored by David Madison who maintains links to the
 original (long-deprecated) code at [marginalhacks](http://marginalhacks.com/Hacks/DaVite).
+
+[![](https://images.microbadger.com/badges/license/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "License badge")

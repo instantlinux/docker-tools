@@ -1,5 +1,5 @@
 ## swarm-sync
-[![](https://images.microbadger.com/badges/version/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Commit badge")
 
 This HA tool provides sync for persistent storage between two swarm nodes,
 with automatic recovery after a failure of either node.
@@ -44,3 +44,5 @@ your polling frequency in the cfg file.
 | SYNC_INTERVAL | 5 | frequency, in minutes |
 | SYNC_ROLE | primary | role, primary or secondary |
 | SYNC_SSHKEY |  | public key |
+
+[![](https://images.microbadger.com/badges/license/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "License badge")

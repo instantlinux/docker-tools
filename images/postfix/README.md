@@ -1,5 +1,5 @@
 ## postfix
-[![](https://images.microbadger.com/badges/version/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Commit badge")
 
 The postfix daemon in a small Alpine Linux container, with client
 support for separate spamassassin container.
@@ -35,3 +35,5 @@ See etc-example directory and docker-compose.yml.
 
 Also, if you're using TLS, create a secret containing the SSL private key and
 reference it in your smtpd_tls_key_file directive as shown in the example.
+
+[![](https://images.microbadger.com/badges/license/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "License badge")

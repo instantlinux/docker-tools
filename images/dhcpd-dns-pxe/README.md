@@ -1,5 +1,5 @@
 ## dhcpd-dns-pxe
-[![](https://images.microbadger.com/badges/version/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Image badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Commit badge")
 
 Serve DNS and DHCP from a small Alpine Linux container. This has
 supplies DNS and tftp (for network PXE booting) using dnsmasq, and
@@ -53,3 +53,5 @@ SUBNET1_INTERFACE | eth0 | serve only on this subnet
 SUBNET1_NETMASK | 255.255.255.0 | network mask
 TFTP_ENABLE | yes | enable tftp server
 TFTP_ROOT | /tftpboot/pxelinux | don't change this
+
+[![](https://images.microbadger.com/badges/license/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "License badge")
