@@ -31,7 +31,8 @@ ENV DHCP_BOOT=pxelinux.0 \
     TFTP_SERVER=self \
     TZ=UTC
 
-RUN apk add --no-cache --update dhcp==4.3.4-r3 dnsmasq==2.78
+# TODO: dnsmasq==2.78 when available, see CVE-2017-14492 / CVE-2017-14493
+RUN apk add --no-cache --update dhcp==4.3.4-r3 dnsmasq==2.76-r5
 
 EXPOSE 53/udp 67/udp 69/udp
 VOLUME $DHCP_LEASE_PATH $TFTP_ROOT /etc/dhcpd.d /etc/dnsmasq.d
