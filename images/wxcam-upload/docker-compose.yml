@@ -1,0 +1,25 @@
+version: "3.1"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/wxcam-upload:latest
+    environment:
+      CAMS: ${WXCAM_CAMS:-cam1}
+      UPLOAD_USERNAME: ${WXCAM_UPLOAD_USERNAME}
+      TZ: US/Pacific
+    volumes:
+    - upload:/home/wx/upload
+    ports:
+    - ${PORT_WXCAM_FTPD:-21}:21
+    - "30081-30090:30081-30090"
+    secrets:
+    - wunderground-user-password
+    - wxcam-password-hashed
+
+volumes:
+  upload:
+secrets:
+  wunderground-user-password:
+    external: true
+  wxcam-password-hashed:
+    external: true
