@@ -11,7 +11,7 @@ default: $(DEPLOY)
 	@echo Deploying $(@F)
 	@mkdir -p .deploy
 	TCP_PORT=$(TCP_PORT) CLUSTER_NAME=$(CLUSTER_NAME) \
-	  docker stack deploy -c $(@F).yml $(@F)
+	  docker stack deploy --with-registry-auth -c $(@F).yml $(@F)
 	@touch .deploy/$(@F)
 
 admin: .deploy/admin

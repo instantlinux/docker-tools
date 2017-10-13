@@ -6,8 +6,6 @@ Swarm using Docker's named volumes for data persistence. This has a
 robust bootstrap script intended to closely follow Galera's
 documentation.
 
-Current status: in development to handle edge cases upon cluster restart
-
 ### Variables
 
 | Variable | Default | Description |

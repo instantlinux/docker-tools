@@ -45,6 +45,6 @@ PID_FILE=$PID_FILE
 * * * * * $USERNAME /usr/local/bin/rebuild_rbldns.pl" >/etc/cron.d/$USERNAME
 cron
 
-rbldnsd -f -n -r $HOMEDIR/$CFG_NAME -b 0.0.0.0 -p $PID_FILE \
+rbldnsd -f -n -r $HOMEDIR/$CFG_NAME -b 0.0.0.0/53 -p $PID_FILE \
   $RBL_DOMAIN:ip4set:spammerlist,whitelist \
   $RBL_DOMAIN:generic:forward
