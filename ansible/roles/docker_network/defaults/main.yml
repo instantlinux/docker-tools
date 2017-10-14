@@ -27,3 +27,6 @@ vrrp:
     ip: "{{ network.swarm_ip }}"
     interface: "{{ network.device_name }}"
     priority: "{{ network.address.split('.')[3] }}"
+    unicast_peers: "{{ groups['swarm_nodes'] | map('extract', hostvars,
+                       ['ansible_default_ipv4', 'address']) | list |
+                       difference([network.address]) }}"

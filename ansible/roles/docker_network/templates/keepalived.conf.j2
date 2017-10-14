@@ -13,6 +13,12 @@ vrrp_instance {{ key }} {
     track_script {
       chk_docker
     }
+    unicast_peer {
+{% for peer in instance.unicast_peers %}
+      {{ peer }}
+{% endfor %}
+    }
+    unicast_src_ip {{ network.address }}
     virtual_ipaddress {
         {{ instance.ip }}
     }

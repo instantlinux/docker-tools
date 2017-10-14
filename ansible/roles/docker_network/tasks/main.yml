@@ -27,6 +27,7 @@
 - name: Set up keepalived (VRRP)
   template:
     dest: /etc/keepalived/keepalived.conf
+    mode: 0600
     src: keepalived.conf.j2
   notify: Restart keepalived
   when: network.swarm_ip
