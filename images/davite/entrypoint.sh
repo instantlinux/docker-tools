@@ -11,10 +11,9 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
-if [ ! -d $DATADIR/Events ]; then
- mkdir $DATADIR/Events
- chown daemon $DATADIR $DATADIR/Events
-fi
+mkdir -p $DATADIR/Events
+[ -f $DATADIR/Names ] || touch $DATADIR/Names
+chown daemon $DATADIR $DATADIR/Events $DATADIR/Names
 
 sed -i -e "s:{{ DATADIR }}:$DATADIR:" \
        -e "s/{{ HOSTNAME }}/$HOSTNAME/" \

@@ -20,8 +20,10 @@ RUN apk add --no-cache --update perl && \
     mkdir /usr/local/apache2/htdocs/davite
 
 COPY src/ /usr/local/apache2/htdocs/davite/
-COPY src/DaVite.cgi /usr/local/apache2/cgi-bin/DaVite.cgi
 COPY entrypoint.sh /usr/local/bin
+RUN chmod -R g+rX,o+rX /usr/local/apache2/htdocs/davite/ && \
+    mv /usr/local/apache2/htdocs/davite/DaVite.cgi \
+       /usr/local/apache2/cgi-bin/
 
 VOLUME /var/adm/DaVite_Data
 
