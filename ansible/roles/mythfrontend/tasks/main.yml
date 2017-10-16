@@ -1,7 +1,11 @@
 ---
 # main.yml
 
-- include: packages.yml
+- include: packages-opensuse.yml
+  when: ansible_os_family == 'Suse'
+- include: packages-ubuntu.yml
+  when: ansible_os_family == 'Debian'
+
 - include: autosuspend.yml
 - include: lirc.yml
 - include: nvidia.yml

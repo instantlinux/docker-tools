@@ -23,4 +23,4 @@ services:
       SLAPD_ADDITIONAL_SCHEMAS: openldap
       SLAPD_FORCE_RECONFIGURE: 'true'
     volumes:
-    - ${ADMIN_PATH:-/opt}/authelia/ldap:/etc/ldap.dist/prepopulate
+    - ${ADMIN_PATH:-/opt}/authelia/ldap:/etc/ldap.dist/prepopulate:ro

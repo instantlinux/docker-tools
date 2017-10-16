@@ -67,3 +67,51 @@ opensuse_repo_defaults:
 
 opensuse_repo_additions: []
 opensuse_repos: "{{ opensuse_repo_defaults + opensuse_repo_additions }}"
+
+ubuntu_packages:
+  - libpam-google-authenticator
+  - python
+  - python-pip
+  - thin-provisioning-tools
+  - imagemagick-devel
+  - kdm
+  - libdvdcss
+  - liblirc_client0=0.9.0
+  - lirc=0.9.0
+  - lirc-remotes=0.9.0
+  - kernel-default
+  - kernel-devel
+  - kernel-headers
+  - kernel-source
+  - mythtv-frontend
+  - MozillaFirefox
+  - mariadb-client
+  - mythtv-base-themes
+  - mythtv-common
+  - nrpe
+  - nagios-plugins
+  - net-snmp
+  - ntp
+  - python-mysql
+  - python-mythtv
+  - rsyslog
+  - v4l-utils
+  - xdm
+  - xkeyboard-config
+  - xorg-x11-driver-input
+  - xorg-x11-driver-video
+  - xorg-x11-fonts
+
+ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
+
+ubuntu_repo_defaults:
+  - deb {{ ubuntu_repo_uri }} xenial main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} xenial-updates main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} xenial-backports main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} xenial-security main restricted universe multiverse
+
+ubuntu_repo_addtions:
+  - deb http://ppa.launchpad.net/mythbuntu/{{ mythtv_version }}/ubuntu xenial main
+  
+ubuntu_repo_additions: []
+ubuntu_repos: "{{ ubuntu_repo_defaults + ubuntu_repo_additions }}"

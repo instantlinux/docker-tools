@@ -11,6 +11,14 @@ services to pick up content pulled by this image). A Makefile is
 provided to generate the deploy key as a Docker secret; after doing so,
 upload the new public key to your git server.
 
+This image will continously update a path on each Docker swarm node
+from contents of a particular repo; if you define an environment
+variable ADMIN_PATH (or Docker named volume) and place configuration
+files for each service in subdirectories of that repo, this is a handy
+way of propagating configurations (such as /etc files) across the
+cluster. Note that any Docker mounts must be made with ro
+(read-only) set to keep this container running without merge conflicts.
+
 ### Variables
 
 | Variable | Description |

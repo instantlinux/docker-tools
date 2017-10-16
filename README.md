@@ -36,6 +36,7 @@ Stack definitions include:
 * rsyslogd - logger in a 13MB image
 * splunk - the free version
 * swarm-sync - poor-man's SAN for persistent storage
+* vsftpd - ftp server
 
 ** Email**
 * blacklist - a local rbldnsd for spam control

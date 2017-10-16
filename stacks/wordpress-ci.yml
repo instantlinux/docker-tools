@@ -13,7 +13,7 @@ services:
     - ${SHARE_PATH}/wordpress-ci/env
     volumes:
     - ${SHARE_PATH}/wordpress-ci/html:/var/www/html
-    - ${ADMIN_PATH}/wordpress/ci-php.ini:/usr/local/etc/php/conf.d/ci-php.ini
+    - ${ADMIN_PATH:/opt}/wordpress/ci-php.ini:/usr/local/etc/php/conf.d/ci-php.ini:ro
     deploy:
       placement:
         constraints:
