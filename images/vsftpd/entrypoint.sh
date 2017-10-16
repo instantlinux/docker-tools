@@ -30,6 +30,7 @@ local_enable=YES
 local_umask=$LOCAL_UMASK
 log_ftp_protocol=$LOG_FTP_PROTOCOL
 nopriv_user=vsftp
+pasv_address=$PASV_ADDRESS
 pasv_enable=YES
 pasv_max_port=$PASV_MAX_PORT
 pasv_min_port=$PASV_MIN_PORT

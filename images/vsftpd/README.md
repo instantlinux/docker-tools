@@ -30,6 +30,7 @@ FTPUSER_NAME | ftpuser | upload username
 FTPUSER_UID | 1001 | upload file ownership UID
 LOCAL_UMASK | 022 | upload umask
 LOG_FTP_PROTOCOL | NO | more-verbose logging
+PASV_ADDRESS |  | required--address of docker engine
 PASV_MAX_PORT | 30100 | range of client ports (rebuild image if changed)
 PASV_MIN_PORT | 30091 | 
 TZ | UTC | local timezone
