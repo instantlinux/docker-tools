@@ -11,10 +11,15 @@ For configuration, see the example docker-compose.yml. Set environment variables
 
 Reach mythtv-setup in the usual way; default password is mythtv:
 ~~~
-ssh -X mythtv@<host-ip>
+docker exec mythtvbackend_app_1 /usr/sbin/sshd
+ssh -p 2022 -X mythtv@<host-ip>
 mythtv-setup
 ~~~
 Change the password by generating a new hashed password and setting mythtv-user-password secret.
+
+### Status
+
+This image worked as of Sep 2017 but I've reluctantly given up on OpenSuSE after running MythTV on it since 2008. The core maintainers of MythTV use Ubuntu, and the PackMan repo for OpenSuSE has fallen increasingly behind with each new release. The current Docker image for Ubuntu is called mythtv-backend.
 
 ### Variables
 Variable | Default | Description

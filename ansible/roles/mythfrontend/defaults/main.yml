@@ -14,8 +14,11 @@ ir_device:
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"
 
+mythtv_version: 0.29
+
 nvidia_driver:
   checksum: d2cf81b5994a1728dc4851cdf0480cde0a34b040c94de0d5265edcfe3b90680a
+  creates: /usr/lib64/xorg/modules/libnvidia-wfb.so.1
   download_uri: http://us.download.nvidia.com/XFree86/Linux-x86_64
   version: 340.101
 
@@ -68,50 +71,51 @@ opensuse_repo_defaults:
 opensuse_repo_additions: []
 opensuse_repos: "{{ opensuse_repo_defaults + opensuse_repo_additions }}"
 
-ubuntu_packages:
-  - libpam-google-authenticator
-  - python
-  - python-pip
-  - thin-provisioning-tools
-  - imagemagick-devel
-  - kdm
-  - libdvdcss
-  - liblirc_client0=0.9.0
-  - lirc=0.9.0
-  - lirc-remotes=0.9.0
-  - kernel-default
-  - kernel-devel
-  - kernel-headers
-  - kernel-source
-  - mythtv-frontend
-  - MozillaFirefox
-  - mariadb-client
-  - mythtv-base-themes
-  - mythtv-common
-  - nrpe
-  - nagios-plugins
-  - net-snmp
-  - ntp
-  - python-mysql
-  - python-mythtv
-  - rsyslog
-  - v4l-utils
-  - xdm
-  - xkeyboard-config
-  - xorg-x11-driver-input
-  - xorg-x11-driver-video
-  - xorg-x11-fonts
+# To disable this feature, override suspend to False
+suspend:
+  hour: 0
+  minute: 30
+  wake_hour: 17
+  wake_minute: 30
+  weekday: 1-5
 
+ubuntu_apt_keys:
+  google: 1397BC53640DB551
+  graphics: FCAE110B1118213C
+  mythbuntu: 13551B881504888C
+
+ubuntu_packages:
+  - google-chrome-stable
+  - libdvd-pkg
+  - lirc
+  - lirc-x
+  - mariadb-client
+  - mythtv-common
+  - mythtv-frontend
+  - plasma-desktop
+  - nvidia-340
+  - xserver-xorg-core
+  - xserver-xorg-input-all
+  - xterm
+
+ubuntu_rel: xenial
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
 
 ubuntu_repo_defaults:
-  - deb {{ ubuntu_repo_uri }} xenial main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} xenial-updates main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} xenial-backports main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} xenial-security main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{
+           ubuntu_rel }} main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{
+           ubuntu_rel }}-updates main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{
+           ubuntu_rel }}-backports main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{
+           ubuntu_rel }}-security main restricted universe multiverse
 
-ubuntu_repo_addtions:
-  - deb http://ppa.launchpad.net/mythbuntu/{{ mythtv_version }}/ubuntu xenial main
-  
-ubuntu_repo_additions: []
+ubuntu_repo_additions:
+  - deb http://ppa.launchpad.net/graphics-drivers/ppa/ubuntu {{
+    ubuntu_rel }} main
+  - deb http://ppa.launchpad.net/mythbuntu/{{ mythtv_version }}/ubuntu {{
+    ubuntu_rel }} main
+  - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+
 ubuntu_repos: "{{ ubuntu_repo_defaults + ubuntu_repo_additions }}"

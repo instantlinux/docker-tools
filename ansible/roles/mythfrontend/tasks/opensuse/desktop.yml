@@ -1,0 +1,38 @@
+---
+# desktop-opensuse.yml
+#  Desktop configuration for OpenSuSE
+
+- name: Use kdm display manager
+  lineinfile:
+    dest: /etc/sysconfig/displaymanager
+    line: DISPLAYMANAGER="kdm"
+    regexp: "^DISPLAYMANAGER=.*"
+
+- name: Autologin after boot
+  lineinfile:
+    dest: /etc/sysconfig/displaymanager
+    line: DISPLAYMANAGER_AUTOLOGIN="mythtv"
+    regexp: "^DISPLAYMANAGER_AUTOLOGIN=.*"
+
+- name: Set DPI so fonts are sized properly
+  template:
+    dest: /etc/X11/xorg.conf.d/20-nvidia.conf
+    src: 20-nvidia.conf.j2
+
+- name: Ensure .bashrc exists
+  copy:
+    content: ""
+    dest: /home/mythtv/.bashrc
+    force: no
+    mode: 0755
+    owner: mythtv
+
+- name: Add setup.sh to .bashrc
+  lineinfile:
+    dest: /home/mythtv/.bashrc
+    line: ~/setup.sh
+
+# TODO: a few ancillary things still need manual configuration
+#  audio
+#  disable screen-lock
+#  disable monitor power-off

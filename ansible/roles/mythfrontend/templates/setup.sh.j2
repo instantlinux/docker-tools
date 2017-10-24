@@ -2,7 +2,14 @@
 {{ ansible_managed | comment }}
 xset s off
 xset -dpms
+# To activate HDMI audio, turn on this mixer control:
+# amixer cset iface=MIXER,name='IEC958 Playback Switch' 1
+{% if ansible_os_family == 'Suse' %}
 killall irxevent irexec
 irxevent -d
 irexec -d
 mythfrontend --logpath=/var/log/mythfrontend
+{% else %}
+killall irxevent
+irxevent -d
+{% endif %}

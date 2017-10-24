@@ -1,7 +1,7 @@
 HOST = $(shell hostname -s)
 HOSTS = mckinley vinson denali
 REGISTRY_URI ?= nexus.instantlinux.net
-SERVICES = dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd weewx
+SERVICES = dhcpd-dns-pxe etcd mt-daapd mythtv-backend ntpd nut-upsd weewx
 
 # Before starting etcd, see notes in etcd/docker-compose.yml.
 
@@ -15,7 +15,7 @@ endif
 
 default: $(HOST)
 
-mckinley: dhcpd-dns-pxe etcd mt-daapd mythsuse ntpd nut-upsd weewx
+mckinley: dhcpd-dns-pxe etcd mt-daapd mythtv-backend ntpd nut-upsd weewx
 vinson: dhcpd-dns-pxe etcd mt-daapd
 denali: dhcpd-dns-pxe etcd nut-upsd
 

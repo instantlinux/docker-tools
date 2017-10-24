@@ -1,0 +1,35 @@
+---
+# packages-ubuntu.yml
+
+- name: Import repository keys
+  apt_key:
+    id: "{{ item.value }}"
+    keyserver: keyserver.ubuntu.com
+  with_dict: "{{ ubuntu_apt_keys }}"
+
+- name: Ensure repositories available
+  apt_repository:
+    repo: "{{ item }}"
+    filename: ubuntu
+  with_items: "{{ ubuntu_repos }}"
+
+- name: Update repository sources
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: Install system packages
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ ubuntu_packages }}"
+
+- name: Remove akonadi-dependent packages
+  apt:
+    autoremove: yes
+    name: "{{ item }}"
+    state: absent
+  with_items:
+  - akonadi-server
+  - kaddressbook
+  - kmail
+  - korganizer

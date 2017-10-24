@@ -11,6 +11,13 @@
   with_items: "{{ opensuse_google_auth_repo }}"
   when: ansible_os_family == 'Suse'
 
+- name: Ensure repositories available
+  apt_repository:
+    repo: "{{ item }}"
+    filename: ubuntu
+  with_items: "{{ ubuntu_google_auth_repo }}"
+  when: ansible_os_family == 'Debian'
+
 - name: Install PAM module for google-authenticator
   package:
-    name: pam-google-authenticator
+    name: "{{ pam_package }}"

@@ -1,75 +1,14 @@
 ---
 # main.yml
 
-- include: packages-opensuse.yml
-  when: ansible_os_family == 'Suse'
-- include: packages-ubuntu.yml
-  when: ansible_os_family == 'Debian'
+- set_fact:
+    distro: "{{ 'opensuse' if ansible_os_family == 'Suse' else 'ubuntu' }}"
 
+- include: "{{ distro }}/packages.yml"
+- include: "{{ distro }}/lirc.yml"
 - include: autosuspend.yml
-- include: lirc.yml
+  when: "{{ suspend }}"
+
 - include: nvidia.yml
-
-- name: Set timezone
-  file:
-    dest: /etc/localtime
-    force: yes
-    src: /usr/share/zoneinfo/{{ tz }}
-    state: link
-
-- name: Create .mythtv path
-  file:
-    owner: mythtv
-    path: /home/mythtv/.mythtv
-    state: directory
-
-- name: Database configuration
-  template:
-    dest: /home/mythtv/.mythtv/mysql.txt
-    mode: 0600
-    owner: mythtv
-    src: mysql.txt.j2
-
-- name: MythTV configuration
-  template:
-    dest: /home/mythtv/.mythtv/config.xml
-    mode: 0600
-    owner: mythtv
-    src: config.xml.j2
-
-- name: Bash startup script for frontend
-  template:
-    dest: /home/mythtv/setup.sh
-    mode: 0755
-    owner: mythtv
-    src: setup.sh.j2
-
-- name: Ensure .bashrc exists
-  copy:
-    content: ""
-    dest: /home/mythtv/.bashrc
-    force: no
-    mode: 0755
-    owner: mythtv
-
-- name: Add setup.sh to .bashrc
-  lineinfile:
-    dest: /home/mythtv/.bashrc
-    line: ~/setup.sh
-
-- name: Use kdm display manager
-  lineinfile:
-    dest: /etc/sysconfig/displaymanager
-    line: DISPLAYMANAGER="kdm"
-    regexp: "^DISPLAYMANAGER=.*"
-
-- name: Autologin after boot
-  lineinfile:
-    dest: /etc/sysconfig/displaymanager
-    line: DISPLAYMANAGER_AUTOLOGIN="mythtv"
-    regexp: "^DISPLAYMANAGER_AUTOLOGIN=.*"
-
-# TODO: a few ancillary things still need manual configuration
-#  audio
-#  disable screen-lock
-#  disable monitor power-off
+- include: setup.yml
+- include: "{{ distro }}/desktop.yml"

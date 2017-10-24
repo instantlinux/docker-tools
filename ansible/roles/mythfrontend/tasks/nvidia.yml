@@ -14,6 +14,7 @@
     mode: 0755
     url: "{{ nvidia_driver.download_uri }}/{{ nvidia_driver.version
       }}/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run"
+  when: ansible_os_family == 'Suse'
 
 # If this fails, most likely there isn't an Nvidia GPU on the
 # target system, or the nouveau driver hasn't been deinstalled
@@ -22,10 +23,6 @@
 - name: NVIDIA driver install
   command: /var/tmp/NVIDIA-Linux.run -aNqs --ui=none
   args:
-    creates: /usr/lib64/xorg/modules/libnvidia-wfb.so.1
+    creates: "{{ nvidia_driver.creates }}"
   ignore_errors: True
-
-- name: Set DPI so fonts are sized properly
-  template:
-    dest: /etc/X11/xorg.conf.d/20-nvidia.conf
-    src: 20-nvidia.conf.j2
+  when: ansible_os_family == 'Suse'

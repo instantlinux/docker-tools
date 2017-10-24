@@ -1,0 +1,29 @@
+---
+# setup.yml
+#  non O/S-specific configuration
+
+- name: Bash startup script for frontend
+  template:
+    dest: /home/mythtv/setup.sh
+    mode: 0755
+    owner: mythtv
+    src: setup.sh.j2
+
+- name: Ensure mythtv user is in group mythtv
+  user:
+    name: mythtv
+    group: mythtv
+
+- name: Set timezone
+  file:
+    dest: /etc/localtime
+    force: yes
+    src: /usr/share/zoneinfo/{{ tz }}
+    state: link
+
+- name: MythTV configuration
+  template:
+    dest: /etc/mythtv/config.xml
+    mode: 0600
+    owner: mythtv
+    src: config.xml.j2

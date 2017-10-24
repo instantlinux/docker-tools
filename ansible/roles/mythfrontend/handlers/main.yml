@@ -1,3 +1,4 @@
 ---
 - name: Rebuild initrd
   command: /sbin/mkinitrd
+  when: ansible_os_family == 'Suse'

@@ -34,6 +34,7 @@
     owner: "{{ item.key }}"
     mode: 0400
   with_dict: "{{ vault_users }}"
+  when: item.google_token is defined
   no_log: True
 
 - name: Add google-authenticator to PAM sshd

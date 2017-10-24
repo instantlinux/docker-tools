@@ -7,42 +7,32 @@ local_group_defaults:
 local_group_additions: {}
 local_groups: "{{ local_group_defaults | combine(local_group_additions) }}"
 
-myth_users:
+myth_user_defaults:
   - name: mythtv
     uid: 1001
     comment: MythTV Frontend
-    group: users
+    group: mythtv
     shell: /bin/bash
-    groups: video
+    groups: video,nopasswdlogin
   - name: nrpe
     uid: 2025
     comment: NRPE monitoring
     createhome: no
     group: nrpe
     groups: nagcmd
-  - name: richb
-    uid: 300
-    comment: Rich Braun
-    group: wheel
-  - name: rsnap
-    uid: 0
-    comment: rsnapshot backups
-    group: care
-    non_unique: yes
-  - name: www-data
-    uid: 33
-    comment: Photos data
-    createhome: no
-    group: www-data
-    shell: /usr/sbin/nologin
+
+myth_user_additions: []
+myth_users: "{{ myth_user_defaults + myth_user_additions }}"
 
 opensuse_google_auth_repo:
   - name: oss
     repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
 
-suspend:
-  hour: 0
-  minute: 30
-  wake_hour: 17
-  wake_minute: 30
-  weekday: 1-5
+pam_package: "{{
+    'libpam-google-authenticator' if ansible_os_family == 'Debian' 
+    else 'pam-google-authenticator' }}"
+
+ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
+
+ubuntu_google_auth_repo:
+  - deb {{ ubuntu_repo_uri }} xenial main restricted universe multiverse
