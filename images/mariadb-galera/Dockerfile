@@ -1,4 +1,4 @@
-FROM python:2.7.13-slim
+FROM python:2.7.14-slim
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -34,6 +34,8 @@ RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     apt-get -yq update && apt-get -yq install --no-install-recommends \
      curl jq mariadb-server mariadb-client net-tools netcat && \
     pip install -r /root/common.txt && \
+    echo "dash dash/sh boolean false" | debconf-set-selections && \
+    dpkg-reconfigure dash && \
     apt-get clean; rm -fr /var/log/* /var/lib/mysql/*
 
 EXPOSE 3306 4444 4567/udp 4567 4568
