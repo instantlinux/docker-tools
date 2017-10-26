@@ -2,7 +2,7 @@ FROM openjdk:8u121-jdk-alpine
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
-    org.label-schema.license=Apache-2.0 \
+    org.label-schema.license=MIT \
     org.label-schema.name=jenkins-master \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools

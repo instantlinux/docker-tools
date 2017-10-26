@@ -27,10 +27,13 @@ DBNAME | mythtv | Database name
 DBSERVER | db00 | Database server hostname
 LANG | en_US.UTF-8 | 
 LANGUAGE | en_US.UTF-8 | 
-LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml)
+LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml))
 TZ | UTC | Time zone
 
 ### Secrets
+
+Because this (most likely) won't be running in swarm mode, specify these with source type "file". See the example docker-compose.yml.
+
 Secret | Description
 ------ | -----------
 mythtv-db-password | Password of MythTV db user

@@ -7,7 +7,7 @@
 - include: "{{ distro }}/packages.yml"
 - include: "{{ distro }}/lirc.yml"
 - include: autosuspend.yml
-  when: "suspend"
+  when: suspend
 
 - include: nvidia.yml
 - include: setup.yml

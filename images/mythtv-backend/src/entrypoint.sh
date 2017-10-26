@@ -22,18 +22,10 @@ fi
 
 if [ -e /run/secrets/mythtv-db-password ]; then
   DBPASSWORD=$(cat /run/secrets/mythtv-db-password)
-else
-  DBPASSWORD=$(xml_grep --text_only Password /etc/mythtv/config.xml)
 fi
 
 if [ -e /run/secrets/mythtv-user-password ]; then
   usermod -p $(cat /run/secrets/mythtv-user-password) mythtv
-fi
-
-if [ ! -f $MYTHHOME/icons/bomb.png ]; then
-  mkdir -p $MYTHHOME/icons
-  cp /root/bomb.png $MYTHHOME/icons/
-  chmod 755 $MYTHHOME/icons/bomb.png
 fi
 
 if [ ! -f $MYTHHOME/.Xauthority ]; then

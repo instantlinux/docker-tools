@@ -1,2 +1,3 @@
 #!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/mythtv-backend/NOT-YET_RUN
+curl -X post https://hooks.microbadger.com/images/instantlinux/mythtv-backend/NPqxg0ezvrI_77GnLAz7bjsxcOs=
+
