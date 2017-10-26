@@ -27,6 +27,7 @@ DBNAME | mythtv | Database name
 DBSERVER | db00 | Database server hostname
 LANG | en_US.UTF-8 | 
 LANGUAGE | en_US.UTF-8 | 
+LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml)
 TZ | UTC | Time zone
 
 ### Secrets

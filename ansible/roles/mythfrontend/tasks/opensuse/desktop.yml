@@ -14,11 +14,6 @@
     line: DISPLAYMANAGER_AUTOLOGIN="mythtv"
     regexp: "^DISPLAYMANAGER_AUTOLOGIN=.*"
 
-- name: Set DPI so fonts are sized properly
-  template:
-    dest: /etc/X11/xorg.conf.d/20-nvidia.conf
-    src: 20-nvidia.conf.j2
-
 - name: Ensure .bashrc exists
   copy:
     content: ""

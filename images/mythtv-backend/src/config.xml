@@ -1,5 +1,5 @@
 <Configuration>
-  <LocalHostName>{{ HOSTNAME }}</LocalHostName>
+  <LocalHostName>{{ LOCALHOSTNAME }}</LocalHostName>
   <Database>
     <PingHost>1</PingHost>
     <Host>{{ DBSERVER }}</Host>

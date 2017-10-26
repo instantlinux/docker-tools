@@ -5,6 +5,7 @@ Description=Post-startup docker permissions fix
 Conflicts=shutdown.target
 Requires=docker.service
 After=docker.service
+BindsTo=docker.service
 
 [Service]
 Type=oneshot

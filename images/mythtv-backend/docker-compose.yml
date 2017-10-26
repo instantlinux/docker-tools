@@ -10,6 +10,7 @@ services:
     environment:
       DBNAME: ${DB_MYTHTV:-mythtv}
       DBSERVER: ${DB_HOST:-db00}
+      LOCALHOSTNAME: ${HOSTNAME_MYTHTV}
       TZ: US/Pacific
     network_mode: host
     volumes:

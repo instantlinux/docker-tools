@@ -26,3 +26,8 @@
     creates: "{{ nvidia_driver.creates }}"
   ignore_errors: True
   when: ansible_os_family == 'Suse'
+
+- name: Set DPI so fonts are sized properly
+  template:
+    dest: /etc/X11/xorg.conf.d/20-nvidia.conf
+    src: 20-nvidia.conf.j2

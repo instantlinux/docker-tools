@@ -33,6 +33,7 @@
     mode: 0400
   with_dict: "{{ vault_users }}"
   no_log: True
+  when: item.google_token is defined
 
 - name: Add google-authenticator to PAM sshd
   lineinfile:

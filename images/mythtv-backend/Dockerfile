@@ -15,6 +15,7 @@ ENV APACHE_LOG_DIR=/var/log/apache2 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
+    LOCALHOSTNAME= \
     TZ=UTC
 
 ARG APT_KEY=13551B881504888C
@@ -34,8 +35,8 @@ RUN \
   apt-get -yq --no-install-recommends install \
     apache2 curl iputils-ping less lsb-release mariadb-client net-tools \
     openssh-client openssh-server mythtv-backend mythtv-common \
-    mythtv-transcode-utils mythweb php-mythtv psmisc tzdata vim w3m xauth \
-    xterm
+    mythtv-transcode-utils mythweb php-mythtv psmisc tzdata v4l-utils vim \
+    w3m x11-utils xauth xterm
 
 COPY src/ /root/
 

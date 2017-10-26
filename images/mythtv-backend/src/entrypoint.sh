@@ -1,4 +1,5 @@
 #! /bin/bash -e
+[ -z "$LOCALHOSTNAME" ] && LOCALHOSTNAME=$HOSTNAME
 MYTHHOME=/home/mythtv
 OSTYPE=`grep ^ID= /etc/os-release|cut -f 2 -d=`
 
@@ -49,7 +50,7 @@ for file in $CONF_DIR/mythweb.conf $CONF_DIR/mythweb-settings.conf \
       -e "s/{{ DBPASSWORD }}/$DBPASSWORD/" \
       -e "s/{{ DBSERVER }}/$DBSERVER/" \
       -e "s+{{ DOCUMENT_ROOT }}+$DOCUMENT_ROOT+" \
-      -e "s/{{ HOSTNAME }}/$HOSTNAME/" $file
+      -e "s/{{ LOCALHOSTNAME }}/$LOCALHOSTNAME/" $file
 done
 
 if [ ! -f /etc/ssh/.keys_generated ] && \
@@ -65,6 +66,7 @@ a2ensite mythweb mythweb-settings
 apache2ctl start
 
 for retry in $(seq 1 10); do
+  while killall -0 mythtv-setup; do sleep 5; done
   su mythtv -c /usr/bin/mythbackend || echo Unexpected exit retry=$retry
-  sleep 30
+  sleep 60
 done
