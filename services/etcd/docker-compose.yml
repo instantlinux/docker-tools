@@ -11,27 +11,26 @@ version: "3"
 #  make etcd
 
 services:
-  etcdinfra0:
-    image: elcolio/etcd:latest
-    restart: always
-    hostname: ${ADV:-etcdinfra0}
+  v3:
+    image: quay.io/coreos/etcd:v3.2.9
+    restart: never
+    hostname: ${ADV:-v3}
     volumes:
-    - data:/data
+    - data:/v3.etcd
     ports:
     - ${PORT_ETCD_CLIENT:-2379}:2379
     - ${PORT_ETCD_PEER:-2380}:2380
-    - ${PORT_ETCD_LEGACY1:-4001}:4001
-    - ${PORT_ETCD_LEGACY2:-7001}:7001
     network_mode: host
     command: >
-      -name ${ADV:-etcdinfra0}
-      -advertise-client-urls
-         http://${ADV:-etcdinfra0}:2379,http://${ADV:-etcdinfra0}:4001
-      -discovery https://discovery.etcd.io/${DISCOVERY_TOKEN}
-      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
-      -initial-advertise-peer-urls http://${ADV:-etcdinfra0}:2380
-      -listen-peer-urls http://0.0.0.0:2380
-      -initial-cluster-token ${CLUSTER:-etcd-cluster-1}
+      sh -c "apk add --update ca-certificates &&
+      /usr/local/bin/etcd \
+        -name ${ADV:-v3} \
+        -initial-advertise-peer-urls http://${ADV:-v3}:2380 \
+        -listen-peer-urls http://0.0.0.0:2380 \
+        -advertise-client-urls http://${ADV:-v3}:2379 \
+        -listen-client-urls http://0.0.0.0:2379 \
+        -discovery https://discovery.etcd.io/${DISCOVERY_TOKEN} \
+        -initial-cluster-token ${CLUSTER:-etcd-cluster-1}"
 
 volumes:
   data:
