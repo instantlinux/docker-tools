@@ -1,9 +1,9 @@
 version: "3"
 
-# define DNS entries to resolve node1 / node2 / node3 (docker host IPs)
-#  optionally specify $ADV host/ip and $CLUSTER name
+# Each host's ETCD_NAME should be unique and resolveable in DNS (or use IP addr)
+#  Optionally specify $CLUSTER name
 
-# to restart a cluster, generate a new DISCOVERY_TOKEN
+# to restart a cluster, generate a new DISCOVERY_TOKEN with desired size
 #  DISCOVERY_TOKEN=$(basename `curl -s 'https://discovery.etcd.io/new?size=3'`)
 #  export DISCOVERY_TOKEN
 # use the same value on each instance
@@ -13,10 +13,10 @@ version: "3"
 services:
   v3:
     image: quay.io/coreos/etcd:v3.2.9
-    restart: never
-    hostname: ${ADV:-v3}
+    restart: always
+    hostname: ${ETCD_NAME:-v3}
     volumes:
-    - data:/v3.etcd
+    - data:/var/etcd
     ports:
     - ${PORT_ETCD_CLIENT:-2379}:2379
     - ${PORT_ETCD_PEER:-2380}:2380
@@ -24,13 +24,14 @@ services:
     command: >
       sh -c "apk add --update ca-certificates &&
       /usr/local/bin/etcd \
-        -name ${ADV:-v3} \
-        -initial-advertise-peer-urls http://${ADV:-v3}:2380 \
-        -listen-peer-urls http://0.0.0.0:2380 \
-        -advertise-client-urls http://${ADV:-v3}:2379 \
-        -listen-client-urls http://0.0.0.0:2379 \
+        -advertise-client-urls http://${ETCD_NAME:-v3}:2379 \
+        -data-dir /var/etcd \
         -discovery https://discovery.etcd.io/${DISCOVERY_TOKEN} \
-        -initial-cluster-token ${CLUSTER:-etcd-cluster-1}"
+        -initial-advertise-peer-urls http://${ETCD_NAME:-v3}:2380 \
+        -initial-cluster-token ${CLUSTER:-etcd-cluster-1} \
+        -listen-client-urls http://0.0.0.0:2379 \
+        -listen-peer-urls http://0.0.0.0:2380 \
+        -name ${ETCD_NAME:-v3}"
 
 volumes:
   data:
