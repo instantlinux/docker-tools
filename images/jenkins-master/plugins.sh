@@ -3,6 +3,7 @@ set -e
 
 REF=/usr/share/jenkins/ref/plugins
 mkdir -p $REF
+umask 022
 
 echo "downloading plugins specified in plugins.txt"
 while read spec || [ -n "$spec" ]; do

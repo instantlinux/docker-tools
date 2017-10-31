@@ -23,11 +23,12 @@ ARG UID=212
 ARG GROUP=care
 ARG GID=505
 
+COPY *.sh /usr/local/bin/
 RUN apk add --no-cache --update curl dcron git jq openssh-client && \
     addgroup -g $GID $GROUP && \
-    adduser -u $UID -s /bin/sh -G $GROUP -g "git backup" -D $USERNAME
+    adduser -u $UID -s /bin/sh -G $GROUP -g "git backup" -D $USERNAME && \
+    chmod o+rx,g+rx /usr/local/bin/*.sh
 
-COPY *.sh /usr/local/bin/
 VOLUME /var/backup /var/log
 
-ENTRYPOINT /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

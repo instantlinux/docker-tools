@@ -35,14 +35,15 @@ CREATE TABLE IF NOT EXISTS \`ips\` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='spammer list';
 EOT
 
-cp /root/src/rebuild_rbldns.pl /usr/local/bin
-echo "# crontab for updating spammerlist from MySQL
+cat <<EOF >/etc/cron.d/$USERNAME
+# crontab for updating spammerlist from MySQL
 HOMEDIR=$HOMEDIR
 CFG_NAME=$CFG_NAME
 DB_NAME=$DB_NAME
 RBL_DOMAIN=$RBL_DOMAIN
 PID_FILE=$PID_FILE
-* * * * * $USERNAME /usr/local/bin/rebuild_rbldns.pl" >/etc/cron.d/$USERNAME
+* * * * * $USERNAME /usr/local/bin/rebuild_rbldns.pl
+EOF
 cron
 
 rbldnsd -f -n -r $HOMEDIR/$CFG_NAME -b 0.0.0.0/53 -p $PID_FILE \

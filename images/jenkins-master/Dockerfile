@@ -27,17 +27,17 @@ ENV ARTIFACTORY_URI=artifactory.domain.com \
     SMTP_SMARTHOST=mail.domain.com \
     TZ=UTC
 
-ARG _COMPOSE_VERSION=1.15
+ARG _COMPOSE_VERSION=1.16.1
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${_COMPOSE_VERSION}/docker-compose-Linux-x86_64
-ARG _JENKINS_VERSION=2.74
+ARG _JENKINS_VERSION=2.73.2
 ARG _TINI_DOWNLOADS=https://github.com/krallin/tini/releases/download
 ARG _TINI_VERSION=0.15.0
 ARG DOCKER_GID=485
 ARG JENKINS_UID=1000
 # sha256sum values for each download
-ARG COMPOSE_SHA=0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
-ARG JENKINS_SHA=9f37140d0ccb6a9aa7c3c8a522a79b37bd1123edddca0e7f8f6dd579ffe8cb86
+ARG COMPOSE_SHA=1804b0ce6596efe707b9cab05d74b161833ed503f0535a937dd5d17bea8fc50a
+ARG JENKINS_SHA=f6d1351beef34d980b32f8c463be505445f637e2fc62156fecd42891c53c97d3
 ARG TINI_SHA=4007655082f573603c02bc1d2137443c8e153af047ffd088d02ccc01e6f06170
 
 # gid for docker must match that on container host
@@ -70,7 +70,8 @@ RUN addgroup -g ${DOCKER_GID} docker && \
 COPY ref/ $JENKINS_REF
 COPY entrypoint.sh /usr/local/bin/
 COPY plugins.sh plugins.txt /tmp/
-RUN /tmp/plugins.sh /tmp/plugins.txt && rm /tmp/*
+RUN chmod -R g+rX,o+rX $JENKINS_REF /usr/local/bin/entrypoint.sh && \
+    /tmp/plugins.sh /tmp/plugins.txt && rm /tmp/*
 
 EXPOSE 8080 50000
 VOLUME $JENKINS_HOME

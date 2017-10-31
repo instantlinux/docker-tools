@@ -17,12 +17,17 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DB_NAME=blacklist \
     DB_HOST=dbhost
     
+COPY src/ /root/
 RUN apt-get -yq update && \
-    apt-get -y --no-install-recommends install \
-     cron rbldnsd perl libdbd-mysql-perl mariadb-client && \
+    apt-get -yq --no-install-recommends install \
+      cron curl rbldnsd perl libdbd-mysql-perl mariadb-client patch && \
+    curl -sL http://www.blue-quartz.com/rbl/rebuild_rbldns.txt > \
+      /usr/local/bin/rebuild_rbldns.pl && \
+    patch -d /usr/local/bin < /root/rebuild_rbldns.diff && \
+    chmod 755 /usr/local/bin/rebuild_rbldns.pl && \
+    apt-get purge -yq --auto-remove curl patch && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
 
-COPY src/ /root/src/
 VOLUME $HOMEDIR
 EXPOSE 53/udp
-ENTRYPOINT /root/src/entrypoint.sh
+ENTRYPOINT ["/root/entrypoint.sh"]

@@ -20,7 +20,8 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
 
 ARG PYTHON_PIP_VERSION=9.0.1
 
-ADD requirements/ /root/
+COPY requirements/ /root/
+COPY src/ /usr/local/bin/
 
 RUN apk add --no-cache --update \
      curl openssl python2 python2-dev py-configobj py-mysqldb  && \
@@ -32,6 +33,7 @@ RUN apk add --no-cache --update \
     apk add --no-cache --virtual .fetch-deps \
       gcc git freetype-dev jpeg-dev musl-dev zlib-dev && \
     pip install -r /root/common.txt && \
+    chmod -R g+rx,o+rx /usr/local/bin && \
     find /usr/local -depth \( \
         \( -type d -a -name test -o -name tests \) -o \
         \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
@@ -39,5 +41,3 @@ RUN apk add --no-cache --update \
     apk del .fetch-deps; \
     adduser -S -u 2026 -g "Spamassassin filter" -s /bin/sh spamfilter; \
     rm -fr /var/log/* /var/cache/apk/* /build
-
-COPY src/ /usr/local/bin/

@@ -64,6 +64,8 @@ RUN addgroup -g $DOCKER_GID docker && \
 WORKDIR $SWARM_WORKDIR
 VOLUME $SWARM_WORKDIR
 COPY entrypoint.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+
 USER jenkins
 ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
 CMD ["swarm"]

@@ -24,6 +24,8 @@ ARG UID=212
 ARG GID=212
 
 COPY requirements/ /root/
+COPY src/healthcheck.sh /usr/local/bin/
+COPY wsrep.cnf my.cnf /etc/mysql/
 
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     echo "deb [arch=amd64] \
@@ -36,19 +38,17 @@ RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     pip install -r /root/common.txt && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
     dpkg-reconfigure dash && \
+    chmod -R g+rX,o+rX /etc/mysql && \
     apt-get clean; rm -fr /var/log/* /var/lib/mysql/*
 
 EXPOSE 3306 4444 4567/udp 4567 4568
 VOLUME /var/lib/mysql
 
-COPY src/healthcheck.sh /usr/local/bin/
-COPY wsrep.cnf my.cnf /etc/mysql/
-
-# TODO: fix healthcheck.sh to handle long-duration bootstrap
 HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
     CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
 
-ENTRYPOINT /root/entrypoint.py
-COPY src/entrypoint.py /root/
+COPY src/entrypoint.py /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/entrypoint.py"]
 
+# TODO: fix healthcheck.sh to handle long-duration bootstrap
 # TODO: percona-xtrabackup when wsrep_sst_method works in 10.2

@@ -32,6 +32,7 @@ RUN \
   touch /home/$USERNAME/.my.cnf
 
 COPY *.sh /usr/local/bin/
+RUN chmod g+rx,o+rx /usr/local/bin/*.sh
 VOLUME /var/backup /var/log
 
-ENTRYPOINT /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
