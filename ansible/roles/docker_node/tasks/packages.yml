@@ -1,0 +1,7 @@
+---
+# package.yml
+
+- name: Install system packages
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ ubuntu_packages }}"

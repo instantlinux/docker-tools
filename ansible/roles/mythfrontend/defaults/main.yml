@@ -71,6 +71,19 @@ opensuse_repo_defaults:
 opensuse_repo_additions: []
 opensuse_repos: "{{ opensuse_repo_defaults + opensuse_repo_additions }}"
 
+network_defaults:
+  address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+  gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
+  interface: enp0s10
+  mode: dhcp
+  module: False
+  nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
+  netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
+  search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
+
+network_override: {}
+network: "{{ network_defaults | combine(network_override) }}"
+
 # To disable this feature, override suspend to False
 suspend:
   hour: 0

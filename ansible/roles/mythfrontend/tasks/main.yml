@@ -6,6 +6,7 @@
 
 - include: "{{ distro }}/packages.yml"
 - include: "{{ distro }}/lirc.yml"
+- include: "{{ distro }}/network.yml"
 - include: autosuspend.yml
   when: suspend
 

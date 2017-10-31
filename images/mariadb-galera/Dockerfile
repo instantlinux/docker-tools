@@ -32,7 +32,7 @@ RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     groupadd -g $GID mysql && \
     useradd -u $UID -g $GID -s /bin/false -c "MariaDB" -d /none mysql && \
     apt-get -yq update && apt-get -yq install --no-install-recommends \
-     curl jq mariadb-server mariadb-client net-tools netcat && \
+     curl iputils-ping jq mariadb-server mariadb-client net-tools netcat && \
     pip install -r /root/common.txt && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
     dpkg-reconfigure dash && \

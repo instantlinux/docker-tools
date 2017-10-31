@@ -2,10 +2,8 @@ version: "3.1"
 
 services:
   app:
-    #image: ${REGISTRY_URI:-instantlinux}/mythtv-backend:latest
-    #hostname: ${HOSTNAME_MYTHTV:-mythtv}
-    image: mythtv-backend
-    hostname: pvr01a
+    image: ${REGISTRY_URI:-instantlinux}/mythtv-backend:latest
+    hostname: ${HOSTNAME_MYTHTV:-mythtv}
     restart: always
     environment:
       DBNAME: ${DB_MYTHTV:-mythtv}

@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+auto {{ network.interface }}
+iface {{ network.interface }} inet {{ network.mode }}
+{% if network.mode == 'static' %}
+ address {{ network.address }}
+ netmask {{ network.netmask }}
+ gateway {{ network.gateway }}
+ dns-nameservers {{ ' '.join(network.nameservers) }}
+ dns-search {{ ' '.join(network.search) }}
+{% endif %}

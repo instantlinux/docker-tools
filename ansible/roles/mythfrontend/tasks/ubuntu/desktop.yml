@@ -29,6 +29,12 @@
     dest: /home/mythtv/.config/kscreenlockerrc
     src: kscreenlockerrc.j2
 
+- name: Disable compositing effects for kwin_x11 performance
+  template:
+    dest: /home/mythtv/.config/kwinrc
+    owner: mythtv
+    src: kwinrc.j2
+
 - name: Disable energy-saver
   template:
     dest: /home/mythtv/.config/powermanagementprofilesrc

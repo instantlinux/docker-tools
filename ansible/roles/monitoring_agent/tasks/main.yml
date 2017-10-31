@@ -42,3 +42,9 @@
     name: "{{ nagios.nrpe_service }}"
     enabled: yes
     state: started
+
+- name: Syslog host setup
+  template:
+    dest: /etc/rsyslog.d/custom.conf
+    src: rsyslog-custom.conf.j2
+  notify: Restart rsyslogd

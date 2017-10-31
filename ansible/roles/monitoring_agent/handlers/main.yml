@@ -4,3 +4,8 @@
   service:
     name: "{{ nagios.nrpe_service }}"
     state: restarted
+
+- name: Restart rsyslogd
+  service:
+    name: rsyslog
+    state: restarted

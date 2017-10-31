@@ -7,11 +7,5 @@
 - include: security.yml
 - include: repos.yml
 - include: kernel.yml
-
-- name: Install system packages
-  apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
-
-- include: services.yml
+- include: packages.yml
 - include: docker.yml

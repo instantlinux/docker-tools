@@ -20,7 +20,7 @@ services:
     volumes:
     - ${ADMIN_PATH:-/opt}/wx/etc/nginx/conf.d:/etc/nginx/conf.d:ro
     - ${ADMIN_PATH}/wx/ssh/id_rsa.pub:/run/id_rsa.pub:ro
-    - etcssh:/etc/ssh
+    - ${SHARE_PATH}/wx-nginx/etc/ssh:/etc/ssh
     - html:${WX_RSYNC_DEST-/var/wx}
     deploy:
       placement:

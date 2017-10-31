@@ -1,18 +1,22 @@
-version: "3.1"
+version: "3.2"
 
 services:
   peer:
     hostname: "{{.Service.Name}}-{{.Task.Slot}}"
     image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:latest
     environment:
-      CLUSTER_NAME: ${CLUSTER_NAME:-cluster01}
+      CLUSTER_NAME: ${CLUSTER_DB01:-cluster01}
       DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
+      CLUSTER_SIZE: 3
     ports:
-    - ${TCP_PORT:-3306}:3306
+    - target: 3306
+      published: 18306
+      protocol: tcp
+      mode: host
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
-    - ${ADMIN_PATH:-/opt}/xtradb/etc/:/etc/mysql/my.cnf.d:ro
+    - ${ADMIN_PATH:-/opt}/mariadb/etc/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
     deploy:

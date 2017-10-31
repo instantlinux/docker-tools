@@ -8,11 +8,6 @@
     name: docker
     state: restarted
 
-- name: Restart rsyslogd
-  service:
-    name: rsyslog
-    state: restarted
-
 - name: Restart sshd
   service:
     name: sshd
