@@ -1,12 +1,12 @@
-## vsftpd
+## proftpd
 
-[![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Commit badge")
 
-A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in Alpine.
+An easy-to-use, tiny yet full-featured installation of ProFTPD.
 
 ### Usage
 
-The most-common directives can be specified in environment variables as shown below. If you need further customizations, put them in one or more files under a mount point /etc/vsftpd.d.
+The most-common directives can be specified in environment variables as shown below. One is required, the PASV_ADDRESS. If you need further customizations, put them in one or more files under mount points /etc/proftpd.d and /etc/proftpd/modules.d.
 
 A single upload user can be specified via the FTPUSER_xxx variables. It is activated by defining ftp-user-password-secret thus:
 
@@ -18,26 +18,24 @@ A single upload user can be specified via the FTPUSER_xxx variables. It is activ
 
 An example compose file is provided here in docker-compose.yml. This is for the common scenario of sharing from Docker swarm the contents of a network-attached volume as a read-only anonymous-ftp service.
 
-Status: DO NOT USE. I've had constant segfault crashes with vsftpd version 3.0.3 under Alpine and Ubuntu. I've switched to proftpd (see that image).
-
 ### Variables
 
 Variable | Default | Description |
 -------- | ------- | ----------- |
-ANONYMOUS_ENABLE | YES | Anonymous login
-ANON_MKDIR_WRITE_ENABLE | NO | Anonymous mkdir
-ANON_UPLOAD_ENABLE | NO | Anonymous upload
+ALLOW_OVERWRITE | on | allow clients to modify files
+ANONYMOUS_DISABLE | off | anonymous login
+ANON_UPLOAD_ENABLE | NO | anonymous upload
 FTPUSER_PASSWORD_SECRET | ftp-user-password-secret | hashed pw of upload user
 FTPUSER_NAME | ftpuser | upload username
 FTPUSER_UID | 1001 | upload file ownership UID
 LOCAL_UMASK | 022 | upload umask
-LOG_FTP_PROTOCOL | NO | more-verbose logging
+MAX_CLIENTS | 10 | maximum simultaneous logins
+MAX_INSTANCES | 30 | process limit
 PASV_ADDRESS |  | required--address of docker engine
 PASV_MAX_PORT | 30100 | range of client ports (rebuild image if changed)
 PASV_MIN_PORT | 30091 | 
 TZ | UTC | local timezone
 USE_LOCALTIME | YES | local time for directory listing
-VSFTPD_LOG_FILE | /dev/stdout | logfile destination
 WRITE_ENABLE | YES | allow put/rm
 
 ### Secrets
@@ -46,4 +44,4 @@ Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
 
-[![](https://images.microbadger.com/badges/license/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "License badge")

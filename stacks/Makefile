@@ -3,14 +3,13 @@ STACKS = $(basename $(wildcard *.yml))
 DEPLOY = $(STACKS:%=.deploy/%)
 
 db00: CLUSTER_NAME = db00
-db00: TCP_PORT = $(PORT_DB00)
 
 default: $(DEPLOY)
 
 .deploy/%: %.yml
 	@echo Deploying $(@F)
 	@mkdir -p .deploy
-	TCP_PORT=$(TCP_PORT) CLUSTER_NAME=$(CLUSTER_NAME) \
+	CLUSTER_NAME=$(CLUSTER_NAME) \
 	  docker stack deploy --with-registry-auth -c $(@F).yml $(@F)
 	@touch .deploy/$(@F)
 
@@ -36,6 +35,7 @@ mysqldump: .deploy/mysqldump
 nexus: .deploy/nexus
 portainer: .deploy/portainer
 postfix: .deploy/postfix
+proftpd: .deploy/proftpd
 registry: .deploy/registry
 rsyslogd: .deploy/rsyslogd
 spamassassin: .deploy/spamassassin
@@ -53,13 +53,6 @@ vsftpd: .deploy/vsftpd
 
 net_create::
 	docker network create dbcluster --driver overlay $(LABELS)
-
-xtradb: xtradb-bootstrap-2node.yml
-	@echo Deploying $(@F)
-	@mkdir -p .deploy
-	TCP_PORT=$(TCP_PORT) CLUSTER_NAME=$(CLUSTER_NAME) \
-	  docker stack deploy -c xtradb-bootstrap-2node.yml $(@F)
-	@touch .deploy/$(@F)
 
 # TODO: does not work
 %: .deploy/%

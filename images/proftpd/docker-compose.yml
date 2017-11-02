@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/proftpd:latest
+    environment:
+      PASV_ADDRESS: ${PROFTPD_IP}
+      TZ: US/Pacific
+    volumes:
+    - ftp:/var/lib/ftp:nocopy
+    ports:
+    - ${PORT_PROFTPD:-21}:21
+    - "30091-30100:30091-30100"
+    deploy:
+      placement:
+        constraints:
+        - ${LABEL_WORKER:-node.role == worker}
+
+volumes:
+  ftp:
+networks:
+  default:
+    external:
+      name: app_net

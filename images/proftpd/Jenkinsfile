@@ -1,0 +1,76 @@
+#!/usr/bin/env groovy
+// Pipeline for docker-image build
+//  created by richb@instantlinux.net 20-apr-2017
+
+def baseEnv = 'dev'
+def registry = 'nexus.instantlinux.net'
+def notify = 'richb@instantlinux.net'
+def service = env.JOB_NAME.split('/', 2)[0]
+
+pipeline {
+  agent { label 'swarm' }
+  stages {
+    stage('Static Code Analysis') {
+      steps {
+        sh "env ; cd images/${service} && make analysis"
+        sh "git rev-parse HEAD > git_commit.log"
+      }
+    }
+    stage('Create Image') {
+      steps {
+        script {
+          gitCommit = readFile('git_commit.log').take(7)
+          imageTag = "${baseEnv}_build_${env.BUILD_NUMBER}_${gitCommit}"
+          dir("images/${service}") {
+            img = docker.build("${registry}/${service}:${imageTag}")
+          }
+        }
+      }
+    }
+    stage('Push Image') {
+      steps {
+        withDockerRegistry([credentialsId: 'docker-registry',
+                            url: "https://${registry}"]) {
+          script {
+            img.push imageTag
+          }
+        }
+      }
+    }
+    stage('Functional Tests') {
+      steps {
+        withDockerRegistry([credentialsId: 'docker-registry',
+                            url: "https://${registry}"]) {
+          script {
+            dir("images/${service}") {
+              sh 'make test_functional'
+              img.push 'latest'
+            }
+          }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      deleteDir()
+    }
+    success {
+      emailext (
+        to: notify,
+        subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} success",
+        body: "Build URL: ${env.BUILD_URL}.\nDocker Image ${registry}/${service}\n",
+        attachLog: true
+      )
+    }
+    failure {
+      sh "docker rmi ${registry}/${service}:${imageTag}"
+      emailext (
+        to: notify,
+        subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} failed",
+        body: "Failed build URL: ${env.BUILD_URL}.\n",
+        attachLog: true
+      )
+    }
+  }
+}
