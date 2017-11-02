@@ -25,4 +25,3 @@
   template:
     dest: /etc/pm/sleep.d/20_eth_resume
     src: 20_eth_resume.j2
-  when: network.module

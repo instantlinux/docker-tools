@@ -4,6 +4,11 @@ services:
   app:
     image: gitlab/gitlab-ce:8.16.4-ce.0
     hostname: git.instantlinux.net
+    command: >
+      bash -c "mkdir -p /var/backups/gitlab &&
+      rm -fr /var/opt/gitlab/backups &&
+      ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
+      exec /assets/wrapper"
     environment:
       TZ: US/Pacific
     ports:
@@ -13,7 +18,7 @@ services:
     volumes:
     - ${SHARE_PATH}/gitlab/config:/etc/gitlab
     - ${SHARE_PATH}/gitlab/data:/var/opt/gitlab
-    - backup:/var/opt/gitlab/backups
+    - backup:/var/backups
     - logs:/var/log/gitlab
     deploy:
       placement:

@@ -2,11 +2,9 @@
 {{ ansible_managed | comment }}
 
 # Reload ethernet
-module="{{ network.module }}"
 
 case "$1" in
-	resume|thaw)
-		modprobe -r $module
-		modprobe $module
-		;;
+    resume|thaw)
+        systemctl restart networking
+        ;;
 esac
