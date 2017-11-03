@@ -49,6 +49,7 @@ wordpress-il: .deploy/wordpress-il
 www00: .deploy/www00
 wwwext: .deploy/wwwext
 wx-nginx: .deploy/wx-nginx
+wxcam-upload: .deploy/wxcam-upload
 vsftpd: .deploy/vsftpd
 
 net_create::

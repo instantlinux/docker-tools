@@ -5,10 +5,11 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/wxcam-upload:latest
     environment:
       CAMS: ${WXCAM_CAMS:-cam1}
-      UPLOAD_USERNAME: ${WXCAM_UPLOAD_USERNAME}
+      PASV_ADDRESS: ${WX_RSYNC_HOST:-swarm}
+      UPLOAD_USERNAME: ${WXCAM_UPLOAD_USERNAME:-wx}
       TZ: US/Pacific
     volumes:
-    - upload:/home/wx/upload
+    - ${SHARE_PATH:-/opt}/wx:/home/wx/upload
     ports:
     - ${PORT_WXCAM_FTPD:-21}:21
     - "30081-30090:30081-30090"
@@ -23,3 +24,4 @@ secrets:
     external: true
   wxcam-password-hashed:
     external: true
+

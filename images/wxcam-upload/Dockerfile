@@ -8,19 +8,18 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ENV ANONYMOUS_ENABLE=NO \
+ENV ANONYMOUS_DISABLE=on \
     CAMS=cam1 \
     INTERVAL=5 \
-    WXUSER_NAME=wx \
-    WXUSER_PASSWORD_SECRET=wxcam-password-hashed \
-    WXUSER_UID=2060 \
     PASV_MAX_PORT=30090 \
     PASV_MIN_PORT=30081 \
     UPLOAD_HOSTNAME=webcam.wunderground.com \
     UPLOAD_PASSWORD_SECRET=wunderground-user-password \
     UPLOAD_PATH=/home/wx/upload \
     UPLOAD_USERNAME=required \
-    WXCAM_PASSWORD_SECRET=wxcam-password-hashed \
+    WXUSER_NAME=wx \
+    WXUSER_PASSWORD_SECRET=wxcam-password-hashed \
+    WXUSER_UID=2060 \
     TZ=UTC
 
 RUN apk add --update --no-cache bash dcron imagemagick ncftp

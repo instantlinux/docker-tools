@@ -30,6 +30,7 @@ EOF
 done
 
 crond -L /var/log/cron.log
+tail -f -n0 /var/log/cron.log &
 
 # Invoke base vsftpd image's entrypoint
 exec /usr/local/bin/entrypoint.sh
