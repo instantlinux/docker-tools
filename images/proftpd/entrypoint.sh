@@ -25,6 +25,8 @@ sed -i \
     -e "s:{{ PASV_MAX_PORT }}:$PASV_MAX_PORT:" \
     -e "s:{{ PASV_MIN_PORT }}:$PASV_MIN_PORT:" \
     -e "s+{{ SERVER_NAME }}+$SERVER_NAME+" \
+    -e "s:{{ TIMES_GMT }}:$TIMES_GMT:" \
+    -e "s:{{ WRITE_ENABLE }}:$WRITE_ENABLE:" \
     /etc/proftpd/proftpd.conf
 
 exec proftpd --nodaemon -c /etc/proftpd/proftpd.conf

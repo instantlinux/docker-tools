@@ -3,7 +3,7 @@ MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
-    org.label-schema.license=Apache-2.0 \
+    org.label-schema.license=GPL-2.0 \
     org.label-schema.name=proftpd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
@@ -21,9 +21,9 @@ ENV ALLOW_OVERWRITE=on \
     PASV_MAX_PORT=30100 \
     PASV_MIN_PORT=30091 \
     SERVER_NAME=ProFTPD \
+    TIMES_GMT=off \
     TZ=UTC \
-    USE_LOCALTIME=YES \
-    WRITE_ENABLE=YES
+    WRITE_ENABLE=AllowAll
 
 RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \

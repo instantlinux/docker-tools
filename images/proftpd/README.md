@@ -24,7 +24,7 @@ Variable | Default | Description |
 -------- | ------- | ----------- |
 ALLOW_OVERWRITE | on | allow clients to modify files
 ANONYMOUS_DISABLE | off | anonymous login
-ANON_UPLOAD_ENABLE | NO | anonymous upload
+ANON_UPLOAD_ENABLE | DenyAll | anonymous upload
 FTPUSER_PASSWORD_SECRET | ftp-user-password-secret | hashed pw of upload user
 FTPUSER_NAME | ftpuser | upload username
 FTPUSER_UID | 1001 | upload file ownership UID
@@ -34,9 +34,9 @@ MAX_INSTANCES | 30 | process limit
 PASV_ADDRESS |  | required--address of docker engine
 PASV_MAX_PORT | 30100 | range of client ports (rebuild image if changed)
 PASV_MIN_PORT | 30091 | 
+TIMES_GMT | off | local time for directory listing
 TZ | UTC | local timezone
-USE_LOCALTIME | YES | local time for directory listing
-WRITE_ENABLE | YES | allow put/rm
+WRITE_ENABLE | AllowAll | allow put/rm
 
 ### Secrets
 

@@ -16,10 +16,15 @@ MasqueradeAddress       {{ PASV_ADDRESS }}
 MaxInstances            {{ MAX_INSTANCES }}
 PassivePorts            {{ PASV_MIN_PORT }} {{ PASV_MAX_PORT }}
 ServerName              "{{ SERVER_NAME }}"
+TimesGMT                {{ TIMES_GMT }}
 Umask                   {{ LOCAL_UMASK }}
 
 <Limit SITE_CHMOD>
   DenyAll
+</Limit>
+
+<Limit WRITE>
+  {{ WRITE_ENABLE }}
 </Limit>
 
 <Anonymous ~ftp>
