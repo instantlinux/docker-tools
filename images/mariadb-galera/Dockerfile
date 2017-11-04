@@ -25,7 +25,6 @@ ARG GID=212
 
 COPY requirements/ /root/
 COPY src/healthcheck.sh /usr/local/bin/
-COPY wsrep.cnf my.cnf /etc/mysql/
 
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     echo "deb [arch=amd64] \
@@ -47,6 +46,7 @@ VOLUME /var/lib/mysql
 HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
     CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
 
+COPY wsrep.cnf my.cnf /etc/mysql/
 COPY src/entrypoint.py /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.py"]
 

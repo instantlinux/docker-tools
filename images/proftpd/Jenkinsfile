@@ -2,9 +2,10 @@
 // Pipeline for docker-image build
 //  created by richb@instantlinux.net 20-apr-2017
 
-def baseEnv = 'dev'
+def maintainer = 'richb@instantlinux.net'
 def registry = 'nexus.instantlinux.net'
-def notify = 'richb@instantlinux.net'
+def registry_creds = [credentialsId: 'docker-registry',
+                      url: "https://${registry}"]
 def service = env.JOB_NAME.split('/', 2)[0]
 
 pipeline {
@@ -13,14 +14,13 @@ pipeline {
     stage('Static Code Analysis') {
       steps {
         sh "env ; cd images/${service} && make analysis"
-        sh "git rev-parse HEAD > git_commit.log"
       }
     }
     stage('Create Image') {
       steps {
         script {
-          gitCommit = readFile('git_commit.log').take(7)
-          imageTag = "${baseEnv}_build_${env.BUILD_NUMBER}_${gitCommit}"
+          gitCommit = checkout(scm).GIT_COMMIT.take(7)
+          imageTag = "dev_build_${env.BUILD_NUMBER}_${gitCommit}"
           dir("images/${service}") {
             img = docker.build("${registry}/${service}:${imageTag}")
           }
@@ -29,8 +29,7 @@ pipeline {
     }
     stage('Push Image') {
       steps {
-        withDockerRegistry([credentialsId: 'docker-registry',
-                            url: "https://${registry}"]) {
+        withDockerRegistry(registry_creds) {
           script {
             img.push imageTag
           }
@@ -39,13 +38,20 @@ pipeline {
     }
     stage('Functional Tests') {
       steps {
-        withDockerRegistry([credentialsId: 'docker-registry',
-                            url: "https://${registry}"]) {
+        withDockerRegistry(registry_creds) {
           script {
             dir("images/${service}") {
               sh 'make test_functional'
-              img.push 'latest'
             }
+          }
+        }
+      }
+    }
+    stage('Promote Image') {
+      steps {
+        withDockerRegistry(registry_creds) {
+          script {
+            img.push 'latest'
           }
         }
       }
@@ -57,7 +63,7 @@ pipeline {
     }
     success {
       emailext (
-        to: notify,
+        to: maintainer,
         subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} success",
         body: "Build URL: ${env.BUILD_URL}.\nDocker Image ${registry}/${service}\n",
         attachLog: true
@@ -66,7 +72,7 @@ pipeline {
     failure {
       sh "docker rmi ${registry}/${service}:${imageTag}"
       emailext (
-        to: notify,
+        to: maintainer,
         subject: "Job ${env.JOB_NAME} #${env.BUILD_NUMBER} failed",
         body: "Failed build URL: ${env.BUILD_URL}.\n",
         attachLog: true
