@@ -2,10 +2,11 @@
 // Pipeline for docker-image build
 //  created by richb@instantlinux.net 20-apr-2017
 
+def buildDate = java.time.Instant.now().toString()
 def maintainer = 'richb@instantlinux.net'
 def registry = 'nexus.instantlinux.net'
-def registry_creds = [credentialsId: 'docker-registry',
-                      url: "https://${registry}"]
+def registryCreds = [credentialsId: 'docker-registry',
+                     url: "https://${registry}"]
 def service = env.JOB_NAME.split('/', 2)[0]
 
 pipeline {
@@ -19,17 +20,18 @@ pipeline {
     stage('Create Image') {
       steps {
         script {
-          gitCommit = checkout(scm).GIT_COMMIT.take(7)
-          imageTag = "dev_build_${env.BUILD_NUMBER}_${gitCommit}"
-          dir("images/${service}") {
-            img = docker.build("${registry}/${service}:${imageTag}")
-          }
+          gitCommit = checkout(scm).GIT_COMMIT
+          imageTag = "dev_build_${env.BUILD_NUMBER}_${gitCommit.take(7)}"
+	  img = docker.build("${registry}/${service}:${imageTag}",
+			     "--build-arg=VCS_REF=${gitCommit} " +
+			     "--build-arg=BUILD_DATE=${buildDate} " +
+			     "images/${service}")
         }
       }
     }
     stage('Push Image') {
       steps {
-        withDockerRegistry(registry_creds) {
+        withDockerRegistry(registryCreds) {
           script {
             img.push imageTag
           }
@@ -38,7 +40,7 @@ pipeline {
     }
     stage('Functional Tests') {
       steps {
-        withDockerRegistry(registry_creds) {
+        withDockerRegistry(registryCreds) {
           script {
             dir("images/${service}") {
               sh 'make test_functional'
@@ -49,7 +51,7 @@ pipeline {
     }
     stage('Promote Image') {
       steps {
-        withDockerRegistry(registry_creds) {
+        withDockerRegistry(registryCreds) {
           script {
             img.push 'latest'
           }

@@ -16,7 +16,7 @@ fi
 
 cd $UPLOAD_FROM/$CAM
 LATEST=`find . -type f -name *.jpg -mmin -5 -print|sort -r |head -1`
-IMG=/tmp/image-`date +%H.%M`.jpg
+IMG=/tmp/image-`date +%H.%M.%S`.jpg
 if [ "$LATEST" != "" ]; then
   convert $LATEST $CROP -define jpeg:extent=$MAX_SIZE $IMG
   while [ $RETRIES -gt 0 ]; do

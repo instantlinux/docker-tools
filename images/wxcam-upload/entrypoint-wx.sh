@@ -5,14 +5,18 @@ if [ -e /run/secrets/$WXUSER_PASSWORD_SECRET ]; then
   echo "$WXUSER_NAME:$(cat /run/secrets/$WXUSER_PASSWORD_SECRET)" \
     | chpasswd -e
 fi
+if [ -e /run/secrets/$UPLOAD_PASSWORD_SECRET ]; then
+  UPLOAD_PASSWORD="$(cat /run/secrets/$UPLOAD_PASSWORD_SECRET)"
+fi
 
 chown $WXUSER_NAME $UPLOAD_PATH
+chmod 755 /usr/local/bin/wx_upload.sh
 
 echo "# Added by /usr/local/bin/entrypoint-wx.sh"  >/etc/crontabs/$WXUSER_NAME
 ITEM=0
 IFS=', ' read -r -a USERNAMES <<< "$UPLOAD_USERNAME"
 for CAM in $CAMS; do
-  MINUTE="*/$INTERVAL"
+  MINUTE=$(seq -s, $ITEM $INTERVAL 60)
   cat <<EOF >>/etc/crontabs/$WXUSER_NAME
 $MINUTE * * * *  /usr/local/bin/wx_upload.sh $CAM $UPLOAD_HOSTNAME $UPLOAD_PATH
 EOF

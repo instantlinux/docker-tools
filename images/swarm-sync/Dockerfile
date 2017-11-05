@@ -16,9 +16,8 @@ ENV SYNC_ROLE=primary \
 RUN apk add --update dcron openssh-client openssh-server unison && \
     rm -fr /var/log/* /var/cache/apk/* && \
     mkdir /var/log/unison /root/.unison
-USER root
-EXPOSE 22
 
+EXPOSE 22
 COPY src/ /root/src/
 VOLUME ["/var/swarm-sync", "/root/.unison", "/var/log/unison"]
 ENTRYPOINT ["/root/src/entrypoint.sh"]
