@@ -31,6 +31,7 @@ services:
     - desktop.ci.net-server-key.pem
     - docs.ci.net-server-key.pem
     - git.instantlinux.net-server-key.pem
+    - homebase.instantlinux.net-server-key.pem
     - jenkins.ci.net-server-key.pem
     - jira.ci.net-server-key.pem
     - monitor.ci.net-server-key.pem
@@ -53,6 +54,8 @@ secrets:
   docs.ci.net-server-key.pem:
     external: true
   git.instantlinux.net-server-key.pem:
+    external: true
+  homebase.instantlinux.net-server-key.pem:
     external: true
   jenkins.ci.net-server-key.pem:
     external: true

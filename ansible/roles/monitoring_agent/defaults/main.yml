@@ -47,5 +47,6 @@ opensuse_repos:
     repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
 
 ubuntu_packages:
+  - bc
   - nagios-nrpe-server
   - smartmontools

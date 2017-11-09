@@ -8,10 +8,9 @@
   when: ansible_os_family == 'Debian'
 
 - name: Create mount points
-  file:
-    dest: "{{ item.value.path }}"
-    state: directory
-    recurse: True
+  command: mkdir -p {{ item.value.path }}
+  args:
+    creates: "{{ item.value.path }}"
   with_dict: "{{ volumes[vg] | combine(network_mounts) |
                  combine(local_volumes) }}"
 
