@@ -27,6 +27,7 @@ ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
 git-dump: .deploy/git-dump
 guacamole: .deploy/guacamole
+il-v1: .deploy/il-v1
 jenkins: .deploy/jenkins
 jira: .deploy/jira
 logspout: .deploy/logspout

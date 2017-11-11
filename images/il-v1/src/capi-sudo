@@ -1,0 +1,6 @@
+%capiaction	ALL = NOPASSWD: CAPI
+Defaults:%capiaction	!requiretty
+Cmnd_Alias	CAPI = /usr/bin/cap, /usr/bin/ssh
+Cmnd_Alias	PROCESSES = /bin/nice, /bin/kill, /usr/bin/kill, /usr/bin/killall
+capi		ALL = NOPASSWD: PROCESSES
+apache		ALL = (capi) NOPASSWD: CAPI

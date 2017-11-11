@@ -1,0 +1,229 @@
+[PHP]
+allow_call_time_pass_reference = Off
+allow_url_fopen = On
+allow_url_include = Off
+asp_tags = Off
+auto_append_file =
+auto_globals_jit = On
+auto_prepend_file =
+cgi.discard_path = 1
+default_charset = "iso-8859-1"
+default_mimetype = "text/html"
+default_socket_timeout = 60
+disable_classes =
+disable_functions =
+display_errors = Off
+display_startup_errors = Off
+doc_root =
+enable_dl = On
+engine = On
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+expose_php = On
+;extension = apcu.so
+;extension = memcache.so
+extension_dir = "/usr/lib/php5/modules"
+file_uploads = On
+html_errors = On
+ignore_repeated_errors = Off
+ignore_repeated_source = Off
+implicit_flush = Off
+include_path = ".:/usr/share/pear"
+log_errors = On
+log_errors_max_len = 1024
+max_execution_time = 60
+max_file_uploads = 20
+max_input_time = 60
+memory_limit = 128M
+output_buffering = 4096
+post_max_size = 8M
+precision = 12
+realpath_cache_size = 16k
+realpath_cache_ttl = 120
+register_argc_argv = Off
+register_globals = Off
+register_long_arrays = Off
+report_memleaks = On
+request_order = "GP"
+safe_mode = Off
+serialize_precision = 100
+short_open_tag = On
+track_errors = Off
+unserialize_callback_func =
+upload_max_filesize = 8M
+user_dir =
+variables_order = "GPCS"
+zend.enable_gc = On
+zlib.output_compression = Off
+[CLI Server]
+cli_server.color = On
+[Date]
+date.timezone = {{ TZ }}
+[filter]
+[iconv]
+[intl]
+[sqlite3]
+[Pcre]
+[Pdo]
+[Pdo_mysql]
+pdo_mysql.cache_size = 2000
+pdo_mysql.default_socket=
+[Phar]
+[mail function]
+SMTP = localhost
+smtp_port = 25
+mail.add_x_header = On
+[SQL]
+sql.safe_mode = Off
+[ODBC]
+odbc.allow_persistent = On
+odbc.check_persistent = On
+odbc.max_persistent = -1
+odbc.max_links = -1
+odbc.defaultlrl = 4096
+odbc.defaultbinmode = 1
+[Interbase]
+ibase.allow_persistent = 1
+ibase.max_persistent = -1
+ibase.max_links = -1
+ibase.timestampformat = "%Y-%m-%d %H:%M:%S"
+ibase.dateformat = "%Y-%m-%d"
+ibase.timeformat = "%H:%M:%S"
+[MySQL]
+;mysql.allow_local_infile = On
+mysql.allow_persistent = On
+;mysql.cache_size = 2000
+mysql.max_persistent = -1
+mysql.max_links = -1
+mysql.default_port =
+mysql.default_socket =
+mysql.default_host =
+mysql.default_user =
+mysql.default_password =
+mysql.connect_timeout = 60
+mysql.trace_mode = Off
+[MySQLi]
+;mysqli.max_persistent = -1
+;mysqli.allow_persistent = On
+mysqli.max_links = -1
+;mysqli.cache_size = 2000
+mysqli.default_port = 3306
+mysqli.default_socket =
+mysqli.default_host =
+mysqli.default_user =
+mysqli.default_pw =
+mysqli.reconnect = Off
+[mysqlnd]
+mysqlnd.collect_statistics = On
+mysqlnd.collect_memory_statistics = Off
+[OCI8]
+[PostgreSQL]
+pgsql.allow_persistent = On
+pgsql.auto_reset_persistent = Off
+pgsql.max_persistent = -1
+pgsql.max_links = -1
+pgsql.ignore_notice = 0
+pgsql.log_notice = 0
+[Sybase-CT]
+sybct.allow_persistent = On
+sybct.max_persistent = -1
+sybct.max_links = -1
+sybct.min_server_severity = 10
+sybct.min_client_severity = 10
+[bcmath]
+bcmath.scale = 0
+[browscap]
+browscap = /root/src/browscap.ini
+[Session]
+session.save_handler = files
+;session.use_strict_mode = 0
+session.use_cookies = 1
+session.use_only_cookies = 1
+session.name = PHPSESSID
+session.auto_start = 0
+session.cookie_lifetime = 0
+session.cookie_path = /
+session.cookie_domain =
+session.cookie_httponly =
+session.serialize_handler = php
+session.gc_probability = 1
+session.gc_divisor = 1000
+session.gc_maxlifetime = 1440
+session.referer_check =
+session.cache_limiter = nocache
+session.cache_expire = 180
+session.use_trans_sid = 0
+session.hash_function = 0
+session.hash_bits_per_character = 4
+session.entropy_file = /dev/urandom
+session.entropy_length = 16
+session.gc_divisor = 100
+session.save_path = "/tmp"
+session.bug_compat_42 = 1
+session.bug_compat_warn = 1
+url_rewriter.tags = "a=href,area=href,frame=src,input=src,form=fakeentry,fieldset="
+[MSSQL]
+mssql.allow_persistent = On
+mssql.max_persistent = -1
+mssql.max_links = -1
+mssql.min_error_severity = 10
+mssql.min_message_severity = 10
+mssql.compatibility_mode = Off
+mssql.secure_connection = Off
+[Assertion]
+[COM]
+[mbstring]
+mbstring.language = Japanesee
+mbstring.internal_encoding = EUC-JP
+mbstring.http_input = auto
+mbstring.http_output = SJIS
+mbstring.encoding_translation = Off
+mbstring.detect_order = auto
+mbstring.substitute_character = none;
+mbstring.func_overload = 0
+[gd]
+[exif]
+[Tidy]
+tidy.clean_output = Off
+[soap]
+soap.wsdl_cache_enabled=1
+soap.wsdl_cache_dir="/tmp"
+soap.wsdl_cache_ttl=86400
+;soap.wsdl_cache_limit = 5
+tab-width: 4
+[sysvshm]
+[ldap]
+ldap.max_links = -1
+[mcrypt]
+[dba]
+[opcache]
+[curl]
+[openssl]
+[apc]
+apc.enabled = 1
+apc.shm_segments = 1
+apc.shm_size = 30M
+apc.optimization = 0
+apc.num_files_hint = 1000
+apc.user_entries_hint = 4096
+apc.ttl = 0
+apc.user_ttl = 0
+apc.gc_ttl = 3600
+apc.cache_by_default = 1
+apc.filters = NULL
+apc.mmap_file_mask = NULL
+apc.slam_defense = 0
+apc.file_update_protection = 2
+apc.enable_cli = 0
+apc.max_file_size = 1M
+apc.stat = 1
+apc.write_lock = 1
+apc.report_autofilter = 0
+apc.include_once_override = 0
+apc.rfc1867 = 0
+apc.rfc1867_prefix = upload_
+apc.rfc1867_name = APC_UPLOAD_PROGRESS
+apc.rfc1867_freq = 0
+apc.localcache = 0
+apc.localcache.size = 512
+apc.coredump_unmap = 0
+apc.stat_ctime = 0
