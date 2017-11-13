@@ -1,31 +1,36 @@
-#!/bin/sh
+#!/bin/sh -e
 
-DB_PASS=`cat /run/secrets/weewx-db-password`
-WUNDER_PASS=`cat /run/secrets/weewx-wunderground-password`
-WUNDER_API_KEY=`cat /run/secrets/weewx-wunderground-apikey`
+DB_PASS=$(cat /run/secrets/weewx-db-password)
+WUNDER_PASS=$(cat /run/secrets/weewx-wunderground-password)
+WUNDER_API_KEY=$(cat /run/secrets/weewx-wunderground-apikey)
 SSHKEY=weewx-rsync-sshkey
-HOMEDIR=/home/weewx
+HOMEDIR=/home/$WX_USER
 PATH=$HOMEDIR/bin:$PATH
 
-if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
-  # At first startup, set timezone and other configs from environment
+if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
+  # At first startup, set timezone
   apk add --update tzdata
   cp /usr/share/zoneinfo/$TZ /etc/localtime
   echo $TZ >/etc/timezone
-  wee_config_device --set-interval $LOGGING_INTERVAL
-  wee_config_device --set-rain-year-start $RAIN_YEAR_START
-  wee_config_device --set-tz-code $TZ_CODE
-  sed -i -e "s+-/var/log/messages+$SYSLOG_DEST+" /etc/rsyslog.conf
+fi
 
+if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
+  # Edit distributed weewx.conf settings after adding driver for STATION_TYPE
+  sed -i -e "s+-/var/log/messages+$SYSLOG_DEST+" /etc/rsyslog.conf
+  wee_config --reconfigure --driver=weewx.drivers.$(
+    echo $STATION_TYPE | tr [:upper:] [:lower:]) --no-prompt
   sed --in-place=.bak -e "s/location = DESC/location = \"$LOCATION\"/" \
-  -e "s/latitude = 90.0/latitude = $LATITUDE/" \
-  -e "s/longitude = 90.0/longitude = $LONGITUDE/" \
   -e "s/altitude = 0, foot/altitude = $ALTITUDE/" \
-  -e "s/rain_year_start = 1/rain_year_start = $RAIN_YEAR_START/" \
+  -e "s/archive_interval =.*/archive_interval = $LOGGING_INTERVAL/" \
+  -e "s/latitude =.*/latitude = $LATITUDE/" \
+  -e "s/longitude =.*/longitude = $LONGITUDE/" \
+  -e "s:port = /dev/.*:port = $DEVICE_PORT:" \
+  -e "s/rain_year_start =.*/rain_year_start = $RAIN_YEAR_START/" \
+  -e "s/station_type =.*/station_type = $STATION_TYPE/" \
   -e "s/week_start = 6/week_start = $WEEK_START/" \
   -e "s:HTML_ROOT = public_html:HTML_ROOT = $HTML_ROOT:" \
-  -e "s/#station  = your Weather/station = $STATION_ID  #/" \
-  -e "s/#password = your Weather Und/password = $WUNDER_PASS  # Und/" \
+  -e "s/ station =.*/ station = $STATION_ID/" \
+  -e "s/password = replace_me$/password = $WUNDER_PASS  # Und/" \
   -e "s/location = \"INSERT_LOCATION_HERE /location = \"$XTIDE_LOCATION\"  # \"/" \
   -e "s/lid =/#lid =/" \
   -e "s/foid =/#foid =/" \
@@ -40,27 +45,40 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   -e "s/user = weewx/user = $DB_USER/" \
   -e "s/password = weewx/password = $DB_PASS/" \
   -e "s/database_name = weewx$/database_name = $DB_NAME/" \
-  -e "s/#server = replace with your/server = $RSYNC_HOST  #/" \
-  -e "s/#user = replace with your username/user = $RSYNC_USER/" \
+  -e "s/#server = replace with the rsync/server = $RSYNC_HOST  #/" \
+  -e "s/#user = replace with the rsync username/user = $RSYNC_USER/" \
   -e "s:#path = replace with the:path = $RSYNC_DEST  #:" \
   $HOMEDIR/weewx.conf
+
+  # Change the 5th "enable = false" which is Wunderground StdRESTful toggle
+  awk '/enable = false/{c++;if(c==5){sub("enable = false","enable = true");c=0}}1' \
+    $HOMEDIR/weewx.conf > $HOMEDIR/weewx.conf.new
+  mv $HOMEDIR/weewx.conf $HOMEDIR/weewx.conf.awk
+  mv $HOMEDIR/weewx.conf.new $HOMEDIR/weewx.conf
+
+  # At first startup, set configs from environment
+  wee_device --set-interval=$(( $LOGGING_INTERVAL / 60 ))
+  wee_device --set-rain-year-start=$RAIN_YEAR_START
+  wee_device --set-tz-code=$TZ_CODE
 fi
 
 rsyslogd
 
 cp /run/secrets/$SSHKEY /run/$SSHKEY && chmod 400 /run/$SSHKEY
-if [ ! -d /root/.ssh ]; then
-  mkdir -m 700 /root/.ssh
-  cat >/root/.ssh/config <<EOF
+if [ ! -d $HOMEDIR/.ssh ]; then
+  mkdir -m 700 $HOMEDIR/.ssh
+  cat >$HOMEDIR/.ssh/config <<EOF
 Host $RSYNC_HOST
   IdentityFile /run/$SSHKEY
   Port $RSYNC_PORT
   User $RSYNC_USER
 EOF
-  ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST >>/root/.ssh/known_hosts
+  ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST >>$HOMEDIR/.ssh/known_hosts
 fi
 
-weewxd $HOMEDIR/weewx.conf|grep -v LOOP:
+chown -R $WX_USER $HOMEDIR $HTML_ROOT /run/$SSHKEY
+set +e
+su $WX_USER -c "PATH=$PATH weewxd $HOMEDIR/weewx.conf|grep -v LOOP:"
 # Failure: attempt restart only every 2 minutes
 sleep 120
 exit 1

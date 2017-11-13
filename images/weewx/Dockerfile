@@ -17,6 +17,7 @@ ENV ALTITUDE="100, foot" \
     DB_NAME=weewx_a \
     DB_NAME_FORECAST=weewx_f \
     DB_USER=weewx \
+    DEVICE_PORT=/dev/ttyUSB0 \
     HTML_ROOT=/var/www/weewx \
     LOCATION="Anytown, USA" \
     LOGGING_INTERVAL=300 \
@@ -28,45 +29,78 @@ ENV ALTITUDE="100, foot" \
     RSYNC_USER=wx \
     SKIN=standard \
     STATION_ID=unset \
+    STATION_TYPE=Vantage \
     SYSLOG_DEST=/var/log/messages \
     TZ=US/Eastern \
     TZ_CODE=10 \
     WEEK_START=6 \
+    WX_USER=weewx \
     XTIDE_LOCATION=unset
 
 ARG PYTHON_PIP_VERSION=9.0.1
-ARG WEEWX_VERSION=3.0.1
-ARG FORECAST_VERSION=3.0.2
+ARG FORECAST_VERSION=3.2.17
+ARG HARMONICS_VERSION=20161231
+ARG LIBTCD_VERSION=2.2.7-r2
+ARG WEEWX_VERSION=3.7.1
+ARG XTIDE_VERSION=2.15.1
+ARG FORECAST_SHA=dbc7b875ec20c702e44d57d7c8d30666494561dd054f6b96096d8635c39160e9
+ARG HARMONICS_SHA=7e5da40c19fd4f5d0897d6a7f68bc4b66a3eb7c3852135c8a6c4c56b82c01cdd
+ARG LIBTCD_SHA=aff1f218b84106c572d094912cd11c828e1ea212db5661cdcc0e2e6253020a94
+ARG WEEWX_SHA=2a85db66570a59478cef4b4f5998cc69ac1baafed54229b148574301beb720ce
+ARG WX_GROUP=dialout
+ARG WX_UID=2071
+ARG XTIDE_SHA=e5c4afbb17269fdde296e853f2cb84845ed1c1bb1932f780047ad71d623bc681
 
-ADD install-input.txt requirements/ /root/
+COPY install-input.txt requirements/ /root/
 
 RUN apk add --no-cache --update \
-     curl freetype libjpeg openssh openssl python2 python2-dev \
-     py-configobj py-mysqldb rsync rsyslog && \
-    mkdir build && cd build && \
-    wget -q -O get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    wget -q -O weewx.tar.gz \
-     http://www.weewx.com/downloads/released_versions/weewx-$WEEWX_VERSION.tar.gz && \
-    wget -q -O weewx-forecast.tgz \
-     http://lancet.mit.edu/mwall/projects/weather/releases/weewx-forecast-$FORECAST_VERSION.tgz && \
+      curl freetype libjpeg libstdc++ openssh openssl python2 py-configobj \
+      py-mysqldb rsync rsyslog && \
+    adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
+    mkdir -p /usr/share/xtide /build/libtcd /build/xtide && cd build && \
+    curl -sLo get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    curl -sLo harmonics.tar.bz2 \
+      ftp://ftp.flaterco.com/xtide/harmonics-dwf-$HARMONICS_VERSION-free.tar.bz2 && \
+    curl -sLo libtcd.tar.bz2 \
+      ftp://ftp.flaterco.com/xtide/libtcd-$LIBTCD_VERSION.tar.bz2 && \
+    curl -sLo weewx.tar.gz \
+      http://www.weewx.com/downloads/released_versions/weewx-$WEEWX_VERSION.tar.gz && \
+    curl -sLo weewx-forecast.tgz \
+      http://lancet.mit.edu/mwall/projects/weather/releases/weewx-forecast-$FORECAST_VERSION.tgz && \
+    curl -sLo xtide.tar.bz2 \
+      ftp://ftp.flaterco.com/xtide/xtide-$XTIDE_VERSION.tar.bz2 &&\
+    echo "$FORECAST_SHA  weewx-forecast.tgz" >> /build/checksums && \
+    echo "$HARMONICS_SHA  harmonics.tar.bz2" >> /build/checksums && \
+    echo "$LIBTCD_SHA  libtcd.tar.bz2" >> /build/checksums && \
+    echo "$WEEWX_SHA  weewx.tar.gz" >> /build/checksums && \
+    echo "$XTIDE_SHA  xtide.tar.bz2" >> /build/checksums && \
+    sha256sum -c /build/checksums && \
     python get-pip.py --disable-pip-version-check --no-cache-dir \
       pip==$PYTHON_PIP_VERSION && \
     pip --version && \
     apk add --no-cache --virtual .fetch-deps \
-      gcc git freetype-dev jpeg-dev musl-dev zlib-dev && \
+      file freetype-dev g++ gawk gcc git jpeg-dev libpng-dev make musl-dev \
+      python2-dev zlib-dev && \
     pip install --target /usr/lib/python2.7/site-packages \
       -r /root/common.txt && \
     tar xf weewx.tar.gz --strip-components=1 && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
     git clone https://github.com/instantlinux/weewx-WeeGreen.git \
-      /home/weewx/skins/WeeGreen && \
-    ./setup.py install --extension weewx-forecast.tgz && \
-    find /usr/local -depth \( \
-        \( -type d -a -name test -o -name tests \) -o \
-        \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-      \) -exec rm -rf '{}' +; \
-    apk del .fetch-deps; \
-    rm -fr /var/log/* /var/cache/apk/* /home/weewx/weewx.conf.2* /build
+      /home/$WX_USER/skins/WeeGreen && \
+    /home/$WX_USER/bin/wee_extension --install /build/weewx-forecast.tgz && \
+    cd /build/libtcd && \
+    tar xf /build/libtcd.tar.bz2 --strip-components=1 && \
+    ./configure && make install && \
+    cd /build/xtide && \
+    tar xf /build/xtide.tar.bz2 --strip-components=1 && \
+    ./configure --prefix=/usr && make install && \
+    cd /build && tar xf harmonics.tar.bz2 --strip-components=1 && \
+    mv harmonics*.tcd /usr/share/xtide/harmonics.tcd && \
+    echo /usr/share/xtide > /etc/xtide.conf && \
+    apk del .fetch-deps && \
+    rm -fr /build /home/$WX_USER/weewx.conf.2* /home/$WX_USER/docs \
+      /root/.cache /var/cache/apk/* /var/log/* && \
+    find /home/$WX_USER/bin -name '*.pyc' -exec rm '{}' +;
 
-ADD entrypoint.sh /root/
-ENTRYPOINT /root/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

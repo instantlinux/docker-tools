@@ -48,6 +48,7 @@ your polling frequency in the cfg file.
 
 ### Secrets
 Secret | Description
+------ | -----------
 swarm-sync_sshkey | private half of ssh keypair
 
 [![](https://images.microbadger.com/badges/license/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "License badge")
