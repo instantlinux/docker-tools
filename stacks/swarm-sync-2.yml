@@ -31,6 +31,7 @@ services:
     env_file:
     - ../../.docker/swarm-sync-2.pub.env
     volumes:
+    - etcssh:/etc/ssh
     - syncarchive:/root/.unison
     - ${SHARE_PATH}:/var/swarm-sync
     deploy:
@@ -39,6 +40,7 @@ services:
         - node.labels.swarm-sync == tertiary
 
 volumes:
+  etcssh:
   logs:
   syncarchive:
 secrets:

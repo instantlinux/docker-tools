@@ -28,7 +28,6 @@ services:
         - ${LABEL_WORKER:-node.role == worker}
 
 volumes:
-  etcssh:
   html:
 networks:
   default:

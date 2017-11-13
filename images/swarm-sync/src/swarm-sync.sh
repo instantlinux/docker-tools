@@ -1,10 +1,12 @@
 #!/bin/sh
 
+PEERNAME=$1
+
 # Reconfirm peer IP address (Docker bug:
 #  https://github.com/moby/moby/issues/30487)
-PEER_IP=$(nslookup peer|grep Address|cut -d ' ' -f 3)
+PEER_IP=$(nslookup $PEERNAME|grep Address|cut -d ' ' -f 3)
 if ! grep -q "$PEER_IP" /root/.ssh/known_hosts; then
-  ssh-keyscan peer >> /root/.ssh/known_hosts
+  ssh-keyscan $PEER_IP >> /root/.ssh/known_hosts
 fi
 
 unison

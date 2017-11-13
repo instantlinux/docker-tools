@@ -54,15 +54,17 @@ services:
     env_file:
     - ../../.docker/swarm-sync.pub.env
     volumes:
+    - etcssh:/etc/ssh
+    - inbox:/var/swarm-sync/inbox
     - syncarchive:/root/.unison
     - webmail:/var/swarm-sync/webmail
-    - inbox:/var/swarm-sync/inbox
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync == peer
 
 volumes:
+  etcssh:
   inbox:
   spool:
   synclogs:

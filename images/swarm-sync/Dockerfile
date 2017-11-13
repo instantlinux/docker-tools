@@ -8,7 +8,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ENV SYNC_ROLE=primary \
+ENV PEERNAME=peer \
+    SYNC_ROLE=primary \
     SYNC_SSHKEY= \
     SYNC_INTERVAL=5 \
     SECRET=swarm-sync_sshkey
@@ -19,5 +20,5 @@ RUN apk add --update dcron openssh-client openssh-server unison && \
 
 EXPOSE 22
 COPY src/ /root/src/
-VOLUME ["/var/swarm-sync", "/root/.unison", "/var/log/unison"]
+VOLUME /etc/ssh /root/.unison /var/swarm-sync /var/log/unison
 ENTRYPOINT ["/root/src/entrypoint.sh"]
