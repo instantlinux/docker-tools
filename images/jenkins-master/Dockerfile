@@ -17,7 +17,7 @@ ENV ARTIFACTORY_URI=artifactory.domain.com \
     JENKINS_ADMIN_SECRET=jenkins-admin-password \
     JENKINS_DOWNLOADS=https://updates.jenkins-ci.org/download \
     JENKINS_HOME=/var/jenkins_home \
-    JENKINS_LIBRARY=git@git.instantlinux.net:richb/jenkinslib \
+    JENKINS_LIBRARY=git@git.domain.com:user/jenkinslib \
     JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war" \
     JENKINS_REF=/usr/share/jenkins/ref \
     JENKINS_SLAVE_AGENT_PORT=50000 \
@@ -30,14 +30,14 @@ ENV ARTIFACTORY_URI=artifactory.domain.com \
 ARG _COMPOSE_VERSION=1.16.1
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${_COMPOSE_VERSION}/docker-compose-Linux-x86_64
-ARG _JENKINS_VERSION=2.73.2
+ARG _JENKINS_VERSION=2.73.3
 ARG _TINI_DOWNLOADS=https://github.com/krallin/tini/releases/download
 ARG _TINI_VERSION=0.15.0
 ARG DOCKER_GID=485
 ARG JENKINS_UID=1000
 # sha256sum values for each download
 ARG COMPOSE_SHA=1804b0ce6596efe707b9cab05d74b161833ed503f0535a937dd5d17bea8fc50a
-ARG JENKINS_SHA=f6d1351beef34d980b32f8c463be505445f637e2fc62156fecd42891c53c97d3
+ARG JENKINS_SHA=fcfb932a84ce03795abbf51ae7799439278155b0d42242d1d79a187034649fc8
 ARG TINI_SHA=4007655082f573603c02bc1d2137443c8e153af047ffd088d02ccc01e6f06170
 
 # gid for docker must match that on container host
@@ -45,14 +45,15 @@ RUN addgroup -g ${DOCKER_GID} docker && \
     adduser -D -h "$JENKINS_HOME" -u $JENKINS_UID -s /bin/bash jenkins && \
     apk add --update --no-cache bash curl docker openssh-client su-exec \
       ttf-dejavu tzdata unzip wget zip && \
-    cp /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ >/etc/timezone && \
+    touch /etc/localtime /etc/timezone && \
     mkdir -p /usr/share/jenkins && \
 
 # Download Tini, Docker-compose, Jenkins
-    curl -fL ${_TINI_DOWNLOADS}/v${_TINI_VERSION}/tini-static -o /bin/tini && \
-    curl -L ${_COMPOSE_URL} -o /usr/local/bin/docker-compose && \
-    curl -fL ${JENKINS_DOWNLOADS}/war/$_JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war && \
+    curl -sLo /bin/tini \
+      ${_TINI_DOWNLOADS}/v${_TINI_VERSION}/tini-static && \
+    curl -sLo /usr/local/bin/docker-compose ${_COMPOSE_URL} && \
+    curl -sLo /usr/share/jenkins/jenkins.war \
+      ${JENKINS_DOWNLOADS}/war/$_JENKINS_VERSION/jenkins.war && \
 
 # Verify downloads and set up paths
     echo "$TINI_SHA  /bin/tini" > /tmp/checksums && \

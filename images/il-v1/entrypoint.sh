@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 DIR=/var/www/htdocs/il
 PHPINI=/etc/php5/php.ini
 DB_PASSWORD=$(cat /run/secrets/$DB_PASSWD_SECRET)

@@ -1,18 +1,17 @@
-#!/bin/bash
+#!/bin/bash -e
 
-set -e
-export JENKINS_ADMIN_PASS=`cat /run/secrets/$JENKINS_ADMIN_SECRET`
+export JENKINS_ADMIN_PASS=$(cat /run/secrets/$JENKINS_ADMIN_SECRET)
 
-if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
+if [ ! -s /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone
-  cp /usr/share/zoneinfo/$TZ /etc/localtime
+  cat /usr/share/zoneinfo/$TZ >/etc/localtime
   echo $TZ >/etc/timezone
 fi
 
 # Process templates in /usr/share/jenkins/ref
 cd $JENKINS_REF
-for file in `find . -name '*.j2'`; do
-  dest=$JENKINS_HOME/`echo $file | sed -e 's/[.]j2$//'`
+for file in $(find . -name '*.j2'); do
+  dest=$JENKINS_HOME/$(echo $file | sed -e 's/[.]j2$//')
   [ -f $dest ] && continue
   sed -e "s+{{ ARTIFACTORY_PASS }}+$ARTIFACTORY_PASS+" \
       -e "s+{{ ARTIFACTORY_URI }}+$ARTIFACTORY_URI+" \

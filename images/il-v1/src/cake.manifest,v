@@ -1,0 +1,630 @@
+head	1.34;
+access;
+symbols;
+locks
+	richb:1.34; strict;
+comment	@# @;
+
+
+1.34
+date	2011.07.14.00.39.07;	author richb;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2011.06.28.22.14.08;	author richb;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2011.06.23.03.33.00;	author richb;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2011.06.23.01.16.48;	author richb;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2011.06.21.17.36.09;	author richb;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2011.06.17.04.36.53;	author richb;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2011.05.27.21.47.55;	author richb;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2011.05.27.18.43.58;	author richb;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2011.05.27.15.42.36;	author richb;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2011.05.26.20.37.16;	author richb;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2011.04.21.03.51.08;	author richb;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2011.04.20.18.35.30;	author richb;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2011.04.20.15.29.12;	author richb;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2011.04.14.13.40.35;	author richb;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2011.04.14.03.30.49;	author richb;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2011.04.12.16.19.52;	author richb;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2011.04.11.18.42.26;	author richb;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2011.04.01.00.43.35;	author richb;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2011.03.20.16.39.55;	author richb;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2011.03.16.03.28.10;	author richb;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2011.03.09.22.30.12;	author richb;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2011.03.09.17.48.37;	author richb;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2011.03.07.13.27.11;	author richb;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2011.03.07.13.26.25;	author richb;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2011.03.06.17.02.20;	author richb;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2011.03.03.15.39.01;	author richb;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2011.03.02.19.53.02;	author richb;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2011.02.27.18.05.57;	author richb;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2011.02.25.21.15.02;	author richb;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2011.02.25.12.46.16;	author richb;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2011.02.25.12.25.43;	author richb;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.02.25.03.01.34;	author richb;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2011.02.25.03.00.58;	author richb;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2011.02.10.03.46.37;	author richb;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.34
+log
+@soft_meta::view_sw
+@
+text
+@./app_controller.php
+./app_model.php
+./views/layouts/ajax.ctp
+./models/aro.php
+./models/aros_aco.php
+./controllers/comments_controller.php
+./views/comment/add.ctp
+./controllers/hosts_controller.php
+./views/host/add.ctp
+./views/host/edit.ctp
+./controllers/i18n_labels_controller.php
+./views/i18n_label/add.ctp
+./views/i18n_label/edit.ctp
+./controllers/net_devices_controller.php
+./controllers/pending_actions_controller.php
+./views/pending_action/index.ctp
+./views/pending_action/run.ctp
+./controllers/procedures_controller.php
+./views/procedure/invoke.ctp
+./models/search.php
+./controllers/search_controller.php
+./views/search/quick.ctp
+./models/set_binding.php
+./models/set_member.php
+./views/static_page/view.ctp
+./controllers/soft_meta_controller.php
+./views/soft_meta/add.ctp
+./views/soft_meta/edit.ctp
+./views/soft_meta/view_sw.ctp
+./models/user.php
+./controllers/users_controller.php
+./views/user/login.ctp
+./views/user/password.ctp
+./webroot/css/autocomplete.css
+./webroot/css/ilinux.css
+./webroot/img/skyline1.jpg
+./webroot/img/ilinux/menu_bg.gif
+./webroot/img/ilinux/side_bg.gif
+./webroot/img/ilinux/tab_bg.gif
+./webroot/img/search-box-3.gif
+./webroot/img/search-box.gif
+./webroot/img/search-btn.png
+./config/routes.php
+./config/bootstrap.php
+./config/inflections.php
+./controllers/components/acl.php
+./controllers/components/session_acl.php
+./locale
+./plugins
+@
+
+
+1.33
+log
+@aros_aco.php nonstandard model
+@
+text
+@d29 1
+@
+
+
+1.32
+log
+@ajax.ctp
+@
+text
+@d5 1
+@
+
+
+1.31
+log
+@components/acl.php, procedure/invoke.ctp
+@
+text
+@d3 1
+@
+
+
+1.30
+log
+@IL-265 add aro.php.  Also removed svn/locale which is a separate tarball
+@
+text
+@d17 1
+d43 1
+@
+
+
+1.29
+log
+@autocomplete.css
+@
+text
+@d3 1
+a44 1
+../svn/locale
+@
+
+
+1.28
+log
+@host::view reintegrated
+@
+text
+@d1 2
+a2 2
+./controllers/app_controller.php
+./models/app_model.php
+d27 3
+d41 1
+d43 1
+@
+
+
+1.27
+log
+@host and swmodule models reintegrated
+@
+text
+@a5 1
+./views/host/view.ctp
+@
+
+
+1.26
+log
+@host::index now standardized
+@
+text
+@a5 1
+./models/host.php
+a25 1
+./models/swmodule.php
+@
+
+
+1.25
+log
+@noted some changes since the set_binding stuff added
+@
+text
+@a6 1
+./views/host/index.ctp
+@
+
+
+1.24
+log
+@Views for NetDevice::add/edit merged into mainline
+@
+text
+@d6 1
+d18 1
+d22 2
+d25 4
+a28 1
+./controllers/swmeta_controller.php
+@
+
+
+1.23
+log
+@got rid of special ipv4 controller/index
+@
+text
+@a13 2
+./views/net_device/add.ctp
+./views/net_device/edit.ctp
+@
+
+
+1.22
+log
+@User::edit and User::add merged into mainline
+@
+text
+@a12 2
+./controllers/ipv4s_controller.php
+./views/ipv4/index.ctp
+@
+
+
+1.21
+log
+@app_controller.php and app_model.php now part of the manifest
+@
+text
+@a27 2
+./views/user/add.ctp
+./views/user/edit.ctp
+@
+
+
+1.20
+log
+@group model/views are now standardized
+@
+text
+@d1 2
+@
+
+
+1.19
+log
+@Standardized the following templates:
+ views/ipv4/view.ctp
+ controllers/iso_images_controller.php
+ controllers/locations_controller.php
+ controllers/repositories_controller.php
+ controllers/subnets_controller.php
+@
+text
+@a2 4
+./models/group.php
+./views/group/add.ctp
+./views/group/edit.ctp
+./models/host.php
+@
+
+
+1.18
+log
+@4/4 update: put locale directory in
+@
+text
+@a16 3
+./views/ipv4/view.ctp
+./controllers/iso_images_controller.php
+./controllers/locations_controller.php
+a22 1
+./controllers/repositories_controller.php
+a26 1
+./controllers/subnets_controller.php
+@
+
+
+1.17
+log
+@consolidated controllers distro_revs and package_overrides
+@
+text
+@d48 2
+@
+
+
+1.16
+log
+@i18n_label stuff
+@
+text
+@a2 1
+./controllers/distro_revs_controller.php
+a22 1
+./controllers/package_overrides_controller.php
+@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@d13 3
+@
+
+
+1.14
+log
+@search and pluralization tweaks
+@
+text
+@d46 1
+@
+
+
+1.13
+log
+@quick-search
+@
+text
+@d41 3
+d45 1
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d26 3
+@
+
+
+1.11
+log
+@group add/edit
+@
+text
+@d27 1
+@
+
+
+1.10
+log
+@user add/edit
+@
+text
+@d5 2
+@
+
+
+1.9
+log
+@locations contrller
+@
+text
+@d28 2
+@
+
+
+1.8
+log
+@adding net_devices, got rid of user/group items thanks to templated
+'persistent' field support
+@
+text
+@d15 1
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@a4 2
+./views/group/index.ctp
+./views/group/view.ctp
+d15 3
+a26 2
+./views/user/index.ctp
+./views/user/login.ctp
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d17 1
+a17 1
+./controllers/packages_controller.php
+@
+
+
+1.5
+log
+@persistent field added to user index screen
+@
+text
+@d2 1
+a2 1
+./views/comments/add.ctp
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d26 1
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d5 1
+@
+
+
+1.2
+log
+@overhauled some templates, reduced count of special-cased PHP
+@
+text
+@d14 1
+a14 1
+./views/ipv4/index.ctp
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 5
+a5 1
+# $Id$
+d7 8
+a14 6
+./models/hostmeta.php
+./models/pending_action.php
+./models/repository.php
+./models/swmeta.php
+./models/user.php
+./controllers/pending_actions_controller.php
+d17 3
+a19 2
+./controllers/users_controller.php
+./controllers/hostmeta_controller.php
+d21 1
+d23 3
+a25 2
+./controllers/distro_revs_controller.php
+./controllers/hosts_controller.php
+a30 17
+./views/host/index.ctp
+./views/host/view.ctp
+./views/host/add.ctp
+./views/host/edit.ctp
+./views/hostmeta/index.ctp
+./views/hostmeta/add.ctp
+./views/hostmeta/edit.ctp
+./views/pending_action/run.ctp
+./views/repository/index.ctp
+./views/static_page/view.ctp
+./views/swmeta/index.ctp
+./views/swmeta/add.ctp
+./views/swmeta/edit.ctp
+./views/user/login.ctp
+./views/hostmetas
+./views/repositories
+./views/swmetas
+@

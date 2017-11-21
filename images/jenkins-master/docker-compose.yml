@@ -23,6 +23,7 @@ services:
         - ${LABEL_WORKER:-node.role == worker}
     secrets:
     - artifactory-user-password
+    - jenkins-admin-password
 
   jenkins-slave:
     image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:latest
@@ -40,9 +41,9 @@ services:
         constraints:
         - ${LABEL_WORKER:-node.role == worker}
     secrets:
-      - jenkins-agent-password
-      - jenkins-user-password
-      - repo-push
+    - jenkins-agent-password
+    - jenkins-user-password
+    - repo-push
 
 volumes:
   jenkinsdata:
@@ -51,6 +52,8 @@ volumes:
     external: true
 secrets:
   artifactory-user-password:
+    external: true
+  jenkins-admin-password:
     external: true
   jenkins-agent-password:
     external: true

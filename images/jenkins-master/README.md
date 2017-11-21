@@ -1,7 +1,7 @@
 ## jenkins-master
 [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Commit badge")
 
-Builds a current (2.74) version of Jenkins, with the list of plugins
+Builds a current (2.73.x) version of Jenkins, with the list of plugins
 shown in plugins.txt along with configuration settings defined in the ref
 directory.
 
@@ -26,7 +26,7 @@ JENKINS_ADMIN_USER | admin | Jenkins admin
 JENKINS_ADMIN_SECRET | jenkins-admin-password | name of secret
 JENKINS_DOWNLOADS | https://updates.jenkins-ci.org/download | URL of plugins site
 JENKINS_HOME | /var/jenkins_home | Jenkins home directory
-JENKINS_LIBRARY | git@git.instantlinux.net:richb/jenkinslib | Groovy library
+JENKINS_LIBRARY | git@git.domain.com:user/jenkinslib | Groovy library
 JENKINS_OPTS | --logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war | Jenkins command line options
 JENKINS_REF | /usr/share/jenkins/ref | Reference dir (configs/plugins)
 JENKINS_SLAVE_AGENT_PORT | 50000 | Slave TCP comm port
