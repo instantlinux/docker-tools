@@ -22,8 +22,8 @@ services:
     - 69:69/udp
     volumes:
     - ${SHARE_PATH}/dhcpd-dns-pxe/pxelinux:/tftpboot/pxelinux:ro
-    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dhcpd.d:/etc/dhcpd.d
-    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dnsmasq.d:/etc/dnsmasq.d
+    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dhcpd.d:/etc/dhcpd.d/local:ro
+    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dnsmasq.d:/etc/dnsmasq.d/local:ro
     - leases:/var/lib/misc
     network_mode: host
     cap_add:

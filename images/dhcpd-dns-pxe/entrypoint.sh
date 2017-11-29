@@ -20,13 +20,14 @@ if [ "$DHCP_ENABLE" == yes ]; then
     if [ ! -e $file ]; then
       sed -e "s:{{ DHCP_BOOT }}:$DHCP_BOOT:" \
         -e "s:{{ DHCP_LEASE_TIME }}:$DHCP_LEASE_TIME:" \
+        -e "s:{{ DHCP_NETBIOS_NAME_SERVERS }}:$DHCP_NETBIOS_NAME_SERVERS:" \
         -e "s:{{ DHCP_RANGE }}:$DHCP_RANGE:" \
         -e "s:{{ DHCP_SUBNET1 }}:$DHCP_SUBNET1:" \
         -e "s:{{ DNS_SERVER }}:$DNS_SERVER:" \
         -e "s:{{ DNS_UPSTREAM }}:$DNS_UPSTREAM:" \
         -e "s:{{ DOMAIN }}:$DOMAIN:" \
         -e "s:{{ IP_FORWARDING }}:$IP_FORWARDING:" \
-        -e "s:{{ DHCP_NETBIOS_NAME_SERVERS }}:$DHCP_NETBIOS_NAME_SERVERS:" \
+        -e "s:{{ MAX_LEASE_TIME }}:$MAX_LEASE_TIME:" \
         -e "s:{{ NETBIOS_OPTION }}:$NETBIOS_OPTION:" \
         -e "s:{{ NTP_SERVER }}:$NTP_SERVER:" \
         -e "s:{{ RANGE_OPTION }}:$RANGE_OPTION:" \
@@ -38,7 +39,7 @@ if [ "$DHCP_ENABLE" == yes ]; then
       /root/$(basename $file).j2 > $file
     fi
   done
-  for file in /etc/dhcpd.d/*.conf; do
+  for file in /etc/dhcpd.d/*.conf /etc/dhcpd.d/local/*.conf; do
     if ! grep -q "$file" /etc/dhcpd.conf; then
       echo "include \"$file\";" >>/etc/dhcpd.conf
     fi
@@ -56,6 +57,10 @@ if [ "$TFTP_ENABLE" == yes ]; then
   TFTP_FLAG=--enable-tftp
   mkdir -p $TFTP_ROOT
   echo tftp-root=$TFTP_ROOT > /etc/dnsmasq.d/tftpd.conf
+fi
+
+if [ -d /etc/dnsmasq.d/local ] && [ "$(ls -A /etc/dnsmasq.d/local)" ]; then
+  cp -a /etc/dnsmasq.d/local/. /etc/dnsmasq.d
 fi
 
 if [ "$DNS_ENABLE" == yes ]; then

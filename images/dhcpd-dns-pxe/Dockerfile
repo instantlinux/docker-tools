@@ -12,6 +12,7 @@ ENV DHCP_BOOT=pxelinux.0 \
     DHCP_ENABLE=yes \
     DHCP_LEASE_PATH=/var/lib/misc \
     DHCP_LEASE_TIME=3600 \
+    DHCP_NETBIOS_NAME_SERVERS="" \
     DHCP_RANGE="" \
     DHCP_SUBNET1=192.168.1.0 \
     DNS_ENABLE=yes \
@@ -20,7 +21,7 @@ ENV DHCP_BOOT=pxelinux.0 \
     DOMAIN=example.com \
     IP_FORWARDING=false \
     LISTEN_ADDRESS= \
-    DHCP_NETBIOS_NAME_SERVERS="" \
+    MAX_LEASE_TIME=14400 \
     NTP_SERVER=0.pool.ntp.org,1.pool.ntp.org \
     PORT_DNSMASQ_DNS=53 \
     SUBNET1_GATEWAY=192.168.1.1 \
@@ -35,7 +36,7 @@ ENV DHCP_BOOT=pxelinux.0 \
 RUN apk add --no-cache --update dhcp==4.3.4-r3 dnsmasq==2.76-r5
 
 EXPOSE 53/udp 67/udp 69/udp
-VOLUME $DHCP_LEASE_PATH $TFTP_ROOT /etc/dhcpd.d /etc/dnsmasq.d
+VOLUME $DHCP_LEASE_PATH $TFTP_ROOT /etc/dhcpd.d/local /etc/dnsmasq.d/local
 COPY entrypoint.sh /usr/local/bin/
 COPY src/*.j2 /root/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
