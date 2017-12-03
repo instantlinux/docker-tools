@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/samba:latest
+    network_mode: host
+    environment:
+      NETBIOS_NAME: ${SAMBA_NETBIOS_NAME:-samba}
+      SERVER_STRING: ${SAMBA_SERVER_STRING:-Samba Server}
+      TZ: US/Pacific
+      WORKGROUP: ${SAMBA_WORKGROUP:-WORKGROUP}
+    volumes:
+    - ${ADMIN_PATH}/samba/etc:/etc/samba/conf.d:ro
+    - ${SHARE_PATH}/samba/var/lib:/var/lib/samba
+    - log:/var/log/samba
+    # Add your mounts here
+    ports:
+    - 137-138:137-138/udp
+    - 139:139
+    - 445:445
+    deploy:
+      placement:
+        constraints:
+        - ${LABEL_WORKER:-node.role == worker}
+
+volumes:
+  log:

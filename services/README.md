@@ -11,6 +11,8 @@ host names) via compose in swarm mode.
 * mt-daapd (iTunes server) needs to run on host network for mDNS (avahi) service
 discovery.
 
+* samba's nmbd daemon needs to run on host network.
+
 * weewx (weather station) needs a 'devices' directive.
 
 Each service defined here is invoked via docker-compose from one of

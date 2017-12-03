@@ -25,7 +25,7 @@ I don't use the DHCP feature of dnsmasq; its software configuration
 is hugely different from ISC and much more difficult to customize if
 you've been using ISC all along. If you've been using dnsmasq all
 along, simply set variable DHCP_ENABLE=no and volume-mount your configuration as /etc/dnsmasq.d/local/dhcpd-options.conf; dnsmasq will serve
-DNS on port 67 if you have any such options specified.
+DHCP on port 67 if you have any such options specified.
 
 ### Variables
 
