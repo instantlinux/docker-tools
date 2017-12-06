@@ -4,6 +4,7 @@ services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/samba:latest
     network_mode: host
+    restart: always
     environment:
       NETBIOS_NAME: ${SAMBA_NETBIOS_NAME:-samba}
       SERVER_STRING: ${SAMBA_SERVER_STRING:-Samba Server}
@@ -13,11 +14,12 @@ services:
     - ${ADMIN_PATH}/samba/etc:/etc/samba/conf.d:ro
     - ${SHARE_PATH}/samba/var/lib:/var/lib/samba
     - log:/var/log/samba
-    - dos:/pc/dos
     - ${SHARE_PATH}/user:/home
-    - /pc/MP3:/pc/MP3:ro
-    - /pc/Pictures:/pc/Pictures:ro
-    - /var/ftp/win7:/var/ftp/win7:ro
+    - ${SHARE_PATH}/dos:/pc/dos
+    - ${SHARE_PATH}/household:/pc/Household
+    - /pc/MP3:/pc/MP3
+    - /pc/Pictures:/pc/Pictures
+    - /var/ftp:/var/ftp:ro
     ports:
     - 137-138:137-138/udp
     - 139:139
@@ -30,3 +32,4 @@ services:
 volumes:
   log:
   dos:
+  household:

@@ -1,0 +1,40 @@
+version: "3.1"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/samba-dc:latest
+    image: samba-dc
+    restart: always
+    network_mode: host
+    hostname: ${SAMBADC_HOSTNAME:-dc.example.com}
+    environment:
+      BIND_INTERFACES_ONLY: "yes"
+      DOMAIN_ACTION: join
+      INTERFACES: lo br0
+      REALM: ${SAMBA_REALM:-ad.example.com}
+      TZ: US/Pacific
+      WORKGROUP: ${SAMBA_WORKGROUP:-WORKGROUP}
+    volumes:
+    - ${SHARE_PATH}/samba-dc/etc:/etc/samba
+    - ${SHARE_PATH}/samba-dc/var/lib:/var/lib/samba
+    ports:
+    - 53:53
+    # 53:53/udp
+    - 88:88
+    - 88:88/udp
+    - 135:135
+    - 137-138:137-138/udp
+    - 139:139
+    - 389:389
+    - 389:389/udp
+    - 445:445
+    - 464:464
+    - 464:464/udp
+    - 636:636
+    - 3268-3269:3268-3269
+    secrets:
+    - samba-admin-password
+
+secrets:
+  samba-admin-password:
+    file: /var/adm/admin/secrets/samba-admin-password

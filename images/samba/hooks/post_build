@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/samba/jLUb06uzyjeWFU14iIgXp2cAF_8=
+curl -X post https://hooks.microbadger.com/images/instantlinux/samba/AbUeiFAJXC_w4QrQxRCVIw-N7Lk=
