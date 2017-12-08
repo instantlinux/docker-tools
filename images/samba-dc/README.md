@@ -24,7 +24,6 @@ Test your configuration and/or manage contents of your directory using Apache Di
 * This is tested as a spare domain controller against Active Directory running on Windows Server 2008, and against other samba4 domain controllers
 * The "provision" command to create a new DC does NOT yet work
 * The "BIND_INTERFACES_ONLY" option does NOT work; a workaround is to invoke samba-tool domain join manually
-* Dynamic DNS updates do NOT work, needs a custom-built bind9 with gssapi
 
 ### Variables
 
@@ -40,7 +39,7 @@ INTERFACES | lo eth0 | list of IP addresses or interfaces
 LOG_LEVEL | 1 | log verbosity
 MODEL | standard | process model: single, standard, thread
 REALM | ad.example.com | active-directory DNS realm
-SERVER_STRING | "Samba Domain Controller" | server identity
+SERVER_STRING | Samba Domain Controller | server identity
 TZ | UTC | local timezone
 WINBIND_TRUSTED_DOMAINS_ONLY | no | map Unix user to domain user
 WINBIND_USE_DEFAULT_DOMAIN | yes | allow username without domain component

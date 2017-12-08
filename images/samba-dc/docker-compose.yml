@@ -10,13 +10,13 @@ services:
     environment:
       BIND_INTERFACES_ONLY: "yes"
       DOMAIN_ACTION: join
-      INTERFACES: lo br0
+      INTERFACES: ${SAMBADC_INTERFACES:-lo eth0}
       REALM: ${SAMBA_REALM:-ad.example.com}
       TZ: US/Pacific
       WORKGROUP: ${SAMBA_WORKGROUP:-WORKGROUP}
     volumes:
-    - ${SHARE_PATH}/samba-dc/etc:/etc/samba
-    - ${SHARE_PATH}/samba-dc/var/lib:/var/lib/samba
+    - etc:/etc/samba
+    - lib:/var/lib/samba
     ports:
     - 53:53
     # 53:53/udp
@@ -35,6 +35,9 @@ services:
     secrets:
     - samba-admin-password
 
+volumes:
+  etc:
+  lib:
 secrets:
   samba-admin-password:
     file: /var/adm/admin/secrets/samba-admin-password

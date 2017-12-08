@@ -10,7 +10,7 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
-if [ ! "$(ls -A /var/lib/samba)" ]; then
+if [ ! -f /var/lib/samba/registry.tdb ]; then
   set -x
   if [ "$BIND_INTERFACES_ONLY" == yes ]; then
     INTERFACE_OPTS="--option=\"bind interfaces only=$BIND_INTERFACES_ONLY\" \
@@ -37,7 +37,7 @@ for file in /etc/samba/smb.conf /etc/samba/conf.d/netlogon.conf \
       -e "s:{{ BIND_INTERFACES_ONLY }}:$BIND_INTERFACES_ONLY:" \
       -e "s:{{ DOMAIN_LOGONS }}:$DOMAIN_LOGONS:" \
       -e "s:{{ DOMAIN_MASTER }}:$DOMAIN_MASTER:" \
-      -e "s:{{ INTERFACES }}:$INTERFACES:" \
+      -e "s+{{ INTERFACES }}+$INTERFACES+" \
       -e "s:{{ LOG_LEVEL }}:$LOG_LEVEL:" \
       -e "s:{{ NETBIOS_NAME }}:$NETBIOS_NAME:" \
       -e "s:{{ REALM }}:$REALM:" \
@@ -52,4 +52,4 @@ for file in $(ls -A /etc/samba/conf.d/*.conf); do
 done
 ln -fns /var/lib/samba/private/krb5.conf /etc/
 
-exec samba --model=$MODEL -i
+exec samba --model=$MODEL -i </dev/null

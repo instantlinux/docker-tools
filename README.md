@@ -1,7 +1,7 @@
 ## Practical Docker Tools
 
 This repo is a collection of images and swarm stack definitions for
-managing a small software-dev shop using free software. Contents:
+managing a software-dev organization using free software. Contents:
 
 | Directory | Description |
 | --------- | ----------- |
@@ -10,6 +10,8 @@ managing a small software-dev shop using free software. Contents:
 | services | docker-compose services that can't run in swarm |
 | ssl | PKI certificate tools |
 | stacks | swarm stacks in docker-compose format |
+
+Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
 
 Stack definitions include:
 
@@ -34,6 +36,8 @@ Stack definitions include:
 * mysqldump - per-database alternative to xtrabackup
 * nut-upsd - Network UPS Tools
 * rsyslogd - logger in a 13MB image
+* samba - file server
+* samba-dc - Active-Directory compatible domain controller
 * splunk - the free version
 * swarm-sync - poor-man's SAN for persistent storage
 * vsftpd - ftp server
