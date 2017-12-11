@@ -47,6 +47,7 @@ kernel:
   version: 4.4.79
 
 sysctl:
+  fs.inotify.max_user_instances: 256
   fs.inotify.max_user_watches: 65536
 
 syslog:
