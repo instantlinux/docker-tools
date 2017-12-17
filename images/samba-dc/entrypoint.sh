@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 ADMIN_PASSWORD=$(cat /run/secrets/$ADMIN_PASSWORD_SECRET)
 NETBIOS_NAME=$(hostname -s | tr [a-z] [A-Z])
@@ -11,7 +11,6 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 if [ ! -f /var/lib/samba/registry.tdb ]; then
-  set -x
   if [ "$BIND_INTERFACES_ONLY" == yes ]; then
     INTERFACE_OPTS="--option=\"bind interfaces only=$BIND_INTERFACES_ONLY\" \
       --option=\"interfaces=$INTERFACES\""

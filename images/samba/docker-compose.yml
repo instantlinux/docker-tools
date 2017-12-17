@@ -6,6 +6,7 @@ services:
     network_mode: host
     restart: always
     environment:
+      LOG_LEVEL: 3
       NETBIOS_NAME: ${SAMBA_NETBIOS_NAME:-samba}
       SERVER_STRING: ${SAMBA_SERVER_STRING:-Samba Server}
       TZ: US/Pacific

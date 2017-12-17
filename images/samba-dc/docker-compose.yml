@@ -3,12 +3,10 @@ version: "3.1"
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/samba-dc:latest
-    image: samba-dc
     restart: always
     network_mode: host
     hostname: ${SAMBADC_HOSTNAME:-dc.example.com}
     environment:
-      BIND_INTERFACES_ONLY: "yes"
       DOMAIN_ACTION: join
       INTERFACES: ${SAMBADC_INTERFACES:-lo eth0}
       REALM: ${SAMBA_REALM:-ad.example.com}
@@ -19,7 +17,7 @@ services:
     - lib:/var/lib/samba
     ports:
     - 53:53
-    # 53:53/udp
+    - 53:53/udp
     - 88:88
     - 88:88/udp
     - 135:135

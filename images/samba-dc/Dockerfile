@@ -9,8 +9,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
-    ALLOW_DNS_UPDATES=disabled \
-    BIND_INTERFACES_ONLY=no \
+    ALLOW_DNS_UPDATES=secure \
+    BIND_INTERFACES_ONLY=yes \
     DOMAIN_ACTION=provision \
     DOMAIN_LOGONS=yes \
     DOMAIN_MASTER=no \
