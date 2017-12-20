@@ -12,12 +12,14 @@ services:
     volumes:
     - config:/config
     - backup:/backup
-    - /etc/RCS:/backup/etc/RCS:ro
-    - /home:/backup/home:ro
-    - /var/lib/docker/share:/backup/share:ro
     - /var/lib/docker/swarm:/backup/swarm:ro
+    # list of volumes to back up, customize as needed
+    - /etc/RCS:/backup/etc/RCS:ro
+    - /var/lib/docker/share:/backup/share:ro
+    - /home:/backup/home:ro
     - dovecot_inbox:/backup/inbox:ro
     - dovecot_webmail:/backup/webmail:ro
+    - sambadc_lib:/backup/sambadc:ro
     ports:
     - ${PORT_CRASHPLAN_VNC:-4280}:4280
     deploy:
@@ -32,6 +34,10 @@ volumes:
   dovecot_inbox:
     external: true
   dovecot_webmail:
+    external: true
+  samba_dos:
+    external: true
+  sambadc_lib:
     external: true
 networks:
   default:
