@@ -24,11 +24,11 @@ services:
       placement:
         constraints:
         - ${LABEL_WORKER:-node.role == worker}
-    ulimits:
-      sigpending: 62793
-      nproc: 131072
-      nofile: 60000
-      core: 0
+#   ulimits:
+#     sigpending: 62793
+#     nproc: 131072
+#     nofile: 60000
+#     core: 0
 
 volumes:
   backup:

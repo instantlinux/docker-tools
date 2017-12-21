@@ -27,10 +27,6 @@ services:
         condition: any
         delay: 20s
         max_attempts: 20
-    ulimits:
-      nofile:
-        soft: 20000
-        hard: 40000
 
 volumes:
   data:
