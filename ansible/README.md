@@ -67,3 +67,9 @@ Item|Notes
 network|Network setup
 nagios|Sets up monitoring agent
 ntp|Configures NTP
+
+### Extras
+
+#### mythfrontend-setup
+This is a companion to the mythtv-backend image: an ansible playbook to
+set up MythTV front-ends after PXE booting them with Ubuntu (server) image.

@@ -42,7 +42,7 @@ Stack definitions include:
 * swarm-sync - poor-man's SAN for persistent storage
 * vsftpd - ftp server
 
-** Email**
+**Email**
 * blacklist - a local rbldnsd for spam control
 * dovecot - imapd server
 * postfix - compact general-purpose image in 11MB
@@ -53,7 +53,7 @@ Stack definitions include:
 **Entertainment**
 * davite - party-invites manager like eVite
 * mt-daapd - iTunes server
-* mythsuse - MythTV backend
+* mythtv-backend - MythTV backend
 * weewx - Weather station software (Davis VantagePro2 etc.)
 
 Contents created 2017 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
