@@ -30,6 +30,7 @@ Stack definitions include:
 * cloud - nextcloud, private sync like Apple iCloud
 * crashplan - backups
 * docs - OX Appsuite, private cloud like Google Docs
+* duplicati - backups
 * ez-ipupdate - Dynamic DNS client
 * guacamole - authenticated remote-desktop server
 * logspout - central logging for Docker
