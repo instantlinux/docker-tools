@@ -23,6 +23,7 @@ davite: .deploy/davite
 db00: .deploy/db00
 docs: .deploy/docs
 dovecot: .deploy/dovecot
+dropbox: .deploy/dropbox
 duplicati: .deploy/duplicati
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
