@@ -9,3 +9,8 @@
   service:
     name: rsyslog
     state: restarted
+
+- name: Restart snmpd
+  service:
+    name: snmpd
+    state: restarted

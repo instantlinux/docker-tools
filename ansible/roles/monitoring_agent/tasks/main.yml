@@ -37,6 +37,15 @@
     src: nrpe_command.cfg.j2
   notify: Restart NRPE
 
+- name: Set loglevel to INFO in snmpd
+  lineinfile:
+    dest: /etc/default/snmpd
+    line: >
+      SNMPDOPTS='-LS6d -Lf /dev/null -u snmp -g snmp
+      -I -smux,mteTrigger,mteTriggerConf -p /run/snmpd.pid'
+    regexp: "SNMPDOPTS=.*"
+  notify: Restart snmpd
+
 - name: Enable NRPE service
   service:
     name: "{{ nagios.nrpe_service }}"
