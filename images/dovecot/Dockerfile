@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:17.06
+FROM instantlinux/postfix:17.12
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF

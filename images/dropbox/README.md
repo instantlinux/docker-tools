@@ -2,7 +2,7 @@
 
 [![](https://images.microbadger.com/badges/version/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Commit badge")
 
-Dropbox client under Debian trusty.
+Dropbox client under Debian stretch.
 
 ### Usage
 
@@ -15,7 +15,7 @@ docker logs -f (containerid)
 This computer isn't linked to any Dropbox account...
 Please visit https://www.dropbox.com/cli_link_nonce?nonce=f3566e51f010ab5def337e45b319a07a to link this device.
 ```
-Log into Dropbox and clicking the token URI shown in the example output above, files will be kept in sync between your host's mounted file contents and your account on the Dropbox service.
+Log into Dropbox and click the token URI as shown in the example output above; files will be kept in sync between your host's mounted file contents and your account on the Dropbox service.
 
 A docker-compose.yml example is included here in this source directory.
 

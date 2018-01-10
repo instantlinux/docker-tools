@@ -106,7 +106,7 @@ ubuntu_packages:
   - mythtv-common
   - mythtv-frontend
   - plasma-desktop
-  - nvidia-340
+  - nvidia-304
   - xserver-xorg-core
   - xserver-xorg-input-all
   - xterm

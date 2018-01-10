@@ -5,10 +5,11 @@ services:
     image: gliderlabs/logspout:latest
     environment:
       SYSLOG_FORMAT: rfc3164
-      TZ: US/Pacific
-    command: syslog+tcp://syslog:601
+      TZ: ${TZ:-US/Pacific}
+    command: syslog+tcp://${RSYSLOGD_HOST:-syslog}:${PORT_RSYSLOGD:-514}
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+    - /etc/hostname:/etc/host_hostname:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
       mode: global
 
