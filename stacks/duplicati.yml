@@ -2,7 +2,7 @@ version: "3"
 services:
 
   app:
-    image: linuxserver/duplicati:52
+    image: linuxserver/duplicati:55
     environment:
       PGID: 65534
       PUID: 0
