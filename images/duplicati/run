@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+cd /app/duplicati
+exec s6-setuidgid backup mono Duplicati.Server.exe \
+  --webservice-interface=any --server-datafolder=/config

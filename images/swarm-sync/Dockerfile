@@ -14,7 +14,7 @@ ENV PEERNAME=peer \
     SYNC_INTERVAL=5 \
     SECRET=swarm-sync_sshkey
 
-RUN apk add --update dcron openssh-client openssh-server unison && \
+RUN apk add --update --no-cache dcron openssh-client openssh-server unison && \
     rm -fr /var/log/* /var/cache/apk/* && \
     mkdir /var/log/unison /root/.unison
 

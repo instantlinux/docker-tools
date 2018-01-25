@@ -36,6 +36,9 @@ directory and add an NRPE check_swarm_sync check to the primary host's
 list of services. Set the warning/critical values as appropriate for
 your polling frequency in the cfg file.
 
+If you add any mount points underneath the synchronized volume, restart this service.
+
+
 ### Variables
 
 | Variable | Default | Description |

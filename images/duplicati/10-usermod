@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+PUID=${PUID:-34}
+PGID=${PGID:-34}
+
+groupmod -o -g $PGID backup
+usermod -o -u $PUID backup
+chown -R backup:backup /config

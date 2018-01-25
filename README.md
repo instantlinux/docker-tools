@@ -28,7 +28,6 @@ Stack definitions include:
 **Networking and support**
 * authelia - single-signon multi-factor auth
 * cloud - nextcloud, private sync like Apple iCloud
-* crashplan - backups
 * docs - OX Appsuite, private cloud like Google Docs
 * duplicati - backups
 * ez-ipupdate - Dynamic DNS client
