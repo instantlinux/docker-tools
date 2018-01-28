@@ -4,7 +4,7 @@ image:
 matrix:
   include:
   - image: weewx-armhf 
-    env: DIR=weewx DOCKERFILE=Dockerfile.weewx-armhf IMAGE=weewx-armhf
+    env: DIR=weewx DOCKERFILE=Dockerfile.armhf IMAGE=weewx-armhf
 services:
 - docker
 language: bash
