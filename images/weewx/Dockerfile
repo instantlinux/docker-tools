@@ -82,10 +82,11 @@ RUN apk add --no-cache --update \
       file freetype-dev g++ gawk gcc git jpeg-dev libpng-dev make musl-dev \
       python2-dev zlib-dev && \
     pip install --target /usr/lib/python2.7/site-packages \
-      -r /root/common.txt && \
+      -r /root/amd64.txt && \
     tar xf weewx.tar.gz --strip-components=1 && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
-    git clone https://github.com/instantlinux/weewx-WeeGreen.git \
+    git clone -b master -depth 1 \
+      https://github.com/instantlinux/weewx-WeeGreen.git \
       /home/$WX_USER/skins/WeeGreen && \
     /home/$WX_USER/bin/wee_extension --install /build/weewx-forecast.tgz && \
     cd /build/libtcd && \
@@ -99,6 +100,7 @@ RUN apk add --no-cache --update \
     echo /usr/share/xtide > /etc/xtide.conf && \
     apk del .fetch-deps && \
     rm -fr /build /home/$WX_USER/weewx.conf.2* /home/$WX_USER/docs \
+      /home/$WX_USER/skins/WeeGreen/.git \
       /root/.cache /var/cache/apk/* /var/log/* && \
     find /home/$WX_USER/bin -name '*.pyc' -exec rm '{}' +;
 

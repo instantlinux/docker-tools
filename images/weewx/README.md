@@ -3,8 +3,9 @@
 
 Weather station software WeeWX
 
-This includes WeeGreen skin; see the [live site](http://wx.ci.net) for
-an example.
+This includes WeeGreen skin; see the [live site](http://wx.ci.net) for an
+example. Two architectures are supported: amd64 and armhf (Raspberry Pi).
+Look for [amd64](https://hub.docker.com/r/instantlinux/weewx/) and [armhf](https://hub.docker.com/r/instantlinux/weewx-armhf/] images on Docker Hub.
 
 ### Usage
 
