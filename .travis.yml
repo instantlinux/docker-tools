@@ -10,11 +10,11 @@ services:
 language: bash
 script:
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- docker build -t instantlinux/$IMAGE -f images/$DIR/$DOCKERFILE .
+- cd images/$DIR && docker build -t instantlinux/$IMAGE -f $DOCKERFILE .
 - >
   if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-    TAG=$(grep "ARG WEEWX_VERSION" images/$DIR/$DOCKERFILE | cut -d= -f 2)
+    TAG=$(grep "ARG WEEWX_VERSION" $DOCKERFILE | cut -d= -f 2)
     docker tag instantlinux/$IMAGE instantlinux/$IMAGE:$TAG
     docker push instantlinux/$IMAGE:$TAG
     docker push instantlinux/$IMAGE
