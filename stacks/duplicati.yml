@@ -4,7 +4,6 @@ services:
   app:
     image: linuxserver/duplicati:55
     environment:
-      PGID: 65534
       PUID: 0
       TZ: ${TZ:-US/Pacific}
     ports:

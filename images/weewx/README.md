@@ -1,11 +1,11 @@
 ## weewx
-[![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "amd64 image") armhf:[![](https://images.microbadger.com/badges/image/instantlinux/weewx-armhf.svg)](https://microbadger.com/images/instantlinux/weewx-armhf "armhf image") [![](https://images.microbadger.com/badges/commit/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Commit badge")
 
 Weather station software WeeWX
 
 This includes WeeGreen skin; see the [live site](http://wx.ci.net) for an
 example. Two architectures are supported: amd64 and armhf (Raspberry Pi).
-Look for [amd64](https://hub.docker.com/r/instantlinux/weewx/) and [armhf](https://hub.docker.com/r/instantlinux/weewx-armhf/] images on Docker Hub.
+Look for [amd64](https://hub.docker.com/r/instantlinux/weewx/) and [armhf](https://hub.docker.com/r/instantlinux/weewx-armhf/) images on Docker Hub.
 
 ### Usage
 

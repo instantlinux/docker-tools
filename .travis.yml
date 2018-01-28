@@ -4,19 +4,18 @@ image:
 matrix:
   include:
   - image: weewx-armhf 
-    env: DIR=weewx DOCKERFILE=Dockerfile.weewx-armhf
+    env: DIR=weewx DOCKERFILE=Dockerfile.weewx-armhf IMAGE=weewx-armhf
 services:
 - docker
 language: bash
 script:
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- cd images/$DIR && docker build -t instantlinux/$image -f $DOCKERFILE .
+- cd images/$DIR && docker build -t instantlinux/$IMAGE -f $DOCKERFILE .
 - >
   if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    cd images/$DIR
     docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     TAG=$(grep "ARG WEEWX_VERSION" $DOCKERFILE | awk 'NF>1{print $NF}')
-    docker tag instantlinux/$image instantlinux/$image:$TAG
-    docker push instantlinux/$image:$TAG
-    docker push instantlinux/$image
+    docker tag instantlinux/$IMAGE instantlinux/$IMAGE:$TAG
+    docker push instantlinux/$IMAGE:$TAG
+    docker push instantlinux/$IMAGE
   fi
