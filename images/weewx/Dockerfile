@@ -85,7 +85,7 @@ RUN apk add --no-cache --update \
       -r /root/amd64.txt && \
     tar xf weewx.tar.gz --strip-components=1 && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
-    git clone -b master -depth 1 \
+    git clone -b master --depth 1 \
       https://github.com/instantlinux/weewx-WeeGreen.git \
       /home/$WX_USER/skins/WeeGreen && \
     /home/$WX_USER/bin/wee_extension --install /build/weewx-forecast.tgz && \
