@@ -3,9 +3,8 @@
 
 Weather station software WeeWX
 
-This includes WeeGreen skin; see the [live site](http://wx.ci.net) for an
-example. Two architectures are supported: amd64 and armhf (Raspberry Pi).
-Look for [amd64](https://hub.docker.com/r/instantlinux/weewx/) and [armhf](https://hub.docker.com/r/instantlinux/weewx-armhf/) images on Docker Hub.
+This includes WeeGreen skin; see the [live site](http://wx.ci.net) for an example. 
+Two architectures are supported; look for [amd64](https://hub.docker.com/r/instantlinux/weewx/) (Intel/AMD) and [armhf](https://hub.docker.com/r/instantlinux/weewx-armhf/) (Raspberry Pi) images on Docker Hub.
 
 ### Usage
 
@@ -18,7 +17,7 @@ Then deploy this service with docker-compose; see the example
 docker-compose.yml. Available environment variables are below.
 
 To create the external-facing web site, use the simple nginx.conf
-configuration provided here. You can run nginx under docker swarm with
+configuration provided [here](https://github.com/instantlinux/docker-tools/blob/master/images/weewx/nginx.conf). You can run nginx under docker swarm with
 the docker-compose-nginx.yml stack definition.
 
 ### Variables

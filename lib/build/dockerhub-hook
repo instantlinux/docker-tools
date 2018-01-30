@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker build -t $IMAGE_NAME . \
+docker build -t $IMAGE_NAME -f $DOCKERFILE_PATH . \
   --build-arg VCS_REF=$(git rev-parse HEAD) \
   --build-arg BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
