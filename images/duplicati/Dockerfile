@@ -3,7 +3,7 @@ MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
-    org.label-schema.license=GPL-2.0 \
+    org.label-schema.license=GPL-2.1 \
     org.label-schema.name=duplicati \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
@@ -20,7 +20,6 @@ ARG OVERLAY_SHA=50f67ae51e92eed8679d1a9027c971e809d27e788b3f0322b07fc6e8b9839ec0
 
 RUN apt-get -yq update && apt-get install -yq bzip2 curl mediainfo mono-devel \
       mono-vbnc sqlite3 unzip && \
-    mkdir -p /app/duplicati && \
     cd /tmp && \
     curl -sLo duplicati.zip \
       https://github.com/duplicati/duplicati/releases/download/v${DUPLICATI_VERSION}-${DUPLICATI_RELEASE}/duplicati-${DUPLICATI_RELEASE}.zip && \
@@ -29,7 +28,7 @@ RUN apt-get -yq update && apt-get install -yq bzip2 curl mediainfo mono-devel \
     echo "$DUPLICATI_SHA  duplicati.zip" > checksums && \
     echo "$OVERLAY_SHA  s6-overlay.tar.gz" >> checksums && \
     sha256sum -c checksums && \
-    unzip duplicati.zip -d /app/duplicati && \
+    mkdir /app && unzip duplicati.zip -d /app/duplicati && \
     tar xzf s6-overlay.tar.gz -C / && \
     usermod -d /config backup && \
     mkdir /etc/services.d/duplicati && \

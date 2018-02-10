@@ -300,8 +300,9 @@ valid_version=0
 version_docker=`docker --version | awk '{split($0,a,","); print a[1]}' | sed "s/Docker version //g"`
 major_param=`echo "$version_docker" | awk '{split($0,a,"."); print a[1]}'`
 minor_param=`echo "$version_docker" | awk '{split($0,a,"."); print a[2]}'`
-if [ "$major_param" -ge "1" ] && [ "$minor_param" -ge "13" ]
-then
+if [ "$major_param" -ge "17" ]; then
+	valid_version=1
+elif [ "$major_param" -ge "1" ] && [ "$minor_param" -ge "13" ]; then
 	valid_version=1
 elif [ "$major_param" -ge "1" ] && [ "$minor_param" -ge "10" ]
 then

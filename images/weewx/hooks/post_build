@@ -1,2 +1,3 @@
 #!/bin/bash
 curl -X post https://hooks.microbadger.com/images/instantlinux/weewx/ZR9vTOPldpJz6FoCCmFvszlMqX4=
+curl -X post https://hooks.microbadger.com/images/instantlinux/weewx-armhf/n7uXViKgQSLHREieCeNbgoRA7yg=

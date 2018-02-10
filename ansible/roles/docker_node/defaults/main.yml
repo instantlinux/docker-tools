@@ -48,7 +48,7 @@ kernel:
 
 sysctl:
   fs.inotify.max_user_instances: 256
-  fs.inotify.max_user_watches: 98304
+  fs.inotify.max_user_watches: 131072
 
 syslog:
   host: syslog

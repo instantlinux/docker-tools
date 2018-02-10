@@ -2,41 +2,20 @@ version: "3"
 
 services:
   app:
-    image: duplicati
-    # image: ${REGISTRY_URI:-instantlinux}/duplicati:latest
+    image: ${REGISTRY_URI:-instantlinux}/duplicati:latest
     environment:
       PUID: 0
       TZ: US/Pacific
     ports:
-    # ${PORT_DUPLICATI:-8200}:8200
-    - 8201:8200
+    - ${PORT_DUPLICATI:-8200}:8200
     volumes:
-    # ${SHARE_PATH:-/opt}/duplicati/config:/config
-    - configtest:/config
+    - config:/config
     - backups:/backups
     - restore:/restore
     # list of volumes to back up, customize as needed
     - /home:/backup/home:ro
-    deploy:
-      placement:
-        constraints:
-        - node.labels.swarm-sync == peer
 
 volumes:
   backups:
-  configtest:
+  config:
   restore:
-  dovecot_inbox:
-    external: true
-  dovecot_webmail:
-    external: true
-  proftpd_ftp:
-    external: true
-  samba_dos:
-    external: true
-  sambadc_lib:
-    external: true
-networks:
-  default:
-    external:
-      name: testing_net

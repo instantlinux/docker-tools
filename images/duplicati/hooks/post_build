@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/duplicati/TODO
+curl -X post https://hooks.microbadger.com/images/instantlinux/duplicati/bKNw4co1_1pXWZnZhuwC4qi3h6I=

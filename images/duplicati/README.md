@@ -6,7 +6,7 @@ Duplicati 2.0 software for secure online/local backups. After CrashPlan disconti
 
 ### Usage
 
-In your docker-compose file, add the list of volumes you wish to back up under /backup. If you're backing up a server, set the PUID environment value to root user (0). Bring up the stack and define backup configurations; see [software documentation](https://github.com/duplicati/duplicati/wiki). All other configuration is done via the UI on TCP port 8200.
+In your docker-compose file, add the list of volumes you wish to back up under /backup. If you're backing up a server, set the PUID environment value to root user (0), otherwise set it to any user-id that has read access to your files. Bring up the stack and define backup configurations; see [software documentation](https://github.com/duplicati/duplicati/wiki). All other configuration is done via the UI on TCP port 8200.
 
 An example compose file is provided here in docker-compose.yml.
 

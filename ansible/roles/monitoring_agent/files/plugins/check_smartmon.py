@@ -358,7 +358,7 @@ if __name__ == "__main__":
             (id5Line == 0 and id197Line == 1069 and id198Line == 1069 and serialNumber == '5XW07ALG') or
             (id5Line == 8 and id198Line == 40 and serialNumber == 'W1F1GV68') or
             (id5Line == 45 and id196Line == 45 and serialNumber == '170815FF2689') or
-            (id5Line == 12 and id196Line == 12 and serialNumber == '1631137A183D')):
+            (id5Line == 12 and id196Line == 48 and serialNumber == '1631137A183D')):
             tolerated = True
        
         (value, message) = createReturnInfo(healthStatus, tolerated, temperature, serialNumber, id5Line, id196Line, id197Line, id198Line,
