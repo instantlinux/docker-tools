@@ -37,6 +37,6 @@ RUN apt-get -yq update && apt-get install -yq bzip2 curl mediainfo mono-devel \
 VOLUME /backups /config /source
 EXPOSE 8200
 
-COPY 10-usermod /etc/cont-init.d/
+COPY 10-usermod 20-timezone /etc/cont-init.d/
 COPY run /etc/services.d/duplicati/
 ENTRYPOINT ["/init"]

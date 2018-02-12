@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+echo $TZ >/etc/timezone
+ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
+dpkg-reconfigure -f noninteractive tzdata

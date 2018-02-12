@@ -2,7 +2,7 @@
 
 [![](https://images.microbadger.com/badges/version/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Commit badge")
 
-Duplicati 2.0 software for secure online/local backups. After CrashPlan discontinued its individual-user subscription service in 2018, this along with the BackBlaze B2 or Amazon S3 service is the most-active open-source project and is the best alternative for Linux users. Project organizers tag releases "beta", "experimental", and "canary"; to take advantage of the rapid pace of development, this container image provides the experimental release which has the most-current stable feature set. Use the linuxserver/duplicati:latest image if you wish to run the older beta version.
+Duplicati 2.0 software for secure online/local backups. After CrashPlan discontinued its individual-user subscription service in 2018, this along with the BackBlaze B2 or Amazon S3 service is the most-active open-source project and is the best alternative for Linux users. Project organizers tag releases "beta", "experimental", and "canary"; to take advantage of the rapid pace of development, this container image provides the experimental release which has the most-current reasonably-stable feature set. Use the linuxserver/duplicati:latest image if you wish to run the older beta version. This one includes timezone support.
 
 ### Usage
 
@@ -12,9 +12,10 @@ An example compose file is provided here in docker-compose.yml.
 
 ### Variables
 
-Variable | Default | Description |
--------- | ------- | ----------- |
+Variable | Default | Description
+-------- | ------- | -----------
 PGID | 34 | Group ID for backup user
 PUID | 34 | User ID
+TZ | GMT | time zone
 
 [![](https://images.microbadger.com/badges/license/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "License badge")

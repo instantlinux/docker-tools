@@ -2,7 +2,7 @@ version: "3"
 services:
 
   app:
-    image: linuxserver/duplicati:55
+    image: ${REGISTRY_URI:-instantlinux}/duplicati:latest
     environment:
       PUID: 0
       TZ: ${TZ:-US/Pacific}
@@ -20,6 +20,7 @@ services:
     - proftpd_ftp:/backup/ftp:ro
     - samba_dos:/backup/samba_dos:ro
     - sambadc_lib:/backup/sambadc:ro
+    - user_home:/backup/u:ro
     - ${SHARE_PATH}:/backup/share:ro
     deploy:
       placement:
@@ -38,4 +39,6 @@ volumes:
   samba_dos:
     external: true
   sambadc_lib:
+    external: true
+  user_home:
     external: true
