@@ -17,6 +17,7 @@ ENV ALTITUDE="100, foot" \
     DB_NAME=weewx_a \
     DB_NAME_FORECAST=weewx_f \
     DB_USER=weewx \
+    DEBUG=0 \
     DEVICE_PORT=/dev/ttyUSB0 \
     HTML_ROOT=/var/www/weewx \
     LOCATION="Anytown, USA" \

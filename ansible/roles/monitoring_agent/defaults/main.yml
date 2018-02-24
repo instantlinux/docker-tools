@@ -48,5 +48,6 @@ opensuse_repos:
 
 ubuntu_packages:
   - bc
+  - mcelog
   - nagios-nrpe-server
   - smartmontools

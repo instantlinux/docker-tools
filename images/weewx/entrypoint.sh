@@ -4,6 +4,7 @@ DB_PASS=$(cat /run/secrets/weewx-db-password)
 WUNDER_PASS=$(cat /run/secrets/weewx-wunderground-password)
 WUNDER_API_KEY=$(cat /run/secrets/weewx-wunderground-apikey)
 SSHKEY=weewx-rsync-sshkey
+WX_GROUP=dialout
 HOMEDIR=/home/$WX_USER
 PATH=$HOMEDIR/bin:$PATH
 
@@ -22,6 +23,7 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   sed --in-place=.bak -e "s/location = DESC/location = \"$LOCATION\"/" \
   -e "s/altitude = 0, foot/altitude = $ALTITUDE/" \
   -e "s/archive_interval =.*/archive_interval = $LOGGING_INTERVAL/" \
+  -e "s/debug = 0/debug = $DEBUG/" \
   -e "s/latitude =.*/latitude = $LATITUDE/" \
   -e "s/longitude =.*/longitude = $LONGITUDE/" \
   -e "s:port = /dev/.*:port = $DEVICE_PORT:" \
@@ -62,6 +64,7 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   wee_device --set-tz-code=$TZ_CODE
 fi
 
+sed -i -e "s/^\$ModLoad imklog/#\$ModLoad imklog/" /etc/rsyslog.conf
 rsyslogd
 
 cp /run/secrets/$SSHKEY /run/$SSHKEY && chmod 400 /run/$SSHKEY
@@ -77,6 +80,8 @@ EOF
 fi
 
 chown -R $WX_USER $HOMEDIR $HTML_ROOT /run/$SSHKEY
+# Docker 18.02 changes group to root at launch
+chgrp $WX_GROUP /dev/ttyUSB0
 set +e
 su $WX_USER -c "PATH=$PATH weewxd $HOMEDIR/weewx.conf|grep -v LOOP:"
 # Failure: attempt restart only every 2 minutes
