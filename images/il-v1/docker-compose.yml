@@ -2,12 +2,12 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/il-v1:latest
+    image: ${REGISTRY_URI:-instantlinux}/il-v1:${VERSION_ILINUX:-latest}
     environment:
-      DB_HOST: db00.ci.net
-      FQDN: homebase.instantlinux.net
+      DB_HOST: ${DB_HOST:-db00}
+      FQDN: homebase.${MYDOMAIN}
       REMOTES: cumbre.ci.net k2.ci.net
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_IL_V1:-8080}:80
     volumes:

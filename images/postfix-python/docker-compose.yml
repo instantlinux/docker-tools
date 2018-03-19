@@ -3,14 +3,14 @@ version: "3.1"
 services:
 
   app:
-    image: ${REGISTRY_URI:-instantlinux}/postfix-python:latest
+    image: ${REGISTRY_URI:-instantlinux}/postfix-python:${VERSION_POSTFIX:-latest}
     environment:
       DB_HOST: ${DB_HOST:-db}
       CIDR_MIN_SIZE: ${CIDR_MIN_SIZE:-32}
       HONEYPOT_ADDRS: ${HONEYPOT_ADDRS:-none}
       INBOUND_RELAY: by mx-caprica.?\.easydns\.com
       SPAMC_HOST: ${SPAMC_HOST:-spamd}
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
     volumes:
     - ${ADMIN_PATH:-/opt}/postfix/etc/:/etc/postfix/postfix.d:ro
     - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro

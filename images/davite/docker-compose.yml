@@ -2,17 +2,17 @@ version: "3"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/davite:latest
+    image: ${REGISTRY_URI:-instantlinux}/davite:${VERSION_DAVITE:-latest}
     environment:
-      HOSTNAME: davite.ci.net
+      HOSTNAME: davite.${DOMAIN}
       SMTP_PORT: '25'
-      SMTP_SMARTHOST: smtp.ci.net
+      SMTP_SMARTHOST: smtp.${DOMAIN}
       TCP_PORT: ''
     volumes:
     - ${SHARE_PATH}/davite:/var/adm/DaVite_Data
     ports:
     - ${PORT_DAVITE:-8080}:80
-    hostname: davite.ci.net
+    hostname: davite.${DOMAIN}
     deploy:
       placement:
         constraints:

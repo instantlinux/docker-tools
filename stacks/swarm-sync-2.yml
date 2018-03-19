@@ -6,11 +6,11 @@ version: "3.1"
 services:
 
   primary:
-    image: ${REGISTRY_URI:-instantlinux}/swarm-sync:latest
+    image: ${REGISTRY_URI:-instantlinux}/swarm-sync:${VERSION_SWARMSYNC:-latest}
     environment:
       SECRET: swarm-sync-2_sshkey
       SYNC_INTERVAL: "2"
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     volumes:
     - logs:/var/log/unison
     - syncarchive:/root/.unison

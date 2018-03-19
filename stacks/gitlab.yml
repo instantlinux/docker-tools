@@ -2,7 +2,7 @@ version: "3"
 services:
 
   app:
-    image: gitlab/gitlab-ce:8.16.4-ce.0
+    image: gitlab/gitlab-ce:${VERSION_GITLAB:-latest}
     hostname: git.instantlinux.net
     command: >
       bash -c "mkdir -p /var/backups/gitlab &&
@@ -10,7 +10,7 @@ services:
       ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
       exec /assets/wrapper"
     environment:
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_GITLAB_HTTP:-18080}:80
     - ${PORT_GITLAB_SSH:-8999}:22

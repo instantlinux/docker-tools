@@ -2,12 +2,12 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/git-dump:latest
+    image: ${REGISTRY_URI:-instantlinux}/git-dump:${VERSION_GITDUMP:-latest}
     hostname: git-dump
     environment:
-      TZ: US/Pacific
-      REPO_PREFIX: git@git.instantlinux.net:richb/
-      API_TOKEN_SECRET: git.instantlinux.net-api-token
+      TZ: ${TZ:-UTC}
+      REPO_PREFIX: git@git.${MYDOMAIN}:richb/
+      API_TOKEN_SECRET: git.${MYDOMAIN}-api-token
       SSH_PORT: ${PORT_GITLAB_SSH:-22}
     volumes:
     - backup:/var/backup
@@ -19,7 +19,7 @@ services:
     secrets:
     - source: git-dump_sshkey
       mode: 0400
-    - source: git.instantlinux.net-api-token
+    - source: git.${MYDOMAIN}-api-token
       gid: '505'
       mode: 0440
     
@@ -34,5 +34,5 @@ networks:
 secrets:
   git-dump_sshkey:
     external: true
-  git.instantlinux.net-api-token:
+  git.${MYDOMAIN}-api-token:
     external: true

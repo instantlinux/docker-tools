@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/blacklist:latest
+    image: ${REGISTRY_URI:-instantlinux}/blacklist:${VERSION_BLACKLIST:-latest}
     environment:
       RBL_DOMAIN: ${RBL_DOMAIN:-blacklist.mydomain.com}
       NS_SERVERS: ${NS_SERVERS:-ns.mydomain.com}

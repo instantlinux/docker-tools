@@ -2,12 +2,12 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/wxcam-upload:latest
+    image: ${REGISTRY_URI:-instantlinux}/wxcam-upload:${VERSION_WXCAM:-latest}
     environment:
       CAMS: ${WXCAM_CAMS:-cam1}
       PASV_ADDRESS: ${WX_RSYNC_HOST:-swarm}
       UPLOAD_USERNAME: ${WXCAM_UPLOAD_USERNAME:-wx}
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     volumes:
     - ${SHARE_PATH:-/opt}/wx:/home/wx/upload
     ports:

@@ -2,13 +2,13 @@ version: "3"
 services:
   app:
     hostname: jira
-    image: cptactionhank/atlassian-jira:7.7.1
+    image: cptactionhank/atlassian-jira:${VERSION_JIRA:-latest}
     environment:
       CATALINA_OPTS: -Xms512m -Xmx1280m
       X_PROXY_NAME: jira.${DOMAIN}
       X_PROXY_PORT: 443
       X_PROXY_SCHEME: https
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_JIRA:-15080}:8080
     volumes:

@@ -2,7 +2,8 @@ version: '3'
 
 services:
   authelia:
-    image: clems4ever/authelia:v3.2.0
+    hostname: authelia
+    image: clems4ever/authelia:${VERSION_AUTHELIA:-latest}
     volumes:
     - ${ADMIN_PATH:-/opt}/authelia/config.yml:/etc/authelia/config.yml:ro
     - ${SHARE_PATH}/authelia/store:/var/lib/authelia/store
@@ -17,7 +18,7 @@ services:
     image: dinkel/openldap:latest
     environment:
       SLAPD_ORGANISATION: Community Internet
-      SLAPD_DOMAIN: ci.net
+      SLAPD_DOMAIN: ${DOMAIN}
       SLAPD_PASSWORD: password
       SLAPD_ADDITIONAL_MODULES: memberof
       SLAPD_ADDITIONAL_SCHEMAS: openldap

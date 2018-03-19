@@ -2,18 +2,18 @@ version: "3"
 services:
 
   app:
+    image: docker.bintray.io/jfrog/artifactory-oss:${VERSION_ARTIFACTORY:-latest}
     hostname: artifactory
+    environment:
+      DB_HOST: ${DB_HOST:-db00}
+      DB_PASSWORD: redacted
+      DB_TYPE: mysql
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_ARTIFACTORY:-18080}:8081
     volumes:
-    - /var/lib/docker/share/artifactory/data:/var/opt/jfrog/artifactory
-    - /var/lib/docker/share/artifactory/mysql-connector-java-5.1.40.jar:/opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-5.1.40-bin.jar
-    image: docker.bintray.io/jfrog/artifactory-oss:5.2.0
-    environment:
-      TZ: ${TZ:-US/Pacific}
-      DB_TYPE: mysql
-      DB_HOST: ${DB_HOST:-db00}
-      DB_PASSWORD: redacted
+    - ${SHARE_PATH}/artifactory/data:/var/opt/jfrog/artifactory
+    - ${SHARE_PATH}/artifactory/mysql-connector-java-5.1.40.jar:/opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-5.1.40-bin.jar
     deploy:
       placement:
         constraints:

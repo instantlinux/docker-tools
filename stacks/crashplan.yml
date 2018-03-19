@@ -7,7 +7,7 @@ services:
     image: gfjardim/crashplan:latest
     hostname: docker-backup
     environment:
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
       VNC_PASSWD: ${VNC_PASSWD:-crashplan}
     volumes:
     - config:/config

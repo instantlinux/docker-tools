@@ -2,10 +2,10 @@ version: "3"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/proftpd:latest
+    image: ${REGISTRY_URI:-instantlinux}/proftpd:${VERSION_PROFTPD:-latest}
     environment:
       PASV_ADDRESS: ${PROFTPD_IP}
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     volumes:
     - ftp:/var/lib/ftp:nocopy
     ports:

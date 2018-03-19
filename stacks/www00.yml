@@ -2,7 +2,7 @@ version: "3.2"
 services:
 
   app:
-    image: nginx:1.13.0-alpine
+    image: nginx:${VERSION_NGINX:-latest}
     ports:
     - target: 443
       published: 19443
@@ -17,7 +17,7 @@ services:
     - ${SHARE_PATH}/common/pki/ca:/etc/ssl/ca:ro
     - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
     environment:
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
     deploy:
       placement:
         constraints:

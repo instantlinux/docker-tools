@@ -7,7 +7,7 @@ services:
     environment:
       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
       REGISTRY_HTTP_TLS_KEY: /certs/domain.key
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_REGISTRY:-5000}:5000
     volumes:

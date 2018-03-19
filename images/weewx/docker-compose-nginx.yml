@@ -2,7 +2,7 @@ version: "3"
 services:
 
   app:
-    image: nginx:1.13.5-alpine
+    image: nginx:${VERSION_NGINX:-latest}
     command: >
       sh -c "apk add --update --no-cache openssh rsync &&
       ssh-keygen -A && /usr/sbin/sshd &&

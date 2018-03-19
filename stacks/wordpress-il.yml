@@ -1,11 +1,11 @@
 version: "3"
 services:
   app:
-    image: wordpress:4.9.1-php7.1-apache
+    image: wordpress:${VERSION_WORDPRESS:-latest}
     ports:
     - ${PORT_WORDPRESS_IL:-8080}:80
     environment:
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
       WORDPRESS_DB_HOST: ${DB_HOST:-db}
       WORDPRESS_DB_NAME: wordpress_il
       WORDPRESS_DB_USER: wordpress

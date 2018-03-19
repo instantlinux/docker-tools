@@ -2,7 +2,7 @@ version: "3"
 services:
 
   app:
-    image: ${REGISTRY_URI:-instantlinux}/dropbox:latest
+    image: ${REGISTRY_URI:-instantlinux}/dropbox:${VERSION_DROPBOX:-latest}
     hostname: dropbox-docker
     environment:
       UID: ${DROPBOX_UID:-1000}

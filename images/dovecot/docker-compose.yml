@@ -3,7 +3,7 @@ version: "3.1"
 services:
 
   dovecot:
-    image: ${REGISTRY_URI:-instantlinux}/dovecot:latest
+    image: ${REGISTRY_URI:-instantlinux}/dovecot:${VERSION_DOVECOT:-latest}
     volumes:
     - ${ADMIN_PATH:-/opt}/dovecot/etc/:/etc/dovecot/conf.local:ro
     - ${ADMIN_PATH:-/opt}/dovecot/postfix/etc/:/etc/postfix/postfix.d:ro

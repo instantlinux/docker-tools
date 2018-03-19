@@ -2,14 +2,14 @@ version: "3.1"
 
 services:
   jenkins-master:
-    image: ${REGISTRY_URI:-instantlinux}/jenkins-master:latest
+    image: ${REGISTRY_URI:-instantlinux}/jenkins-master:${VERSION_JENKINS:-latest}
     environment:
-      ARTIFACTORY_URI: https://repo.ci.net/artifactory
+      ARTIFACTORY_URI: https://repo.${DOMAIN}/artifactory
       ARTIFACTORY_USER: jenkins
-      JENKINS_URL: https://jenkins.ci.net
-      SMTP_ADMIN_ADDRESS: "Jenkins <jenkins@instantlinux.net>"
-      SMTP_SMARTHOST: smtp.ci.net
-      TZ: ${TZ:-US/Pacific}
+      JENKINS_URL: https://jenkins.${DOMAIN}
+      SMTP_ADMIN_ADDRESS: "Jenkins <jenkins@${DOMAIN}>"
+      SMTP_SMARTHOST: smtp.${DOMAIN}
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_JENKINS:-8080}:8080
     volumes:
@@ -26,12 +26,12 @@ services:
     - jenkins-admin-password
 
   jenkins-slave:
-    image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:latest
+    image: ${REGISTRY_URI:-instantlinux}/jenkins-slave:${VERSION_JENKINS:-latest}
     environment:
       SWARM_JENKINS_SECRET: jenkins-agent-password
       SWARM_JENKINS_USER: svc_jenkins
       SWARM_MASTER_URL: http://jenkins-master:8080/
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     deploy:

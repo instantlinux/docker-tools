@@ -5,7 +5,7 @@ version: "3.1"
 services:
 
   app:
-    image: ${REGISTRY_URI:-instantlinux}/git-pull:latest
+    image: ${REGISTRY_URI:-instantlinux}/git-pull:${VERSION_GITPULL:-latest}
     environment:
       GIT_COMMIT: master
       GIT_HOST: ${GIT_HOST:-github.com}

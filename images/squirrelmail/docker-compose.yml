@@ -2,9 +2,9 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/squirrelmail:latest
+    image: ${REGISTRY_URI:-instantlinux}/squirrelmail:${VERSION_SQUIRRELMAIL:-latest}
     environment:
-      DB_HOST: db00.ci.net
+      DB_HOST: ${DB_HOST:-db}
       DB_NAME_ADDR: rbaddr
       DOMAIN: pioneer.ci.net
       IMAP_SERVER: swarm00.ci.net
