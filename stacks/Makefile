@@ -3,6 +3,7 @@ STACKS = $(basename $(wildcard *.yml))
 DEPLOY = $(STACKS:%=.deploy/%)
 
 db00: CLUSTER_NAME = db00
+db02: CLUSTER_NAME = db02
 
 default: $(DEPLOY)
 
@@ -21,6 +22,7 @@ cloud: .deploy/cloud
 crashplan: .deploy/crashplan
 davite: .deploy/davite
 db00: .deploy/db00
+db02: .deploy/db02
 docs: .deploy/docs
 dovecot: .deploy/dovecot
 dropbox: .deploy/dropbox
@@ -53,7 +55,6 @@ www00: .deploy/www00
 wwwext: .deploy/wwwext
 wx-nginx: .deploy/wx-nginx
 wxcam-upload: .deploy/wxcam-upload
-vsftpd: .deploy/vsftpd
 
 net_create::
 	docker network create dbcluster --driver overlay $(LABELS)

@@ -16,6 +16,9 @@ if [ -s $ETC/conf.local/dovecot-ldap.conf ]; then
   sed -i -e "s/PASSWORD/`cat /run/secrets/$LDAP_PASSWD_SECRET`/" \
     $ETC/dovecot-ldap.conf
 fi
+if [ -f /etc/postfix/transport ]; then
+  postmap /etc/postfix/transport
+fi
 mkdir -p -m 700 /etc/ssl/private
 cp /run/secrets/*key.pem /etc/ssl/private
 

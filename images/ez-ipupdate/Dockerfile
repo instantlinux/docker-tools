@@ -8,13 +8,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
+ARG EZ_VERSION=3.0.10-r9
 ENV HOST=must_be_set \
     INTERVAL=3600 \
     IPLOOKUP_URI=http://ipinfo.io/ip \
     SERVICE_TYPE=easydns \
     USER_SECRET=ez-ipupdate-user
 
-RUN apk add --update curl ez-ipupdate && \
+RUN apk add --update curl ez-ipupdate=$EZ_VERSION && \
     rm -fr /var/log/* /var/cache/apk/*
 
 CMD sh -c 'echo "user=`cat /run/secrets/$USER_SECRET`" > /run/ez.conf && \

@@ -8,13 +8,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
+ARG GIT_VERSION=2.15.0-r1
 ENV DEST=. \
     GIT_COMMIT=master \
     GIT_HOST=github.com \
     GIT_REPO=uri \
     INTERVAL=0
 
-RUN apk add --no-cache --update git openssh-client
+RUN apk add --no-cache --update git=$GIT_VERSION openssh-client
 
 VOLUME /git
 

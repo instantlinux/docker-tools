@@ -10,13 +10,13 @@ services:
       CLUSTER_SIZE: 3
     ports:
     - target: 3306
-      published: 19306
+      published: 18306
       protocol: tcp
       mode: host
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
-    - ${ADMIN_PATH:-/opt}/xtradb/etc/:/etc/mysql/my.cnf.d:ro
+    - ${ADMIN_PATH:-/opt}/mariadb/etc/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
     deploy:
@@ -26,7 +26,7 @@ services:
       restart_policy:
         condition: any
         delay: 20s
-        max_attempts: 30
+        max_attempts: 20
 
 volumes:
   data:

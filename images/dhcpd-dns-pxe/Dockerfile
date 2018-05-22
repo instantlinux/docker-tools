@@ -8,6 +8,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
+ARG DHCP_VERSION=4.3.5-r0
+
 ENV DHCP_BOOT=pxelinux.0 \
     DHCP_ENABLE=yes \
     DHCP_LEASE_PATH=/var/lib/misc \
@@ -32,7 +34,7 @@ ENV DHCP_BOOT=pxelinux.0 \
     TFTP_SERVER=self \
     TZ=UTC
 
-RUN apk add --no-cache --update dhcp dnsmasq
+RUN apk add --no-cache --update dhcp=$DHCP_VERSION dnsmasq
 
 EXPOSE 53/udp 67/udp 69/udp
 VOLUME $DHCP_LEASE_PATH $TFTP_ROOT /etc/dhcpd.d/local /etc/dnsmasq.d/local

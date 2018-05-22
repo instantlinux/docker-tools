@@ -8,6 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
+ARG PROFTPD_VERSION=1.3.6-r5
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \
     ANON_UPLOAD_ENABLE=DenyAll \
@@ -25,9 +26,11 @@ ENV ALLOW_OVERWRITE=on \
     TZ=UTC \
     WRITE_ENABLE=AllowAll
 
-RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
-    apk add --update proftpd@testing tzdata
+    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
+      >>/etc/apk/repositories && \
+    apk add --update libressl2.7-libcrypto@edge proftpd@testing=$PROFTPD_VERSION tzdata
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 
 VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp

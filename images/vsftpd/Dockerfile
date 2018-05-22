@@ -8,6 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
+ARG VSFTPD_VERSION=3.0.3-r4
 ENV ANONYMOUS_ENABLE=YES \
     ANON_MKDIR_WRITE_ENABLE=NO \
     ANON_UPLOAD_ENABLE=NO \
@@ -24,7 +25,7 @@ ENV ANONYMOUS_ENABLE=YES \
     VSFTPD_LOG_FILE=/dev/stdout \
     WRITE_ENABLE=YES
 
-RUN apk add --update --no-cache tzdata vsftpd && \
+RUN apk add --update --no-cache tzdata vsftpd=$VSFTPD_VERSION && \
     passwd -l root
 
 VOLUME /etc/vsftpd.d /var/lib/ftp

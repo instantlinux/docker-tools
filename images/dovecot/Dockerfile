@@ -8,9 +8,11 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
+ARG DOVECOT_VERSION=2.2.34-r0
 ENV LDAP_PASSWD_SECRET=ldap-ro-password
 
-RUN apk add --no-cache dovecot dovecot-ldap procmail
+RUN apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION \
+    procmail
 EXPOSE 143 993 
 VOLUME /etc/dovecot/conf.local /home /var/spool/mail
 

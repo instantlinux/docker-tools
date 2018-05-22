@@ -9,7 +9,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/swarm-sync:${VERSION_SWARMSYNC:-latest}
     environment:
       SYNC_INTERVAL: "2"
-      TZ: ${TZ:-GMT]
+      TZ: ${TZ:-UTC}
     volumes:
     - logs:/var/log/unison
     - syncarchive:/root/.unison

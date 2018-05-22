@@ -26,8 +26,9 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
 
 ARG BIND9_VER=9.11.2
 ARG BIND9_SHA=7f46ad8620f7c3b0ac375d7a5211b15677708fda84ce25d7aeb7222fe2e3c77a
+ARG SAMBA_VERSION=4.7.6-r0
 
-RUN apk add --update --no-cache krb5 ldb-tools samba-dc tdb \
+RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
       libxml2 libcrypto1.0 && \
 
 # The bind-tools package on Alpine omits gssapi, so build it here.

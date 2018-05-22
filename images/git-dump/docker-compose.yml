@@ -34,5 +34,5 @@ networks:
 secrets:
   git-dump_sshkey:
     external: true
-  git.${MYDOMAIN}-api-token:
+  git.instantlinux.net-api-token:
     external: true

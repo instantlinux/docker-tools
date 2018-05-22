@@ -22,7 +22,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.labels.swarm-sync-member == true
+        - node.labels.mail-sync-member == true
     logging:
       driver: json-file
       options:

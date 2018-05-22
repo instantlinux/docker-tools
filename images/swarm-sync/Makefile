@@ -26,8 +26,10 @@ $(HOME)/.docker/$(KEY_NAME).pub.env:
 label_nodes:
 	@docker node update --label-add swarm-sync=primary $(PRIMARY)
 	@docker node update --label-add swarm-sync-member=true $(PRIMARY)
+	@docker node update --label-add mail-sync-member=true $(PRIMARY)
 	@docker node update --label-add swarm-sync=peer $(PEER)
 	@docker node update --label-add swarm-sync-member=true $(PEER)
+	@docker node update --label-add mail-sync-member=true $(PRIMARY)
 	@echo "Nodes labeled, use node.labels.swarm-sync-member == true"
 
 nagios_nrpe:

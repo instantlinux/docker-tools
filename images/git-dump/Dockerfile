@@ -19,12 +19,13 @@ ENV API_TOKEN_SECRET= \
     USERNAME=git-dump \
     TZ=UTC
 
-ARG UID=212
+ARG GIT_VERSION=2.15.0-r1
 ARG GROUP=care
 ARG GID=505
+ARG UID=212
 
 COPY *.sh /usr/local/bin/
-RUN apk add --no-cache --update curl dcron git jq openssh-client && \
+RUN apk add --no-cache --update curl dcron git=$GIT_VERSION jq openssh-client && \
     addgroup -g $GID $GROUP && \
     adduser -u $UID -s /bin/sh -G $GROUP -g "git backup" -D $USERNAME && \
     chmod o+rx,g+rx /usr/local/bin/*.sh
