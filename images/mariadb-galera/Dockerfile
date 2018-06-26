@@ -1,4 +1,4 @@
-FROM python:2.7.14-slim
+FROM python:3.7.0-slim-stretch
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -15,30 +15,34 @@ ENV DEBIAN_FRONTEND=noninteractive \
     ROOT_PASSWORD_SECRET=mysql-root-password \
     TTL=10 \
     TZ=UTC \
-    XTRABACKUP_PASSWORD= \
-    XTRABACKUP_SECRET=xtradb-root-password
+    SST_AUTH_SECRET=sst-auth-password
 
-ARG MARIADB_VERSION=10.2
-ARG APT_KEY=CBCB082A1BB943DB
+ARG MARIADB_MAJOR=10.3
+ARG MARIADB_VERSION=10.3.10
+ARG APT_KEY=F1656F24C74CD1D8
+ARG DEB_REL=stretch
 ARG UID=212
 ARG GID=212
 
 COPY requirements/ /root/
-COPY src/healthcheck.sh /usr/local/bin/
 
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
+RUN apt-get -yq update && apt-get install -yq gnupg && \
+    apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
     echo "deb [arch=amd64] \
-     http://nyc2.mirrors.digitalocean.com/mariadb/repo/$MARIADB_VERSION/debian jessie main" \
+     http://nyc2.mirrors.digitalocean.com/mariadb/repo/$MARIADB_MAJOR/debian $DEB_REL main" \
      > /etc/apt/sources.list.d/mariadb.list && \
     groupadd -g $GID mysql && \
     useradd -u $UID -g $GID -s /bin/false -c "MariaDB" -d /none mysql && \
     apt-get -yq update && apt-get -yq install --no-install-recommends \
-     curl iputils-ping jq mariadb-server mariadb-client net-tools netcat && \
+     curl iputils-ping jq mariadb-server=1:$MARIADB_VERSION+maria~$DEB_REL \
+     mariadb-backup=1:$MARIADB_MAJOR_$MARIADB_VERSION+maria~$DEB_REL \
+     mariadb-client=1:$MARIADB_MAJOR_$MARIADB_VERSION+maria~$DEB_REL \
+     net-tools netcat procps && \
     pip install -r /root/common.txt && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
-    dpkg-reconfigure dash && \
-    chmod -R g+rX,o+rX /etc/mysql && \
-    apt-get clean; rm -fr /var/log/* /var/lib/mysql/*
+    dpkg-reconfigure dash || true && \
+    apt-get clean && rm -fr /var/log/* /var/lib/mysql/* && \
+    rm -fr /root/.cache /usr/share/zoneinfo/leap-seconds.list
 
 EXPOSE 3306 4444 4567/udp 4567 4568
 VOLUME /var/lib/mysql
@@ -46,9 +50,9 @@ VOLUME /var/lib/mysql
 HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
     CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
 
-COPY wsrep.cnf my.cnf /etc/mysql/
-COPY src/entrypoint.py /usr/local/bin/
+COPY my.cnf /etc/mysql/
+COPY wsrep.cnf /etc/
+COPY src/entrypoint.py src/healthcheck.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.py"]
 
 # TODO: fix healthcheck.sh to handle long-duration bootstrap
-# TODO: percona-xtrabackup when wsrep_sst_method works in 10.2

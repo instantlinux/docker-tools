@@ -3,12 +3,10 @@ wsrep_log_conflicts
 wsrep_on			= ON
 wsrep_provider			= /usr/lib/libgalera_smm.so
 wsrep_slave_threads             = 8
-wsrep_sst_auth			= "user:pw"
-# TODO: change method to xtrabackup-v2 when it supports 10.2
-wsrep_sst_method		= rsync
+wsrep_sst_method		= mariabackup
 
-# This changes how InnoDB autoincrement locks are managed and is a requirement for Galera
+# Galera requires change for InnoDB autoincrement locks
 innodb_autoinc_lock_mode        = 2
 
-# In order for Galera to work correctly binlog format should be ROW
+# Galera requires binlog format ROW
 binlog_format                   = ROW

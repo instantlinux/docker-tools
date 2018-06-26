@@ -20,6 +20,9 @@ nagios: "{{ nagios_defaults | combine(nagios_override) }}"
 nrpe_command_defaults:
   disk_status:
     local: True
+  etcd_cluster_health:
+    local: True
+    options: -- --endpoints=http://localhost:2379
   load:
     options: -w 15,10,5 -c 30,25,20
   netint_eth0:
@@ -50,6 +53,7 @@ opensuse_repos:
 
 ubuntu_packages:
   - bc
+  - etcd-client
   #  TODO mcelog
   - nagios-nrpe-server
   - smartmontools

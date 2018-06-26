@@ -1,9 +1,9 @@
-import unittest2
+import unittest
 
 import entrypoint
 
 
-class TestEntrypoint(unittest2.TestCase):
+class TestEntrypoint(unittest.TestCase):
 
     def test_setup_logging(self):
         ret = entrypoint.setup_logging()

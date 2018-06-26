@@ -7,5 +7,6 @@
 - include: security.yml
 - include: repos.yml
 - include: kernel.yml
+  when: kernel.non_stock
 - include: packages.yml
 - include: docker.yml

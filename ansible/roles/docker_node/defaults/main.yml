@@ -40,11 +40,13 @@ docker_defaults:
 docker_override: {}
 docker: "{{ docker_defaults | combine(docker_override) }}"
 
+# Set non_stock to True to override your distro's kernel
 kernel:
   long_ver: 4.15.0-041500.201802011154
   origin: http://kernel.ubuntu.com/~kernel-ppa/mainline
   short_ver: "041500"
   version: 4.15.0
+  non_stock: False
 
 sysctl:
   fs.inotify.max_user_instances: 256

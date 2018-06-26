@@ -23,6 +23,7 @@ crashplan: .deploy/crashplan
 davite: .deploy/davite
 db00: .deploy/db00
 db02: .deploy/db02
+db02test: .deploy/db02test
 docs: .deploy/docs
 dovecot: .deploy/dovecot
 dropbox: .deploy/dropbox
@@ -41,6 +42,7 @@ nexus: .deploy/nexus
 portainer: .deploy/portainer
 postfix: .deploy/postfix
 proftpd: .deploy/proftpd
+rainloop: .deploy/rainloop
 registry: .deploy/registry
 rsyslogd: .deploy/rsyslogd
 secondshot: .deploy/secondshot

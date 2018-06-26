@@ -19,6 +19,7 @@ services:
     - ${ADMIN_PATH:-/opt}/mariadb/etc/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
+    - sst-auth-password
     deploy:
       mode: global
       labels:
@@ -39,10 +40,10 @@ volumes:
   logs:
     labels:
      - ${LABEL:-service_type=mariadb}
-  db_etc:
-    external: true
 networks:
   default:
 secrets:
   mysql-root-password:
+    external: true
+  sst-auth-password:
     external: true

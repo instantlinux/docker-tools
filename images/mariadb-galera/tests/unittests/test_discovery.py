@@ -1,9 +1,9 @@
-import unittest2
+import unittest
 
 import entrypoint
 
 
-class TestDiscovery(unittest2.TestCase):
+class TestDiscovery(unittest.TestCase):
 
     def test_init(self):
         client = entrypoint.DiscoveryService([('127.0.0.1', 2379)], 'test')

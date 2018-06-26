@@ -65,46 +65,46 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ $READINESS -eq 1 ]; then
-	# A node is ready when it reaches Synced
-	if [ $status -eq 4 ]; then
-		readonly=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY3;" 2>/dev/null | awk '{print $2;}')
-                if [ $? -ne 0 ]; then
-                        return_fail
-                fi
+  # A node is ready when it reaches Synced
+  if [ $status -eq 4 ]; then
+	  readonly=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY3;" 2>/dev/null | awk '{print $2;}')
+	  if [ $? -ne 0 ]; then
+		  return_fail
+	  fi
 
-                if [ "$readonly" = "YES" -o "$readonly" = "ON" ]; then
-                        return_fail
-                fi
-		return_ok
-	fi
+	  if [ "$readonly" = "YES" -o "$readonly" = "ON" ]; then
+		  return_fail
+	  fi
+	  return_ok
+  fi
 elif [ $LIVENESS -eq 1 ]; then
-	# A node is alive if it's not in Initialized state
-	comment_status=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY4;" 2>/dev/null | awk '{print $2;}')
-	if [ $comment_status != "Initialized" ]; then
-		return_ok
-	fi
+  # A node is alive if it's not in Initialized state
+  comment_status=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY4;" 2>/dev/null | awk '{print $2;}')
+  if [ $comment_status != "Initialized" ]; then
+	  return_ok
+  fi
 else
-	if [ $status -eq 2 ] || [ $status -eq 4 ] ; then
-		readonly=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY3;" 2>/dev/null | awk '{print $2;}')
-		if [ $? -ne 0 ]; then
-			return_fail
-		fi
+  if [ $status -eq 2 ] || [ $status -eq 4 ] ; then
+    readonly=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY3;" 2>/dev/null | awk '{print $2;}')
+    if [ $? -ne 0 ]; then
+	    return_fail
+    fi
 
-		if [ "$readonly" = "YES" -o "$readonly" = "ON" ]; then
-        		return_fail
-		fi
+    if [ "$readonly" = "YES" -o "$readonly" = "ON" ]; then
+	    return_fail
+    fi
 
-		if [ $status -eq 2 ]; then
-        		method=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY2;" 2>/dev/null | awk '{print $2;}')
-			if [ $? -ne 0 ]; then
-				return_fail
-        		fi
-			if [ -z "$method" ] || [ "$method" = "rsync" ] || [ "$method" = "mysqldump" ]; then
-				return_fail
-        		fi
-		fi
+    if [ $status -eq 2 ]; then
+	    method=$($MYSQL_BIN $MYSQL_OPTS --host=$MYSQL_HOST --port=$MYSQL_PORT --user=$MYSQL_USERNAME --password=$MYSQL_PASSWORD -e "$CHECK_QUERY2;" 2>/dev/null | awk '{print $2;}')
+	    if [ $? -ne 0 ]; then
+		    return_fail
+	    fi
+	    if [ -z "$method" ] || [ "$method" = "mariabackup" ] || [ "$method" = "rsync" ] || [ "$method" = "mysqldump" ]; then
+		    return_fail
+	    fi
+    fi
 
-		return_ok
-	fi
+    return_ok
+  fi
 fi
 return_fail

@@ -185,6 +185,13 @@
     url: https://github.com/docker/compose/releases/download/{{
       docker.compose.version }}/docker-compose-Linux-x86_64
 
+- name: Sysctl tuning parameters
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+  with_dict: "{{ sysctl }}"
+
 - name: Docker service
   service:
     name: docker

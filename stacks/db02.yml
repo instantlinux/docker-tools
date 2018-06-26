@@ -3,7 +3,8 @@ version: "3.2"
 services:
   peer:
     hostname: "{{.Service.Name}}-{{.Task.Slot}}"
-    image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:${VERSION_MARIADB:-latest}
+    #image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:${VERSION_MARIADB:-latest}
+    image: ${REGISTRY_URI:-instantlinux}/mariadb-galera:10.3.10
     environment:
       CLUSTER_NAME: ${CLUSTER_NAME:-cluster01}
       DISCOVERY_SERVICE: ${ETCD_HOST:-etcd}:2379
@@ -16,9 +17,10 @@ services:
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
-    - ${ADMIN_PATH:-/opt}/mariadb/etc/:/etc/mysql/my.cnf.d:ro
+    - ${ADMIN_PATH:-/opt}/mariadb/etc-10.3/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
+    - sst-auth-password
     deploy:
       mode: global
       labels:
@@ -26,7 +28,7 @@ services:
       restart_policy:
         condition: any
         delay: 20s
-        max_attempts: 20
+        max_attempts: 30
 
 volumes:
   data:
@@ -35,10 +37,10 @@ volumes:
   logs:
     labels:
      - ${LABEL:-service_type=mariadb}
-  db_etc:
-    external: true
 networks:
   default:
 secrets:
   mysql-root-password:
+    external: true
+  sst-auth-password:
     external: true

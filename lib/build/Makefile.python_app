@@ -3,7 +3,7 @@
 
 SRC  ?= src
 VENV ?= python_env
-VDIR  = $(PWD)/$(VENV)
+VDIR ?= $(PWD)/$(VENV)
 
 analysis: flake8
 	@echo "Running static analysis"
@@ -27,7 +27,7 @@ test_requirements: python_env
 
 $(VDIR)/bin/python:
 	@echo "Creating virtual environment"
-	virtualenv --system-site-packages $(VENV)
+	virtualenv --system-site-packages $(VDIR)
 
 pytest: test_requirements
 	@echo "Running pytest unit tests"

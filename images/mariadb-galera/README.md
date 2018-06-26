@@ -1,32 +1,32 @@
 ## mariadb-galera
 [![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
 
-MariaDB 10.2 with Galera clustering support, for deployment under
-Swarm using Docker's named volumes for data persistence. This has a
-robust bootstrap script intended to closely follow Galera's
-documentation.
+Automatic cluster generation of MariaDB 10.3 under Swarm usingnamed
+volumes for data persistence. This has a robust bootstrap script
+intended to closely follow MariaDB / Galera documentation.
 
 ### Variables
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
 | CLUSTER_JOIN | | join address--usually not needed |
-| CLUSTER_NAME | (required) | cluster name |
+| CLUSTER_NAME | cluster01 | cluster name |
 | CLUSTER_SIZE | 3 | expected number of nodes |
-| DISCOVERY_SERVICE | | etcd host list, e.g. etcd1:2379,etcd2:2379 |
+| DISCOVERY_SERVICE | etcd:2379 | etcd host list, e.g. etcd1:2379,etcd2:2379 |
 | REINSTALL_OK | | set to any value to enable reinstall over old volume |
 | ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
-| TTL | 10 | longevity of keys posted to etcd |
+| TTL | 10 | longevity (in seconds) of keys posted to etcd |
 | TZ | UTC | timezone |
-| XTRABACKUP_PASSWORD | | password for SST transfers (deprecated) |
-| XTRABACKUP_SECRET | xtradb-root-password | name of secret for password |
+| SST_PASSWORD | | password for SST transfers (don't use this, use secret) |
+| SST_AUTH_SECRET | sst-auth-password | name of secret for password |
 
 ### Usage
 
-Create a root password:
+Create a random root password and SST secret:
 ~~~
     PW=`uuidgen` ; echo $PW
-    echo $PW | docker secret create mysql-root-password -
+    echo -n $PW | docker secret create mysql-root-password -
+    echo -n $(uuidgen) | docker secret create sst-auth-password -
 ~~~
 Set any local my.cnf values in files under a volume mount for
 /etc/mysql/my.cnf.d.
@@ -35,7 +35,7 @@ Set any local my.cnf values in files under a volume mount for
 
 The container exposes ports 3306, 4567 and 4568 on the ingress network. An
 internal network is needed for cluster-sync traffic and/or backups (use
-xtrabackup, or the mysqldump container provided here). In order to enable
+mariabackup, or the mysqldump container provided here). In order to enable
 connections directly to each cluster member for troubleshooting, if you're
 running a recent version of Docker you can override the ingress
 load-balancer thus:
@@ -66,7 +66,7 @@ without problems (like split-brain, or just never coming up) upon a
 simple "docker stack deploy ; docker stack rm ; docker stack deploy"
 repeated test cycle. This is an attempt to address that problem, using
 a minimal distro (tried Alpine Linux, wound up having to use debian
-jessie-slim), with MariaDB (I like it better than MySQL / Percona
+jessie-slim) with MariaDB (I like it better than MySQL / Percona
 solutions, after a few years of running MariaDB and a decade+ of
 running MySQL).
 
@@ -77,8 +77,13 @@ This container image is intended to be run in a 3-, 5-node, or larger
 configuration.  It requires a stable etcd configuration for node
 discovery and master election at restart.
 
+### Setting up etcd
+
+A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
+
 ### Credits
 
 Thanks to ashraf-s9s of severalnines for the healthcheck script.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "License badge"
+)
