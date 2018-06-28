@@ -13,6 +13,7 @@ services:
     - backups:/backups
     - restore:/restore
     # list of volumes to back up, customize as needed
+    - backup:/backup/services:ro
     - dovecot_inbox:/backup/inbox:ro
     - dovecot_webmail:/backup/webmail:ro
     - /home:/backup/home:ro
@@ -30,6 +31,8 @@ services:
 volumes:
   backups:
   restore:
+  backup:
+    external: true
   dovecot_inbox:
     external: true
   dovecot_webmail:

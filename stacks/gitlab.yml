@@ -8,6 +8,7 @@ services:
       bash -c "mkdir -p /var/backups/gitlab &&
       rm -fr /var/opt/gitlab/backups &&
       ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
+      bash -c '/var/backups/gitlab/gitback &' &&
       exec /assets/wrapper"
     environment:
       TZ: ${TZ:-UTC}
@@ -32,6 +33,8 @@ services:
 
 volumes:
   backup:
+    # Make sure gitlab dir exists and contains executable gitback script
+    # (or comment out above reference to gitback)
     external: true
   logs:
 networks:

@@ -14,6 +14,7 @@ services:
     - logs:/var/log/unison
     - syncarchive:/root/.unison
     - ${SHARE_PATH}:/var/swarm-sync
+    - backup:/var/swarm-sync/backup
     secrets:
     - swarm-sync_sshkey
     deploy:
@@ -33,12 +34,15 @@ services:
     - etcssh:/etc/ssh
     - syncarchive:/root/.unison
     - ${SHARE_PATH}:/var/swarm-sync
+    - backup:/var/swarm-sync/backup
     deploy:
       placement:
         constraints:
         - node.labels.swarm-sync == peer
 
 volumes:
+  backup:
+    external: true
   etcssh:
   logs:
   syncarchive:
