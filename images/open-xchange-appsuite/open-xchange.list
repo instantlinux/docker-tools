@@ -1,6 +1,6 @@
-deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/appsuiteui/DebianJessie/ /
-deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/backend/DebianJessie/ /
-deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/office/DebianJessie /
-deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/office-web/DebianJessie /
-deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/documentconverter-api/DebianJessie /
+deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/appsuiteui/DebianStretch/ /
+deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/backend/DebianStretch/ /
+deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/office/DebianStretch /
+deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/office-web/DebianStretch /
+deb https://software.open-xchange.com/products/appsuite/{{ VERSION }}/documentconverter-api/DebianStretch /
 deb https://software.open-xchange.com/components/unsupported/oxldapsync/DebianWheezy/ /

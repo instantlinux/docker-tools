@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OX_VERSION=7.8.4
+ARG OX_VERSION=7.10.0
 ENV DEBIAN_FRONTEND=noninteractive \
     OX_ADMIN_MASTER_LOGIN=oxadminmaster \
     OX_CONFIG_DB_HOST=db00 \
@@ -21,7 +21,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     OX_SERVER_MEMORY=2048
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y apt-transport-https wget && \
+    apt-get install -y apt-transport-https gnupg wget && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY open-xchange.list /etc/apt/sources.list.d/open-xchange.list
@@ -50,8 +50,8 @@ RUN sed -i -e "s/{{ VERSION }}/${OX_VERSION}/" \
         open-xchange-documents-ui-static \
         open-xchange-grizzly \
         open-xchange-l10n-* \
-        open-xchange-passwordchange-database \
-        oxldapsync vim && \
+        open-xchange-passwordchange-database vim && \
+    apt-get install -y --allow-unauthenticated oxldapsync && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY proxy_http.conf /etc/apache2/conf-available/proxy_http.conf
