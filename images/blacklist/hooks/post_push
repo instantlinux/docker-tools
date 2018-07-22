@@ -1,0 +1,4 @@
+#!/bin/bash
+TAG=$(grep "ARG RBLDNSD_VERSION" Dockerfile | grep -oP '(?<=ION=).*(?=~)')
+docker tag $IMAGE_NAME $DOCKER_REPO:$TAG
+docker push $DOCKER_REPO:$TAG

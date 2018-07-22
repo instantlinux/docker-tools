@@ -8,7 +8,7 @@ services:
       NS_SERVERS: ${NS_SERVERS:-ns.mydomain.com}
       DB_HOST: ${DB_HOST:-db}
     ports:
-    - ${PORT_BLACKLIST:-53}:53/udp
+    - 0.0.0.0:${PORT_BLACKLIST:-53}:53/udp
     volumes:
     - data:/var/lib/rbldns
     secrets:

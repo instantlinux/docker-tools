@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -16,11 +16,14 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DB_USER=blacklister \
     DB_NAME=blacklist \
     DB_HOST=dbhost
-    
+
+ARG RBLDNSD_VERSION=0.998b~pre1-1
+
 COPY src/ /root/
 RUN apt-get -yq update && \
     apt-get -yq --no-install-recommends install \
-      cron curl rbldnsd perl libdbd-mysql-perl mariadb-client patch && \
+      cron curl rbldnsd=$RBLDNSD_VERSION perl libdbd-mysql-perl \
+      mariadb-client patch && \
     curl -sL http://www.blue-quartz.com/rbl/rebuild_rbldns.txt > \
       /usr/local/bin/rebuild_rbldns.pl && \
     patch -d /usr/local/bin < /root/rebuild_rbldns.diff && \
