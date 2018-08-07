@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:17.12
+FROM instantlinux/postfix:3.3.0-r3
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DOVECOT_VERSION=2.2.34-r0
+ARG DOVECOT_VERSION=2.3.1-r2
 ENV LDAP_PASSWD_SECRET=ldap-ro-password
 
 RUN apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION \

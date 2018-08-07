@@ -42,12 +42,8 @@ services:
         - ${LABEL_WORKER:-node.role == worker}
     secrets:
     - jenkins-agent-password
-    - jenkins-user-password
-    - repo-push
 
 volumes:
-  jenkinsdata:
-    external: true
   jenkinsbackup:
     external: true
 secrets:
@@ -56,8 +52,4 @@ secrets:
   jenkins-admin-password:
     external: true
   jenkins-agent-password:
-    external: true
-  jenkins-user-password:
-    external: true
-  repo-push:
     external: true

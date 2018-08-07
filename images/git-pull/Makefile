@@ -1,4 +1,4 @@
-TEMPDIR := $(shell mktemp -d -t tempdir.XXXXX)
+TEMPDIR := $(shell mktemp -d)
 PUBKEY := /var/adm/admin/tls/git-deploy.pub
 
 default:

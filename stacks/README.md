@@ -15,6 +15,8 @@ represents a separate service running in Swarm.
   file, rather than by reference to a separate env_file, for
   clarity.
 
+|Variable|Description|
+|--------|-----------|
 |ADMIN_PATH|Directory (stored in git) containing admin settings|
 |DB_HOST|Load-balanced hostname of primary MySQL database|
 |REGISTRY_URI|Local docker registry hostname:port|

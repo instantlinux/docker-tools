@@ -25,6 +25,11 @@ services:
       placement:
         constraints:
         - ${LABEL_WORKER:-node.role == worker}
+    logging:
+      driver: json-file
+      options:
+        max-size: 2M
+        max-file: 4
 #   ulimits:
 #     sigpending: 62793
 #     nproc: 131072

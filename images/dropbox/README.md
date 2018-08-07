@@ -4,6 +4,8 @@
 
 Dropbox client under Debian stretch.
 
+*DEPRECATED* - it probably works but I'm not using it and the vendor doesn't provide versioning of its download service.
+
 ### Usage
 
 Mount your sync contents as /home/user/Dropbox, and define a state directory as /home/user/.dropbox. Set environment variable UID to match your personal Linux numeric user ID.

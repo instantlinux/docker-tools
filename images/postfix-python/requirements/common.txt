@@ -1,2 +1,2 @@
 docopt==0.6.2
-SQLAlchemy==1.1.10
+SQLAlchemy==1.2.10

@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -24,9 +24,9 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=WORKGROUP
 
-ARG BIND9_VER=9.11.2
-ARG BIND9_SHA=7f46ad8620f7c3b0ac375d7a5211b15677708fda84ce25d7aeb7222fe2e3c77a
-ARG SAMBA_VERSION=4.7.6-r0
+ARG BIND9_VER=9.13.2
+ARG BIND9_SHA=6c044e9ea81add9dbbd2f5dfc224964cc6b6e364e43a8d6d8b574d9282651802
+ARG SAMBA_VERSION=4.8.2-r1
 
 RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
       libxml2 libcrypto1.0 && \
@@ -35,8 +35,8 @@ RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
 # Refer to compile options at:
 #  https://git.alpinelinux.org/cgit/aports/tree/main/bind/APKBUILD
 
-    apk add --virtual .fetch-deps curl file gcc krb5-dev libgss-dev \
-      libxml2-dev linux-headers make musl-dev openssl-dev perl && \
+    apk add --virtual .fetch-deps curl file gcc krb5-dev libcap-dev \
+      libgss-dev libxml2-dev linux-headers make musl-dev openssl-dev perl && \
     cd /tmp && \
     curl -Lo bind.tar.gz \
       ftp://ftp.isc.org/isc/bind9/$BIND9_VER/bind-$BIND9_VER.tar.gz && \

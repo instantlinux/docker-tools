@@ -17,6 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=US/Pacific
 
 ARG UID=210
+ARG CLIENT_VERSION=5.7
 
 RUN \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8507EFA5 && \
@@ -25,7 +26,7 @@ RUN \
   echo 'deb https://repo.percona.com/apt jessie main' > \
    /etc/apt/sources.list.d/percona.list && \
   apt-get -yqq update && \
-  apt-get install -yqq percona-xtradb-cluster-client-5.7 bzip2 cron && \
+  apt-get install -yqq percona-xtradb-cluster-client-$CLIENT_VERSION bzip2 cron && \
   useradd -u $UID -g backup -s /bin/bash -c "Mysql backup" \
     -d /home/$USERNAME -m $USERNAME && \
   rm -fr /var/cache/debconf /var/lib/apt/lists/* /var/log/* && \

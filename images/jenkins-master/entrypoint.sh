@@ -1,11 +1,12 @@
 #!/bin/bash -e
 
-export JENKINS_ADMIN_PASS=$(cat /run/secrets/$JENKINS_ADMIN_SECRET)
-
 if [ ! -s /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone
   cat /usr/share/zoneinfo/$TZ >/etc/localtime
   echo $TZ >/etc/timezone
+fi
+if [ -e /run/secrets/$JENKINS_ADMIN_SECRET ]; then
+  export JENKINS_ADMIN_PASS=$(cat /run/secrets/$JENKINS_ADMIN_SECRET)
 fi
 
 # Process templates in /usr/share/jenkins/ref

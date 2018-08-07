@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -14,7 +14,10 @@ ENV PEERNAME=peer \
     SYNC_INTERVAL=5 \
     SECRET=swarm-sync_sshkey
 
-RUN apk add --update --no-cache dcron openssh-client openssh-server unison && \
+ARG UNISON_VERSION=2.48.15_p4-r0
+
+RUN apk add --update --no-cache dcron openssh-client openssh-server \
+      unison=$UNISON_VERSION && \
     rm -fr /var/log/* /var/cache/apk/* && \
     mkdir /var/log/unison /root/.unison
 

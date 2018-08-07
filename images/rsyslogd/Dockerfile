@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG RSYSLOG_VERSION=8.31.0-r0
+ARG RSYSLOG_VERSION=8.34.0-r0
 ENV TZ=US/Pacific
 RUN apk add --update gzip logrotate rsyslog=$RSYSLOG_VERSION \
       rsyslog-mysql=$RSYSLOG_VERSION tar xz && \

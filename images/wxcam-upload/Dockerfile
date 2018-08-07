@@ -1,4 +1,4 @@
-FROM instantlinux/proftpd:17.10
+FROM instantlinux/proftpd:1.3.6-r5
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF

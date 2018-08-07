@@ -11,7 +11,7 @@ services:
       MYSQL_USER: guacamole_user
       MYSQL_PASSWORD: ${GUACAMOLE_DBPASS:-guacamole}
       GUACD_HOSTNAME: guacd
-    image: glyptodon/guacamole:${VERSION_GUACAMOLE:-latest}
+    image: guacamole/guacamole:${VERSION_GUACAMOLE:-latest}
   guacd:
     hostname: guacd
-    image: glyptodon/guacd:${VERSION_GUACAMOLE:-latest}
+    image: guacamole/guacd:${VERSION_GUACAMOLE:-latest}

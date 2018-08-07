@@ -1,9 +1,12 @@
 ## squirrelmail
+[![](https://images.microbadger.com/badges/version/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Commit badge")
 
 This is a heavily customized Dockerized version 1.4.21 of
 squirrelmail, vintage 2003, with an address book (inspired by
 the Palm Pilot) that I wrote as my learn-PHP exercise back in
 the day.
+
+STATUS: not published
 
 ### Usage
 Set the variables as defined below, and run the docker-compose stack. The

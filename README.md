@@ -40,6 +40,7 @@ Stack definitions include:
 * samba-dc - Active-Directory compatible domain controller
 * splunk - the free version
 * swarm-sync - poor-man's SAN for persistent storage
+* udp-nginx-proxy - UDP load-balancer
 * vsftpd - ftp server
 
 **Email**
@@ -47,6 +48,7 @@ Stack definitions include:
 * dovecot - imapd server
 * postfix - compact general-purpose image in 11MB
 * postfix-python - postfix with spam-control scripts
+* rainloop - webmail imapd-client server
 * squirrelmail - older version of Squirrelmail
 * spamassassin - spam control daemon
 

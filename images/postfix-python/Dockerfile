@@ -18,7 +18,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
     SPAMLIMIT=12 \
     SPAMC_HOST=spamc
 
-ARG PYTHON_PIP_VERSION=9.0.1
+ARG PYTHON_PIP_VERSION=18.0
 
 COPY requirements/ /root/
 COPY src/ /usr/local/bin/

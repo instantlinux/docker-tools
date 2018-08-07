@@ -36,6 +36,7 @@ services:
     - jira.ci.net-server-key.pem
     - monitor.ci.net-server-key.pem
     - repo.ci.net-server-key.pem
+    - squirrelmail.ci.net-server-key.pem
     - webmail.ci.net-server-key.pem
     - www.ci.net-server-key.pem
     - www.instantlinux.net-server-key.pem
@@ -64,6 +65,8 @@ secrets:
   monitor.ci.net-server-key.pem:
     external: true
   repo.ci.net-server-key.pem:
+    external: true
+  squirrelmail.ci.net-server-key.pem:
     external: true
   webmail.ci.net-server-key.pem:
     external: true

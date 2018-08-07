@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -13,13 +13,15 @@ ENV DEBIAN_FRONTEND=noninteractive \
     CRON_HOUR=1 CRON_MINUTE=30 \
     USERNAME=debian-spamd \
     EXTRA_OPTIONS=--nouser-config \
-    PYZOR_SITE=public.pyzor.org:24441 \
-    DCC_VERSION=1.3.159
+    PYZOR_SITE=public.pyzor.org:24441
+
+ARG DCC_VERSION=1.3.163
+ARG SPAMD_VERSION=3.4.1-6+deb9u1
 
 RUN apt-get -yq update && \
     apt-get -y --no-install-recommends install \
      cron curl gcc libc6-dev libdbd-mysql-perl libmail-dkim-perl \
-     libnet-ident-perl make pyzor razor spamassassin && \
+     libnet-ident-perl make pyzor razor spamassassin=$SPAMD_VERSION && \
     mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist
 
 # Distributed Checksum Clearinghouse - requires a source-compile
