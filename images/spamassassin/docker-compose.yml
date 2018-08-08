@@ -5,6 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/spamassassin:${VERSION_SPAMASSASSIN:-latest}
     environment:
       EXTRA_OPTIONS: --nouser-config --sql-config
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_SPAMASSASSIN:-783}:783
     volumes:

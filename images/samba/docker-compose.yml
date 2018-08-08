@@ -9,7 +9,7 @@ services:
       LOG_LEVEL: 3
       NETBIOS_NAME: ${SAMBA_NETBIOS_NAME:-samba}
       SERVER_STRING: ${SAMBA_SERVER_STRING:-Samba Server}
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
       WORKGROUP: ${SAMBA_WORKGROUP:-WORKGROUP}
     volumes:
     - ${ADMIN_PATH}/samba/etc:/etc/samba/conf.d:ro

@@ -27,7 +27,7 @@ ENV ATTACHMENT_DIR=/var/local/squirrelmail/attach/ \
     SMTP_PORT=587 \
     SMTP_SMARTHOST=smtp \
     SMTP_TLS=false \
-    TZ=US/Pacific
+    TZ=UTC
 
 ARG APACHE_UID=48
 ARG VERSION=master

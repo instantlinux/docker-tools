@@ -15,7 +15,7 @@ services:
       PORT_DNSMASQ_DNS: ${PORT_DNSMASQ_DNS:-53}
       SUBNET1_GATEWAY: ${SUBNET1_GATEWAY:-192.168.1.1}
       SUBNET1_INTERFACE: ${SUBNET1_INTERFACE:-eth0}
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_DNSMASQ_DNS:-53}:53/udp
     - 67:67/udp

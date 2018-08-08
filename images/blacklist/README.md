@@ -77,7 +77,7 @@ the --pipe-stdout command option for that use case.
 | HOMEDIR | /var/lib/rbldns | home directory |
 | NS_SERVERS | 127.0.0.1 | upstream nameservers having NS records |
 | RBL_DOMAIN | blacklist.mydomain.com | domain name to serve |
-| TZ | US/Pacific | time zone |
+| TZ | UTC| time zone |
 | USERNAME | rbldns | username to run as |
 
 [![](https://images.microbadger.com/badges/license/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "License badge")

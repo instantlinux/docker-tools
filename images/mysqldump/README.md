@@ -44,7 +44,7 @@ than $KEEP_DAYS will be automatically removed.
 | LOCK_FOR_BACKUP | | true if using Percona, blank for MariaDB |
 | MINUTE | 30 | cron-syntax minutes past hour |
 | SERVERS | dbhost | servers to back up |
-| TZ | US/Pacific | time zone |
+| TZ | UTC | time zone |
 
 
 [![](https://images.microbadger.com/badges/license/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "License badge")

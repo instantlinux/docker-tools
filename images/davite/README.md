@@ -19,7 +19,7 @@ you can then use to edit your event invitation
 | SCHEME | http | Set to https if behind SSL proxy |
 | SMTP_SMARTHOST | smtp | Outbound email relay hostname |
 | SMTP_PORT | 587 | Port for sending emails (no auth) |
-| TZ | US/Pacific | time zone |
+| TZ | UTC | time zone |
 
 ### Credits
 

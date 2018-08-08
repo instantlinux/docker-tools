@@ -17,9 +17,8 @@ named volume. See the docker-compose.yml file here for an example.
 | -------- | ------- | ----------- |
 | CRON_HOUR | 1 |hour for daily rules update (1) |
 | CRON_MINUTE | 30 | cron minute for update (30) |
-| DCC_VERSION | 1.3.159 |DCC version (1.3.159) |
 | EXTRA_OPTIONS | --nouser-config | additional options |
 | PYZOR_SITE | public.pyzor.org:24441 | pyzor URI |
-| TZ |US/Pacific | time zone |
+| TZ | UTC | time zone |
 | USERNAME | debian-spamd | user name to run as |
 [![](https://images.microbadger.com/badges/license/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "License badge")

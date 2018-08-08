@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LOCK_FOR_BACKUP= \
     SERVERS=dbhost \
     USERNAME=mysqldump \
-    TZ=US/Pacific
+    TZ=UTC
 
 ARG UID=210
 ARG CLIENT_VERSION=5.7

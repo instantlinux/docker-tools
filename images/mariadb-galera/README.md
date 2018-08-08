@@ -17,7 +17,7 @@ documentation.
 | REINSTALL_OK | | set to any value to enable reinstall over old volume |
 | ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
 | TTL | 10 | longevity of keys posted to etcd |
-| TZ | US/Pacific | timezone |
+| TZ | UTC | timezone |
 | XTRABACKUP_PASSWORD | | password for SST transfers (deprecated) |
 | XTRABACKUP_SECRET | xtradb-root-password | name of secret for password |
 

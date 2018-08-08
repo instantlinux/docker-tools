@@ -17,7 +17,7 @@ services:
       SKIN: WeeGreen
       STATION_ID: ${WX_STATION_ID}
       SYSLOG_DEST: "@@${RSYSLOGD_HOST:-syslog}:${PORT_RSYSLOGD:-514}"
-      TZ: ${TZ:-US/Pacific}
+      TZ: ${TZ:-UTC}
       TZ_CODE: 4
       XTIDE_LOCATION: San Francisco
     tmpfs:

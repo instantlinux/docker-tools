@@ -16,6 +16,6 @@ Variable | Default | Description
 -------- | ------- | -----------
 PGID | 34 | Group ID for backup user
 PUID | 34 | User ID
-TZ | GMT | time zone
+TZ | UTC | time zone
 
 [![](https://images.microbadger.com/badges/license/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "License badge")

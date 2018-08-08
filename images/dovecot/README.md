@@ -13,6 +13,11 @@ Configuration is defined as files in a volume mounted as
 
 * If you have an LDAP server, put its settings in dovecot-ldap.conf.
 
+* Generate a dh.pem file for TLS:
+  ```
+  openssl dhparam -dsaparam -out dh.pem 4096
+  ```
+
 Also configure postfix as described in the postfix image.
 
 See etc-example directory and docker-compose.yml.
@@ -22,7 +27,7 @@ See etc-example directory and docker-compose.yml.
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
 | LDAP_PASSWD_SECRET | ldap-ro-passwd | name of secret for LDAP credential |
-| TZ | US/Pacific | time zone |
+| TZ | UTC | time zone |
 
 ### Secrets
 

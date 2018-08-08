@@ -5,7 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/vsftpd:latest
     environment:
       PASV_ADDRESS: ${VSFTPD_IP}
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     volumes:
     - ftp:/var/lib/ftp:nocopy
     ports:

@@ -5,7 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/duplicati:latest
     environment:
       PUID: 0
-      TZ: US/Pacific
+      TZ: ${TZ:-UTC}
     ports:
     - ${PORT_DUPLICATI:-8200}:8200
     volumes:

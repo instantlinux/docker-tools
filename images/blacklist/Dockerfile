@@ -9,7 +9,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=US/Pacific \
+    TZ=UTC \
     USERNAME=rbldns HOMEDIR=/var/lib/rbldns CFG_NAME=dsbl \
     RBL_DOMAIN=blacklist.mydomain.com \
     NS_SERVERS=127.0.0.1 \

@@ -25,7 +25,7 @@ See etc-example directory and docker-compose.yml.
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
 | SASL_PASSWD_SECRET | postfix-sasl-passwd | name of secret for SASL map |
-| TZ | US/Pacific | time zone |
+| TZ | UTC | time zone |
 
 ### Secrets
 

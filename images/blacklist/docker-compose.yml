@@ -4,9 +4,10 @@ services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/blacklist:${VERSION_BLACKLIST:-latest}
     environment:
-      RBL_DOMAIN: ${RBL_DOMAIN:-blacklist.mydomain.com}
-      NS_SERVERS: ${NS_SERVERS:-ns.mydomain.com}
       DB_HOST: ${DB_HOST:-db}
+      NS_SERVERS: ${NS_SERVERS:-ns.mydomain.com}
+      RBL_DOMAIN: ${RBL_DOMAIN:-blacklist.mydomain.com}
+      TZ: ${TZ:-UTC}
     ports:
     - 0.0.0.0:${PORT_BLACKLIST:-53}:53/udp
     volumes:

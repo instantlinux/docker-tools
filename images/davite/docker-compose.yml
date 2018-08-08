@@ -8,6 +8,7 @@ services:
       SMTP_PORT: '25'
       SMTP_SMARTHOST: smtp.${DOMAIN}
       TCP_PORT: ''
+      TZ: ${TZ:-UTC}
     volumes:
     - ${SHARE_PATH}/davite:/var/adm/DaVite_Data
     ports:

@@ -3,6 +3,8 @@ version: "3.2"
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/rsyslogd:${VERSION_RSYSLOGD:-latest}
+    environment:
+      TZ: ${TZ:-UTC}
     hostname: rsyslogd.docker
     volumes:
     - ${ADMIN_PATH:-/opt}/rsyslogd/etc/logrotate.d:/etc/logrotate.d:ro

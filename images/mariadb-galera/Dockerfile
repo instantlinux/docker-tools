@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DISCOVERY_SERVICE=etcd:2379 \
     ROOT_PASSWORD_SECRET=mysql-root-password \
     TTL=10 \
-    TZ=US/Pacific \
+    TZ=UTC \
     XTRABACKUP_PASSWORD= \
     XTRABACKUP_SECRET=xtradb-root-password
 

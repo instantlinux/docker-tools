@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ENV TZ=US/Pacific \
+ENV TZ=UTC \
     HOSTNAME=davite.example.com \
     SCHEME=http \
     SMTP_SMARTHOST=smtp \

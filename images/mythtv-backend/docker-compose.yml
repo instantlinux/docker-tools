@@ -8,8 +8,8 @@ services:
     environment:
       DBNAME: ${DB_MYTHTV:-mythtv}
       DBSERVER: ${DB_HOST:-db00}
-      LOCALHOSTNAME: ${HOSTNAME_MYTHTV}
-      TZ: US/Pacific
+      LOCALHOSTNAME: ${HOSTNAME_MYTHTV:-mythtv}
+      TZ: ${TZ:-UTC}
     network_mode: host
     volumes:
     - apache2:/var/log/apache2

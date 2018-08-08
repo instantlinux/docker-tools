@@ -4,6 +4,8 @@ services:
 
   app:
     image: ${REGISTRY_URI:-instantlinux}/postfix:latest
+    environment:
+      TZ: ${TZ:-UTC}
     volumes:
     - etc:/etc/postfix/postfix.d:ro
     - certs:/etc/ssl/certs:ro

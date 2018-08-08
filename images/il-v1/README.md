@@ -26,7 +26,7 @@ SECRET_SSH_PROXY | il_proxy_sshkey | name of secret
 SECRET_ILCLIENT_PASSWORD | ilclient-password | name of secret
 SECRET_ILINUX_PASSWORD | ilinux-password | name of secret
 SECRET_MYSQL_BACKUP | mysql-backup | name of secret
-TZ | US/Pacific | time zone
+TZ | UTC | time zone
 
 ### Secrets
 Name | Description

@@ -10,7 +10,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 ARG POSTFIX_VERSION=3.3.0-r3
 ENV SASL_PASSWD_SECRET=postfix-sasl-passwd \
-    TZ=US/Pacific
+    TZ=UTC
 
 RUN apk add --no-cache postfix=$POSTFIX_VERSION rsyslog spamassassin-client
 

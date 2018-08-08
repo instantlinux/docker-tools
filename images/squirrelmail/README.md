@@ -41,7 +41,7 @@ SMTP_AUTH_MECH | plain | SMTP auth: none or the above (see IMAP_AUTH)
 SMTP_SMARTHOST | smtp | Outbound email relay hostname
 SMTP_PORT | 587 | Port for sending emails (no auth)
 SMTP_TLS | false | use TLS or not for SMTP
-TZ | US/Pacific | time zone
+TZ | UTC | time zone
 
 ### Secrets
 | Name | Description |
