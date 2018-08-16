@@ -43,6 +43,7 @@ postfix: .deploy/postfix
 proftpd: .deploy/proftpd
 registry: .deploy/registry
 rsyslogd: .deploy/rsyslogd
+secondshot: .deploy/secondshot
 spamassassin: .deploy/spamassassin
 splunk: .deploy/splunk
 squirrelmail: .deploy/squirrelmail
