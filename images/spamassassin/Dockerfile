@@ -18,13 +18,15 @@ ENV DEBIAN_FRONTEND=noninteractive \
 ARG DCC_VERSION=1.3.163
 ARG SPAMD_VERSION=3.4.1-6+deb9u1
 ARG DCC_SHA=195195b79ee15253c4caf48d4ca3bf41b16c66a8cb9a13984a1dc4741d7f6735
+ARG SPAMD_UID=2022
 
 RUN apt-get -yq update && \
     apt-get -y --no-install-recommends install \
      ca-certificates cron curl gcc libc6-dev libdbd-mysql-perl \
      libmail-dkim-perl libnet-ident-perl make pyzor razor \
      spamassassin=$SPAMD_VERSION && \
-    mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
+     usermod --uid $SPAMD_UID $USERNAME && \
+     mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
 \
 # Distributed Checksum Clearinghouse - requires a source-compile
     cd /tmp && \

@@ -7,6 +7,7 @@ mkdir -p /var/run/dcc
 /var/dcc/libexec/dccifd -tREP,20 -tCMN,5, -llog -wwhiteclnt -Uuserdirs \
   -SHELO -Smail_host -SSender -SList-ID
 
+chown -R $USERNAME /var/lib/spamassassin
 su $USERNAME bash -c "
   cd ~$USERNAME
   mkdir -p .razor .spamassassin .pyzor
