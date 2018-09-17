@@ -5,3 +5,8 @@
   apt:
     name: "{{ item }}"
   with_items: "{{ ubuntu_packages }}"
+
+- name: Install local additions
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ ubuntu_package_additions }}"

@@ -41,10 +41,10 @@ docker_override: {}
 docker: "{{ docker_defaults | combine(docker_override) }}"
 
 kernel:
-  long_ver: 4.4.79-040479.201707271932
+  long_ver: 4.15.0-041500.201802011154
   origin: http://kernel.ubuntu.com/~kernel-ppa/mainline
-  short_ver: "040479"
-  version: 4.4.79
+  short_ver: "041500"
+  version: 4.15.0
 
 sysctl:
   fs.inotify.max_user_instances: 256
@@ -84,5 +84,7 @@ local_group_defaults:
 
 local_group_additions: {}
 local_groups: "{{ local_group_defaults | combine(local_group_additions) }}"
+
+local_package_additions: {}
 
 local_users: {}

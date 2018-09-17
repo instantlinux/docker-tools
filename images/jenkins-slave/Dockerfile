@@ -24,7 +24,8 @@ ENV SWARM_CLIENT_EXECUTORS=4 \
     
 ARG _CLIENT_VERSION=3.13
 ARG _COMPOSE_VERSION=1.22.0
-ARG _DOCKER_VERSION=18.03.1-r0
+ARG _DOCKER_VERSION=18.06.1-r0
+ARG _PYCRYPTOGRAPHY_VERSION=2.3.1-r0
 ARG _TINI_VERSION=0.18.0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${_COMPOSE_VERSION}/docker-compose-Linux-x86_64
@@ -42,10 +43,13 @@ RUN addgroup -g $DOCKER_GID docker && \
     mkdir -p $SWARM_WORKDIR `dirname $SWARM_CLIENT_JAR` && \
     adduser -D -h $SWARM_WORKDIR -u $JENKINS_UID -G docker \
       -s /bin/bash $SWARM_JENKINS_USER && \
+    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker==$_DOCKER_VERSION gcc git gzip make musl-dev \
-      openssh-client python python-dev py-pip py-virtualenv tar tzdata \
-      uwsgi-python wget && \
+      openssh-client python python-dev \
+      py-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py-pip py-virtualenv \
+      tar tzdata uwsgi-python wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo $SWARM_CLIENT_JAR \

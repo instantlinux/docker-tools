@@ -3,6 +3,10 @@ REGISTRY_URI ?= nexus.instantlinux.net
 SERVICES = dhcpd-dns-pxe etcd mt-daapd mythtv-backend ntpd nut-upsd samba \
     samba-dc weewx
 
+ifeq ($(HOST), vinson)
+  SUBNET1_INTERFACE = enp3s0
+endif
+
 # Before starting etcd, see notes in etcd/docker-compose.yml.
 
 default: $(HOST)
