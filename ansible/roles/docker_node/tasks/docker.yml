@@ -86,10 +86,29 @@
     filename: docker
     repo: "{{ docker.apt_repo.repo }}"
 
-- name: Temporarily disable systemctl start
+# The Ubuntu package installer defines ExecStart option that conflicts
+# with our daemon.json. Need to suppress daemon startup until after
+# the ExecStart option is updated via lineinfile below. Note:
+# changed_when feature of ansible merely keeps these toggle actions
+# out of play-recap change list.
+
+- name: Temporarily disable systemctl start - policy-rc
   copy:
     content: "#/bin/sh\necho Disabled by ansible: systemctl start\nexit 101\n"
     dest: /usr/sbin/policy-rc.d
+    mode: 0755
+  changed_when: False
+
+- name: Temporarily disable systemctl start - mask docker.service
+  file:
+    dest: /etc/systemd/system/docker.service
+    src: /dev/null
+    state: link
+  changed_when: False
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
   changed_when: False
 
 - name: Docker engine package
@@ -107,8 +126,7 @@
   lineinfile:
     line: ExecStart=/usr/bin/dockerd
     path: /lib/systemd/system/docker.service
-    regexp: "ExecStart=.*"
-  ignore_errors: True
+    regexp: "^ExecStart=.*"
   notify: Reload systemd
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
@@ -131,6 +149,17 @@
     path: /usr/sbin/policy-rc.d
     state: absent
   changed_when: False
+
+- name: Unmask docker.service
+  file:
+    dest: /etc/systemd/system/docker.service
+    state: absent
+  changed_when: False
+
+- name: Enable docker.service
+  systemd:
+    enabled: yes
+    name: docker
 
 - name: Enable docker-permissions.service
   systemd:

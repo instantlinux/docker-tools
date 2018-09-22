@@ -35,8 +35,6 @@ volumes:
   logs:
     labels:
      - ${LABEL:-service_type=mariadb}
-  db_etc:
-    external: true
 networks:
   default:
 secrets:

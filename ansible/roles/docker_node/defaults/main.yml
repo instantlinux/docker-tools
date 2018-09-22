@@ -7,7 +7,7 @@ docker_defaults:
   apt_repo:
     key: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     package_name: docker-ce
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     url: https://download.docker.com/linux/ubuntu/gpg
   certs:
     ca_root: ca-root.pem
@@ -70,10 +70,10 @@ ubuntu_packages:
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
 
 ubuntu_repos:
-  - deb {{ ubuntu_repo_uri }} xenial main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} xenial-updates main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} xenial-backports main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} xenial-security main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }} main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }}-updates main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }}-backports main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }}-security main restricted universe multiverse
 
 local_group_defaults:
   docker: 485

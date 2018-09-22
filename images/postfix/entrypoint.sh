@@ -7,6 +7,14 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
+# SYS-337 DNS resolution workaround
+if grep -q '^options ndots' /etc/resolv.conf; then
+    # cannot edit in-place with sed, resource-busy
+    cp /etc/resolv.conf /etc/resolv.conf.new
+    sed -i -e 's/^options ndots/#options ndots/' /etc/resolv.conf.new
+    cat /etc/resolv.conf.new >/etc/resolv.conf
+fi
+
 mkdir -p -m 700 /var/run/postfix && chown postfix /var/run/postfix
 mkdir -p /var/spool/mail && chmod 1777 /var/spool/mail
 

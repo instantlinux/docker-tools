@@ -2,6 +2,8 @@
 
 network_defaults:
   address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+  addresses:
+  -  "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}/24"
   bridge: null
   device_name: enp1s0
   gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
@@ -30,3 +32,20 @@ vrrp:
     unicast_peers: "{{ groups['swarm_nodes'] | map('extract', hostvars,
                        ['ansible_default_ipv4', 'address']) | list |
                        difference([network.address]) }}"
+
+netplan_netcfg:
+  network:
+    version: 2
+    renderer: networkd
+    bridges:
+      br0:
+        addresses: "{{ network.addresses }}"
+        gateway4: "{{ network.gateway }}"
+        interfaces:
+        - "{{ network.interface }}"
+        nameservers:
+          search: "{{ ansible_dns.search }}"
+          addresses: "{{ network.nameservers }}"
+        parameters:
+          stp: false
+          forward-delay: 0

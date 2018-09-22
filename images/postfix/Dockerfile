@@ -8,11 +8,12 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG POSTFIX_VERSION=3.3.0-r3
+ARG POSTFIX_VERSION=3.3.0-r4
 ENV SASL_PASSWD_SECRET=postfix-sasl-passwd \
     TZ=UTC
 
-RUN apk add --no-cache postfix=$POSTFIX_VERSION rsyslog spamassassin-client
+RUN apk add --no-cache --update \
+      postfix=$POSTFIX_VERSION rsyslog spamassassin-client
 
 EXPOSE 25 3525
 

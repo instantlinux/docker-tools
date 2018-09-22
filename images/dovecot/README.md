@@ -41,5 +41,6 @@ See etc-example directory and docker-compose.yml.
 | Secret | Description |
 | ------ | ----------- |
 | ldap-ro-passwd | password for looking up LDAP users |
+| *key.pem | keyfile specified for ssl_dh certificate |
 
 [![](https://images.microbadger.com/badges/license/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "License badge")

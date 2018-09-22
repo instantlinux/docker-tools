@@ -4,27 +4,13 @@
     name: "{{ item }}"
   with_items: "{{ ubuntu_packages }}"
 
-- name: Network bridge /dev/br0
-  template:
-    dest: /etc/network/interfaces.d/{{ network.bridge }}
-    src: interface.j2
-  when: network.bridge
+- include: network_legacy.yml
+  when: ansible_distribution_release != 'bionic'
 
-- name: Remove extraneous lines from network/interfaces
-  replace:
-    path: /etc/network/interfaces
-    regexp: '^auto {{ network.interface }}$'
-    replace: '# auto {{ network.interface }} - removed, see interfaces.d'
-  when: network.bridge
+- include: netplan.yml
+  when: ansible_distribution_release == 'bionic'
 
-- name: Remove extraneous lines from network/interfaces
-  replace:
-    path: /etc/network/interfaces
-    regexp: '^iface {{ network.interface }} inet .*'
-    replace: '# iface {{ network.interface }} - removed'
-  when: network.bridge
-
-- name: Set up keepalived (VRRP)
+- name: Set up keepalived (VRRP) for ingress load-balancer
   template:
     dest: /etc/keepalived/keepalived.conf
     mode: 0600

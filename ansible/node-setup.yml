@@ -7,6 +7,7 @@
 
 - hosts: swarm_nodes
   become: True
+  force_handlers: True
   roles:
   - docker_node
   - { role: docker_network, tags: network }

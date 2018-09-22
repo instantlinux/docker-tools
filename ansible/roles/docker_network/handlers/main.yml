@@ -4,3 +4,6 @@
     enabled: yes
     name: keepalived
     state: restarted
+
+- name: Netplan apply
+  command: netplan apply

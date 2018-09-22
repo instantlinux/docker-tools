@@ -111,24 +111,23 @@ ubuntu_packages:
   - xserver-xorg-input-all
   - xterm
 
-ubuntu_rel: xenial
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
 
 ubuntu_repo_defaults:
-  - deb {{ ubuntu_repo_uri }} {{
-           ubuntu_rel }} main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} {{
-           ubuntu_rel }}-updates main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} {{
-           ubuntu_rel }}-backports main restricted universe multiverse
-  - deb {{ ubuntu_repo_uri }} {{
-           ubuntu_rel }}-security main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release
+        }} main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release
+        }}-updates main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release
+        }}-backports main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release
+        }}-security main restricted universe multiverse
 
 ubuntu_repo_additions:
   - deb http://ppa.launchpad.net/graphics-drivers/ppa/ubuntu {{
-    ubuntu_rel }} main
+    ansible_distribution_release }} main
   - deb http://ppa.launchpad.net/mythbuntu/{{ mythtv_version }}/ubuntu {{
-    ubuntu_rel }} main
+    ansible_distribution_release }} main
   - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 
 ubuntu_repos: "{{ ubuntu_repo_defaults + ubuntu_repo_additions }}"
