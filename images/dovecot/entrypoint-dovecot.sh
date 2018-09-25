@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/sh -e
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone
@@ -8,6 +8,14 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 ETC=/etc/dovecot
+export SSLDIR=/etc/ssl/dovecot
+if [ ! -f $SSLDIR/server.pem ]; then
+  cd /etc/dovecot
+  mkdir $SSLDIR/certs $SSLDIR/private
+  /usr/local/bin/mkcert.sh
+  ln -s $SSLDIR/certs/dovecot.pem $SSLDIR/server.pem
+  ln -s $SSLDIR/private/dovecot.pem $SSLDIR/server.key
+fi
 if [ -s $ETC/conf.local/dovecot.conf ]; then
   cp -a $ETC/conf.local/dovecot.conf $ETC
 fi
@@ -30,4 +38,5 @@ cp /run/secrets/*key.pem /etc/ssl/private
 
 /usr/sbin/dovecot
 
+# Chain to postfix entrypoint
 exec /root/entrypoint.sh

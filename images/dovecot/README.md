@@ -17,6 +17,12 @@ Configuration is defined as files in a volume mounted as
   ```
   openssl dhparam -dsaparam -out dh.pem 4096
   ```
+* (Optional, to save startup time) generate self-signed server.pem and server.key files for mounting to /etc/ssl/dovecot
+  ```
+  wget https://raw.githubusercontent.com/dovecot/core/release-2.3.2/doc/mkcert.sh
+  # (edit dovecot-openssl.cnf to suit)
+  ./mkcert.sh
+  ```
 
 Also configure postfix as described in the postfix image.
 

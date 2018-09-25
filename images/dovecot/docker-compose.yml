@@ -7,7 +7,7 @@ services:
     volumes:
     - ${ADMIN_PATH:-/opt}/dovecot/etc/:/etc/dovecot/conf.local:ro
     - ${ADMIN_PATH:-/opt}/dovecot/postfix/etc/:/etc/postfix/postfix.d:ro
-    - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
+    - ${SHARE_PATH}/common/pki/certs/${DOVECOT_CERT}:/etc/ssl/certs/${DOVECOT_CERT}:ro
     - inbox:/var/spool/mail
     - spool:/var/spool/postfix
     - webmail:/home
@@ -18,7 +18,7 @@ services:
     secrets:
     - ldap-ro-password
     - postfix-sasl-passwd
-    - webmail.ci.net-server-key.pem 
+    - ${DOVECOT_KEY}
     deploy:
       placement:
         constraints:

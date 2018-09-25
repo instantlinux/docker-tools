@@ -10,12 +10,18 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 ARG DOVECOT_VERSION=2.3.2.1-r0
 ENV LDAP_PASSWD_SECRET=ldap-ro-password \
-    SSL_DH=
+    SSL_DH= \
+    MKCERT_SHA=24b6988d1709e71c24dcf94ffce5db93bd2e89dc5cbec1ac3c173de5274b68dd
 
 RUN apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION \
-    procmail
+    procmail && \
+    rm /etc/ssl/dovecot/server.* && cd /usr/local/bin && \
+    wget -q https://raw.githubusercontent.com/dovecot/core/release-2.3.2/doc/mkcert.sh && \
+    echo "$MKCERT_SHA  mkcert.sh" | sha256sum -c && \
+    chmod 755 /usr/local/bin/mkcert.sh
+    
 EXPOSE 143 993 
 VOLUME /etc/dovecot/conf.local /home /var/spool/mail
 
-COPY entrypoint-dovecot.sh /root
-ENTRYPOINT /root/entrypoint-dovecot.sh
+COPY entrypoint-dovecot.sh /usr/local/bin/
+ENTRYPOINT /usr/local/bin/entrypoint-dovecot.sh
