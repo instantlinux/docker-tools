@@ -1,7 +1,7 @@
 ---
 # defaults
 
-vg: data01
+thinpool_vg: data01
 
 docker_defaults:
   apt_repo:
@@ -28,7 +28,7 @@ docker_defaults:
     - unix:///var/run/docker.sock
     storage-driver: devicemapper
     storage-opts:
-    - dm.thinpooldev=/dev/mapper/{{ vg }}-thinpool
+    - dm.thinpooldev=/dev/mapper/{{ thinpool_vg }}-thinpool
     - dm.use_deferred_removal=false
     - dm.use_deferred_deletion=false
     tls: True

@@ -10,6 +10,6 @@
   force_handlers: True
   roles:
   - docker_node
-  - { role: docker_network, tags: network }
+  - { role: network, tags: network }
   - { role: monitoring_agent, tags: nagios }
   - { role: ntp, tags: ntp }

@@ -1,0 +1,50 @@
+options {
+    directory "/etc/bind";
+    dump-file "/var/log/named_dump.db";
+    statistics-file "/var/log/named.stats";
+    listen-on-v6 { any; };
+    allow-query { 192.168.2.0/24; 172.17.0.0/16; 127.0.0.1; };
+    notify yes;
+    allow-transfer { dns_slaves; };
+    disable-empty-zone "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.IP6.ARPA";
+    recursion yes;
+};
+
+acl dns_slaves {
+    192.168.2.49; 127.0.0.1;
+};
+key "TRANSFER" {
+    algorithm hmac-md5;
+    secret "{{ bind9.transfer_secret }}";
+};
+{% for ip in bind9.server_ips %}
+server {{ ip }} { keys { TRANSFER; }; };
+{% endfor %}
+
+logging {
+    channel syslog_errors {
+        syslog local6;
+        severity error;
+    };
+    category default { syslog_errors; };
+    category lame-servers { null; };
+};
+
+zone "." in {
+	type hint;
+	file "/etc/bind/root.hint";
+};
+
+zone "localhost" in {
+	type master;
+	file "/etc/bind/db.local";
+};
+
+zone "0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa" IN {
+    type master;
+    file "/etc/bind/db.127";
+};
+
+{% for file in bind9.zone_files %}
+include "/etc/bind/{{ file }}";
+{% endfor %}

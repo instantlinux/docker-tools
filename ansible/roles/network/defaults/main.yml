@@ -4,7 +4,6 @@ network_defaults:
   address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
   addresses:
   -  "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}/24"
-  bridge: null
   device_name: enp1s0
   gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
   interface: enp1s0
@@ -27,13 +26,19 @@ vrrp:
   VI_1:
     id: 50
     ip: "{{ network.swarm_ip }}"
-    interface: "{{ network.device_name }}"
+    interface: "{{ network.interface }}"
     priority: "{{ network.address.split('.')[3] }}"
     unicast_peers: "{{ groups['swarm_nodes'] | map('extract', hostvars,
                        ['ansible_default_ipv4', 'address']) | list |
                        difference([network.address]) }}"
 
-netplan_netcfg:
+netplan_unbridged:
+  network:
+    version: 2
+    renderer: networkd
+
+# Netplan configuration is very different when running with /dev/br0
+netplan_bridged:
   network:
     version: 2
     renderer: networkd
@@ -41,8 +46,6 @@ netplan_netcfg:
       br0:
         addresses: "{{ network.addresses }}"
         gateway4: "{{ network.gateway }}"
-        interfaces:
-        - "{{ network.interface }}"
         nameservers:
           search: "{{ ansible_dns.search }}"
           addresses: "{{ network.nameservers }}"

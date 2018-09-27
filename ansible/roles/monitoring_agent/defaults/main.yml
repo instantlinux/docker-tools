@@ -20,6 +20,8 @@ nagios: "{{ nagios_defaults | combine(nagios_override) }}"
 nrpe_command_defaults:
   disk_status:
     local: True
+  load:
+    options: -w 15,10,5 -c 30,25,20
   netint_eth0:
     local: True
     plugin: check_netint.pl

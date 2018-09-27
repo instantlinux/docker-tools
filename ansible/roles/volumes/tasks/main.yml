@@ -11,23 +11,21 @@
   command: mkdir -p {{ item.value.path }}
   args:
     creates: "{{ item.value.path }}"
-  with_dict: "{{ volumes[vg] | combine(network_mounts) |
+  with_dict: "{{ luks_volumes | combine(network_mounts) |
                  combine(local_volumes) }}"
 
 - name: Create volumes
   lvol:
     lv: "{{ item.key }}"
-    vg: "{{ vg }}"
+    vg: "{{ item.value.vg }}"
     shrink: no
     size: "{{ item.value.size }}"
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
   notify:
   - Cryptsetup resize
   - Filesystem resize
 
 - include: encrypted.yml
-  when: volumes[vg]
-
 - include: cifs.yml
 
 - name: Network and local fstab entries
@@ -35,6 +33,6 @@
     fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
     path: "{{ item.value.path }}"
     src: "{{ item.key }}"
-    opts: "{{ item.value.options if 'options' in item.value else 'default' }}"
+    opts: "{{ item.value.options if 'options' in item.value else 'defaults' }}"
     state: mounted
   with_dict: "{{ network_mounts | combine(local_volumes) }}"

@@ -8,6 +8,8 @@
 - name: NTP keys
   template:
     dest: /etc/ntp.keys
+    group: ntp
+    mode: 0440
     src: ntp.keys.j2
   notify: Restart ntpd
   when: ntp.service.enabled
@@ -18,6 +20,15 @@
     src: ntp.conf.j2
   notify: Restart ntpd
   when: ntp.service.enabled
+
+# TODO eliminate conflict with above
+- name: Symmetric key for NTP auth
+  copy:
+    content: "1 M {{ ntp.symmetric_key }}\n"
+    dest: /etc/ntp.keys
+    group: ntp
+    mode: 0440
+  when: ntp.symmetric_key is defined
 
 - name: NTP service
   service:

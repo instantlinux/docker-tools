@@ -20,7 +20,7 @@
 
 - name: Activate thinpool autoextend
   shell: >
-    lvchange --metadataprofile {{ vg }}-thinpool {{ vg }}/thinpool &&
+    lvchange --metadataprofile {{ thinpool_vg }}-thinpool {{ thinpool_vg }}/thinpool &&
     lvs -o+seg_monitor
 
 - name: Update CA certificates

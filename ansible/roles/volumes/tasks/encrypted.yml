@@ -34,13 +34,13 @@
 
 - name: LUKS format volumes
   shell: >
-    cryptsetup isLuks /dev/{{ vg }}/{{ item.key }} ||
+    cryptsetup isLuks /dev/{{ item.value.vg }}/{{ item.key }} ||
     cryptsetup luksFormat --batch-mode --verbose --key-file={{
       masterkey.path }}/keys/{{ ansible_hostname }}/{{
-      item.key }} /dev/{{ vg }}/{{ item.key }}
+      item.key }} /dev/{{ item.value.vg }}/{{ item.key }}
   register: luks_format
   changed_when: ("Command successful" in luks_format.stdout)
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
 
 # Encountered bug in ansible crypttab module, lineinfile is good enough
 - name: Create crypttab
@@ -53,11 +53,11 @@
 - name: Crypt table entries
   lineinfile:
     line: "{{ 'luks-%-16s /dev/mapper/%s-%-16s %s/keys/%s/%-12s luks' % (
-          item.key, vg, item.key, masterkey.path, ansible_hostname,
+          item.key, item.value.vg, item.key, masterkey.path, ansible_hostname,
           item.key) }}"
     path: /etc/crypttab.setup
     regexp: "^luks-{{ item.key }}.*"
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
 
 # For unattended boot, we have a custom startup script, so we don't
 #  leave /etc/crypttab in place (Ubuntu systemd will otherwise
@@ -75,7 +75,7 @@
   command: cryptdisks_start luks-{{ item.key }}
   register: luks_start
   changed_when: ("(started)" in luks_start.stdout)
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
 
 - name: Create filesystem
   filesystem:
@@ -83,7 +83,7 @@
     fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
     opts: "{{ '-N %s000' % item.value.inodes if 'inodes' in item.value
       else '' }}"
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
 
 - name: Remove temporary crypttab symlink
   file:
@@ -114,7 +114,7 @@
     src: "/dev/mapper/luks-{{ item.key }}"
     opts: "{{ item.value.options if 'options' in item.value else '_netdev,noauto' }}"
     state: present
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
 
 - name: Unmount master key
   mount:

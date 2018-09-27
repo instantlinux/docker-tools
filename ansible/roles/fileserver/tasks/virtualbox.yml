@@ -1,0 +1,16 @@
+---
+
+- name: Virtualbox repo key
+  apt_key:
+    url: "{{ item }}"
+  with_items:
+  - "{{ virtualbox.apt_repo.key_urls }}"
+
+- name: Virtualbox repository
+  apt_repository:
+    repo: deb [arch=amd64] {{ virtualbox.apt_repo.url }} {{ ansible_distribution_release }} contrib
+    filename: virtualbox
+
+- name: Virtualbox package
+  package:
+    name: virtualbox

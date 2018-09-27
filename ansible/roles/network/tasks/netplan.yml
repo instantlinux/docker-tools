@@ -1,0 +1,38 @@
+---
+- name: Define static address for netplan (direct device)
+  set_fact:
+    netplan_netcfg: "{{ netplan_unbridged|combine(
+        {'network': {'ethernets': {network.interface: {
+         'addresses': network.addresses,
+         'dhcp4': False,
+         'gateway4': network.gateway,
+         'nameservers': {
+	    'search': ansible_dns.search,
+	    'addresses': network.nameservers}}}}},
+        recursive=True) }}"
+  when: network.mode == 'static' and 'bridge' not in network
+
+- name: Define dhcp for netplan (direct device)
+  set_fact:
+    netplan_netcfg: "{{ netplan_unbridged|combine(
+        {'network': {'ethernets': {network.interface: {
+         'dhcp4': True}}}},  
+        recursive=True) }}"
+  when: network.mode != 'static' and 'bridge' not in network
+
+- name: Attach interface to bridge
+  set_fact:
+    netplan_netcfg: "{{ netplan_bridged|combine(
+        {'network': {
+	   'bridges': {network.bridge: {
+	     'interfaces': [network.interface]}},
+	   'ethernets': {network.interface: {
+	     'dhcp4': network.mode != 'static'}}}},
+        recursive=True) }}"
+  when: "'bridge' in network"
+
+- name: Define netplan configuration
+  template:
+    dest: /etc/netplan/01-netcfg.yaml
+    src: netplan.j2
+  notify: Netplan apply

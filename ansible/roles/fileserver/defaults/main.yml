@@ -1,0 +1,40 @@
+---
+
+bind9:
+  server_ips: []
+  transfer_secret: unset
+  zone_files: {}
+
+nfs_exports:
+  /var/ftp: "*(ro,root_squash,crossmnt,fsid=0,no_subtree_check)"
+
+ubuntu_packages:
+  - bind9
+  - gksu
+  - lm-sensors
+  - mdadm
+  - nfs-server
+  - python-pip
+  - rsnapshot
+  - samba
+  - unison
+  - vsftpd
+
+virtualbox:
+  apt_repo:
+    url: http://download.virtualbox.org/virtualbox/debian
+    key_urls:
+    - https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    - https://www.virtualbox.org/download/oracle_vbox.asc
+
+vsftpd:
+  anonymous_enable: YES
+  anon_upload_enable: NO
+  anon_world_readable_only: YES
+  dirmessage_enable: YES
+  local_enable: YES
+  pasv_min_port: 30000
+  pasv_max_port: 30100
+  nopriv_user: ftp
+  write_enable: YES
+  

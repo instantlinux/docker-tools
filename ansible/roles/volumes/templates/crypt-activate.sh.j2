@@ -2,10 +2,10 @@
 {{ ansible_managed | comment }}
 KEYDIR={{ masterkey.path }}/keys/`hostname -s`
 [ -d $KEYDIR ] || mount {{ masterkey.path }}
-VOLS="{{ ' '.join(volumes[vg].keys()|sort) }}"
-for VOL in $VOLS; do
-  cryptsetup luksOpen /dev/{{ vg }}/$VOL luks-$VOL --key-file $KEYDIR/$VOL
-done
+{% for vol, opts in luks_volumes.iteritems()|sort %}
+cryptsetup luksOpen /dev/{{ opts.vg }}/{{ vol }} luks-{{ vol
+      }} --key-file $KEYDIR/{{ vol }}
+{% endfor %}
 for VOL in `grep mapper/luks /etc/fstab | awk {'print $2'}`; do
   mount $VOL
 done

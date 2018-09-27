@@ -10,6 +10,9 @@ node-setup:
 volume-setup:
 	ansible-playbook volume-setup.yml
 
+fileserver-setup:
+	ansible-playbook fileserver-setup.yml
+
 join-swarm:
 	ansible-playbook join-swarm.yml
 

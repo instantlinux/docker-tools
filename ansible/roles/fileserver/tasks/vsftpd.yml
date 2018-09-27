@@ -1,0 +1,12 @@
+---
+
+- name: vsftpd config
+  template:
+    dest: /etc/vsftpd.conf
+    src: vsftpd.conf.j2
+  notify: Restart vsftpd
+
+- name: vsftpd service
+  service:
+    name: vsftpd
+    enabled: True

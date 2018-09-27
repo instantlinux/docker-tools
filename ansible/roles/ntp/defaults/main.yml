@@ -1,7 +1,10 @@
 ---
 
 ntp_defaults:
-  servers:
+  query_ok:
+  - localhost
+  - ::1
+  pool:
   - 0.pool.ntp.org
   - 1.pool.ntp.org
   - 2.pool.ntp.org

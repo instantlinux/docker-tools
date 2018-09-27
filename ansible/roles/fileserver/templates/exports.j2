@@ -1,0 +1,4 @@
+{{ ansible_managed | comment }}
+{% for path, options in nfs_exports.iteritems() %}
+{{ path }}    {{ options }}
+{% endfor %}

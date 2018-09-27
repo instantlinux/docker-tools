@@ -2,16 +2,15 @@
 # These are only examples: in a group_vars file, override these with
 #  your own volumes and network mounts
 
-vg: data01
 fs_type: ext4
 
 # LUKS-encrypted volumes
-volumes:
-  data01:
-    backup:
-      size: 100
-      inodes: 100
-      path: /var/lib/docker/volumes/backup/_data
+luks_volumes:
+  backup:
+    inodes: 100
+    path: /var/lib/docker/volumes/backup/_data
+    size: 100
+    vg: data01
 
 # Unencrypted local volumes
 local_volumes:

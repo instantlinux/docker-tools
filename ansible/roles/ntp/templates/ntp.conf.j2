@@ -1,21 +1,35 @@
 {{ ansible_managed | comment }}
+driftfile /var/lib/ntp/ntp.drift
+
+{% if 'symmetric_key' in ntp %}
 keys /etc/ntp.keys              # path for keys file
 trustedkey 1                    # define trusted keys
 requestkey 1                    # key (7) for accessing server variables
+controlkey 1                    # key (6) for accessing server variables
+{% endif %}
 
 statistics loopstats peerstats clockstats
 filegen loopstats file loopstats type day enable
 filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
 
-#
-controlkey 1                    # key (6) for accessing server variables
-server {{ ntp.servers[0] }} prefer
-server {{ ntp.servers[1] }}
-server {{ ntp.servers[2] }}
+{% if 'servers' in ntp %}
+{% for server in ntp.servers %}
+server {{ server }} iburst
+{% endfor %}
+{% endif %}
+{% if 'pool' in ntp %}
+{% for server in ntp.pool %}
+pool {{ server }} iburst
+{% endfor %}
+{% endif %}
 
-restrict default nomodify notrap noquery
-restrict 127.0.0.1
+restrict -4 default kod notrap nomodify nopeer noquery limited
+restrict -6 default kod notrap nomodify nopeer noquery limited
 
-driftfile /var/lib/ntp/ntp.drift
-broadcastdelay	0.008
+{% for item in ntp.query_ok %}
+restrict {{ item }}
+{% endfor %}
+
+#restrict source notrap nomodify noquery
+restrict source notrap nomodify

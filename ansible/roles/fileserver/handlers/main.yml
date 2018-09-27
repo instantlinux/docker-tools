@@ -1,0 +1,13 @@
+---
+- name: Restart bind9
+  service:
+    name: bind9
+    state: restarted
+
+- name: Restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+
+- name: NFS re-export
+  command: exportfs -a

@@ -1,8 +1,8 @@
 ---
 - name: Cryptsetup resize
   command: cryptsetup resize luks-{{ item.key }}
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"
 
 - name: Filesystem resize
   command: resize2fs /dev/mapper/luks-{{ item.key }}
-  with_dict: "{{ volumes[vg] }}"
+  with_dict: "{{ luks_volumes }}"

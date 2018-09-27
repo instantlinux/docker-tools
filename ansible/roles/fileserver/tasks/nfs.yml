@@ -1,0 +1,6 @@
+---
+- name: NFS exports
+  template:
+    dest: /etc/exports
+    src: exports.j2
+  notify: NFS re-export

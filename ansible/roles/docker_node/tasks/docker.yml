@@ -50,20 +50,20 @@
     lv: thinpool
     shrink: False
     size: "{{ docker.thinpool.size }}"
-    vg: "{{ vg }}"
+    vg: "{{ thinpool_vg }}"
 
 - name: Thin pool meta
   lvol:
     lv: thinpoolmeta
-    vg: "{{ vg }}"
+    vg: "{{ thinpool_vg }}"
     size: "{{ docker.thinpool.meta_size }}"
 
 - name: Convert thinpool
   command: >
-    lvconvert -y --zero n -c 512K --thinpool {{ vg }}/thinpool
-      --poolmetadata {{ vg }}/thinpoolmeta
+    lvconvert -y --zero n -c 512K --thinpool {{ thinpool_vg }}/thinpool
+      --poolmetadata {{ thinpool_vg }}/thinpoolmeta
   args:
-    creates: /dev/mapper/{{ vg }}-thinpool_tdata
+    creates: /dev/mapper/{{ thinpool_vg }}-thinpool_tdata
 
 - name: LVM profile path
   file:
@@ -72,7 +72,7 @@
 
 - name: Define thinpool autoextend
   template:
-    dest: /etc/lvm/profile/{{ vg }}-thinpool.profile
+    dest: /etc/lvm/profile/{{ thinpool_vg }}-thinpool.profile
     src: thinpool.profile.j2
   notify: Activate thinpool autoextend
 
@@ -116,6 +116,11 @@
     name: "{{ docker.apt_repo.package_name }}"
     update_cache: yes
 
+- name: Options directory
+  file:
+    dest: /etc/docker
+    state: directory
+
 - name: Docker options
   copy:
     content: "{{ docker.options|to_nice_json }}"
@@ -141,7 +146,8 @@
     dest: /lib/systemd/system/docker.service
     regexp: "^Requires=docker.socket$"
     replace: >
-      Requires=docker.socket # Next line added by Ansible
+      Requires=docker.socket #
+      \n# Added by Ansible
       \nRequiresMountsFor=/var/lib/docker/share/user
 
 - name: Reenable systemctl start
@@ -154,6 +160,11 @@
   file:
     dest: /etc/systemd/system/docker.service
     state: absent
+  changed_when: False
+
+- name: Reload systemd again
+  systemd:
+    daemon_reload: yes
   changed_when: False
 
 - name: Enable docker.service

@@ -11,9 +11,9 @@ myth_user_defaults:
   - name: mythtv
     uid: 1001
     comment: MythTV Frontend
-    group: mythtv
+    group: users
     shell: /bin/bash
-    groups: video,nopasswdlogin
+    groups: video
   - name: nrpe
     uid: 2025
     comment: NRPE monitoring
