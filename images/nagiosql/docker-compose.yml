@@ -1,0 +1,68 @@
+version: "3.1"
+
+services:
+  app:
+    image: jasonrivers/nagios:${VERSION_NAGIOS:-latest}
+    restart: always
+    hostname: nagios.${DOMAIN}
+    environment:
+      TZ: ${TZ:-UTC}
+    volumes:
+    - bin:/opt/nagios/bin
+    - etc:/opt/nagios/etc
+    - graph:/opt/nagiosgraph
+    - var:/opt/nagios/var
+    - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
+    ports:
+    - ${PORT_NAGIOS:-8080}:80
+    network_mode: bridge
+
+  nagiosql:
+    image: ${REGISTRY_URI:-instantlinux}/nagiosql:latest
+    restart: always
+    hostname: nagiosql
+    environment:
+      DB_HOST: ${DB_HOST:-db00}
+      TZ: ${TZ:-UTC}
+    volumes:
+    - bin:/opt/nagios/bin
+    - config:/var/www/nagiosql/config
+    - etc:/opt/nagios/etc
+    - var:/opt/nagios/var
+    ports:
+    - ${PORT_NAGIOSQL:-8080}:80
+    secrets:
+    - nagiosql-db-password
+    network_mode: bridge
+
+  nginx:
+    image: nginx:${VERSION_NGINX:-latest}
+    depends_on:
+    - app
+    - nagiosql
+    hostname: monitor
+    ports:
+    - ${PORT_NAGIOS_SSL:-443}:443
+    - ${PORT_NAGIOS_HTTP:-80}:80
+    volumes:
+    - ${ADMIN_PATH:-/opt}/nagios/etc/nginx/conf.d:/etc/nginx/conf.d:ro
+    - ${SHARE_PATH}/common/pki/ca:/etc/ssl/ca:ro
+    - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
+    environment:
+      TZ: ${TZ:-UTC}
+    secrets:
+    - monitor.${DOMAIN:-demo}-server-key.pem
+    network_mode: bridge
+  
+volumes:
+  bin:
+  config:
+  etc:
+  graph:
+  var:
+
+secrets:
+  nagiosql-db-password:
+    file: /var/adm/admin/secrets/nagiosql-db-password
+  monitor.ci.net-server-key.pem:
+    file: ${ADMIN_PATH}/../tls/monitor.ci.net-server-key.pem

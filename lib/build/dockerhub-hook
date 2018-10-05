@@ -1,9 +1,5 @@
 #!/bin/bash
 
-DOCKERFILE_OPT=
-if [[ $DOCKER_REPO == *-armhf ]]; then
-  DOCKERFILE_OPT="-f Dockerfile.armhf"
-fi
-docker build -t $IMAGE_NAME $DOCKERFILE_OPT . \
+docker build -t $IMAGE_NAME . \
   --build-arg VCS_REF=$(git rev-parse HEAD) \
   --build-arg BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)

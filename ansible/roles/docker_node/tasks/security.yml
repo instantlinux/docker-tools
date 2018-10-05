@@ -68,6 +68,7 @@
     key: "{{ lookup('file', item) }}"
   with_fileglob:
   - keys/ssh_public/*.pub
+  ignore_errors: True
 
 - name: Adjust TCP keepalive to preserve management sessions
   sysctl:

@@ -34,6 +34,7 @@ Stack definitions include:
 * guacamole - authenticated remote-desktop server
 * logspout - central logging for Docker
 * mysqldump - per-database alternative to xtrabackup
+* nagiosql - NagiosQL with Nagios Core v4 for monitoring
 * nut-upsd - Network UPS Tools
 * rsyslogd - logger in a 13MB image
 * samba - file server

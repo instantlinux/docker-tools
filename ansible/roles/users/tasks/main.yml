@@ -70,3 +70,4 @@
     key: "{{ lookup('file', item) }}"
   with_fileglob:
   - keys/ssh_public/*.pub
+  ignore_errors: True
