@@ -45,6 +45,7 @@ RUN \
     mv /tmp/settings.php.j2 /var/www/nagiosql/config/ && \
     rm -fr /tmp/* /var/log/[b-w]*
 
+COPY html /var/www/html
 EXPOSE 80
 
 VOLUME /opt/nagios/etc /opt/nagios/var

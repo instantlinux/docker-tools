@@ -16,6 +16,8 @@ ENV DB_HOST=db00 \
     TZ=UTC
 
 ARG APACHE_UID=33
+ARG NAGIOS_GID=1000
+ARG NAGIOS_UID=999
 ARG NAGIOSQL_VERSION=3.4.0
 ARG NAGIOSQL_SHA=b03a8ef59785cf52ec9cce152c49198a7ae2ac14c54120740d53df834156d403
 ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION.tar.bz2
@@ -34,6 +36,7 @@ RUN deluser xfs && \
     tar xjf $NAGIOSQL_DOWNLOAD -C /var/www/nagiosql --strip-components=1 && \
     mv /tmp/nagiosql.conf /etc/apache2/conf.d/ && \
     mv /tmp/settings.php.j2 /var/www/nagiosql/config/ && \
+    mv /tmp/html/* /var/www/html/ && \
     rm /tmp/*
 
 EXPOSE 80

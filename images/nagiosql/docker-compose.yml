@@ -5,7 +5,15 @@ services:
     image: jasonrivers/nagios:${VERSION_NAGIOS:-latest}
     restart: always
     hostname: nagios.${DOMAIN}
+    # If your local plugins require additional packages, this is
+    # where to add them (if it's a large number, create a new image)
+    command: >
+      bash -c "pip install mysql-python &&
+      apt-get update &&
+      apt-get install -y mariadb-client &&
+      /usr/local/bin/start_nagios"
     environment:
+      NAGIOS_TIMEZONE: ${TZ:-UTC}
       TZ: ${TZ:-UTC}
     volumes:
     - bin:/opt/nagios/bin
@@ -37,9 +45,7 @@ services:
 
   nginx:
     image: nginx:${VERSION_NGINX:-latest}
-    depends_on:
-    - app
-    - nagiosql
+    restart: always
     hostname: monitor
     ports:
     - ${PORT_NAGIOS_SSL:-443}:443
@@ -52,6 +58,9 @@ services:
       TZ: ${TZ:-UTC}
     secrets:
     - monitor.${DOMAIN:-demo}-server-key.pem
+    depends_on:
+    - app
+    - nagiosql
     network_mode: bridge
   
 volumes:
