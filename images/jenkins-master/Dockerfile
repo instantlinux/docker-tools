@@ -30,14 +30,14 @@ ENV ARTIFACTORY_URI=artifactory.domain.com \
 ARG _COMPOSE_VERSION=1.22.0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${_COMPOSE_VERSION}/docker-compose-Linux-x86_64
-ARG _JENKINS_VERSION=2.138.1
+ARG _JENKINS_VERSION=2.138.2
 ARG _TINI_DOWNLOADS=https://github.com/krallin/tini/releases/download
 ARG _TINI_VERSION=0.18.0
 ARG DOCKER_GID=485
 ARG JENKINS_UID=1000
 # sha256sum values for each download
 ARG COMPOSE_SHA=f679a24b93f291c3bffaff340467494f388c0c251649d640e661d509db9d57e9
-ARG JENKINS_SHA=ecb84b6575e86957b902cce5e68e360e6b0768b0921baa405e61d314239e5b27
+ARG JENKINS_SHA=d8ed5a7033be57aa9a84a5342b355ef9f2ba6cdb490db042a6d03efb23ca1e83
 ARG TINI_SHA=eadb9d6e2dc960655481d78a92d2c8bc021861045987ccd3e27c7eae5af0cf33
 
 # gid for docker must match that on container host
