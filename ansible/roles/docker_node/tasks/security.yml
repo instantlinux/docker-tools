@@ -80,4 +80,5 @@
   copy:
     dest: /usr/local/bin/rrsync
     src: rrsync
+    force: no
     mode: 0755

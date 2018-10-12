@@ -80,6 +80,7 @@ network_defaults:
   nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
   netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
+  vrrp_interface: null
 
 network_override: {}
 network: "{{ network_defaults | combine(network_override) }}"

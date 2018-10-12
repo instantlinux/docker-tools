@@ -16,4 +16,4 @@
     mode: 0600
     src: keepalived.conf.j2
   notify: Restart keepalived
-  when: network.swarm_ip
+  when: network.vrrp_interface

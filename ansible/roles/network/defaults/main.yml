@@ -1,17 +1,20 @@
 ---
+# This almost always needs to be specified in inventory, each host
+#  comes up differently
+network_interface_physical: eth0
 
 network_defaults:
   address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
   addresses:
   -  "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}/24"
-  device_name: enp1s0
   gateway: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
-  interface: enp1s0
+  interface: "{{ network_interface_physical }}"
   mode: dhcp
   nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
   netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
   swarm_ip: null
+  vrrp_interface: null
 
 network_override: {}
 network: "{{ network_defaults | combine(network_override) }}"
@@ -26,7 +29,7 @@ vrrp:
   VI_1:
     id: 50
     ip: "{{ network.swarm_ip }}"
-    interface: "{{ network.interface }}"
+    interface: "{{ network.vrrp_interface }}"
     priority: "{{ network.address.split('.')[3] }}"
     unicast_peers: "{{ groups['swarm_nodes'] | map('extract', hostvars,
                        ['ansible_default_ipv4', 'address']) | list |

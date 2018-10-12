@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 vrrp_script chk_docker {
     interval 5
-    script "killall -0 dockerd"
+    script "/usr/bin/killall -0 dockerd"
     fall 2
     rise 2
 }
