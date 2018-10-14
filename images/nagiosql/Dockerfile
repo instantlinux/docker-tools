@@ -46,6 +46,7 @@ RUN \
     rm -fr /tmp/* /var/log/[b-w]*
 
 COPY html /var/www/html
+RUN chmod a+rX /var/www/html
 EXPOSE 80
 
 VOLUME /opt/nagios/etc /opt/nagios/var

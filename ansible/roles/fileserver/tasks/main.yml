@@ -1,8 +1,7 @@
 ---
 - name: Install system packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
+    name: "{{ ubuntu_packages }}"
   when: ansible_os_family == 'Debian'
 
 - include: bind9.yml

@@ -31,6 +31,7 @@
     src: "{{ masterkey.user }}@{{ masterkey.host }}:{{ masterkey.path }}"
     opts: _netdev,noauto,ro,IdentityFile={{ masterkey.sshkey_private }}
     state: mounted
+  changed_when: False
 
 - name: LUKS format volumes
   shell: >
@@ -120,3 +121,4 @@
   mount:
     path: "{{ masterkey.path }}"
     state: unmounted
+  changed_when: False

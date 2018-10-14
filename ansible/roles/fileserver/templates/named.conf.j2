@@ -1,9 +1,10 @@
+{{ ansible_managed | comment }}
 options {
-    directory "/etc/bind";
-    dump-file "/var/log/named_dump.db";
-    statistics-file "/var/log/named.stats";
+    directory "{{ bind9.directory }}";
+    dump-file "{{ bind9.dump_file }}";
+    statistics-file "{{ bind9.statistics_file }}";
     listen-on-v6 { any; };
-    allow-query { 192.168.2.0/24; 172.17.0.0/16; 127.0.0.1; };
+    allow-query { {{ '; '.join(bind9.allow_query) }}; };
     notify yes;
     allow-transfer { dns_slaves; };
     disable-empty-zone "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.IP6.ARPA";
@@ -11,7 +12,7 @@ options {
 };
 
 acl dns_slaves {
-    192.168.2.49; 127.0.0.1;
+    {{ '; '.join(bind9.dns_slaves) }};
 };
 key "TRANSFER" {
     algorithm hmac-md5;

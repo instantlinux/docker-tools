@@ -10,12 +10,10 @@
 
 - name: Install system packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
+    name: "{{ ubuntu_packages }}"
   when: ansible_os_family == 'Debian'
 
 - name: Install system packages
   zypper:
-    name: "{{ item }}"
-  with_items: "{{ opensuse_packages }}"
+    name: "{{ opensuse_packages }}"
   when: ansible_os_family == 'Suse'

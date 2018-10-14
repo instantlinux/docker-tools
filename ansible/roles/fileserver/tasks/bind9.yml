@@ -14,6 +14,11 @@
     force: True
     state: link
 
+- name: Root hints
+  template:
+    dest: /etc/bind/root.hint
+    src: root.hint.j2
+
 - name: bind9 service
   service:
     name: bind9

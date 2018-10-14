@@ -20,16 +20,14 @@
 
 - name: Install system packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
+    name: "{{ ubuntu_packages }}"
 
 - name: Remove akonadi-dependent packages
   apt:
     autoremove: yes
-    name: "{{ item }}"
+    name:
+    - akonadi-server
+    - kaddressbook
+    - kmail
+    - korganizer
     state: absent
-  with_items:
-  - akonadi-server
-  - kaddressbook
-  - kmail
-  - korganizer

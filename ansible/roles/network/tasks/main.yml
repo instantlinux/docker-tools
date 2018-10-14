@@ -1,8 +1,7 @@
 ---
 - name: Install system packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
+    name: "{{ ubuntu_packages }}"
 
 - include: network_legacy.yml
   when: ansible_distribution_release != 'bionic'

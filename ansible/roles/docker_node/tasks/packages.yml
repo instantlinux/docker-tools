@@ -3,10 +3,8 @@
 
 - name: Install system packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_packages }}"
+    name: "{{ ubuntu_packages }}"
 
 - name: Install local additions
   apt:
-    name: "{{ item }}"
-  with_items: "{{ ubuntu_package_additions }}"
+    name: "{{ ubuntu_package_additions }}"

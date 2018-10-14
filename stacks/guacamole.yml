@@ -2,6 +2,7 @@ version: "3"
 services:
 
   guac:
+    image: guacamole/guacamole:${VERSION_GUACAMOLE:-latest}
     hostname: guac
     ports:
     - ${PORT_GUACAMOLE:-16080}:8080
@@ -11,7 +12,6 @@ services:
       MYSQL_USER: guacamole_user
       MYSQL_PASSWORD: ${GUACAMOLE_DBPASS:-guacamole}
       GUACD_HOSTNAME: guacd
-    image: guacamole/guacamole:${VERSION_GUACAMOLE:-latest}
   guacd:
-    hostname: guacd
     image: guacamole/guacd:${VERSION_GUACAMOLE:-latest}
+    hostname: guacd
