@@ -6,11 +6,16 @@ services:
     restart: always
     hostname: nagios.${DOMAIN}
     # If your local plugins require additional packages, this is
-    # where to add them (if it's a large number, create a new image)
+    # where to add them (if it's a large number, create a new image).
+    # Can also change image's postfix port if network_mode:host.
     command: >
       bash -c "pip install mysql-python &&
       apt-get update &&
       apt-get install -y mariadb-client &&
+      chmod u+s /opt/nagios/libexec/check_dhcp &&
+      [ -e /usr/local/nagios ] || ln -s /opt/nagios /usr/local/nagios &&
+      sed -i -e 's/^smtp      inet/2525 inet/' /etc/postfix/master.cf &&
+      sed -i -e 's:find /opt/nagios :#find /opt/nagios :' /etc/service/nagios/run &&
       /usr/local/bin/start_nagios"
     environment:
       NAGIOS_TIMEZONE: ${TZ:-UTC}
@@ -23,7 +28,7 @@ services:
     - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
     ports:
     - ${PORT_NAGIOS:-8080}:80
-    network_mode: bridge
+    network_mode: host
 
   nagiosql:
     image: ${REGISTRY_URI:-instantlinux}/nagiosql:latest
