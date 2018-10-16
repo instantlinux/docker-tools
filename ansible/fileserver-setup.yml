@@ -13,6 +13,7 @@
   - { role: network, tags: network }
   - { role: docker_node, tags: docker }
   - { role: monitoring_agent, tags: nagios }
+  - { role: bind9, tags: bind9 }
   - { role: ntp, tags: ntp }
   - fileserver
   - { role: volumes, tags: volumes }

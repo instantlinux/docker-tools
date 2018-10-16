@@ -7,13 +7,7 @@ local_group_defaults:
 local_group_additions: {}
 local_groups: "{{ local_group_defaults | combine(local_group_additions) }}"
 
-myth_user_defaults:
-  - name: mythtv
-    uid: 1001
-    comment: MythTV Frontend
-    group: users
-    shell: /bin/bash
-    groups: video
+local_user_defaults:
   - name: nrpe
     uid: 2025
     comment: NRPE monitoring
@@ -21,8 +15,8 @@ myth_user_defaults:
     group: nrpe
     groups: nagcmd
 
-myth_user_additions: []
-myth_users: "{{ myth_user_defaults + myth_user_additions }}"
+local_user_additions: []
+local_users: "{{ local_user_defaults + local_user_additions }}"
 
 opensuse_google_auth_repo:
   - name: oss
@@ -35,4 +29,4 @@ pam_package: "{{
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
 
 ubuntu_google_auth_repo:
-  - deb {{ ubuntu_repo_uri }} xenial main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }} main restricted universe multiverse

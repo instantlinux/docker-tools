@@ -1,5 +1,8 @@
 ---
-# TODO this should be a separate role
+- name: Install system packages
+  apt:
+    name: "{{ ubuntu_packages }}"
+  when: ansible_os_family == 'Debian'
 
 - name: bind9 config
   template:

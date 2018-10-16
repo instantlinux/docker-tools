@@ -16,7 +16,7 @@
   set_fact:
     netplan_netcfg: "{{ netplan_unbridged|combine(
         {'network': {'ethernets': {network.interface: {
-         'dhcp4': True}}}},  
+         'dhcp4': True}}}},
         recursive=True) }}"
   when: network.mode != 'static' and 'bridge' not in network
 

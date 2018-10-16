@@ -52,6 +52,5 @@ promote_image:
 
 clean:
   stage: Clean
-  <<: *registry_login
   script: docker rmi $REGISTRY/$image:$TAG
   when: always

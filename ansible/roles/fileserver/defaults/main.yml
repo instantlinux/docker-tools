@@ -1,26 +1,8 @@
 ---
-
-bind9_defaults:
-  allow_query:
-  - 192.168.0.0/16
-  - 127.0.0.1
-  directory: /var/cache/bind
-  dns_slaves:
-  - 127.0.0.1
-  dump_file: /var/cache/bind/named_dump.db
-  server_ips: []
-  statistics_file: /var/cache/bind/named.stats
-  transfer_secret: unset
-  zone_files: {}
-
-bind9_override: {}
-bind9: "{{ bind9_defaults | combine(bind9_override) }}"
-
 nfs_exports:
   /var/ftp: "*(ro,root_squash,crossmnt,fsid=0,no_subtree_check)"
 
 ubuntu_packages:
-  - bind9
   - gksu
   - lm-sensors
   - mdadm

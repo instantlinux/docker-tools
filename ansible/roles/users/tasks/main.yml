@@ -24,7 +24,7 @@
     password: "{{ vault_users[item.name]['password'] if item.name in
                vault_users and 'password' in vault_users[item.name] else '*' }}"
     shell: "{{ item.shell if 'shell' in item else '/bin/bash' }}"
-  with_items: "{{ myth_users }}"
+  with_items: "{{ local_users }}"
 
 - name: Define authenticator tokens
   template:

@@ -1,0 +1,6 @@
+---
+- name: Samba configuration files
+  copy:
+    dest: /etc/samba/conf.d
+    src: etc/
+  notify: Restart smbd

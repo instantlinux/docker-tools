@@ -1,7 +1,7 @@
 ---
-- name: Restart bind9
+- name: Restart smbd
   service:
-    name: bind9
+    name: smbd
     state: restarted
 
 - name: Restart vsftpd

@@ -9,6 +9,7 @@
   become: True
   force_handlers: True
   roles:
+  - { role: users, tags: users }
   - docker_node
   - { role: network, tags: network }
   - { role: monitoring_agent, tags: nagios }

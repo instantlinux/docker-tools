@@ -1,15 +1,12 @@
 ---
 # main.yml
 
-- set_fact:
-    distro: "{{ 'opensuse' if ansible_os_family == 'Suse' else 'ubuntu' }}"
-
-- include: "{{ distro }}/packages.yml"
-- include: "{{ distro }}/lirc.yml"
-- include: "{{ distro }}/network.yml"
+- include: "{{ ansible_os_family | lower }}/packages.yml"
+- include: "{{ ansible_os_family | lower }}/lirc.yml"
+- include: "{{ ansible_os_family | lower }}/network.yml"
 - include: autosuspend.yml
   when: suspend
 
 - include: nvidia.yml
 - include: setup.yml
-- include: "{{ distro }}/desktop.yml"
+- include: "{{ ansible_os_family | lower }}/desktop.yml"

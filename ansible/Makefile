@@ -1,5 +1,5 @@
 VENV ?= python_env
-VDIR  = $(PWD)/$(VENV)
+VDIR ?= $(PWD)/$(VENV)
 
 test: test_requirements
 	ansible-lint *.yml

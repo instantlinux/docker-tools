@@ -4,8 +4,8 @@
     name: "{{ ubuntu_packages }}"
   when: ansible_os_family == 'Debian'
 
-- include: bind9.yml
 - include: nfs.yml
 - include: instantlinux.yml
+- include: samba.yml
 - include: virtualbox.yml
 - include: vsftpd.yml
