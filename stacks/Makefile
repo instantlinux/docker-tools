@@ -19,7 +19,6 @@ artifactory: .deploy/artifactory
 authelia: .deploy/authelia
 blacklist: .deploy/blacklist
 cloud: .deploy/cloud
-crashplan: .deploy/crashplan
 davite: .deploy/davite
 db00: .deploy/db00
 db02: .deploy/db02
