@@ -40,6 +40,7 @@ Stack definitions include:
 * rsyslogd - logger in a 13MB image
 * samba - file server
 * samba-dc - Active-Directory compatible domain controller
+* [secondshot](https://github.com/instantlinux/secondshot) - rsnapshot-based backups
 * splunk - the free version
 * swarm-sync - poor-man's SAN for persistent storage
 * udp-nginx-proxy - UDP load-balancer

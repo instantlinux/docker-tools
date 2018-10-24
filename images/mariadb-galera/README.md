@@ -1,9 +1,10 @@
 ## mariadb-galera
 [![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
 
-Automatic cluster generation of MariaDB 10.3 under Swarm usingnamed
-volumes for data persistence. This has a robust bootstrap script
-intended to closely follow MariaDB / Galera documentation.
+MariaDB 10.3 with automatic cluster generation under Swarm using named
+volumes for data persistence. This has robust bootstrap logic based on
+MariaDB / Galera documentation for automated cluster create / join
+operations.
 
 ### Variables
 
@@ -60,18 +61,18 @@ log. Add a volume mount of /var/log/mysql if you want to preserve
 that log.
 
 ### Notes
-DB clustering under Docker Swarm is still in its infancy and I could
-not find a clustering solution that would automatically restart
-without problems (like split-brain, or just never coming up) upon a
-simple "docker stack deploy ; docker stack rm ; docker stack deploy"
-repeated test cycle. This is an attempt to address that problem, using
-a minimal distro (tried Alpine Linux, wound up having to use debian
-jessie-slim) with MariaDB (I like it better than MySQL / Percona
-solutions, after a few years of running MariaDB and a decade+ of
-running MySQL).
 
-Galera is finicky upon restarts so this requires a robust script to ensure
-proper conditions.
+When creating this image, DB clustering under Docker Swarm was still
+in its infancy and I could not find a clustering solution that would
+automatically restart without problems (like split-brain, or just
+never coming up) upon a simple "docker stack deploy ; docker stack rm
+; docker stack deploy" repeated test cycle. This addresses that
+problem, using a minimal distro (tried Alpine Linux, wound up having
+to use debian). I like MariaDB better than MySQL / Percona solutions,
+after a few years of running MariaDB and a decade+ of running MySQL.
+
+Galera is finicky upon restarts so it requires a fair amount of logic
+to handle edge cases.
 
 This container image is intended to be run in a 3-, 5-node, or larger
 configuration.  It requires a stable etcd configuration for node
