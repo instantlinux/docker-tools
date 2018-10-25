@@ -29,6 +29,7 @@ dropbox: .deploy/dropbox
 duplicati: .deploy/duplicati
 ez-ipupdate: .deploy/ez-ipupdate
 gitlab: .deploy/gitlab
+gitlab-runner: .deploy/gitlab-runner
 git-dump: .deploy/git-dump
 guacamole: .deploy/guacamole
 il-v1: .deploy/il-v1

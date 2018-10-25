@@ -39,13 +39,11 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
 EXPOSE 3306 4444 4567/udp 4567 4568
 VOLUME /var/lib/mysql
 
-# TODO
-#HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
-#    CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
+HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
+    CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
 
 COPY wsrep.cnf my.cnf /etc/
 COPY src/entrypoint.py src/healthcheck.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.py"]
 
 # TODO: fix healthcheck.sh to handle long-duration bootstrap
-# TODO: percona-xtrabackup when wsrep_sst_method works in 10.2

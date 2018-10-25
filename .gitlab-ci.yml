@@ -1,0 +1,57 @@
+variables:
+  REGISTRY: nexus.instantlinux.net
+  GIT_SSL_NO_VERIFY: "1"
+
+stages:
+  - Static Code Analysis
+  - Create Image
+  - Push Image
+  - Functional Tests
+  - Promote Image
+  - Clean
+
+before_script:
+  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHA:0:7}
+
+.registry_template: &registry_login
+  before_script:
+  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHA:0:7}
+  - docker login -u $DOCKER_LOGIN -p $CI_JOB_TOKEN $REGISTRY
+
+analysis:
+  stage: Static Code Analysis
+  image: nexus.instantlinux.net/python-builder:latest
+  script: cd images/$image && make analysis
+
+create_image:
+  stage: Create Image
+  script:
+  - docker build -t $image:$TAG -f images/$image/Dockerfile images/$image
+      --build-arg=VCS_REF=$CI_COMMIT_SHA
+      --build-arg=BUILD_DATE=$(date +%Y-%m-%dT%H:%M:%SZ)
+
+push_image:
+  stage: Push Image
+  <<: *registry_login
+  script:
+  - docker tag $image:$TAG $REGISTRY/$image:$TAG
+  - docker push $REGISTRY/$image:$TAG
+
+test:
+  stage: Functional Tests
+  image: nexus.instantlinux.net/python-builder:latest
+  script: cd images/$image && make test_functional
+
+promote_image:
+  only: {refs: [master]}
+  stage: Promote Image
+  <<: *registry_login
+  script:
+  - docker tag $image:$TAG $REGISTRY/$image:latest
+  - docker push $REGISTRY/$image:latest
+
+clean:
+  stage: Clean
+  <<: *registry_login
+  script: docker rmi $REGISTRY/$image:$TAG
+  when: always
