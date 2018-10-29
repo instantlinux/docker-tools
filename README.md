@@ -17,8 +17,9 @@ Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/)
 Stack definitions include:
 
 **Developer infrastructure**
+
 | Service | Version | Notes |
-| --- | --- |
+| --- | --- | --- |
 | artifactory | ** | |
 | gitlab | ** | |
 | git-pull | [![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") | |
@@ -29,6 +30,9 @@ Stack definitions include:
 | wordpress | ** | |
 
 **Networking and support**
+
+| Service | Version | Notes |
+| --- | --- | --- |
 | authelia | ** | single-signon multi-factor auth |
 | cloud | ** | nextcloud, private sync like Apple iCloud |
 | docs | [![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") | OX Appsuite, private cloud like Google Docs |
@@ -49,6 +53,9 @@ Stack definitions include:
 | vsftpd | [![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") | ftp server |
 
 **Email**
+
+| Service | Version | Notes |
+| --- | --- | --- |
 | blacklist | [![](https://images.microbadger.com/badges/version/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Version badge") | a local rbldnsd for spam control |
 | dovecot | [![](https://images.microbadger.com/badges/version/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Version badge") | imapd server |
 | postfix | [![](https://images.microbadger.com/badges/version/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Version badge") | compact general-purpose image in 11MB |
@@ -58,6 +65,9 @@ Stack definitions include:
 | spamassassin | [![](https://images.microbadger.com/badges/version/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") | spam control daemon |
 
 **Entertainment**
+
+| Service | Version | Notes |
+| --- | --- | --- |
 | davite | [![](https://images.microbadger.com/badges/version/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "Version badge") | party-invites manager like eVite |
 | mt-daapd | [![](https://images.microbadger.com/badges/version/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") | iTunes server |
 | mythtv-backend | [![](https://images.microbadger.com/badges/version/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") | MythTV backend |
