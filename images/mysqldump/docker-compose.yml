@@ -5,7 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/mysqldump:latest
     environment:
       TZ: ${TZ:-UTC}
-      SERVERS: ${DB_HOST:-db}
+      SERVERS: ${DB_SERVERS:-dbhost}
     volumes:
     - backup:/var/backup
     - logs:/var/log

@@ -1,12 +1,14 @@
-#! /bin/bash
-echo [client] > /home/$USERNAME/.my.cnf
-cat /var/run/secrets/mysql-backup >> /home/$USERNAME/.my.cnf
+#! /bin/sh
+CNF=/home/$USERNAME/.my.cnf
+LOG=/var/log/mysqldump.log
+echo [client] > $CNF
+cat /run/secrets/mysql-backup >> $CNF
 
-touch /var/log/mysqldump.log
-chown $USERNAME /var/backup /var/log/mysqldump.log /home/$USERNAME/.my.cnf
-echo "LOCK_FOR_BACKUP=\"$LOCK_FOR_BACKUP\"
-$MINUTE $HOUR * * *   $USERNAME  /usr/local/bin/mysql-backup.sh $KEEP_DAYS $SERVERS" \
-   >/etc/cron.d/mysql-backup
+touch $LOG
+chown $USERNAME /var/backup $LOG $CNF
+chmod 400 $CNF
+echo "$MINUTE $HOUR * * *   /usr/local/bin/mysql-backup.sh $KEEP_DAYS $SERVERS" \
+   | crontab -u $USERNAME -
 
-cron
-tail -f /var/log/mysqldump.log
+crond
+tail -f $LOG

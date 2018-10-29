@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # $Id: backup_mysql_each.sh 183 2011-07-18 15:05:00Z richb $
 #
 # Created 4/2013 by rbraun
@@ -8,7 +8,7 @@
 
 # Parameters:
 #  $1    Number of days' worth of backups to keep
-#  $2-$  Hostnames
+#  $2-$  Hostnames (with optional port number if not 3306)
 
 USER=bkp
 LOG=/var/log/mysqldump.log
@@ -53,40 +53,49 @@ shift;
 # Dumps will be kept in directories named as day of week or
 # day of month if 31 or less; else combine month+day if longer
 
-if [ $KEEP_DAYS == 7 ]
-then
+if [ $KEEP_DAYS == 7 ]; then
  DAY=`date +%a`
-elif [ $KEEP_DAYS -le 31 ]
-then
+elif [ $KEEP_DAYS -le 31 ]; then
  DAY=`date +%d`
 else
  DAY=`date +%m%d`
 fi
 
-for HOST in $@
+for SERVER in $@
 do
-    [ -d $DESTDIR/$HOST/$DAY ] || mkdir -p -m 2750 $DESTDIR/$HOST/$DAY
+    HOST=$(echo $SERVER | cut -d: -f 1)
+    PORT=$(echo $SERVER: | cut -d: -f 2)
+    [ -z "$PORT" ] && PORT=3306
+    OPTS="-u $USER -h $HOST -P $PORT"
+    [ -d $DESTDIR/$SERVER/$DAY ] || mkdir -p -m 2750 $DESTDIR/$SERVER/$DAY
     # Delete any lingering files that are over KEEP_DAYS old:
-    /usr/bin/find $DESTDIR/$HOST/* -type f -mtime +$KEEP_DAYS -exec rm {} \; 2>&1 > /dev/null
-    DBNAMES=`$MYSQL -h $HOST -se "$DBNAME_QUERY"`
-    STATFILE=$DESTDIR/$HOST/mysqldump-status.txt
+    /usr/bin/find $DESTDIR/$SERVER/* -type f -mtime +$KEEP_DAYS -exec rm {} \; 2>&1 > /dev/null
+    DBNAMES=`$MYSQL $OPTS -se "$DBNAME_QUERY"`
+    STATFILE=$DESTDIR/$SERVER/mysqldump-status.txt
+    # Grants
+    $MYSQL $OPTS -se "SELECT CONCAT('SHOW GRANTS FOR \'',user,'\'@\'',host,'\';') FROM mysql.user;" | \
+      $MYSQL $OPTS -s | awk '{print $0";"}' >$DESTDIR/$SERVER/$DAY/allgrants.sql
 
     for DBNAME in $DBNAMES; do
       # Schema only
-      # Delete any lingering files from a previous incarnation (or incantation) of this script, compressed or otherwise:
-      rm -f $DESTDIR/$HOST/$DAY/$DBNAME-schema.sql.$OLD_EXT
-      rm -f $DESTDIR/$HOST/$DAY/$DBNAME-schema.sql
-      SCHEMA_TARGET=$DESTDIR/$HOST/$DAY/$DBNAME-schema.sql
-      ( $MYSQLDUMP -u $USER $SCHEMA_DUMP_OPTS -h $HOST --databases $DBNAME >$SCHEMA_TARGET && $COMPRESS $SCHEMA_TARGET & )
+      # Delete any lingering files from a previous run
+      rm -f $DESTDIR/$SERVER/$DAY/$DBNAME-schema.sql.$OLD_EXT \
+            $DESTDIR/$SERVER/$DAY/$DBNAME-schema.sql
+      SCHEMA_TARGET=$DESTDIR/$SERVER/$DAY/$DBNAME-schema.sql
+      ( $MYSQLDUMP $OPTS $SCHEMA_DUMP_OPTS \
+           --databases $DBNAME >$SCHEMA_TARGET && \
+        $COMPRESS $SCHEMA_TARGET & )
 
       # Data
-      # Delete any lingering files from a previous incarnation (or incantation) of this script, compressed or otherwise:
-      rm -f $DESTDIR/$HOST/$DAY/$DBNAME-backup.sql.$OLD_EXT
-      rm -f $DESTDIR/$HOST/$DAY/$DBNAME-backup.sql
-      BACKUP_TARGET=$DESTDIR/$HOST/$DAY/$DBNAME-backup.sql
+      # Delete any lingering files from a previous run
+      rm -f $DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql.$OLD_EXT
+            $DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql
+      BACKUP_TARGET=$DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql
 
       log_entry info " -- starting dump to $BACKUP_TARGET"
-      ( $MYSQLDUMP -u $USER $DUMPOPTS -h $HOST --databases $DBNAME >$BACKUP_TARGET && nice $COMPRESS $BACKUP_TARGET && echo "`date --rfc-3339=seconds` dumped $DBNAME" > $STATFILE & )
+      ( $MYSQLDUMP $OPTS $DUMPOPTS --databases $DBNAME >$BACKUP_TARGET && \
+        nice $COMPRESS $BACKUP_TARGET && \
+        echo "`date -R` dumped $DBNAME" > $STATFILE & )
     done
 done
 

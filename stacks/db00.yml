@@ -16,7 +16,7 @@ services:
     volumes:
     - data:/var/lib/mysql
     - logs:/var/log/mysql
-    - ${ADMIN_PATH:-/opt}/xtradb/etc/:/etc/mysql/my.cnf.d:ro
+    - ${ADMIN_PATH:-/opt}/mariadb/etc/:/etc/mysql/my.cnf.d:ro
     secrets:
     - mysql-root-password
     - sst-auth-password
