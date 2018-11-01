@@ -1,0 +1,23 @@
+version: "3.1"
+
+services:
+
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/haproxy-keepalived:latest
+    environment:
+      KEEPALIVE_CONFIG_ID: ${KEEPALIVED_CONFIG_ID:-main}
+      TZ: ${TZ:-UTC}
+    volumes:
+    - ${ADMIN_PATH:-/opt}/haproxy/etc:/etc/haproxy.d:ro
+    - ${ADMIN_PATH:-/opt}/keepalived/etc/keepalived.conf:/etc/keepalived/keepalived.conf:ro
+    ports:
+    - ${PORT_HAPROXY_STATS:-8080}:8080
+    secrets:
+     - haproxy-stats-password
+    network_mode: host
+    cap_add:
+    - NET_ADMIN
+
+secrets:
+  haproxy-stats-password:
+    file: /var/adm/admin/secrets/haproxy-stats-password
