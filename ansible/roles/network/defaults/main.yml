@@ -1,4 +1,7 @@
 ---
+kernel_modules:
+  - ip_vs
+
 # This almost always needs to be specified in inventory, each host
 #  comes up differently
 network_interface_physical: eth0
@@ -18,6 +21,8 @@ network_defaults:
 
 network_override: {}
 network: "{{ network_defaults | combine(network_override) }}"
+
+network_sysctl: {}
 
 ubuntu_packages:
   - bridge-utils

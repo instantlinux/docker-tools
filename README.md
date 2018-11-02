@@ -38,6 +38,7 @@ Stack definitions include:
 | docs | [![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") | OX Appsuite, private cloud like Google Docs |
 | duplicati | [![](https://images.microbadger.com/badges/version/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Version badge") | backups |
 | ez-ipupdate | [![](https://images.microbadger.com/badges/version/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
+| haproxy-keepalived | [![](https://images.microbadger.com/badges/version/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Version badge") | load balancer |
 | guacamole | ** | authenticated remote-desktop server |
 | logspout | ** | central logging for Docker |
 | mysqldump | [![](https://images.microbadger.com/badges/version/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |

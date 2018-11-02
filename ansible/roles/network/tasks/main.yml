@@ -16,3 +16,5 @@
     src: keepalived.conf.j2
   notify: Restart keepalived
   when: network.vrrp_interface
+
+- include: kernel.yml

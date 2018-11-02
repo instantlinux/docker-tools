@@ -27,13 +27,13 @@ defaults
 	timeout server	$TIMEOUT
 
 listen stats
-       bind		*:8080
+       bind		*:$PORT_HAPROXY_STATS
        mode		http
        stats		enable
        stats		hide-version
        stats auth	haproxy:$STATS_PASSWORD
        stats realm	HAProxy\ Statistics
-       stats uri	/stats
+       stats uri	$STATS
 EOF
 
 if [ -d /etc/haproxy.d ] && [ "$(ls -A /etc/haproxy.d)" ]; then

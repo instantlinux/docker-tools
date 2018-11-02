@@ -10,6 +10,8 @@ run them via 'docker stack deploy'. Examples:
 far Docker doesn't provide a way to assign static IPs (or separate DNS
 host names) via compose in swarm mode.
 
+* haproxy-keepalived needs to run on host network, with kernel net-admin capability
+
 * mt-daapd (iTunes server) needs to run on host network for mDNS (avahi) service
 discovery.
 
