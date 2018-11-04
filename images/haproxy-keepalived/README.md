@@ -12,6 +12,8 @@ Configuration is defined as files in volumes mounted as
 
 * Define your keepalived settings in /etc/keepalived/keepalived.conf; see [man page](https://www.mankier.com/5/keepalived.conf).
 
+See the haproxy-keepalived/examples/ directory under this git repository to get started.
+
 This requires NET_ADMIN privileges. Also, you will need the ip_vs kernel module and ip_nonlocal set on the host running docker engine:
 ```
 echo ip_vs >>/etc/modules.conf
