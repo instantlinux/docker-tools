@@ -7,10 +7,11 @@ managing a software-dev organization using free software. Contents:
 | --------- | ----------- |
 | ansible | build your own docker cluster |
 | images | images which are published to Docker Hub |
+| k8s | container resources in kubernetes yaml format |
 | lib/build | build makefile and tools |
 | services | docker-compose services that can't run in swarm |
 | ssl | PKI certificate tools |
-| stacks | swarm stacks in docker-compose format |
+| stacks | container resources in docker-compose format |
 
 Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
 
@@ -20,13 +21,13 @@ Stack definitions include:
 
 | Service | Version | Notes |
 | --- | --- | --- |
-| artifactory | ** | |
-| gitlab | ** | |
-| git-pull | [![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") | |
-| jenkins | [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") | sync git repo across swarm |
-| jira | ** | |
+| artifactory | ** | binary repo |
+| gitlab | ** | CI server and git repo |
+| git-pull | [![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") | sync git repo across swarm |
+| jenkins | [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") | CI server |
+| jira | ** | ticket tracking |
 | mariadb-galera | [![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
-| nexus | ** | |
+| nexus | ** | binary repo with docker registry |
 | wordpress | ** | |
 
 **Networking and support**

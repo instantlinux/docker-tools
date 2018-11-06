@@ -1,0 +1,5 @@
+---
+- name: Restart kubernetesd
+  service:
+    name: "{{ kubernetes.service.name }}"
+    state: restarted

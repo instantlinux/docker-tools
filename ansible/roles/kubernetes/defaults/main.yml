@@ -1,0 +1,19 @@
+---
+
+kernel_modules: {}
+
+k8s_defaults:
+  apt_repo:
+    # TODO use {{ ansible_distribution_release }}
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  service:
+    enabled: yes
+    name: "{{ 'kubernetes' if ansible_os_family == 'Debian' else 'kubernetesd' }}"
+    state: restarted
+
+k8s_override: {}
+k8s: "{{ k8s_defaults | combine(k8s_override) }}"
+
+ubuntu_packages:
+  - kubeadm

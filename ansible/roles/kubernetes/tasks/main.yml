@@ -1,0 +1,32 @@
+---
+- name: k8s repo key
+  apt_key:
+    url: "{{ k8s.apt_repo.url }}"
+
+- name: k8s repo
+  apt_repository:
+    filename: k8s
+    repo: "{{ k8s.apt_repo.repo }}"
+
+- name: Install system packages
+  apt:
+    name: "{{ ubuntu_packages }}"
+  when: ansible_os_family == 'Debian'
+
+- name: Load kernel modules
+  modprobe:
+    name: "{{ item }}"
+  with_items: "{{ kernel_modules }}"
+
+- name: Add kernel modules to /etc/modules-load.d
+  copy:
+    content: "{{ kernel_modules | join('\n') | string }}"
+    dest: /etc/modules-load.d/network.conf
+
+- name: Turn swap off
+  command: swapoff --all
+
+#- name: k8s service
+#  service:
+#    enabled: "{{ k8s.service.enabled }}"
+#    name: "{{ k8s.service.name }}"
