@@ -21,7 +21,7 @@ echo net.ipv4.ip_nonlocal_bind=1 >/etc/sysctl.d/99-haproxy.conf
 sysctl -p /etc/sysctl.d/99-haproxy.conf
 ```
 
-After starting this service using _docker-compose_, you can connect to http://<host>:8080/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below.
+After starting this service using _kubectl apply_ or _docker-compose_, you can connect to http://<host>:<port>/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below.
 
 ### Variables
 

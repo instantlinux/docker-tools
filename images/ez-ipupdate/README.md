@@ -5,10 +5,12 @@ Dynamic-DNS client - set up for Docker Swarm to ensure it's always running.
 
 First create a secret:
 
-    echo user:pw | docker secret create ez-ipupdate-user -
+    echo -n user:pw ez-ipudate-user
+    kubectl create secret generic ez-ipupdate-user --from-file=./ez-ipupdate-user
+    # or #
+    docker secret create ez-ipupdate-user ez-ipupdate-user
 
-Then deploy this service, see the example docker-compose.yml. Available
-environment variables are:
+Then deploy this service, see the example kubernetes.yaml / docker-compose.yml files. Available environment variables are:
 
 | Variable | Description |
 | -------- | ----------- |

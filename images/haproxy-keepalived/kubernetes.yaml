@@ -1,0 +1,56 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: KEEPALIVED_CONFIG_ID, value: $KEEPALIVED_CONFIG_ID }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        securityContext:
+          capabilities:
+            add: [ NET_ADMIN ]
+        volumeMounts:
+        - name: haproxy
+          mountPath: /etc/haproxy.d
+          readOnly: true
+        - name: keepalived
+          mountPath: /etc/keepalived/keepalived.conf
+          readOnly: true
+        - name: secret
+          mountPath: /run/secrets/haproxy-stats-password
+          readOnly: true
+          subPath: haproxy-stats-password
+      hostNetwork: true
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: haproxy
+        hostPath: { path: $ADMIN_PATH/haproxy/etc }
+      - name: keepalived
+        hostPath: { path: $ADMIN_PATH/keepalived/etc/keepalived.conf }
+      - name: secret
+        secret:
+          secretName: haproxy-stats-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  ports:
+  - { port: $PORT_HAPROXY_STATS, targetPort: 8080 }
+  selector:
+    app.kubernetes.io/name: $K8S_NAMESPACE

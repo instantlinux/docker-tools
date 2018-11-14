@@ -22,7 +22,7 @@ ENV ANONYMOUS_DISABLE=on \
     WXUSER_UID=2060 \
     TZ=UTC
 
-RUN apk add --update --no-cache bash dcron imagemagick ncftp
+RUN apk add --update --no-cache bash dcron imagemagick ncftp libressl2.7-libcrypto@edge
 
 VOLUME $UPLOAD_PATH
 

@@ -1,6 +1,6 @@
 ## Practical Docker Tools
 
-This repo is a collection of images and swarm stack definitions for
+This repo is a collection of images and container resource definitions for
 managing a software-dev organization using free software. Contents:
 
 | Directory | Description |
@@ -15,7 +15,7 @@ managing a software-dev organization using free software. Contents:
 
 Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
 
-Stack definitions include:
+Resource definitions include:
 
 **Developer infrastructure**
 

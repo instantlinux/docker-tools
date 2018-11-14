@@ -5,9 +5,9 @@ The Network UPS Tools (nut) package in an Alpine container, with enough configur
 
 ### Usage
 
-See the docker-compose.yml file provided here in the source directory; this needs to run in privileged mode in order to access USB devices.
+See the kubernetes.yaml / docker-compose.yml files provided here in the source directory; this needs to run in privileged mode in order to access USB devices.
 
-Pick a random password for the API user and place it in a Docker secret (if you're not using swarm, put it in the filepath as shown at bottom of docker-compose.yml, e.g. /var/adm/admin/secrets/nut-upsd-password).
+Pick a random password for the API user and place it in a Docker secret (if you're not using swarm or kubernetes, put it in the filepath as shown at bottom of docker-compose.yml, e.g. /var/adm/admin/secrets/nut-upsd-password).
 
 This will expose TCP port 3493; to reach it with the standard Nagios plugin, set up a service to invoke:
 

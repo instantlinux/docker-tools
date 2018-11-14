@@ -1,0 +1,34 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: SERVER_BANNER, value: '%h Firefly MP3 via Docker' }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        volumeMounts:
+        - name: cache
+          mountPath: /var/cache/forked-daapd
+        - name: music
+          mountPath: /srv/music
+          readOnly: true
+      hostNetwork: true
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: cache
+        emptyDir: {}
+      - name: music
+        hostPath: { path: $MT_DAAPD_PATH }

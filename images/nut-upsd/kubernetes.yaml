@@ -1,0 +1,44 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: SERIAL, value: $UPS_1_SERIAL }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: secret
+          mountPath: /run/secrets/nut-upsd-password
+          readOnly: true
+          subPath: nut-upsd-password
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: secret
+        secret:
+          secretName: nut-upsd-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  ports:
+  - { port: $PORT_UPSD_1, targetPort: 3493 }
+  selector:
+    app.kubernetes.io/name: $K8S_NAMESPACE

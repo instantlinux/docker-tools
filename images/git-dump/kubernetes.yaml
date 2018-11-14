@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: API_TOKEN_SECRET, value: git.$MYDOMAIN-api-token }
+        - { name: REPO_PREFIX, value: "git@git.$MYDOMAIN:richb/" }
+        - { name: SSH_PORT, value: "$PORT_GITLAB_SSH" }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/git-dump:latest
+        volumeMounts:
+        - mountPath: /var/backup
+          name: ${SERVICE_NAME}-backup
+        - mountPath: /var/log
+          name: ${SERVICE_NAME}-logs
+        - name: secret-sshkey
+          mountPath: /run/secrets/git-dump_sshkey
+          readOnly: true
+          subPath: git-dump-sshkey
+        - name: secret-token
+          mountPath: /run/secrets/git.$MYDOMAIN-api-token
+          readOnly: true
+          subPath: git.$MYDOMAIN-api-token
+      hostname: $SERVICE_NAME
+      nodeSelector:
+        data-sync: primary
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: ${SERVICE_NAME}-backup
+        persistentVolumeClaim:
+          claimName: ${SERVICE_NAME}-backup
+      - name: ${SERVICE_NAME}-logs
+        persistentVolumeClaim:
+          claimName: ${SERVICE_NAME}-logs
+      - name: secret-sshkey
+        secret:
+          secretName: git-dump-sshkey
+      - name: secret-token
+        secret:
+          secretName: git.$MYDOMAIN-api-token

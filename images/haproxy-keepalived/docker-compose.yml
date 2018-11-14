@@ -4,6 +4,7 @@ services:
 
   app:
     image: ${REGISTRY_URI:-instantlinux}/haproxy-keepalived:latest
+    restart: always
     environment:
       KEEPALIVE_CONFIG_ID: ${KEEPALIVED_CONFIG_ID:-main}
       TZ: ${TZ:-UTC}
