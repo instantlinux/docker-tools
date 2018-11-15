@@ -1,4 +1,4 @@
-## jenkins-master
+## jenkins-slave
 [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Commit badge")
 
 An image with basic build tools (python/gcc) for Jenkins
