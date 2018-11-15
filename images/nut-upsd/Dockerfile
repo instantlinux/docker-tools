@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG NUT_VERSION=2.7.4-r5
+ARG NUT_VERSION=2.7.4-r6
 ENV API_USER=upsmon \
     DESCRIPTION=UPS \
     DRIVER=usbhid-ups \
@@ -25,7 +25,7 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
     echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \
     apk add --update nut@testing=$NUT_VERSION \
-      libressl2.7-libcrypto@edge libressl2.7-libssl@edge
+      libcrypto1.1@edge libssl1.1@edge net-snmp-libs@edge
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/

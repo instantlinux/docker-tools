@@ -1,4 +1,4 @@
-FROM instantlinux/proftpd:1.3.6-r5
+FROM instantlinux/proftpd:1.3.6-r6
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -22,7 +22,7 @@ ENV ANONYMOUS_DISABLE=on \
     WXUSER_UID=2060 \
     TZ=UTC
 
-RUN apk add --update --no-cache bash dcron imagemagick ncftp libressl2.7-libcrypto@edge
+RUN apk add --update --no-cache bash dcron imagemagick ncftp
 
 VOLUME $UPLOAD_PATH
 
