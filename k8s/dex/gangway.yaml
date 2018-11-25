@@ -1,0 +1,121 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gangway
+  namespace: auth-system
+data:
+  gangway.yaml: |
+    clusterName: "Inkubate"
+    apiServerURL: "https://10.10.40.33:6443"
+    authorizeURL: "https://auth.k8s.inkubate.io/auth"
+    tokenURL: "https://auth.k8s.inkubate.io/token"
+    clientID: "oidc-auth-client"
+    clientSecret: "***********"
+    redirectURL: "https://kubectl.k8s.inkubate.io/callback"
+    scopes: ["openid", "profile", "email", "offline_access"]
+    usernameClaim: "email"
+    emailClaim: "email"
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: gangway
+  namespace: auth-system
+  labels:
+    app: gangway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gangway
+  strategy:
+  template:
+    metadata:
+      labels:
+        app: gangway
+        revision: "1"
+    spec:
+      containers:
+        - name: gangway
+          image: gcr.io/heptio-images/gangway:v2.0.0
+          imagePullPolicy: Always
+          command: ["gangway", "-config", "/gangway/gangway.yaml"]
+          env:
+            - name: GANGWAY_SESSION_SECURITY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gangway-key
+                  key: sesssionkey
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
+          volumeMounts:
+            - name: gangway
+              mountPath: /gangway/
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 1
+            periodSeconds: 60
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: gangway
+          configMap:
+            name: gangway
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: gangway-svc
+  namespace: auth-system
+  labels:
+    app: gangway
+spec:
+  type: ClusterIP
+  ports:
+    - name: "http"
+      protocol: TCP
+      port: 80
+      targetPort: "http"
+  selector:
+    app: gangway
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gangway
+  namespace: auth-system
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: "letsencrypt-production"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+  - secretName: gangway
+    hosts:
+    - kubectl.k8s.inkubate.io
+  rules:
+  - host: kubectl.k8s.inkubate.io
+    http:
+      paths:
+      - backend:
+          serviceName: gangway-svc
+          servicePort: http

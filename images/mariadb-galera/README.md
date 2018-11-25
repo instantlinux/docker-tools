@@ -1,10 +1,7 @@
 ## mariadb-galera
 [![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
 
-MariaDB 10.3 with automatic cluster generation under Swarm using named
-volumes for data persistence. This has robust bootstrap logic based on
-MariaDB / Galera documentation for automated cluster create / join
-operations.
+MariaDB 10.3 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 
 ### Variables
 
@@ -23,14 +20,28 @@ operations.
 
 ### Usage
 
-Create a random root password and SST secret:
-~~~
-    PW=`uuidgen` ; echo $PW
-    echo -n $PW | docker secret create mysql-root-password -
-    echo -n $(uuidgen) | docker secret create sst-auth-password -
-~~~
+Create a random root password:
+```
+SECRET=mysql-root-password
+PW=$(uuidgen | base64)
+cat >/dev/shm/new.yaml <<EOT
+---
+apiVersion: v1
+data:
+  $SECRET: $PW
+kind: Secret
+metadata:
+  name: $SECRET
+  namespace: \$K8S_NAMESPACE
+type: Opaque
+EOT
+sekret enc /dev/shm/new.yaml >secrets/$SECRET
+rm /dev/shm/new.yaml
+```
+Do the same for an sst-auth-password.
+
 Set any local my.cnf values in files under a volume mount for
-/etc/mysql/my.cnf.d.
+/etc/mysql/my.cnf.d (mapped as $ADMIN_PATH/mariadb/etc/).
 
 ### Networking
 
@@ -62,14 +73,16 @@ that log.
 
 ### Notes
 
-When creating this image, DB clustering under Docker Swarm was still
-in its infancy and I could not find a clustering solution that would
-automatically restart without problems (like split-brain, or just
-never coming up) upon a simple "docker stack deploy ; docker stack rm
-; docker stack deploy" repeated test cycle. This addresses that
-problem, using a minimal distro (tried Alpine Linux, wound up having
-to use debian). I like MariaDB better than MySQL / Percona solutions,
-after a few years of running MariaDB and a decade+ of running MySQL.
+When creating this image (in early 2017), DB clustering under Docker
+Swarm was still in its infancy and I could not find a clustering
+solution that would automatically restart without problems (like
+split-brain, or just never coming up) upon a simple "docker stack
+deploy ; docker stack rm ; docker stack deploy" repeated test
+cycle. This addresses that problem, using a minimal distro (tried
+Alpine Linux, wound up having to use debian). I like MariaDB better
+than MySQL / Percona solutions, after a few years of running MariaDB
+and a decade+ of running MySQL. A couple years later, there's still no
+better alternative.
 
 Galera is finicky upon restarts so it requires a fair amount of logic
 to handle edge cases.
@@ -80,7 +93,7 @@ discovery and master election at restart.
 
 ### Setting up etcd
 
-A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
+See the k8s/Makefile for a _make etcd_ to start	etcd using helm under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
 
 ### Credits
 

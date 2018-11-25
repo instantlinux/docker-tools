@@ -1,0 +1,68 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: DB_HOST, value: $DB_HOST }
+        - { name: NS_SERVERS, value: "$NS_SERVERS" }
+        - { name: RBL_DOMAIN, value: $RBL_DOMAIN }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/rbldns
+          name: data
+        - name: mysql-blacklist-user
+          mountPath: /run/secrets/mysql-blacklist-user
+          readOnly: true
+          subPath: mysql-blacklist-user
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: mysql-blacklist-user
+        secret:
+          secretName: mysql-blacklist-user
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  type: NodePort
+  clusterIP: $BLACKLIST_IP
+  ports:
+  - { port: $PORT_BLACKLIST, protocol: UDP, targetPort: 53 }
+  selector:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"

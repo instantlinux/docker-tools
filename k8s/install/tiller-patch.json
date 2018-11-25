@@ -1,0 +1,14 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [{
+          "name": "tiller",
+          "ports": [],
+          "command": ["/tiller"],
+          "args": ["--listen=localhost:44134"]
+        }]
+      }
+    }
+  }
+}

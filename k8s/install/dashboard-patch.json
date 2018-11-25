@@ -1,0 +1,14 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [{
+          "name": "kubernetes-dashboard",
+          "args": [
+            "--auto-generate-certificates",
+            "--token-ttl", "120"]
+        }]
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: auth-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        k8s-app: oauth2-proxy
+    spec:
+      containers:
+      - args:
+        - --cookie-secure=false
+        - --provider=oidc
+        - --client-id=oidc-auth-client
+        - --client-secret=***********
+        - --oidc-issuer-url=https://auth.k8s.inkubate.io/
+        - --http-address=0.0.0.0:8080
+        - --upstream=file:///dev/null
+        - --email-domain=*
+        - --set-authorization-header=true
+        env:
+        # docker run -ti --rm python:3-alpine python -c 'import secrets,base64; print(base64.b64encode(base64.b64encode(secrets.token_bytes(16))));'
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: ***********
+        image: sguyennet/oauth2-proxy:header-2.2
+        imagePullPolicy: Always
+        name: oauth2-proxy
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: auth-system
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    k8s-app: oauth2-proxy
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: "letsencrypt-production"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: oauth-proxy
+  namespace: auth-system
+spec:
+  rules:
+  - host: dashboard.k8s.inkubate.io
+    http:
+      paths:
+      - backend:
+          serviceName: oauth2-proxy
+          servicePort: 8080
+        path: /oauth2
+  tls:
+  - hosts:
+    - dashboard.k8s.inkubate.io
+    secretName: kubernetes-dashboard-external-tls

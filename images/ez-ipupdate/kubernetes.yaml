@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   template:
@@ -22,6 +23,9 @@ spec:
           mountPath: /run/secrets/ez-ipupdate-user
           readOnly: true
           subPath: ez-ipupdate-user
+      dnsConfig:
+        options:
+        - { name: ndots }
       imagePullSecrets:
       - name: regcred
       volumes:

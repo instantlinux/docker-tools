@@ -25,8 +25,26 @@
 
 - name: Turn swap off
   command: swapoff --all
+  changed_when: false
 
-#- name: k8s service
-#  service:
-#    enabled: "{{ k8s.service.enabled }}"
-#    name: "{{ k8s.service.name }}"
+- name: Sysctl tuning parameters
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+  with_dict: "{{ sysctl }}"
+
+- name: Set up master
+  include: master.yml
+  when: k8s.master
+
+- name: Join cluster
+  include: join.yml
+  when: not k8s.master
+
+- name: Add kubelet service
+  systemd:
+    name: "{{ k8s.service.name }}"
+    daemon_reload: yes
+    state: "{{ k8s.service.state }}"
+    enabled: "{{ k8s.service.enabled }}"

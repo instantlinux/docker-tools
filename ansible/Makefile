@@ -4,6 +4,9 @@ VDIR ?= $(PWD)/$(VENV)
 test: test_requirements
 	ansible-lint *.yml
 
+k8s-node:
+	ansible-playbook k8s-node.yml
+
 node-setup:
 	ansible-playbook node-setup.yml
 

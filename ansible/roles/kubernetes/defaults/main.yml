@@ -2,18 +2,32 @@
 
 kernel_modules: {}
 
+# Generate your own and put in vault, using kubeadm token create
+vault_k8s_join_token: b0f7b8.8d1767876297d85c
+
 k8s_defaults:
+  admin_config: /etc/kubernetes/admin.conf
   apt_repo:
     # TODO use {{ ansible_distribution_release }}
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  kubeadm_opts: ''
+  master: False
+  master_ip: "{{ hostvars[groups['k8s_master'][0]]['ansible_host'] | default(groups['k8s_master'][0]) }}"
+  pod_network: 10.244.0.0/16
   service:
     enabled: yes
-    name: "{{ 'kubernetes' if ansible_os_family == 'Debian' else 'kubernetesd' }}"
+    name: kubelet
     state: restarted
+  service_network: 10.96.0.0/12
+  version: v1.12.2
 
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
 
+sysctl:
+  net.bridge.bridge-nf-call-iptables: 1
+  vm.swappiness: 0
+  
 ubuntu_packages:
   - kubeadm

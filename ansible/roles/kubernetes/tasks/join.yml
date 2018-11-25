@@ -1,0 +1,20 @@
+---
+- name: Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/pki/ca.crt"
+  register: kubeadm_ca
+
+- name: Reset Kubernetes component
+  command: kubeadm reset --force
+  register: reset_cluster
+  when: not kubeadm_ca.stat.exists
+
+- name: Join to Kubernetes cluster
+  command: >
+    kubeadm join --token {{ vault_k8s_join_token }}
+    --discovery-token-unsafe-skip-ca-verification
+    {{ k8s.master_ip }}:6443
+  register: join_cluster
+  notify:
+  - Recreate kube-dns
+  when: not kubeadm_ca.stat.exists and reset_cluster is succeeded

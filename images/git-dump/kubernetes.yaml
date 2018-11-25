@@ -35,11 +35,14 @@ spec:
           mountPath: /run/secrets/git.$MYDOMAIN-api-token
           readOnly: true
           subPath: git.$MYDOMAIN-api-token
+      dnsConfig:
+        options:
+        - { name: ndots }
       hostname: $SERVICE_NAME
-      nodeSelector:
-        data-sync: primary
       imagePullSecrets:
       - name: regcred
+      nodeSelector:
+        data-sync: primary
       volumes:
       - name: ${SERVICE_NAME}-backup
         persistentVolumeClaim:

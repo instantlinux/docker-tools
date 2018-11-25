@@ -45,6 +45,10 @@
   with_items: "{{ system_certs }}"
   notify: Update CA certificates
 
+- name: Update CA certs
+  command: update-ca-certificates
+  changed_when: False
+
 - name: Thin pool create
   lvol:
     lv: thinpool

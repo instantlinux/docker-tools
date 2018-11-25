@@ -1,0 +1,87 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: CLUSTER_NAME, value: $CLUSTER_NAME }
+        - { name: DISCOVERY_SERVICE, value: "swarm00.ci.net:2379" }
+        - { name: CLUSTER_SIZE, value: "3" }
+        image: $REGISTRY_URI/mariadb-galera:latest
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /etc/mysql/my.cnf.d
+          name: $SERVICE_NAME-config
+          readOnly: true
+        - mountPath: /var/log/mysql
+          name: logs
+        - mountPath: /var/lib/mysql
+          name: data
+        - name: mysql-root-password
+          mountPath: /run/secrets/mysql-root-password
+          readOnly: true
+          subPath: mysql-root-password
+        - name: sst-auth-password
+          mountPath: /run/secrets/sst-auth-password
+          readOnly: true
+          subPath: sst-auth-password
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: $SERVICE_NAME-config
+        hostPath: { path: $ADMIN_PATH/mariadb/etc/ }
+      - name: mysql-root-password
+        secret:
+          secretName: mysql-root-password
+      - name: sst-auth-password
+        secret:
+          secretName: sst-auth-password
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 8Gi
+  - metadata:
+      name: logs
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  ports:
+  - { port: $PORT_DB00, targetPort: 3306 }
+  clusterIP: None
+  selector:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"

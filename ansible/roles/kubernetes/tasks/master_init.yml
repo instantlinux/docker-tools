@@ -1,0 +1,16 @@
+---
+- name: Reset Kubernetes component
+  command: kubeadm reset --force
+  register: reset_cluster
+
+- name: Init Kubernetes cluster
+  shell: >
+    kubeadm init
+    --service-cidr {{ k8s.service_network }}
+    --kubernetes-version {{ k8s.version }}
+    --pod-network-cidr {{ k8s.pod_network }}
+    --token {{ vault_k8s_join_token }}
+    --apiserver-advertise-address {{ k8s.master_ip }}
+    {{ k8s.kubeadm_opts }}
+  register: init_cluster
+  when: reset_cluster is succeeded

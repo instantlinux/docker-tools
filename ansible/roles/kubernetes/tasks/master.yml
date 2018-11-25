@@ -1,0 +1,30 @@
+---
+- name: Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/pki/ca.key"
+  register: kubeadm_ca
+
+- name: Init cluster if needed
+  include_tasks: master_init.yml
+  run_once: yes
+  when: not kubeadm_ca.stat.exists
+
+- name: Get current user
+  local_action: command whoami
+  become: false
+  changed_when: false
+  register: username
+
+- name: Fetch admin.conf
+  fetch:
+    src: "{{ k8s.admin_config }}"
+    dest: /home/{{ username.stdout }}/.kube/
+    flat: yes
+
+- name: Symlink .kube/config
+  local_action:
+    module: file
+    src:  admin.conf
+    dest: /home/{{ username.stdout }}/.kube/config
+    state: link
+  ignore_errors: true
