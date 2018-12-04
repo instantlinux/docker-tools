@@ -1,0 +1,154 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-client
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mp3
+  labels:
+    volume.group: mp3
+# TODO parameterize names/paths and add volume IDs
+#   volume.id: "$VOLUME_ID"
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /pc/MP3
+    server: $NFS_HOST
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mythposters
+  labels:
+    volume.group: mythposters
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/posters
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mytharch1
+  labels:
+    volume.group: mytharch1
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/arch1
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mytharch2
+  labels:
+    volume.group: mytharch2
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/arch2
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mytharch3
+  labels:
+    volume.group: mytharch3
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/arch3
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mytharch4
+  labels:
+    volume.group: mytharch4
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/arch4
+    server: $NFS_HOST
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mytharch5
+  labels:
+    volume.group: mytharch5
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/arch5
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mytharch0
+  labels:
+    volume.group: mytharch0
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/mythtv/pvr02myth
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client

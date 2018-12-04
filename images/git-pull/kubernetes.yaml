@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: GIT_COMMIT, value: master }
+        - { name: GIT_HOST, value: "$GIT_HOST" }
+        - { name: GIT_REPO, value: "$GIT_REPO" }
+        - { name: INTERVAL, value: "60" }
+        image: $REGISTRY_URI/git-pull:latest
+        resources:
+          limits:
+            memory: 64Mi
+        volumeMounts:
+        - name: admin
+          mountPath: /git
+        - name: sshkey
+          mountPath: /run/secrets/git-deploy-sshkey
+          readOnly: true
+          subPath: git-deploy-sshkey
+      imagePullSecrets:
+      - name: regcred
+      dnsConfig:
+        options:
+        - { name: ndots }
+      volumes:
+      - name: sshkey
+        secret:
+          secretName: git-deploy-sshkey
+  volumeClaimTemplates:
+  - metadata:
+      name: admin
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: admin

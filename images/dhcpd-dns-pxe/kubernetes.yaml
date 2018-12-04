@@ -1,0 +1,91 @@
+---
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  # TODO
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: DHCP_NETBIOS_NAME_SERVERS, value: $DHCP_NETBIOS_NAME_SERVERS }
+        - { name: DHCP_RANGE, value: $DHCP_RANGE }
+        - { name: DHCP_SUBNET1, value: $DHCP_SUBNET1 }
+        - { name: DOMAIN, value: $DOMAIN }
+        - { name: DNS_SERVER, value: $DNS_SERVERS }
+        # { name: DNS_UPSTREAM, value: $DNS_UPSTREAM }
+        - { name: NTP_SERVER, value: $NTP_SERVERS }
+        - { name: PORT_DNSMASQ_DNS, value: "$PORT_DNSMASQ_DNS" }
+        - { name: SUBNET1_GATEWAY, value: $SUBNET1_GATEWAY }
+        # { name: SUBNET1_INTERFACE, value: $SUBNET1_INTERFACE }
+        # TODO
+        - { name: SUBNET1_INTERFACE, value: enp0s3 }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        securityContext:
+          capabilities:
+            add: [ NET_ADMIN ]
+        volumeMounts:
+        - mountPath: /tftpboot/pxelinux
+          name: pxe
+          readOnly: true
+          subPath: $SERVICE_NAME/pxelinux
+        - mountPath: /etc/dhcpd.d/local
+          name: dhcpconfig
+          readOnly: true
+          subPath: services/$SERVICE_NAME/etc/dhcpd.d
+        - mountPath: /etc/dnsmasq.d/local
+          name: dnsconfig
+          readOnly: true
+          subPath: services/$SERVICE_NAME/etc/dnsmasq.d
+        - name: leases
+          mountPath: /var/lib/misc
+      hostNetwork: true
+      imagePullSecrets:
+      - name: regcred
+      serviceAccountName: $K8S_NAMESPACE-privileged
+      volumes:
+      - name: pxe
+        hostPath: { path: $PATH_SHR }
+      - name: dhcpconfig
+        hostPath: { path: $PATH_ADM }
+      - name: dnsconfig
+        hostPath: { path: $PATH_ADM }
+  volumeClaimTemplates:
+  - metadata:
+      name: leases
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-dns
+  namespace: $K8S_NAMESPACE
+spec:
+  type: NodePort
+  clusterIP: $DHCPD_DNS_IP
+  ports:
+  - { port: 53, protocol: UDP, targetPort: $PORT_DNSMASQ_DNS }
+  selector:
+    app.kubernetes.io/name: $K8S_NAMESPACE
+    release: "0.1"

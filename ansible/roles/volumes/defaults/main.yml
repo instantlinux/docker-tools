@@ -5,12 +5,12 @@
 fs_type: ext4
 
 # LUKS-encrypted volumes
-luks_volumes:
-  backup:
-    inodes: 100
-    path: /var/lib/docker/volumes/backup/_data
-    size: 100
-    vg: data01
+luks_volumes: {}
+# backup:
+#   inodes: 100
+#   path: /var/lib/docker/volumes/backup/_data
+#   size: 100
+#   vg: data01
 
 # Unencrypted local volumes
 local_volumes:

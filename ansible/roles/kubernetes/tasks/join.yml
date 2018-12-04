@@ -11,7 +11,7 @@
 
 - name: Join to Kubernetes cluster
   command: >
-    kubeadm join --token {{ vault_k8s_join_token }}
+    kubeadm join --token {{ vault_k8s.join_token }}
     --discovery-token-unsafe-skip-ca-verification
     {{ k8s.master_ip }}:6443
   register: join_cluster

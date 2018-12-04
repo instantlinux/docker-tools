@@ -1,19 +1,22 @@
 ## Practical Docker Tools
 
-This repo is a collection of images and container resource definitions for
-managing a software-dev organization using free software. Contents:
+Kubernetes is hard--or is it? This repo is a collection of images and
+container resource definitions for managing a software-dev
+organization using Kubernetes or Swarm with tools to make it
+easier. Contents:
 
 | Directory | Description |
 | --------- | ----------- |
-| ansible | build your own docker cluster |
+| ansible | build your own cluster (Kubernetes or Swarm) |
 | images | images which are published to Docker Hub |
 | k8s | container resources in kubernetes yaml format |
 | lib/build | build makefile and tools |
-| services | docker-compose services that can't run in swarm |
-| ssl | PKI certificate tools |
+| services | non-clustered docker-compose services |
+| ssl | PKI certificate tools (deprecated by k8s) |
 | stacks | container resources in docker-compose format |
 
 Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
+Find more details about the Kubernetes bare-metal installer in [k8s/README](k8s/README.md).
 
 Resource definitions include:
 
@@ -23,7 +26,7 @@ Resource definitions include:
 | --- | --- | --- |
 | artifactory | ** | binary repo |
 | gitlab | ** | CI server and git repo |
-| git-pull | [![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") | sync git repo across swarm |
+| admin-git | [![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") | sync git repo across swarm |
 | jenkins | [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") | CI server |
 | jira | ** | ticket tracking |
 | mariadb-galera | [![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|

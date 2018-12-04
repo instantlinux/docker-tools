@@ -16,12 +16,24 @@
 - name: Load kernel modules
   modprobe:
     name: "{{ item }}"
-  with_items: "{{ kernel_modules }}"
+  with_items: "{{ k8s_kernel_modules }}"
 
 - name: Add kernel modules to /etc/modules-load.d
   copy:
-    content: "{{ kernel_modules | join('\n') | string }}"
+    content: "{{ k8s_kernel_modules | join('\n') | string }}"
     dest: /etc/modules-load.d/network.conf
+
+- name: Look for swap entries
+  shell: grep swap /etc/fstab | awk '{ print $1; }'
+  register: swapdevs
+
+- name: Disable swap
+  mount:
+    fstype: swap
+    path: none
+    src: "{{ item }}"
+    state: absent
+  with_items: "{{ swapdevs.stdout_lines }}"
 
 - name: Turn swap off
   command: swapoff --all
@@ -41,6 +53,15 @@
 - name: Join cluster
   include: join.yml
   when: not k8s.master
+
+- name: Add RequiresMountsFor to kubelet.service
+  replace:
+    dest: /lib/systemd/system/kubelet.service
+    regexp: "^\\[Unit\\]$"
+    replace: >
+      [Unit] 
+      \n# Added by Ansible
+      \nRequiresMountsFor=/var/lib/kubelet
 
 - name: Add kubelet service
   systemd:

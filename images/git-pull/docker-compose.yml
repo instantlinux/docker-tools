@@ -14,7 +14,7 @@ services:
     volumes:
     - admin:/git
     secrets:
-    - git-deploy_sshkey
+    - git-deploy-sshkey
     deploy:
       mode: global
       update_config:
@@ -29,5 +29,5 @@ networks:
     external:
       name: app_net
 secrets:
-  git-deploy_sshkey:
+  git-deploy-sshkey:
     external: true

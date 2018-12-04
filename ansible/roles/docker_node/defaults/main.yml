@@ -40,6 +40,8 @@ docker_defaults:
 docker_override: {}
 docker: "{{ docker_defaults | combine(docker_override) }}"
 
+docker_volumewait: /var/lib/docker
+
 # Set non_stock to True to override your distro's kernel
 kernel:
   long_ver: 4.15.0-041500.201802011154

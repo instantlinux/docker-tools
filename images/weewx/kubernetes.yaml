@@ -1,0 +1,88 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: ALTITUDE, value: "100, foot" }
+        - { name: DB_HOST, value: $DB_HOST }
+        - { name: DB_USER, value: wx }
+        - { name: LATITUDE, value: "37.75" }
+        - { name: LONGITUDE, value: "-122.4" }
+        - { name: LOCATION, value: "The Castro, San Francisco, CA" }
+        - { name: RSYNC_DEST, value: $WX_RSYNC_DEST }
+        - { name: RSYNC_HOST, value: $WX_RSYNC_HOST }
+        - { name: RSYNC_PORT, value: "$PORT_WX_SSH" }
+        - { name: SKIN, value: WeeGreen }
+        - { name: STATION_ID, value: $WX_STATION_ID }
+        - { name: SYSLOG_DEST, value: "@@$RSYSLOGD_HOST:$PORT_RSYSLOGD" }
+        - { name: TZ, value: $TZ }
+        - { name: TZ_CODE, value: "4" }
+        - { name: XTIDE_LOCATION, value: San Francisco }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        # TODO: better security, see
+        # https://github.com/kubernetes/kubernetes/issues/60748
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: usb
+          mountPath: /dev/ttyUSB0
+        - name: var
+          mountPath: /var/www/weewx
+        - name: weewx-db-password
+          mountPath: /run/secrets/weewx-db-password
+          readOnly: true
+          subPath: weewx-db-password
+        - name: weewx-rsync-sshkey
+          mountPath: /run/secrets/weewx-rsync-sshkey
+          readOnly: true
+          subPath: weewx-rsync-sshkey
+        - name: weewx-wunderground-apikey
+          mountPath: /run/secrets/weewx-wunderground-apikey
+          readOnly: true
+          subPath: weewx-wunderground-apikey
+        - name: weewx-wunderground-password
+          mountPath: /run/secrets/weewx-wunderground-password
+          readOnly: true
+          subPath: weewx-wunderground-password
+      imagePullSecrets:
+      - name: regcred
+      nodeSelector:
+        service.$SERVICE_NAME: allow
+      volumes:
+      - name: usb
+        hostPath:
+          path: /dev/ttyUSB0
+      - name: var
+        emptyDir: { medium: Memory }
+      - name: weewx-db-password
+        secret:
+          secretName: weewx-db-password
+      - name: weewx-rsync-sshkey
+        secret:
+          secretName: weewx-rsync-sshkey
+      - name: weewx-wunderground-apikey
+        secret:
+          secretName: weewx-wunderground-apikey
+      - name: weewx-wunderground-password
+        secret:
+          secretName: weewx-wunderground-password

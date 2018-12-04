@@ -1,9 +1,13 @@
 ---
 
-kernel_modules: {}
+k8s_kernel_modules: {}
 
-# Generate your own and put in vault, using kubeadm token create
-vault_k8s_join_token: b0f7b8.8d1767876297d85c
+# Generate your own and put in vault
+#   encryption_key: any 32-byte string
+#   join_token: use kubeadm token create
+vault_k8s:
+  encryption_key: 01234567890123456789012345678901
+  join_token: b0f7b8.8d1767876297d85c
 
 k8s_defaults:
   admin_config: /etc/kubernetes/admin.conf
@@ -20,7 +24,7 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: v1.12.2
+  version: v1.13.0
 
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
@@ -31,3 +35,5 @@ sysctl:
   
 ubuntu_packages:
   - kubeadm
+
+ubuntu_package_additions: []

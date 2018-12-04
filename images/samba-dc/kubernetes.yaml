@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: DOMAIN_ACTION, value: join }
+        - { name: INTERFACES, value: $SAMBADC_INTERFACES }
+        - { name: REALM, value: $SAMBA_REALM }
+        - { name: TZ, value: $TZ }
+        - { name: WORKGROUP, value: $SAMBA_WORKGROUP }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        volumeMounts:
+        - name: etc
+          mountPath: /etc/samba
+        - name: var
+          mountPath: /var/lib/samba
+        - name: samba-admin-password
+          mountPath: /run/secrets/samba-admin-password
+          readOnly: true
+          subPath: samba-admin-password
+      hostname: $SAMBADC_HOSTNAME
+      hostNetwork: true
+      imagePullSecrets:
+      - name: regcred
+      nodeSelector:
+        service.$SERVICE_NAME: allow
+      serviceAccountName: $K8S_NAMESPACE-privileged
+      volumes:
+      - name: samba-admin-password
+        secret:
+          secretName: samba-admin-password
+  volumeClaimTemplates:
+  - metadata:
+      name: etc
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: var
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi

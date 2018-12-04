@@ -1,0 +1,63 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: GID, value: "$RAINLOOP_GID" }
+        - { name: UID,  value: "$RAINLOOP_UID" }
+        - { name: LOG_TO_STDOUT, value: "true" }
+        image: hardware/rainloop:$VERSION_RAINLOOP
+        ports:
+        - containerPort: 8888
+        volumeMounts:
+        - name: data
+          mountPath: /rainloop/data
+      volumes:
+      - name: data
+        hostPath: { path: $SHARE_PATH/rainloop/data }
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-ingress
+  namespace: $K8S_NAMESPACE
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/app-root: /$SERVICE_NAME
+spec:
+  rules:
+  - host: test1.$DOMAIN
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80
+  tls:
+  - hosts:
+    - test1.$DOMAIN
+    secretName: letsencrypt-certs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  ports:
+  - { port: 80, targetPort: 8888 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME

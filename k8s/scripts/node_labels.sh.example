@@ -1,0 +1,17 @@
+#! /bin/bash
+# This script provides a way to assign node affinity for applications which
+# specify a nodeSelector label
+
+# Customize as desired
+# TODO - parameterize
+
+SUDO="--context=kubernetes-admin@kubernetes"
+
+kubectl $SUDO label node --overwrite kube1.$DOMAIN service.data-sync=allow
+kubectl $SUDO label node --overwrite kube1.$DOMAIN service.git-dump=allow
+kubectl $SUDO label node --overwrite kube1.$DOMAIN service.mythtv-backend=allow
+kubectl $SUDO label node --overwrite kube1.$DOMAIN service.samba-dc=allow
+
+kubectl $SUDO label node --overwrite kube2.$DOMAIN service.git-dump=allow
+kubectl $SUDO label node --overwrite kube2.$DOMAIN service.data-sync=allow
+

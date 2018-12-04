@@ -27,8 +27,25 @@ spec:
       hostNetwork: true
       imagePullSecrets:
       - name: regcred
+      serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: cache
         emptyDir: {}
       - name: music
-        hostPath: { path: $MT_DAAPD_PATH }
+        persistentVolumeClaim:
+          claimName: mp3
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mp3
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mp3
+  storageClassName: nfs-client

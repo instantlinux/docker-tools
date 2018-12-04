@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -24,9 +25,10 @@ spec:
         image: $REGISTRY_URI/git-dump:latest
         volumeMounts:
         - mountPath: /var/backup
-          name: ${SERVICE_NAME}-backup
+          name: backup
+          subPath: $SERVICE_NAME
         - mountPath: /var/log
-          name: ${SERVICE_NAME}-logs
+          name: logs
         - name: secret-sshkey
           mountPath: /run/secrets/git-dump_sshkey
           readOnly: true
@@ -38,18 +40,15 @@ spec:
       dnsConfig:
         options:
         - { name: ndots }
-      hostname: $SERVICE_NAME
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        data-sync: primary
+        service.$SERVICE_NAME: allow
       volumes:
-      - name: ${SERVICE_NAME}-backup
-        persistentVolumeClaim:
-          claimName: ${SERVICE_NAME}-backup
-      - name: ${SERVICE_NAME}-logs
-        persistentVolumeClaim:
-          claimName: ${SERVICE_NAME}-logs
+      - name: backup
+        hostPath: { path: $PATH_BKP }
+      - name: logs
+        emptyDir: {}
       - name: secret-sshkey
         secret:
           secretName: git-dump-sshkey

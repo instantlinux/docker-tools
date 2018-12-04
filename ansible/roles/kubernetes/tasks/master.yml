@@ -15,16 +15,40 @@
   changed_when: false
   register: username
 
+- name: Generate download name for admin.conf (avoid overwrite)
+  set_fact:
+    admin_conf_dest: /home/{{ username.stdout }}/.kube/admin.{{
+      ansible_date_time.iso8601 }}
+
 - name: Fetch admin.conf
   fetch:
     src: "{{ k8s.admin_config }}"
-    dest: /home/{{ username.stdout }}/.kube/
+    dest: "{{ admin_conf_dest }}"
     flat: yes
+    mode: 0400
+
+- name: Symlink .kube/admin.conf
+  local_action:
+    module: file
+    src:  "{{ admin_conf_dest }}"
+    dest: /home/{{ username.stdout }}/.kube/admin.conf
+    state: link
 
 - name: Symlink .kube/config
   local_action:
     module: file
-    src:  admin.conf
+    src:  "{{ admin_conf_dest }}"
     dest: /home/{{ username.stdout }}/.kube/config
     state: link
-  ignore_errors: true
+
+- name: Set up encryption config in path available to kube-apiserver
+  template:
+    src: secrets.conf.j2
+    dest: /etc/kubernetes/pki/secrets.conf
+    mode: 0600
+
+- name: Adjust kube-apiserver config
+  lineinfile:
+    path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    insertafter: etcd-servers=https://127.0.0.1:2379
+    line: '    - --experimental-encryption-provider-config=/etc/kubernetes/pki/secrets.conf'

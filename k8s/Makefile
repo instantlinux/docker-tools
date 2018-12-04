@@ -1,28 +1,55 @@
+# Step 2: configure kubernetes master resources
 #
-# Usage - set up in this sequence:
+# This is the second step of three in kubernetes installation--picks up where
+# kubeadm leaves off, tightening security and setting up the cluster for
+# routine "user-level" administration of a namespace so services can
+# be managed without distributing the kubernetes-admin client key.
+#
+# Usage - after invoking ansible playbook k8s-master, set up in this sequence:
 #   make install
-#     ^^ then copy/paste token: <value> after last line of .kube/config
-#   NODE=(node).domain make persistent_dirs
-#   make persistent
+#   make storage_localdefault
+#   for node in kube1.domain kube2.domain <etc>; do
+#     NODE=$node make persistent_dirs
+#   done
+#   (run step 3: ansible playbook k8s-node)
+#   make node_labels
+#
+# If running a single-node minikube-like installation, do this:
 #   NODE=(master).domain make untaint_master
 #
-# Then:
+# If running a cluster, proceed to step 3. Look for k8s-node playbook in the
+#   ansible directory.
+#
+# Then for routine administration of services defined as resource YAML
+# files here in this directory:
 #   make <service>
 #   ACTION=delete make <service>
+#
+# Storage volumes are direct-attached of type 'local-storage' under a specified
+# path. Two pools are generated for dynamic provisioning, and the following
+# three are set to specific named locations for ease of administration:
+#
+#   admin - read-only continuously synchronized config data per service
+#   backup - use for centralizing backup content per service
+#   share - read-write continuously synchronized across cluster
 
 ACTION         ?= apply
+CLUSTER        ?= kubernetes
+ADMIN_CTX      ?= --context=kubernetes-admin@$(CLUSTER)
 HELM_VERSION   ?= 2.11.0
 SEKRET_VERSION ?= 1.2.1
-IMPORTS         = dashboard flannel ingress-nginx
-STACKS  = $(basename $(wildcard *.yaml install/*.yaml)) \
-          $(addprefix imports/, $(IMPORTS))
-export NODES          ?= $(K8S_NODES)
-export VOL_NUM_SMALL   = 0030
-export VOL_NUM_MEDIUM  = 0010
-export VOL_SIZE_SMALL  = 500Mi
-export VOL_SIZE_MEDIUM = 8Gi
-
+STACKS  = $(basename $(wildcard *.yaml))
 export K8S_INGRESS_NGINX_IP ?= 10.101.1.1
+export K8S_VOLUMES_PATH     ?= /var/lib/docker/k8s-volumes
+export NAMED_VOLUMES        ?= admin backup share
+export NODES                ?= $(K8S_NODES)
+export PATH_ADM              = $(K8S_VOLUMES_PATH)/admin
+export PATH_BKP              = $(K8S_VOLUMES_PATH)/backup
+export PATH_SHR              = $(K8S_VOLUMES_PATH)/share
+export POOL_NUM_MEDIUM       = 0010
+export POOL_NUM_SMALL        = 0030
+export POOL_SIZE_MEDIUM      = 8Gi
+export POOL_SIZE_SMALL       = 500Mi
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -30,35 +57,58 @@ else
   NOTICE=Deploying
 endif
 
-all: imports $(STACKS)
+all: imports $(INSTALL_YAML) $(STACKS)
+
+mariadb-galera::
+	@echo Please specify a specific instance e.g. db03 && exit 1
+
+db00 db01 db02 db03:
+	@echo --$(NOTICE) $@--
+	@SERVICE_NAME=$@ \
+	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
 
 $(STACKS)::
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$(@F) \
 	  envsubst < $@.yaml | kubectl $(ACTION) -f -
 
-db03:
-	@echo --$(NOTICE) $@--
-	@CLUSTER_NAME=$@ \
-	 SERVICE_NAME=$@ \
-	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
-
 ##########
 # Installation
 ##########
-install: install/admin-user install/namespace imports install_imports \
-	install/ingress-nginx-nodeport helm_install secrets sekret show_token
+.PHONY: helm_install imports install node_labels persistent secrets \
+	tiller_install untaint_master
 
-show_token:
-	kubectl -n kube-system describe secret $(shell kubectl -n kube-system \
-	  get secret | grep admin-user | awk '{print $$1}')
-	@echo
-	@echo "** Add above token to .kube/config, and protect against\
-	 prying eyes **"
+IMPORTS      = dashboard flannel ingress-nginx
+INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
+          $(addprefix imports/, $(IMPORTS))
+VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
+
+install: install/admin-user install/namespace install/namespace-user \
+	install/podsecurity storage_localdefault imports install_imports \
+	install/ingress-nginx-nodeport install/k8s-backup install/local-storage \
+	install/logspout extend_dashboard_ttl helm_install sekret \
+	secrets data-sync-ssh volumes/nfs ~/.kube/config.conf persistent
 
 untaint_master:
-	# Allow workload on master (not recommended)
-	kubectl taint nodes $(NODE) node-role.kubernetes.io/master-
+	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'
+	kubectl $(ADMIN_CTX) taint nodes $(NODE) node-role.kubernetes.io/master-
+
+node_labels:
+	./scripts/node_labels.sh
+
+data-sync-ssh:
+	@cd ../images/data-sync && make data-sync || echo Already exists/ignored
+
+~/.kube/config.conf:
+	@./scripts/kube-conf-gen.sh ~/.kube/admin.conf $@ $(ADMIN_CTX) $(CLUSTER)
+	@echo -e \\n'Admin and user context configurations installed in ~/.kube'
+	@echo -e \\n'***** Save a copy of these files and keep secure !!!! *****'
+	@echo -e \\n'***** Do not lose or redistribute admin.conf or admin-user.* !! *****'\\n
+
+$(INSTALL_YAML) $(VOLUMES_YAML)::
+	@echo --$(NOTICE) $@--
+	@SERVICE_NAME=$(@F) \
+	  envsubst < $@.yaml | kubectl $(ADMIN_CTX) $(ACTION) -f -
 
 ##########
 # Storage
@@ -66,30 +116,34 @@ untaint_master:
 persistent:
 	./scripts/persistent.sh $(NODES)
 
-persistent_dirs::
-	ssh $(NODE) sudo 'mkdir -p $$(echo \
-	  /var/lib/docker/k8s-volumes/pv-$(VOL_SIZE_SMALL)-{0001..$(VOL_NUM_SMALL)} \
-	  /var/lib/docker/k8s-volumes/pv-$(VOL_SIZE_MEDIUM)-{0001..$(VOL_NUM_MEDIUM)})'
+persistent_dirs:
+	ssh "$(NODE)" sudo 'mkdir -p $$(echo \
+	  $(K8S_VOLUMES_PATH)/pool-s/pv-$(POOL_SIZE_SMALL)-{0001..$(POOL_NUM_SMALL)} \
+	  $(K8S_VOLUMES_PATH)/pool-m/pv-$(POOL_SIZE_MEDIUM)-{0001..$(POOL_NUM_MEDIUM)}) \
+	  $(K8S_VOLUMES_PATH)/{admin,backup,share}'
 
 storage_localdefault:
-	kubectl patch storageclass local-storage -p \
+	kubectl $(ADMIN_CTX) patch storageclass local-storage -p \
 	  '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
 ##########
 # Helm
 ##########
-helm_install:: /usr/local/bin/helm tiller_protect \
+helm_install: /usr/local/bin/helm tiller_install tiller_protect \
 	~/.helm/repository/cache/bitnami-index.yaml
+
+tiller_install:
+	helm init --kube-context=kubernetes-admin@$(CLUSTER)
 
 # plug ghastly security hole, https://github.com/anguslees/helm-security-post
 tiller_protect:
-	-kubectl create serviceaccount --namespace kube-system tiller
-	-kubectl create clusterrolebinding tiller-cluster-rule \
+	-kubectl $(ADMIN_CTX) create serviceaccount --namespace kube-system tiller
+	-kubectl $(ADMIN_CTX) create clusterrolebinding tiller-cluster-rule \
 	  --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-	kubectl patch deploy --namespace kube-system tiller-deploy \
+	kubectl $(ADMIN_CTX) patch deploy --namespace kube-system tiller-deploy \
 	  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-	-kubectl delete service tiller-deploy --namespace kube-system
-	kubectl patch deployment tiller-deploy --namespace kube-system \
+	-kubectl $(ADMIN_CTX) delete service tiller-deploy --namespace kube-system
+	kubectl $(ADMIN_CTX) patch deployment tiller-deploy --namespace kube-system \
 	  --patch='$(shell cat install/tiller-patch.json)'
 
 /usr/local/bin/helm:
@@ -122,7 +176,7 @@ sekret: /usr/local/bin/sekret
 SECRETS = secrets/*
 secrets: secrets/*
 secrets/*::
-	sekret dec $@ | envsubst | kubectl apply -f -
+	-sekret dec $@ | envsubst | kubectl create -f -
 
 ##########
 # Add-ons
@@ -131,8 +185,9 @@ imports: $(foreach file,$(IMPORTS),imports/$(file).yaml)
 install_imports: $(foreach file, $(IMPORTS), imports/$(file))
 
 # extend annoying default 15-minute timeout
+.PHONY: extend_dashboard_ttl
 extend_dashboard_ttl:
-	kubectl patch deployment kubernetes-dashboard --namespace kube-system \
+	kubectl $(ADMIN_CTX) patch deployment kubernetes-dashboard --namespace kube-system \
 	  --patch='$(shell cat install/dashboard-patch.json)'
 
 imports/dashboard.yaml:
@@ -145,6 +200,12 @@ imports/flannel.yaml:
 imports/ingress-nginx.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 
+# Not used, TODO consider calico network
+imports/weave-net.yaml:
+	curl -sLo $@ https://cloud.weave.works/k8s/net?k8s-version=$(shell kubectl version | base64 | tr -d '\n')
+
 etcd:
-	helm install --name etcd --namespace $(K8S_NAMESPACE) bitnami/etcd
+	helm install --name etcd --namespace $(K8S_NAMESPACE) \
+	  --kube-context=kubernetes-admin@$(CLUSTER) \
+	  bitnami/etcd --set auth.rbac.enabled=false
 	kubectl scale statefulset etcd-etcd --namespace=$(K8S_NAMESPACE) --replicas=3

@@ -9,7 +9,31 @@ enterprise market.
 
 This repo is an attempt to make Kubernetes more approachable for any
 user who wants to get started easily, with a real cluster (not just
-a single-instance minikube setup).
+a single-instance minikube setup) on bare-metal. Most of this will
+probably work in IaaS providers like Google or AWS but the purpose
+of this repo is to set up production-grade K8S with your own servers / VMs.
+
+### Features
+
+The ansible playbook deploys master and node instances with kubeadm,
+with full-disk LUKS encryption for local volumes. The Makefile in
+this directory adds these capabilities which aren't part of the
+kubeadm suite:
+
+* Pod security policies
+* Direct-attached SSD local storage pools
+* Dashboard
+* Non-default namespace with its own service account (full permissions
+  within namespace, limited read-only in kube-system namespaces)
+* Helm with tiller
+* Sekret with encryption
+* Encryption for internal etcd
+* Flannel networking
+* ingress-nginx
+* Letsencrypt certs
+
+Resource yaml files are in standard k8s format, parameterized by simple
+environment-variable substitution.
 
 ### Requirements and cost
 
@@ -38,6 +62,10 @@ by virtualizing the manager on your existing server.
   each node
 * You have a local docker registry, or plan to use a public one
   such as hub.docker.com
+* You want the simplest way to manage kubernetes, with tools like
+  _make_ rather than helm / ksonnet / ansible (I independently opted
+  to learn kubernetes this way, as described in [Using Makefiles and
+  envsubst as an Alternative to Helm and Ksonnet](https://vadosware.io/post/using-makefiles-and-envsubst-as-an-alternative-to-helm-and-ksonnet/) by vados.
 
 ### Repo layout
 
@@ -60,18 +88,26 @@ example:
 master.domain.com
 
 [k8s_nodes]
-master.domain.com
 kube1.domain.com
 kube2.domain.com
 kube3.domain.com
 ```
 
-Then run the ansible playbook to install docker and configure
-nodes. The playbook can generate LUKS-encrypted volume mounts for your
-data; the ansible playbook includes a role that can reference a remote
-volume (I use sshfs for this) that holds the keys under a /masterlock
-directory. Create a group_vars/k8s_nodes.yml file that contains definitions
-like this:
+Choose a namespace and a 32-byte encryption key, and define these
+environment variables with values as desired:
+```
+export DOMAIN=domain.com
+export EDITOR=vi
+export ENCRYPTION_KEY=3zQ#LgGGc9R&9z5@Z^68H6Gz6Q7vQ1z2
+export K8S_NAMESPACE=mynamespace
+export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
+export RSYSLOGD_HOST=syslog.$DOMAIN
+export RSYSLOGD_PORT=514
+export TZ=America/Los_Angeles
+```
+
+Create group_vars/k8s_master.yml and group_vars/k8s_node files
+that contains definitions like this:
 
 ```
 luks_vg: vg01
@@ -84,10 +120,14 @@ luks_volumes:
     vg: "{{ luks_vg }}"
 ```
 
-Launch the playbook thus:
+The ansible playbook k8s-master install dockers and configures
+master. The playbook can generate LUKS-encrypted volume mounts for
+your data as above; the ansible playbook includes a role that can
+reference a remote volume (I use sshfs for this) that holds the keys
+under a /masterlock directory. Build the master thus:
 
 ```
-ansible-playbook k8s-node.yml
+ansible-playbook k8s-master.yml
 ```
 Kubernetes should be up and running at this point, with a bare-minimum
 configuration.
@@ -96,14 +136,8 @@ Set up a local repo to define environment variables. Kubernetes resources
 here are defined in the native YAML format but with one extension: they
 are parameterized by the use of _envsubst_ which allows values to be
 passed in as shell environment variables in the form $VARIABLE_NAME.
-Choose a namespace and a 32-byte encryption key and define them thus:
-```
-export EDITOR=vi
-export ENCRYPTION_KEY=3zQ#LgGGc9R&9z5@Z^68H6Gz6Q7vQ1z2
-export K8S_NAMESPACE=mynamespace
-```
 
-Set a symlink from a directory under this one called secrets to a
+Set a symlink from a directory under this one (k8s/secrets) to a
 subdirectory in your local administrative repo. This is where you will
 store kubernetes secrets, encrypted by a tool called _sekret_.
 
@@ -113,16 +147,46 @@ make install
 ```
 This will add flannel networking, the dashboard, an nginx ingress
 load-balancer, helm and sekret. Create directories for persistent
-volumes for each node:
+volumes for each node, and optionally set node-affinity labels:
 ```
-for node in kube1 kube2 kube3; do
+for node in $K8S_NODES; do
   NODE=$node make persistent_dirs
 done
+make node_labels
 ```
 
-Add the token generated at tail end of the above command to your
-.kube/config file. Verify you can reach the dashboard after running
-_kubectl proxy_ at http://localhost:8001 with the .kube/config file.
+This Makefile generates a sudo context and a default context with
+fewer permissions in your ~/.kube directory.
+
+Verify you can reach the dashboard after running _kubectl proxy_ at
+http://localhost:8001. Verify that you can view the core services
+like this:
+```
+$ kubectl get nodes
+NAME               STATUS   ROLES    AGE   VERSION
+master.domain.com  Ready    master   27m   v1.13.0
+kube1.domain.com   Ready    <none>   16m   v1.13.0
+kube2.domain.com   Ready    <none>   16m   v1.13.0
+$ kubectl get pods --context=sudo
+NAME                                    READY   STATUS    RESTARTS   AGE
+coredns-86c58d9df4-7fzf7                1/1     Running   0          16m
+coredns-86c58d9df4-qs8rc                1/1     Running   0          16m
+etcd-master.domain.com                  1/1     Running   0          26m
+kube-apiserver-master.domain.com        1/1     Running   0          26m
+kube-controller-manager-master.domain.com 1/1   Running   0          25m
+kube-flannel-ds-amd64-24h7l             1/1     Running   0          16m
+kube-flannel-ds-amd64-94fpx             1/1     Running   1          26m
+kube-flannel-ds-amd64-hkmv2             1/1     Running   0          16m
+kube-proxy-2lp59                        1/1     Running   0          16m
+kube-proxy-bxtsm                        1/1     Running   0          16m
+kube-proxy-wk6qw                        1/1     Running   0          26m
+kube-scheduler-master.domain.com        1/1     Running   0          25m
+kubernetes-dashboard-769df7fb6d-qdzjm   1/1     Running   0          26m
+logspout-nq95g                          1/1     Running   0          26m
+logspout-tbz65                          1/1     Running   0          16m
+logspout-whmhb                          1/1     Running   0          16m
+tiller-deploy-6b6d4b6895-d8mxt          1/1     Running   0          26m
+```
 
 Check /var/log/syslog, and the output logs of pods that you can access
 via the Kubernetes console, to troubleshoot problems.

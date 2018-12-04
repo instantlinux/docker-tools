@@ -1,0 +1,206 @@
+---
+# Adapted from https://pmcgrath.net/using-pod-security-policies-with-kubeadm
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  annotations:
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: runtime/default
+    apparmor.security.beta.kubernetes.io/defaultProfileName: runtime/default
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: docker/default
+    seccomp.security.alpha.kubernetes.io/defaultProfileName: docker/default
+  name: default
+spec:
+  allowedCapabilities: []
+  # TODO: turn off hostPath mounts, use NFS instead
+  allowedHostPaths:
+  - pathPrefix: /pc/Pictures
+    readOnly: true
+  - pathPrefix: $PATH_ADM
+    readOnly: true
+  - pathPrefix: $PATH_BKP
+  - pathPrefix: $PATH_SHR
+  allowPrivilegeEscalation: false
+  fsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: 1
+        max: 65535
+  hostIPC: false
+  hostNetwork: false
+  hostPID: false
+  privileged: false
+  readOnlyRootFilesystem: false
+  runAsUser:
+    rule: MustRunAsNonRoot
+  seLinux:
+    rule: RunAsNonRoot
+  supplementalGroups:
+    rule: RunAsNonRoot
+    ranges:
+      - min: 1
+        max: 65535
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - hostPath
+  - persistentVolumeClaim
+  - projected
+  - secret
+  hostNetwork: false
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: restricted-psp
+rules:
+- apiGroups: [ policy ]
+  resourceNames: [ default ]
+  resources: [ podsecuritypolicies ]
+  verbs: [ use ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: restricted-psp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: restricted-psp
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:authenticated
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+  name: privileged
+spec:
+  allowedCapabilities: [ '*' ]
+  allowPrivilegeEscalation: true
+  allowedHostPaths:
+  - pathPrefix: /pc/Pictures
+    readOnly: true
+  - pathPrefix: $PATH_ADM
+    readOnly: true
+  - pathPrefix: $PATH_BKP
+  - pathPrefix: $PATH_SHR
+  fsGroup:
+    rule: RunAsAny
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
+  hostPorts:
+  - min: 0
+    max: 65535
+  privileged: true
+  readOnlyRootFilesystem: false
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes: [ '*' ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: privileged-psp
+rules:
+- apiGroups: [ policy ]
+  resourceNames: [ privileged ]
+  resources: [ podsecuritypolicies ]
+  verbs: [ use ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kube-system-psp
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: privileged-psp
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:nodes
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts:kube-system
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+  name: approved
+spec:
+  allowedCapabilities: [ NET_ADMIN ]
+  # TODO: turn off hostPath mounts, use NFS instead
+  allowedHostPaths:
+  - pathPrefix: /pc/MP3
+    readOnly: true
+  - pathPrefix: /pc/Pictures
+    readOnly: true
+  - pathPrefix: /var/mythtv
+    readOnly: true
+  allowPrivilegeEscalation: false
+  fsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: 1
+        max: 65535
+  hostIPC: false
+  hostNetwork: true
+  hostPID: false
+  privileged: false
+  readOnlyRootFilesystem: false
+  runAsUser:
+    rule: MustRunAsNonRoot
+  seLinux:
+    rule: RunAsNonRoot
+  supplementalGroups:
+    rule: RunAsNonRoot
+    ranges:
+      - min: 1
+        max: 65535
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - hostPath
+  - persistentVolumeClaim
+  - projected
+  - secret
+  hostNetwork: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: approved-psp
+rules:
+- apiGroups: [ policy ]
+  resourceNames: [ approved ]
+  resources: [ podsecuritypolicies ]
+  verbs: [ use ]

@@ -22,12 +22,14 @@ spec:
           capabilities:
             add: [ NET_ADMIN ]
         volumeMounts:
-        - name: haproxy
+        - name: config
           mountPath: /etc/haproxy.d
           readOnly: true
-        - name: keepalived
+          subPath: services/haproxy/etc
+        - name: config
           mountPath: /etc/keepalived/keepalived.conf
           readOnly: true
+          subPath: services/keepalived/etc/keepalived.conf
         - name: secret
           mountPath: /run/secrets/haproxy-stats-password
           readOnly: true
@@ -35,11 +37,11 @@ spec:
       hostNetwork: true
       imagePullSecrets:
       - name: regcred
+      serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
-      - name: haproxy
-        hostPath: { path: $ADMIN_PATH/haproxy/etc }
-      - name: keepalived
-        hostPath: { path: $ADMIN_PATH/keepalived/etc/keepalived.conf }
+      - name: config
+        persistentVolumeClaim:
+          claimName: admin
       - name: secret
         secret:
           secretName: haproxy-stats-password

@@ -35,3 +35,8 @@
     opts: "{{ item.value.options if 'options' in item.value else 'defaults' }}"
     state: mounted
   with_dict: "{{ network_mounts | combine(local_volumes) }}"
+
+- name: Invoke local crypt-vols startup
+  systemd:
+    name: crypt-vols
+    state: started

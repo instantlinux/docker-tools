@@ -1,0 +1,88 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io.service: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io.service: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io.service: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: DBNAME, value: $DB_MYTHTV }
+        - { name: DBSERVER, value: $DB_HOST }
+        - { name: LOCALHOSTNAME, value: $HOSTNAME_MYTHTV }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        volumeMounts:
+        - name: apache-log
+          mountPath: /var/log/apache2
+        - name: data
+          mountPath: /var/mythdata
+        - name: home
+          mountPath: /home/mythtv
+        - name: videos
+          mountPath: /var/mythtv
+          readOnly: true
+        - name: mythtv-db-password
+          mountPath: /run/secrets/mythtv-db-password
+          readOnly: true
+          subPath: mythtv-db-password
+        - name: mythtv-user-password
+          mountPath: /run/secrets/mythtv-user-password
+          readOnly: true
+          subPath: mythtv-user-password
+      hostname: $HOSTNAME_MYTHTV
+      hostNetwork: true
+      imagePullSecrets:
+      - name: regcred
+      nodeSelector:
+        service.$SERVICE_NAME: allow
+      serviceAccountName: $K8S_NAMESPACE-privileged
+      volumes:
+      - name: videos
+        hostPath:
+          path: /var/mythtv
+          type: Directory
+      - name: mythtv-db-password
+        secret:
+          secretName: mythtv-db-password
+      - name: mythtv-user-password
+        secret:
+          secretName: mythtv-user-password
+  volumeClaimTemplates:
+  - metadata:
+      name: home
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: apache-log
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 400Gi

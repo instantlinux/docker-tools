@@ -1,0 +1,17 @@
+version: "3.1"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/nut-upsd:latest
+    restart: always
+    environment:
+      SERIAL: ${UPS_1_SERIAL}
+    ports:
+    - ${PORT_UPSD_1:-3493}:3493
+    secrets:
+    - nut-upsd-password
+    privileged: true
+
+secrets:
+  nut-upsd-password:
+    file: /var/adm/secrets/nut-upsd-password

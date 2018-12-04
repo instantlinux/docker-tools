@@ -2,8 +2,8 @@
 
 mkdir -p /root/.ssh
 if [ ! -f /root/.ssh/id_rsa ]; then
-  if [ -f /run/secrets/git-deploy_sshkey ]; then
-    cp /run/secrets/git-deploy_sshkey /root/.ssh/id_rsa
+  if [ -f /run/secrets/git-deploy-sshkey ]; then
+    cp /run/secrets/git-deploy-sshkey /root/.ssh/id_rsa
     chmod 400 /root/.ssh/id_rsa
   fi
   host=`echo $GIT_HOST | cut -d : -f 1`

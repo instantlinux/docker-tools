@@ -6,11 +6,13 @@ default:
 
 $(PUBKEY):
 	@bash -c "cd $(TEMPDIR) && umask 077 && \
-	 ssh-keygen -b 2048 -f git-deploy -N '' -q && \
-         cp git-deploy.pub $(PUBKEY) && \
-	 docker secret create git-deploy_sshkey git-deploy || rm $(PUBKEY)"
+	 ssh-keygen -b 2048 -f git-deploy-sshkey -N '' -q && \
+         cp git-deploy-sshkey.pub $(PUBKEY) && \
+	 docker secret create git-deploy-sshkey git-deploy-sshkey || rm $(PUBKEY)"
+	kubectl create secret generic git-deploy-sshkey \
+	  --from-file=./git-deploy-sshkey --namespace=$(K8S_NAMESPACE)
 	@rm -r $(TEMPDIR)
 	@echo "For ssh keypair, see $(PUBKEY)"
-	@docker secret inspect git-deploy_sshkey
+	@docker secret inspect git-deploy-sshkey
 
 include ../../lib/build/Makefile.docker_image

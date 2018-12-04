@@ -1,0 +1,152 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: $K8S_NAMESPACE-user
+  namespace: $K8S_NAMESPACE
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: $K8S_NAMESPACE-privileged
+  namespace: $K8S_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: $K8S_NAMESPACE:full-access-user
+  namespace: $K8S_NAMESPACE
+rules:
+- apiGroups: ["", apps, autoscaling, extensions]
+  resources:
+  - componentstatuses
+  - configmaps
+  - daemonsets
+  - deployments
+  - events
+  - endpoints
+  - horizontalpodautoscalers
+  - ingresses
+  - limitranges
+  - pods
+  - pods/exec
+  - pods/log
+  - podtemplates
+  - persistentvolumes
+  - persistentvolumeclaims
+  - resourcequotas
+  - replicasets
+  - replicationcontrollers
+  - rolebindings
+  - roles
+  - serviceaccounts
+  - services
+  - statefulsets
+  - statefulsets/scale
+  verbs: ["*"]
+- apiGroups: [""]
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - list
+- apiGroups: ["batch"]
+  resources:
+  - jobs
+  - cronjobs
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: $K8S_NAMESPACE:system-user
+rules:
+- apiGroups: [""]
+  resources:
+  - namespaces
+  - nodes
+  - persistentvolumes
+  - pods/status
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups: [""]
+  resources:
+  - services
+  resourceNames:
+  - kubernetes-dashboard
+  - "https:kubernetes-dashboard:"
+  verbs:
+  - get
+  - list
+  - view
+- apiGroups: [""]
+  resources:
+  - services/proxy
+  resourceNames:
+  - kubernetes-dashboard
+  - "https:kubernetes-dashboard:"
+  verbs:
+  - get
+  - list
+  - view
+  - create
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  - roles
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: $K8S_NAMESPACE-user-binding
+  namespace: $K8S_NAMESPACE
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: $K8S_NAMESPACE:full-access-user
+subjects:
+- kind: ServiceAccount
+  name: $K8S_NAMESPACE-user
+  namespace: $K8S_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: $K8S_NAMESPACE:system-user-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: $K8S_NAMESPACE:system-user
+subjects:
+- kind: ServiceAccount
+  name: $K8S_NAMESPACE-user
+  namespace: $K8S_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: $K8S_NAMESPACE:privileged-psp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: approved-psp
+subjects:
+- kind: ServiceAccount
+  name: $K8S_NAMESPACE-privileged
+  namespace: $K8S_NAMESPACE

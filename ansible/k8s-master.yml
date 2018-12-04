@@ -1,0 +1,55 @@
+---
+# Step 1: set up kubernetes master
+#
+# Usage:
+#  Set up hosts inventory and group_vars as suggested below, then:
+#
+#  ansible-playbook k8s-master.yml
+
+# k8s-master and k8s-node are the first and third steps in cluster setup (with
+# single master and as many worker nodes as desired) which runs
+# kubeadm to provide initial installation.  See the Makefile in
+# top-level k8s directory to complete the second step of installation.
+
+# Run the k8s/Makefile and then k8s-node playbook after this.
+
+# Example host inventory, put this in an ansible hosts file:
+#   [k8s_master]
+#   kubernetes.mydomain.com
+#
+# Pick a separate IP address (optional) for the cluster and define group vars:
+#   put this in group_vars/k8s_master.yml:
+#
+# k8s_override:
+#   master: True
+#   master_ip: 192.168.1.10
+# luks_vg: vg01
+# luks_volumes:
+#   docker:
+#     inodes: 100
+#     path: /var/lib/docker
+#     size: 2000
+#     vg: "{{ luks_vg }}"
+#   kubelet:
+#     inodes: 100
+#     path: /var/lib/kubelet
+#     size: 4000
+#     vg: "{{ luks_vg }}"
+# network_mount_defaults: {}
+# network_override:
+#   bridge: br0
+#   vrrp_interface: br0
+#   mode: static
+#   cluster_ip: 192.168.1.10
+
+- hosts: k8s_master
+  become: True
+  force_handlers: True
+  roles:
+  - { role: users, tags: users }
+  - { role: network, tags: network }
+  - { role: volumes, tags: volumes }
+  - { role: docker_node, tags: docker }
+  - { role: monitoring_agent, tags: nagios }
+  - { role: ntp, tags: ntp }
+  - { role: kubernetes, tags: kubernetes }

@@ -6,12 +6,15 @@ container to do this)?
 
 ### Usage
 
-See the docker-compose.yml file for a simple example (add additional
-services to pick up content pulled by this image). A Makefile is
-provided to generate the deploy key as a Docker secret; after doing so,
-upload the new public key to your git server.
+This provides a way to distribute administrative configuration files
+or other content across each instance of a cluster.
 
-This image will continously update a path on each Docker swarm node
+See the kubernetes.yaml / docker-compose.yml file for a simple example
+(add additional services to pick up content pulled by this image). A
+Makefile is provided to generate the deploy key as a Docker secret;
+after doing so, upload the new public key to your git server.
+
+This image will continuously update a path on each Docker cluster node
 from contents of a particular repo; if you define an environment
 variable ADMIN_PATH (or Docker named volume) and place configuration
 files for each service in subdirectories of that repo, this is a handy
@@ -32,6 +35,6 @@ cluster. Note that any Docker mounts must be made with ro
 ### Secrets
 | Secret | Description |
 | ------ | ----------- |
-|git-deploy_sshkey| private half of deploy keypair|
+|git-deploy-sshkey| private half of deploy keypair|
 
 [![](https://images.microbadger.com/badges/license/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "License badge")

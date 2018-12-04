@@ -1,0 +1,1 @@
+../../admin/services/k8s/node_labels.sh

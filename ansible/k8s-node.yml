@@ -1,14 +1,16 @@
 ---
-# set up kubernetes master and worker nodes
+# Step 3: set up kubernetes worker nodes
 #
 # Usage:
 #
 #  ansible-playbook k8s-node.yml
 
-# This only sets up the cluster (with single master and as many worker
-# nodes as desired) and provides the initial kubectl admin
-# config. See the Makefile in top-level k8s directory to complete the
-# installation.
+# k8s-master and k8s-node are the first and third steps in cluster setup (with
+# single master and as many worker nodes as desired) which runs
+# kubeadm to provide initial installation.  See the Makefile in
+# top-level k8s directory to complete the second step of installation.
+
+# Run the k8s-master playbook before this one.
 
 - hosts: k8s_nodes
   become: True
@@ -16,8 +18,8 @@
   roles:
   - { role: users, tags: users }
   - { role: network, tags: network }
+  - { role: volumes, tags: volumes }
   - { role: docker_node, tags: docker }
   - { role: monitoring_agent, tags: nagios }
   - { role: ntp, tags: ntp }
-  - { role: volumes, tags: volumes }
   - { role: kubernetes, tags: kubernetes }

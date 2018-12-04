@@ -1,4 +1,5 @@
-apiVersion: apps/v1beta2
+---
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
@@ -23,12 +24,13 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: DB_HOST, value: $DB_HOST }
-        - { name: NS_SERVERS, value: "$NS_SERVERS" }
+        - { name: NS_SERVERS, value: $NS_SERVERS }
         - { name: RBL_DOMAIN, value: $RBL_DOMAIN }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
-        - containerPort: 3306
+        - containerPort: 53
+          protocol: UDP
         volumeMounts:
         - mountPath: /var/lib/rbldns
           name: data

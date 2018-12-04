@@ -4,20 +4,11 @@ VDIR ?= $(PWD)/$(VENV)
 test: test_requirements
 	ansible-lint *.yml
 
-k8s-node:
-	ansible-playbook k8s-node.yml
+PLAYBOOKS = $(basename $(wildcard *.yml))
+$(PLAYBOOKS):
+	ansible-playbook $(@F).yml
 
-node-setup:
-	ansible-playbook node-setup.yml
-
-volume-setup:
-	ansible-playbook volume-setup.yml
-
-fileserver-setup:
-	ansible-playbook fileserver-setup.yml
-
-join-swarm:
-	ansible-playbook join-swarm.yml
+.PHONY: test test_requirements $(PLAYBOOKS)
 
 python_env: $(VDIR)/bin/python
 

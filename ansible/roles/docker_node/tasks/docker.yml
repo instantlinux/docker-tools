@@ -150,9 +150,9 @@
     dest: /lib/systemd/system/docker.service
     regexp: "^Requires=docker.socket$"
     replace: >
-      Requires=docker.socket #
+      Requires=docker.socket 
       \n# Added by Ansible
-      \nRequiresMountsFor=/var/lib/docker/share/user
+      \nRequiresMountsFor={{ docker_volumewait }}
 
 - name: Reenable systemctl start
   file:

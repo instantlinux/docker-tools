@@ -1,4 +1,5 @@
-apiVersion: apps/v1beta2
+---
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
@@ -22,16 +23,17 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: CLUSTER_NAME, value: $CLUSTER_NAME }
-        - { name: DISCOVERY_SERVICE, value: "swarm00.ci.net:2379" }
+        - { name: CLUSTER_NAME, value: $SERVICE_NAME }
+        - { name: DISCOVERY_SERVICE, value: "etcd-etcd:2379" }
         - { name: CLUSTER_SIZE, value: "3" }
         image: $REGISTRY_URI/mariadb-galera:latest
         ports:
         - containerPort: 3306
         volumeMounts:
         - mountPath: /etc/mysql/my.cnf.d
-          name: $SERVICE_NAME-config
+          name: config
           readOnly: true
+          subPath: mariadb/etc
         - mountPath: /var/log/mysql
           name: logs
         - mountPath: /var/lib/mysql
@@ -47,8 +49,8 @@ spec:
       imagePullSecrets:
       - name: regcred
       volumes:
-      - name: $SERVICE_NAME-config
-        hostPath: { path: $ADMIN_PATH/mariadb/etc/ }
+      - name: config
+        hostPath: { path: $PATH_ADM }
       - name: mysql-root-password
         secret:
           secretName: mysql-root-password

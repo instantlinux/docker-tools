@@ -25,9 +25,10 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /rainloop/data
+          subPath: $SERVICE_NAME/data
       volumes:
       - name: data
-        hostPath: { path: $SHARE_PATH/rainloop/data }
+        hostPath: { path: $PATH_SHR }
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress

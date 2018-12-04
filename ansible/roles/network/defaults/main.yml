@@ -16,7 +16,7 @@ network_defaults:
   nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
   netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
-  swarm_ip: null
+  cluster_ip: null
   vrrp_interface: null
 
 network_override: {}
@@ -33,7 +33,7 @@ ubuntu_packages:
 vrrp:
   VI_1:
     id: 50
-    ip: "{{ network.swarm_ip }}"
+    ip: "{{ network.cluster_ip }}"
     interface: "{{ network.vrrp_interface }}"
     priority: "{{ network.address.split('.')[3] }}"
     unicast_peers: "{{ groups['swarm_nodes'] | map('extract', hostvars,
