@@ -16,7 +16,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
     HONEYPOT_ADDRS=honey@mydomain.com \
     INBOUND_RELAY="by mail.mydomain.com" \
     SPAMLIMIT=12 \
-    SPAMC_HOST=spamc
+    SPAMC_HOST=spamassassin
 
 ARG PYTHON_PIP_VERSION=18.0
 

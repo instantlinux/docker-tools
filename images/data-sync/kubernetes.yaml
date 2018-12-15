@@ -1,23 +1,36 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+spec:
+  clusterIP: None
+  ports:
+  - { port: 22, targetPort: 22 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+    release: "0.1"
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app.kubernetes.io.service: $SERVICE_NAME
+    app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io.service: $SERVICE_NAME
+      app.kubernetes.io/name: $SERVICE_NAME
       release: "0.1"
   serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
-        app.kubernetes.io.service: $SERVICE_NAME
+        app.kubernetes.io/name: $SERVICE_NAME
         release: "0.1"
     spec:
       containers:
@@ -40,14 +53,36 @@ spec:
           mountPath: /etc/unison.d
           readOnly: true
           subPath: services/$SERVICE_NAME
-        - name: etc
-          mountPath: /etc/ssh
-        - name: logs
-          mountPath: /var/log/unison
-        - name: share
-          mountPath: /var/data-sync
-        - name: data-sync-sshkey
-          mountPath: /run/secrets/data-sync-sshkey
+        - mountPath: /etc/ssh
+          name: etc
+        - mountPath: /var/log/unison
+          name: logs
+        - mountPath: /var/data-sync/share
+          name: share
+        - mountPath: /var/data-sync/cloud
+          name: cloud
+        - mountPath: /var/data-sync/dos
+          name: dos
+        - mountPath: /var/data-sync/duplicati
+          name: duplicati
+        - mountPath: /var/data-sync/gitlab
+          name: gitlab
+        - mountPath: /var/data-sync/household
+          name: household
+        - mountPath: /var/data-sync/inbox
+          name: inbox
+        - mountPath: /var/data-sync/jira
+          name: jira
+        - mountPath: /var/data-sync/nexus
+          name: nexus
+        - mountPath: /var/data-sync/user
+          name: user
+        - mountPath: /var/data-sync/webmail
+          name: webmail
+        - mountPath: /var/data-sync/wx
+          name: wx
+        - mountPath: /run/secrets/data-sync-sshkey
+          name: data-sync-sshkey
           readOnly: true
           subPath: data-sync
       dnsConfig:
@@ -90,18 +125,113 @@ spec:
       selector:
         matchLabels:
           volume.group: share
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: $SERVICE_NAME
-  labels:
-    app.kubernetes.io.service: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
-spec:
-  clusterIP: None
-  ports:
-  - { port: 22, targetPort: 22 }
-  selector:
-    app.kubernetes.io.service: $SERVICE_NAME
-    release: "0.1"
+  - metadata:
+      name: cloud
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: cloud
+  - metadata:
+      name: dos
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: dos
+  - metadata:
+      name: duplicati
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: duplicati
+  - metadata:
+      name: gitlab
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: gitlab
+  - metadata:
+      name: household
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: household
+  - metadata:
+      name: inbox
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: inbox
+  - metadata:
+      name: jira
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: jira
+  - metadata:
+      name: nexus
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: nexus
+  - metadata:
+      name: user
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: user
+  - metadata:
+      name: webmail
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: webmail
+  - metadata:
+      name: wx
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: wx

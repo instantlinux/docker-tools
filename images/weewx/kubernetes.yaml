@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app.kubernetes.io.service: $SERVICE_NAME
+    app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
   name: $SERVICE_NAME
   namespace: $K8S_NAMESPACE
@@ -11,13 +11,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io.service: $SERVICE_NAME
+      app.kubernetes.io/name: $SERVICE_NAME
       release: "0.1"
   serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
-        app.kubernetes.io.service: $SERVICE_NAME
+        app.kubernetes.io/name: $SERVICE_NAME
         release: "0.1"
     spec:
       containers:
@@ -70,8 +70,7 @@ spec:
         service.$SERVICE_NAME: allow
       volumes:
       - name: usb
-        hostPath:
-          path: /dev/ttyUSB0
+        hostPath: { path: /dev/ttyUSB0 }
       - name: var
         emptyDir: { medium: Memory }
       - name: weewx-db-password

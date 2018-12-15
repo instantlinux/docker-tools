@@ -3,9 +3,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io.service: $SERVICE_NAME
+    app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   strategy:
@@ -13,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io.service: $SERVICE_NAME
+        app.kubernetes.io/name: $SERVICE_NAME
     spec:
       containers:
       - name: $SERVICE_NAME

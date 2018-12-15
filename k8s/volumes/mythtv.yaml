@@ -1,32 +1,4 @@
 ---
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: nfs-client
-provisioner: kubernetes.io/no-provisioner
-reclaimPolicy: Retain
-volumeBindingMode: WaitForFirstConsumer
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mp3
-  labels:
-    volume.group: mp3
-# TODO parameterize names/paths and add volume IDs
-#   volume.id: "$VOLUME_ID"
-spec:
-  capacity:
-    storage: 1Mi 
-  accessModes:
-    - ReadOnlyMany 
-  persistentVolumeReclaimPolicy: Retain 
-  nfs: 
-    path: /pc/MP3
-    server: $NFS_HOST
-    readOnly: true
-  storageClassName: nfs-client
----
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -42,6 +14,24 @@ spec:
   nfs: 
     path: /var/mythtv/posters
     server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: videos
+  labels:
+    volume.group: videos
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /pc/Videos
+    server: $NFS_HOST
     readOnly: true
   storageClassName: nfs-client
 ---
@@ -151,4 +141,132 @@ spec:
     path: /var/mythtv/pvr02myth
     server: $NFS_HOST_2
     readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: videos
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: videos
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mythposters
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mythposters
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch1
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch1
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch2
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch2
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch3
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch3
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch4
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch4
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch5
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch5
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch0
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch0
   storageClassName: nfs-client

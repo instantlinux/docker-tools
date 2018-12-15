@@ -5,7 +5,7 @@ This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. This image is based on
 MariaDB 10.3.x client.
 
-This Docker compose service definition will cause a dump to happen
+This Kubernetes Docker compose service definition will cause a dump to happen
 at the default hour (3:30am in $TZ) from a server named dbhost onto
 a subdirectory "mysql" in volume "backup".
 
@@ -42,6 +42,7 @@ than $KEEP_DAYS will be automatically removed.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
+| DB_CREDS_SECRET | mysql-backup-creds | Name of secret |
 | HOUR | 3 |cron-syntax backup hour |
 | KEEP_DAYS | 31 | days of snapshots to keep |
 | LOCK_FOR_BACKUP | | true if using Percona, blank for MariaDB |
@@ -49,6 +50,25 @@ than $KEEP_DAYS will be automatically removed.
 | SERVERS | dbhost | servers (space-separated list) to back up |
 | USERNAME | mysqldump | username to run as |
 | TZ | UTC | time zone |
+
+### Secrets
+
+| Secret | Description |
+| ------ | ----------- |
+| mysql-backup-creds | Username/password for MySQL user |
+
+An example to define credentials in Kubernetes:
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-backup-creds
+type: Opaque
+data:
+  mysql-backup-creds: |
+    password=yourmileagemayvary
+    user=backupallthethings
+```
 
 ### Notes
 

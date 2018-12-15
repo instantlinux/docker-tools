@@ -15,7 +15,7 @@ Postfix with python support for blacklist utility.
 | HONEYPOT_ADDRS | honey@mydomain.com | comma-separated list of addresses |
 | INBOUND_RELAY | "by mail.mydomain.com" | last inbound relay hop |
 | SPAMLIMIT | 12 | any score above this will be quarantined |
-| SPAMC_HOST | spamc | spamassassin host or IP |
+| SPAMC_HOST | spamassassin | spamassassin host or IP |
 
 ### Secrets
 

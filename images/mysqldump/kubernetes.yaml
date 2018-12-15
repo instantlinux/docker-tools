@@ -1,0 +1,44 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: SERVERS, value: "$DB_SERVERS" }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/backup
+          name: backup
+          subPath: $SERVICE_NAME
+        - mountPath: /var/log
+          name: logs
+        - name: mysql-backup-creds
+          mountPath: /run/secrets/mysql-backup-creds
+          readOnly: true
+          subPath: mysql-backup-creds
+      imagePullSecrets:
+      - name: regcred
+      nodeSelector:
+        service.data-sync: allow
+      volumes:
+      - name: backup
+        hostPath: { path: $PATH_BKP }
+      - name: logs
+        emptyDir: {}
+      - name: mysql-backup-creds
+        secret:
+          secretName: mysql-backup-creds

@@ -1,11 +1,20 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  ports:
+  - { port: $PORT_HAPROXY_STATS, targetPort: 8080 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   template:
@@ -45,14 +54,3 @@ spec:
       - name: secret
         secret:
           secretName: haproxy-stats-password
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
-spec:
-  ports:
-  - { port: $PORT_HAPROXY_STATS, targetPort: 8080 }
-  selector:
-    app.kubernetes.io/name: $K8S_NAMESPACE

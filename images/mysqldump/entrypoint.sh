@@ -1,8 +1,15 @@
 #! /bin/sh
+if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
+  # At first startup, set timezone
+  apk add --update tzdata
+  cp /usr/share/zoneinfo/$TZ /etc/localtime
+  echo $TZ >/etc/timezone
+fi
+
 CNF=/home/$USERNAME/.my.cnf
 LOG=/var/log/mysqldump.log
 echo [client] > $CNF
-cat /run/secrets/mysql-backup >> $CNF
+cat /run/secrets/$DB_CREDS_SECRET >> $CNF
 
 touch $LOG
 chown $USERNAME /var/backup $LOG $CNF

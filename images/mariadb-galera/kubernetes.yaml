@@ -1,23 +1,36 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+spec:
+  ports:
+  - { port: 3306, targetPort: 3306 }
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+    release: "0.1"
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app.kubernetes.io.service: $SERVICE_NAME
+    app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io.service: $SERVICE_NAME
+      app.kubernetes.io/name: $SERVICE_NAME
       release: "0.1"
   serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
-        app.kubernetes.io.service: $SERVICE_NAME
+        app.kubernetes.io/name: $SERVICE_NAME
         release: "0.1"
     spec:
       containers:
@@ -72,18 +85,3 @@ spec:
       resources:
         requests:
           storage: 500Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: $SERVICE_NAME
-  labels:
-    app.kubernetes.io.service: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
-spec:
-  ports:
-  - { port: $PORT_DB00, targetPort: 3306 }
-  clusterIP: None
-  selector:
-    app.kubernetes.io.service: $SERVICE_NAME
-    release: "0.1"

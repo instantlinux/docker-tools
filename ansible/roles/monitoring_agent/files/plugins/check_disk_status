@@ -3,7 +3,7 @@
 
 WARN=90
 CRIT=95
-SKIP_DISKS="docker/containers|docker/device|/dev/mapper/data01-volmyth|/dev/mapper/data04-pvr01mythdata|/dev/mapper/luks-vol2014|luks-vol2015|luks-vol2016"
+SKIP_DISKS="docker/containers|docker/device|kubelet/pods|/dev/mapper/data01-volmyth|/dev/mapper/data04-pvr01mythdata|/dev/mapper/luks-vol2014|luks-vol2015|luks-vol2016"
 MAX_USE=0
 
 # Note:  the programs 'cut' and 'awk' are in:

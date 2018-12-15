@@ -3,7 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   ports:
   - { port: 80, targetPort: 8080 }
@@ -14,7 +13,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: guacd
-  namespace: $K8S_NAMESPACE
 spec:
   ports:
   - { port: 4822, targetPort: 4822 }
@@ -27,7 +25,6 @@ metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   template:
@@ -54,7 +51,6 @@ metadata:
   labels:
     app.kubernetes.io/name: guacd
   name: guacd
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   template:
@@ -74,7 +70,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: guacamole-ingress
-  namespace: $K8S_NAMESPACE
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/app-root: /guacamole

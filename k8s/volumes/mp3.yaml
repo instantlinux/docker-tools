@@ -1,0 +1,28 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-client
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mp3
+  labels:
+    volume.group: mp3
+# TODO parameterize names/paths and add volume IDs
+#   volume.id: "$VOLUME_ID"
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /pc/MP3
+    server: $NFS_HOST
+    readOnly: true
+  storageClassName: nfs-client

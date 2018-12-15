@@ -32,6 +32,10 @@
 #   admin - read-only continuously synchronized config data per service
 #   backup - use for centralizing backup content per service
 #   share - read-write continuously synchronized across cluster
+#
+# Define additional large storage volumes using the volumes role of ansible
+# and set an environment variable LOCAL_VOLUMES to generate k8s pvs for
+# each node.
 
 ACTION         ?= apply
 CLUSTER        ?= kubernetes
@@ -39,17 +43,34 @@ ADMIN_CTX      ?= --context=kubernetes-admin@$(CLUSTER)
 HELM_VERSION   ?= 2.11.0
 SEKRET_VERSION ?= 1.2.1
 STACKS  = $(basename $(wildcard *.yaml))
-export K8S_INGRESS_NGINX_IP ?= 10.101.1.1
+
+export DB_HOST              ?= db00.$(DOMAIN)
 export K8S_VOLUMES_PATH     ?= /var/lib/docker/k8s-volumes
-export NAMED_VOLUMES        ?= admin backup share
+export NAMED_VOLUMES        ?= admin backup share $(LOCAL_VOLUMES)
 export NODES                ?= $(K8S_NODES)
 export PATH_ADM              = $(K8S_VOLUMES_PATH)/admin
 export PATH_BKP              = $(K8S_VOLUMES_PATH)/backup
 export PATH_SHR              = $(K8S_VOLUMES_PATH)/share
-export POOL_NUM_MEDIUM       = 0010
-export POOL_NUM_SMALL        = 0030
+export POOL_NUM_MEDIUM      ?= 0010
+export POOL_NUM_SMALL       ?= 0030
 export POOL_SIZE_MEDIUM      = 8Gi
 export POOL_SIZE_SMALL       = 500Mi
+export PORT_POSTFIX_INTERNAL ?= 3425
+export RSYSLOGD_HOST         = 10.101.1.40
+export RSYSLOGD_PORT        ?= 514
+export SPAMC_HOST            = spamassassin
+export TZ                   ?= UTC
+
+# IP addresses
+export K8S_INGRESS_NGINX_IP ?= 10.101.1.1
+export BLACKLIST_IP         ?= 10.101.1.10
+export CLOUD_IP             ?= 10.101.1.15
+export GITLAB_IP            ?= 10.101.1.20
+export POSTFIX_IP           ?= 10.101.1.25
+export PROFTPD_IP            = 10.101.1.30
+export RSYSLOGD_IP          ?= 10.101.1.40
+export SPLUNK_IP            ?= 10.101.1.60
+export WXCAM_UPLOAD_IP      ?= 10.101.1.70
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -67,18 +88,26 @@ db00 db01 db02 db03:
 	@SERVICE_NAME=$@ \
 	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
 
+wordpress::
+	@echo Please specify a specific instance e.g. wordpress-ci && exit 1
+
+wordpress-ci wordpress-il:
+	@echo --$(NOTICE) $@--
+	@SERVICE_NAME=$@ \
+	  envsubst < wordpress.yaml | kubectl $(ACTION) -f -
+
 $(STACKS)::
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$(@F) \
-	  envsubst < $@.yaml | kubectl $(ACTION) -f -
+	  envsubst < $@.yaml | kubectl $(ACTION) --namespace $(K8S_NAMESPACE) -f -
 
 ##########
 # Installation
 ##########
 .PHONY: helm_install imports install node_labels persistent secrets \
-	tiller_install untaint_master
+	untaint_master
 
-IMPORTS      = dashboard flannel ingress-nginx
+IMPORTS      = dashboard flannel ingress-nginx traefic-prom
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -120,7 +149,8 @@ persistent_dirs:
 	ssh "$(NODE)" sudo 'mkdir -p $$(echo \
 	  $(K8S_VOLUMES_PATH)/pool-s/pv-$(POOL_SIZE_SMALL)-{0001..$(POOL_NUM_SMALL)} \
 	  $(K8S_VOLUMES_PATH)/pool-m/pv-$(POOL_SIZE_MEDIUM)-{0001..$(POOL_NUM_MEDIUM)}) \
-	  $(K8S_VOLUMES_PATH)/{admin,backup,share}'
+	  $(K8S_VOLUMES_PATH)/{$(shell echo $(NAMED_VOLUMES)|tr " " ,)}'
+	ssh "$(NODE)" sudo chmod 700 $(K8S_VOLUMES_PATH)/pool-[sm]
 
 storage_localdefault:
 	kubectl $(ADMIN_CTX) patch storageclass local-storage -p \
@@ -129,6 +159,7 @@ storage_localdefault:
 ##########
 # Helm
 ##########
+.PHONY: helm_install tiller_install tiller_protect tiller_disable tiller_enable
 helm_install: /usr/local/bin/helm tiller_install tiller_protect \
 	~/.helm/repository/cache/bitnami-index.yaml
 
@@ -145,6 +176,17 @@ tiller_protect:
 	-kubectl $(ADMIN_CTX) delete service tiller-deploy --namespace kube-system
 	kubectl $(ADMIN_CTX) patch deployment tiller-deploy --namespace kube-system \
 	  --patch='$(shell cat install/tiller-patch.json)'
+
+# Only run tiller when needed (until its security is tighter, someday)
+tiller_disable: imports/tiller_deploy.yaml
+	kubectl $(ADMIN_CTX) delete deployment.apps/tiller-deploy --namespace kube-system
+
+tiller_enable:
+	kubectl $(ADMIN_CTX) $(ACTION) -f imports/tiller_deploy.yaml
+
+imports/tiller_deploy.yaml:
+	kubectl $(ADMIN_CTX) get deployment.apps/tiller-deploy --namespace kube-system \
+	  -o yaml > $@
 
 /usr/local/bin/helm:
 	wget -O /tmp/helm-amd64.tar.gz \
@@ -200,6 +242,9 @@ imports/flannel.yaml:
 imports/ingress-nginx.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 
+imports/traefik-prom.yaml:
+	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml
+
 # Not used, TODO consider calico network
 imports/weave-net.yaml:
 	curl -sLo $@ https://cloud.weave.works/k8s/net?k8s-version=$(shell kubectl version | base64 | tr -d '\n')
@@ -208,4 +253,5 @@ etcd:
 	helm install --name etcd --namespace $(K8S_NAMESPACE) \
 	  --kube-context=kubernetes-admin@$(CLUSTER) \
 	  bitnami/etcd --set auth.rbac.enabled=false
+	sleep 30
 	kubectl scale statefulset etcd-etcd --namespace=$(K8S_NAMESPACE) --replicas=3

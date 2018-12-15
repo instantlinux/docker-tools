@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 if [ -e /run/secrets/$WXUSER_PASSWORD_SECRET ]; then
   adduser -u $WXUSER_UID -s /bin/sh -g "ftp user" -D $WXUSER_NAME
@@ -33,6 +33,7 @@ EOF
   ITEM=$((ITEM + 1))
 done
 
+touch /var/log/cron.log
 crond -L /var/log/cron.log
 tail -f -n0 /var/log/cron.log &
 

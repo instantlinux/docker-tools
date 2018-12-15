@@ -17,8 +17,7 @@ for node in $@; do
       make install/persistent-item
   done
 
-  # Create the named entries: admin, backup, share
-  # Also add volume claims for these
+  # Create the named entries: admin, backup, share plus local volumes
   for vol in $NAMED_VOLUMES; do
     ID=$(uuidgen | cut -d - -f 1)
     NAME=$(echo $node | cut -d. -f 1)-$vol
@@ -27,4 +26,3 @@ for node in $@; do
       make install/persistent-item
   done
 done
-

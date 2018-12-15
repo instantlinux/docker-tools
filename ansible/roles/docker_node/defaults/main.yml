@@ -16,12 +16,11 @@ docker_defaults:
     sha256: acfa66dba77dac9635ff9b195ccea81768eb009ce9c9f1181c000eb95effb963
     version: 1.15.0
   local_volumes: /var/lib/docker/volumes
-  share_path: /var/lib/docker/share
   thinpool:
     autoextend_percent: 20
     autoextend_threshold: 80
     meta_size: 100
-    size: 2000
+    size: 5000
   options:
     hosts:
     - tcp://0.0.0.0:2376
@@ -38,7 +37,7 @@ docker_defaults:
     tlsverify: True
 
 docker_override: {}
-docker: "{{ docker_defaults | combine(docker_override) }}"
+docker: "{{ docker_defaults | combine(docker_override, recursive=True) }}"
 
 docker_volumewait: /var/lib/docker
 

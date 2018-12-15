@@ -10,6 +10,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 ENV HOUR=3 MINUTE=30 \
     KEEP_DAYS=31 \
+    DB_CREDS_SECRET=mysql-backup-creds \
     LOCK_FOR_BACKUP= \
     SERVERS=dbhost \
     USERNAME=mysqldump \
@@ -17,7 +18,7 @@ ENV HOUR=3 MINUTE=30 \
 
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=10.3.10-r0
+ARG CLIENT_VERSION=10.3.10-r1
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \

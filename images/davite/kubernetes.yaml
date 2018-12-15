@@ -5,7 +5,9 @@ metadata:
   name: $SERVICE_NAME
 spec:
   ports:
-  - { port: $PORT_UPSD_1, targetPort: 3493 }
+  - name: $SERVICE_NAME
+    port: 80
+    targetPort: 80
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -25,18 +27,22 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: SERIAL, value: $UPS_1_SERIAL }
+        - { name: HOSTNAME, value: davite.$DOMAIN }
+        - { name: SMTP_PORT, value: "25" }
+        - { name: SMTP_SMARTHOST, value: smtp.$DOMAIN }
+        - { name: TCP_PORT, value: "" }
+        - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
-        securityContext:
-          privileged: true
+        ports:
+        - containerPort: 80
         volumeMounts:
-        - name: secret
-          mountPath: /run/secrets/nut-upsd-password
-          readOnly: true
-          subPath: nut-upsd-password
+        - name: data
+          mountPath: /var/adm/DaVite_Data
+          subPath: $SERVICE_NAME
       imagePullSecrets:
       - name: regcred
+      nodeSelector:
+        service.data-sync: allow
       volumes:
-      - name: secret
-        secret:
-          secretName: nut-upsd-password
+      - name: data
+        hostPath: { path: $PATH_SHR }

@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  ports:
+  - { port: 80, targetPort: 80 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: TZ, value: $TZ }
+        image: clems4ever/authelia:$VERSION_AUTHELIA
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/authelia/config.yml
+          name: admin
+          readOnly: true
+          subPath: services/$SERVICE_NAME/config.yml
+        - mountPath: /var/lib/authelia/store
+          name: share
+          subPath: $SERVICE_NAME/store
+      - name: ldap
+        env:
+        - { name: SLAPD_ORGANISATION, value: Community Internet }
+        - { name: SLAPD_DOMAIN, value: $DOMAIN }
+        - { name: SLAPD_PASSWORD, value: password }
+        - { name: SLAPD_ADDITIONAL_MODULES, value: memberof }
+        - { name: SLAPD_ADDITIONAL_SCHEMAS, value: openldap }
+        - { name: SLAPD_FORCE_RECONFIGURE, value: "true" }
+        image: dinkel/openldap:latest
+        volumeMounts:
+        - mountPath: /etc/ldap.dist/prepopulate
+          name: admin
+          readOnly: true
+          subPath: services/$SERVICE_NAME/ldap
+      nodeSelector:
+        service.data-sync: allow
+      volumes:
+      - name: admin
+        hostPath: { path: $PATH_ADM }
+      - name: share
+        hostPath: { path: $PATH_SHR }

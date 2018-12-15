@@ -4,8 +4,11 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
+  clusterIP: $RSYSLOGD_IP
   ports:
-  - { port: $PORT_UPSD_1, targetPort: 3493 }
+  - name: $SERVICE_NAME
+    port: 514
+    targetPort: 514
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -25,18 +28,25 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: SERIAL, value: $UPS_1_SERIAL }
+        - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
-        securityContext:
-          privileged: true
         volumeMounts:
-        - name: secret
-          mountPath: /run/secrets/nut-upsd-password
+        - mountPath: /etc/logrotate.d
+          name: admin
           readOnly: true
-          subPath: nut-upsd-password
+          subPath: services/$SERVICE_NAME/etc/logrotate.d
+        - mountPath: /etc/rsyslog.d
+          name: admin
+          readOnly: true
+          subPath: services/$SERVICE_NAME/etc/rsyslog.2
+      dnsConfig:
+        options:
+        - { name: ndots }
       imagePullSecrets:
       - name: regcred
       volumes:
-      - name: secret
-        secret:
-          secretName: nut-upsd-password
+      - name: admin
+        hostPath: { path: $PATH_ADM }
+      - name: logs
+        emptyDir: {}
+

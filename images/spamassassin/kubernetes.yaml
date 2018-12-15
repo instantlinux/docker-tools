@@ -3,15 +3,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: $SERVICE_NAME
-  labels:
-    app.kubernetes.io/name: $SERVICE_NAME
 spec:
-  clusterIP: $BLACKLIST_IP
+  clusterIP: $SPAMASSASSIN_IP
   ports:
-  - { port: 53, protocol: UDP, targetPort: 53 }
+  - name: $SERVICE_NAME
+    port: 783
+    targetPort: 783
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
-    release: "0.1"
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -21,7 +20,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME
@@ -36,32 +35,32 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: DB_HOST, value: $DB_HOST }
-        - { name: NS_SERVERS, value: $NS_SERVERS }
-        - { name: RBL_DOMAIN, value: $RBL_DOMAIN }
+        - { name: EXTRA_OPTIONS, value: --nouser-config --sql-config }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
-        - containerPort: 53
-          protocol: UDP
+        - containerPort: 783
         volumeMounts:
-        - mountPath: /var/lib/rbldns
-          name: data
-        - name: mysql-blacklist-user
-          mountPath: /run/secrets/mysql-blacklist-user
+        - mountPath: /etc/mail/spamassassin/local.cf
+          name: admin
           readOnly: true
-          subPath: mysql-blacklist-user
+          subPath: $SERVICE_NAME/etc/local.cf
+        - mountPath: /var/lib/spamassassin
+          name: home
+        - mountPath: /var/log
+          name: logs
       imagePullSecrets:
       - name: regcred
       volumes:
-      - name: mysql-blacklist-user
-        secret:
-          secretName: mysql-blacklist-user
+      - name: admin
+        hostPath: { path: $PATH_ADM }
+      - name: logs
+        emptyDir: {}
   volumeClaimTemplates:
   - metadata:
-      name: data
+      name: home
     spec:
       accessModes: [ ReadWriteOnce ]
       resources:
         requests:
-          storage: 500Mi
+          storage: 50Mi

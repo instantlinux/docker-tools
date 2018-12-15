@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  ports:
+  - { port: $PORT_GITLAB_SSH, targetPort: 22, name: ssh }
+  - { port: 80, targetPort: 80, name: $SERVICE_NAME }
+  - { port: 443, targetPort: 443, name: https }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        command:
+        - bash
+        - -c
+        - "exec /assets/wrapper"
+#          "mkdir -p /var/backups/gitlab &&
+#          rm -fr /var/opt/gitlab/backups &&
+#          ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
+#          bash -c '/var/backups/gitlab/gitback &' &&
+#          exec /assets/wrapper"
+        env:
+        - { name: TZ, value: $TZ }
+        image: gitlab/gitlab-ce:$VERSION_GITLAB
+        ports:
+        - containerPort: 22
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - mountPath: /etc/gitlab
+          name: share
+          subPath: $SERVICE_NAME/config
+        - mountPath: /var/opt/gitlab
+          name: share
+          subPath: $SERVICE_NAME/data
+        - mountPath: /var/backups
+          name: backup
+          subPath: $SERVICE_NAME
+        - mountPath: /var/log/gitlab
+          name: logs
+      hostname: git
+      nodeSelector:
+        service.data-sync: allow
+      volumes:
+      - name: admin
+        hostPath: { path: $PATH_ADM }
+      - name: backup
+        hostPath: { path: $PATH_BKP }
+      - name: logs
+        emptyDir: {}
+      - name: share
+        hostPath: { path: $PATH_SHR }

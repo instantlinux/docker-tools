@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app.kubernetes.io.service: $SERVICE_NAME
+    app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
   name: $SERVICE_NAME
   namespace: $K8S_NAMESPACE
@@ -11,13 +11,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io.service: $SERVICE_NAME
+      app.kubernetes.io/name: $SERVICE_NAME
       release: "0.1"
   serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
-        app.kubernetes.io.service: $SERVICE_NAME
+        app.kubernetes.io/name: $SERVICE_NAME
         release: "0.1"
     spec:
       containers:
@@ -36,7 +36,28 @@ spec:
         - name: home
           mountPath: /home/mythtv
         - name: videos
-          mountPath: /var/mythtv
+          mountPath: /var/mythtv/videos
+          readOnly: true
+        - name: mythposters
+          mountPath: /var/mythtv/posters
+          readOnly: true
+        - name: mytharch1
+          mountPath: /var/mythtv/arch1
+          readOnly: true
+        - name: mytharch2
+          mountPath: /var/mythtv/arch2
+          readOnly: true
+        - name: mytharch3
+          mountPath: /var/mythtv/arch3
+          readOnly: true
+        - name: mytharch4
+          mountPath: /var/mythtv/arch4
+          readOnly: true
+        - name: mytharch5
+          mountPath: /var/mythtv/arch5
+          readOnly: true
+        - name: mytharch0
+          mountPath: /var/mythtv/pvr02myth
           readOnly: true
         - name: mythtv-db-password
           mountPath: /run/secrets/mythtv-db-password
@@ -55,9 +76,29 @@ spec:
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: videos
-        hostPath:
-          path: /var/mythtv
-          type: Directory
+        persistentVolumeClaim:
+          claimName: videos
+      - name: mythposters
+        persistentVolumeClaim:
+          claimName: mythposters
+      - name: mytharch1
+        persistentVolumeClaim:
+          claimName: mytharch1
+      - name: mytharch2
+        persistentVolumeClaim:
+          claimName: mytharch2
+      - name: mytharch3
+        persistentVolumeClaim:
+          claimName: mytharch3
+      - name: mytharch4
+        persistentVolumeClaim:
+          claimName: mytharch4
+      - name: mytharch5
+        persistentVolumeClaim:
+          claimName: mytharch5
+      - name: mytharch0
+        persistentVolumeClaim:
+          claimName: mytharch0
       - name: mythtv-db-password
         secret:
           secretName: mythtv-db-password

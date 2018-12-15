@@ -12,13 +12,23 @@ metadata:
 spec:
   allowedCapabilities: []
   # TODO: turn off hostPath mounts, use NFS instead
+  # TODO: parameterize better
   allowedHostPaths:
-  - pathPrefix: /pc/Pictures
-    readOnly: true
   - pathPrefix: $PATH_ADM
     readOnly: true
   - pathPrefix: $PATH_BKP
   - pathPrefix: $PATH_SHR
+  - pathPrefix: $K8S_VOLUMES_PATH/cloud
+  - pathPrefix: $K8S_VOLUMES_PATH/dos
+  - pathPrefix: $K8S_VOLUMES_PATH/duplicati
+  - pathPrefix: $K8S_VOLUMES_PATH/gitlab
+  - pathPrefix: $K8S_VOLUMES_PATH/household
+  - pathPrefix: $K8S_VOLUMES_PATH/inbox
+  - pathPrefix: $K8S_VOLUMES_PATH/jira
+  - pathPrefix: $K8S_VOLUMES_PATH/nexus
+  - pathPrefix: $K8S_VOLUMES_PATH/user
+  - pathPrefix: $K8S_VOLUMES_PATH/webmail
+  - pathPrefix: $K8S_VOLUMES_PATH/wx
   allowPrivilegeEscalation: false
   fsGroup:
     rule: MustRunAs
@@ -89,13 +99,6 @@ metadata:
 spec:
   allowedCapabilities: [ '*' ]
   allowPrivilegeEscalation: true
-  allowedHostPaths:
-  - pathPrefix: /pc/Pictures
-    readOnly: true
-  - pathPrefix: $PATH_ADM
-    readOnly: true
-  - pathPrefix: $PATH_BKP
-  - pathPrefix: $PATH_SHR
   fsGroup:
     rule: RunAsAny
   hostIPC: true
@@ -151,12 +154,15 @@ spec:
   allowedCapabilities: [ NET_ADMIN ]
   # TODO: turn off hostPath mounts, use NFS instead
   allowedHostPaths:
-  - pathPrefix: /pc/MP3
+  - pathPrefix: /etc/kubernetes/pki/etcd
     readOnly: true
-  - pathPrefix: /pc/Pictures
+  - pathPrefix: /var/backup/k8s
+  - pathPrefix: $PATH_ADM
     readOnly: true
-  - pathPrefix: /var/mythtv
-    readOnly: true
+  - pathPrefix: $PATH_BKP
+  - pathPrefix: $PATH_SHR
+  - pathPrefix: $K8S_VOLUMES_PATH/dos
+  - pathPrefix: $K8S_VOLUMES_PATH/household
   allowPrivilegeEscalation: false
   fsGroup:
     rule: MustRunAs

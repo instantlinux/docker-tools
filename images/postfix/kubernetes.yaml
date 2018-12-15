@@ -1,0 +1,94 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  clusterIP: $POSTFIX_IP
+  ports:
+  - { port: $PORT_POSTFIX_INTERNAL, targetPort: 25, name: $SERVICE_NAME }
+  - { port: 3525, targetPort: 3525, name: external }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+    release: "0.1"
+  name: $SERVICE_NAME
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME
+      release: "0.1"
+  serviceName: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: DB_HOST, value: DB_HOST }
+        - { name: CIDR_MIN_SIZE, $CIDR_MIN_SIZE }
+        - { name: HONEYPOT_ADDRS, $HONEYPOT_ADDRS }
+        - name: INBOUND_RELAY
+          value: by mx-caprica.?\.easydns\.com
+        - { name: SPAMC_HOST, $SPAMC_HOST }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/postfix-python:latest
+        ports:
+        - containerPort: 25
+        - containerPort: 3525
+        volumeMounts:
+        - mountPath: /etc/postfix/postfix.d
+          name: admin
+          readOnly: true
+          subPath: services/$SERVICE_NAME/etc
+        - mountPath: /etc/ssl/certs
+          name: share
+          readOnly: true
+          subPath: common/pki/certs
+        - mountPath: /var/spool/postfix
+          name: spool
+        - name: mysql-blacklist-user
+          mountPath: /run/secrets/mysql-blacklist-user
+          readOnly: true
+          subPath: mysql-blacklist-user
+        - name: postfix-sasl-passwd
+          mountPath: /run/secrets/postfix-sasl-passwd
+          readOnly: true
+          subPath: postfix-sasl-passwd
+        - name: webmail-ci-net-server-key-pem
+          mountPath: /run/secrets/webmail.ci.net-server-key.pem
+          readOnly: true
+          subPath: webmail.ci.net-server-key.pem
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: admin
+        hostPath: { path: $PATH_ADM }
+      - name: share
+        hostPath: { path: $PATH_SHR }
+      - name: mysql-blacklist-user
+        secret:
+          secretName: mysql-blacklist-user
+      - name: postfix-sasl-passwd
+        secret:
+          secretName: postfix-sasl-passwd
+      - name: webmail-ci-net-server-key-pem
+        secret:
+          secretName: webmail-ci-net-server-key-pem
+  volumeClaimTemplates:
+  - metadata:
+      name: spool
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 8Gi

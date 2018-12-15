@@ -5,7 +5,6 @@ metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   template:

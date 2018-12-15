@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  clusterIP: $CLOUD_IP
+  ports:
+  - { port: 80, targetPort: 80, name: $SERVICE_NAME }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: TZ, value: $TZ }
+        image: nextcloud:$VERSION_NEXTCLOUD
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: synced
+          subPath: html
+        - mountPath: /var/www/html/data/$CLOUD_USER1/files/Photos
+          name: pictures
+          subPath: DigitalPics/iPhone-sync/$CLOUD_USER1
+        - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos
+          name: pictures
+          subPath: DigitalPics/iPhone-sync/$CLOUD_USER2
+      nodeSelector:
+        service.data-sync: allow
+      volumes:
+      - name: synced
+        hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
+      - name: pictures
+        persistentVolumeClaim:
+          claimName: pictures

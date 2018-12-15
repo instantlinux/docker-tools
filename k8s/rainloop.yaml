@@ -1,11 +1,20 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  ports:
+  - { port: 80, targetPort: 8888 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
   template:
@@ -23,18 +32,17 @@ spec:
         ports:
         - containerPort: 8888
         volumeMounts:
-        - name: data
-          mountPath: /rainloop/data
+        - mountPath: /rainloop/data
+          name: share
           subPath: $SERVICE_NAME/data
       volumes:
-      - name: data
+      - name: share
         hostPath: { path: $PATH_SHR }
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: $SERVICE_NAME-ingress
-  namespace: $K8S_NAMESPACE
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/app-root: /$SERVICE_NAME
@@ -51,14 +59,3 @@ spec:
   - hosts:
     - webmail.$DOMAIN
     secretName: letsencrypt-certs
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
-spec:
-  ports:
-  - { port: 80, targetPort: 8888 }
-  selector:
-    app.kubernetes.io/name: $SERVICE_NAME

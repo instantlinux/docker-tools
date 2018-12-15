@@ -15,11 +15,11 @@ spec:
           - name: backup
             # Same image as in /etc/kubernetes/manifests/etcd.yaml
             image: k8s.gcr.io/etcd-amd64:3.2.24
+            command: ["/bin/sh"]
+            args: ["-c", "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(date +%Y-%m-%d_%H:%M:%S_%Z).db"]
             env:
             - name: ETCDCTL_API
               value: "3"
-            command: ["/bin/sh"]
-            args: ["-c", "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(date +%Y-%m-%d_%H:%M:%S_%Z).db"]
             volumeMounts:
             - mountPath: /etc/kubernetes/pki/etcd
               name: etcd-certs
@@ -33,6 +33,7 @@ spec:
           - effect: NoSchedule
             operator: Exists
           restartPolicy: OnFailure
+          serviceAccountName: admin-user
           volumes:
           - name: etcd-certs
             hostPath:

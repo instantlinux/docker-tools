@@ -31,6 +31,8 @@ ERROR_STATE=0
 [ -e /etc/opt/git-dump ] && source /etc/opt/git-dump
 log_entry info status=START
 
+API_VERSION=v4
+
 # Dumps will be kept in directories named as day of week or
 # day of month if 31 or less; else combine month+day if longer
 
@@ -48,7 +50,7 @@ if [ ! -z "$API_TOKEN_SECRET" ] && [ -e /run/secrets/$API_TOKEN_SECRET ]; then
   SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d: -f 1)
   TOKEN=$(cat /run/secrets/$API_TOKEN_SECRET)
   curl -s -k --header "PRIVATE-TOKEN: $TOKEN" \
-    https://$SSH_HOST/api/v3/projects > /tmp/projects.json
+    https://$SSH_HOST/api/$API_VERSION/projects > /tmp/projects.json
   ITEMS=$(jq -r .[].name /tmp/projects.json | sort)
 else
   ITEMS=$@

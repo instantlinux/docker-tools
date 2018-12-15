@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+spec:
+  ports:
+  - { port: 80, targetPort: 8080 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: CATALINA_OPTS, value: -Xms512m -Xmx1280m }
+        - { name: X_PROXY_NAME, value: jira.$DOMAIN }
+        - { name: X_PROXY_PORT, value: "443" }
+        - { name: X_PROXY_SCHEME, value: https }
+        - { name: TZ, value: $TZ }
+        image: cptactionhank/atlassian-jira:$VERSION_JIRA
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/atlassian/jira
+          name: $SERVICE_NAME
+          subPath: home
+        - mountPath: /opt/atlassian/jira/logs
+          name: $SERVICE_NAME
+          subPath: logs
+      nodeSelector:
+        service.data-sync: allow
+      volumes:
+      - name: $SERVICE_NAME
+        hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
