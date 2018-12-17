@@ -1,0 +1,154 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  labels:
+    k8s-app: nginx-ingress-controller
+spec:
+  clusterIP: $K8S_INGRESS_NGINX_IP
+  selector:
+    k8s-app: nginx-ingress-controller
+  ports:
+    - { port: 80, targetPort: 80, name: http }
+    - { port: 443, targetPort: 443, name: https }
+    - { port: $PORT_DOVECOT_SMTP, name: dovecot-smtp }
+    - { port: $PORT_DOVECOT_IMAPD, name: dovecot-imapd }
+    - { port: $PORT_DOVECOT_IMAPS, name: dovecot-imaps }
+    - { port: $PORT_GITLAB_SSH, name: git-ssh }
+    - { port: $PORT_POSTFIX_EXTERNAL, name: postfix-ext }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-external
+spec:
+  type: NodePort
+  ports:
+  - { port: 80, nodePort: 30080, targetPort: 80, name: http }
+  - { port: 443, nodePort: 30443, targetPort: 443, name: https }
+  - { port: $PORT_DOVECOT_SMTP, nodePort: 30$PORT_DOVECOT_SMTP, name: dovecot-smtp }
+  - { port: $PORT_DOVECOT_IMAPD, nodePort: 30$PORT_DOVECOT_IMAPD, name: dovecot-imapd }
+  - { port: $PORT_POSTFIX_EXTERNAL, nodePort: 30025, name: postfix-ext }
+  selector:
+    k8s-app: nginx-ingress-controller
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+  labels:
+    k8s-app: nginx-ingress-controller
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        k8s-app: nginx-ingress-controller
+        name: nginx-ingress-controller
+      annotations:
+        prometheus.io/port: '10254'
+        prometheus.io/scrape: 'true'
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.13.0
+        name: nginx-ingress-controller
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        args:
+        - /nginx-ingress-controller
+        - --ingress-class=nginx
+        - --election-id=ingress-controller-leader-external
+        - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
+        - --tcp-services-configmap=$K8S_NAMESPACE/ingress-tcp-services
+      serviceAccountName: pod-ingress-privileged
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: default-http-backend
+  labels:
+    app.kubernetes.io/name: default-http-backend
+spec:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 8080 }
+  selector:
+    app.kubernetes.io/name: default-http-backend
+---
+# default backend for requests with unknown routes
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: default-http-backend
+  labels:
+    app.kubernetes.io/name: default-http-backend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: default-http-backend
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: default-http-backend
+        image: gcr.io/google_containers/defaultbackend:1.4
+        ports:
+        - containerPort: 8080
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: ingress-pod-user
+rules:
+- apiGroups: [""]
+  resources:
+  - pods
+  - services
+  verbs: [get, list]
+- apiGroups: [""]
+  resources:
+  - configmaps
+  - events
+  verbs: [create, get, list, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: pod-user-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ingress-pod-user
+subjects:
+- kind: ServiceAccount
+  name: pod-ingress-privileged
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-ingress-privileged
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-tcp-services
+data:
+  $PORT_GITLAB_SSH: $K8S_NAMESPACE/gitlab:$PORT_GITLAB_SSH
+  $PORT_POSTFIX_EXTERNAL: $K8S_NAMESPACE/postfix:$PORT_POSTFIX_EXTERNAL
+  $PORT_DOVECOT_IMAPD: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_IMAPD
+  $PORT_DOVECOT_IMAPS: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_IMAPS
+  $PORT_DOVECOT_SMTP: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_SMTP

@@ -4,10 +4,11 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
+  clusterIP: $GITLAB_IP
   ports:
   - { port: $PORT_GITLAB_SSH, targetPort: 22, name: ssh }
-  - { port: 80, targetPort: 80, name: $SERVICE_NAME }
-  - { port: 443, targetPort: 443, name: https }
+  - { port: 80, name: $SERVICE_NAME }
+  - { port: 443, name: https }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -26,15 +27,15 @@ spec:
     spec:
       containers:
       - name: $SERVICE_NAME
-        command:
-        - bash
+        command: [/bin/bash]
+        args:
         - -c
-        - "exec /assets/wrapper"
-#          "mkdir -p /var/backups/gitlab &&
-#          rm -fr /var/opt/gitlab/backups &&
-#          ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
-#          bash -c '/var/backups/gitlab/gitback &' &&
-#          exec /assets/wrapper"
+        - >
+          mkdir -p /var/backups/gitlab &&
+          rm -fr /var/opt/gitlab/backups &&
+          ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
+          bash -c '/var/backups/gitlab/gitback &' &&
+          exec /assets/wrapper
         env:
         - { name: TZ, value: $TZ }
         image: gitlab/gitlab-ce:$VERSION_GITLAB
@@ -44,11 +45,11 @@ spec:
         - containerPort: 443
         volumeMounts:
         - mountPath: /etc/gitlab
-          name: share
-          subPath: $SERVICE_NAME/config
+          name: $SERVICE_NAME
+          subPath: config
         - mountPath: /var/opt/gitlab
-          name: share
-          subPath: $SERVICE_NAME/data
+          name: $SERVICE_NAME
+          subPath: data
         - mountPath: /var/backups
           name: backup
           subPath: $SERVICE_NAME
@@ -57,6 +58,7 @@ spec:
       hostname: git
       nodeSelector:
         service.data-sync: allow
+      serviceAccountName: pod-gitlab-privileged
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
@@ -64,5 +66,30 @@ spec:
         hostPath: { path: $PATH_BKP }
       - name: logs
         emptyDir: {}
-      - name: share
-        hostPath: { path: $PATH_SHR }
+      - name: $SERVICE_NAME
+        hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-gitlab-privileged
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - secretName: git.$MYDOMAIN
+    hosts:
+    - git.$MYDOMAIN
+  rules:
+  - host: git.$MYDOMAIN
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80

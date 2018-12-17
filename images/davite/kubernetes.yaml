@@ -4,10 +4,9 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
+  clusterIP: None
   ports:
-  - name: $SERVICE_NAME
-    port: 80
-    targetPort: 80
+  - { port: 80, targetPort: 80 }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -36,7 +35,7 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: data
+        - name: share
           mountPath: /var/adm/DaVite_Data
           subPath: $SERVICE_NAME
       imagePullSecrets:
@@ -44,5 +43,21 @@ spec:
       nodeSelector:
         service.data-sync: allow
       volumes:
-      - name: data
+      - name: share
         hostPath: { path: $PATH_SHR }
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: $SERVICE_NAME.$DOMAIN
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80

@@ -2,8 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
+  clusterIP: None
   ports:
   - { port: 80, targetPort: 8080 }
   selector:
@@ -15,7 +18,7 @@ metadata:
   name: guacd
 spec:
   ports:
-  - { port: 4822, targetPort: 4822 }
+  - port: 4822
   selector:
     app.kubernetes.io/name: guacd
 ---
@@ -35,8 +38,8 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: GUACD_HOSTNAME, value: guacd }
-        - { name: GUACD_PORT, value: "4822" }
+        - { name: GUACD_HOSTNAME, value: $(GUACD_SERVICE_HOST) }
+        - { name: GUACD_PORT, value: $(GUACD_SERVICE_PORT) }
         - { name: MYSQL_DATABASE, value: guacamole }
         - { name: MYSQL_HOSTNAME, value: $DB_HOST }
         - { name: MYSQL_PASSWORD, value: $GUACAMOLE_DBPASS }
@@ -44,6 +47,11 @@ spec:
         image: guacamole/guacamole:$VERSION_GUACAMOLE
         ports:
         - containerPort: 8080
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -73,6 +81,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/app-root: /guacamole
+    nginx.ingress.kubernetes.io/proxy-buffering: off
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
 spec:
   rules:
   - host: desktop.$DOMAIN
@@ -85,4 +95,5 @@ spec:
   tls:
   - hosts:
     - desktop.$DOMAIN
-    secretName: letsencrypt-certs
+    secretName: desktop.$DOMAIN
+#   secretName: letsencrypt-certs

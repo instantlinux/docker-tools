@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  clusterIP: None
   ports:
-  - { port: 80, targetPort: 8888 }
+  - { port: 80, targetPort: 8081, name: $SERVICE_NAME }
+  - { port: $PORT_NEXUS_REGISTRY, targetPort: 5000, name: registry }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -28,23 +28,21 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: GID, value: "$RAINLOOP_GID" }
-        - { name: UID,  value: "$RAINLOOP_UID" }
-        - { name: LOG_TO_STDOUT, value: "true" }
-        image: hardware/rainloop:$VERSION_RAINLOOP
+        - name: INSTALL4J_ADD_VM_PARAMS
+          value: -Xms1536m -Xmx2048m -XX:MaxDirectMemorySize=3g
+        - { name: TZ, value: $TZ }
+        image: sonatype/nexus3:$VERSION_NEXUS
         ports:
-        - containerPort: 8888
+        - containerPort: 5000
+        - containerPort: 8081
         volumeMounts:
-        - mountPath: /rainloop/data
-          name: share
-          subPath: $SERVICE_NAME/data
-      dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: ndots
+        - mountPath: /nexus-data
+          name: $SERVICE_NAME
+      nodeSelector:
+        service.data-sync: allow
       volumes:
-      - name: share
-        hostPath: { path: $PATH_SHR }
+      - name: $SERVICE_NAME
+        hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -53,16 +51,15 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
+  tls:
+  - secretName: $SERVICE_NAME.$MYDOMAIN
+    hosts:
+    - $SERVICE_NAME.$MYDOMAIN
   rules:
-  - host: webmail.$DOMAIN
+  - host: $SERVICE_NAME.$MYDOMAIN
     http:
       paths:
       - path: /
         backend:
           serviceName: $SERVICE_NAME
           servicePort: 80
-  tls:
-  - hosts:
-    - webmail.$DOMAIN
-    secretName: webmail.$DOMAIN
-#   secretName: letsencrypt-certs

@@ -21,7 +21,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME
@@ -37,7 +37,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: DB_HOST, value: $DB_HOST }
-        - { name: NS_SERVERS, value: $NS_SERVERS }
+        - { name: NS_SERVERS, value: $RBLDNS_SERVERS }
         - { name: RBL_DOMAIN, value: $RBL_DOMAIN }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest

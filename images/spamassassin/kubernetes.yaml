@@ -2,6 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
   clusterIP: $SPAMASSASSIN_IP
@@ -49,6 +51,11 @@ spec:
           name: home
         - mountPath: /var/log
           name: logs
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       imagePullSecrets:
       - name: regcred
       volumes:

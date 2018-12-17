@@ -34,7 +34,7 @@ spec:
         - { name: RSYNC_PORT, value: "$PORT_WX_SSH" }
         - { name: SKIN, value: WeeGreen }
         - { name: STATION_ID, value: $WX_STATION_ID }
-        - { name: SYSLOG_DEST, value: "@@$RSYSLOGD_HOST:$PORT_RSYSLOGD" }
+        - { name: SYSLOG_DEST, value: "@@$RSYSLOGD_IP:$PORT_RSYSLOGD" }
         - { name: TZ, value: $TZ }
         - { name: TZ_CODE, value: "4" }
         - { name: XTIDE_LOCATION, value: San Francisco }

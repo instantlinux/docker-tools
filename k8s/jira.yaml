@@ -40,8 +40,33 @@ spec:
         - mountPath: /opt/atlassian/jira/logs
           name: $SERVICE_NAME
           subPath: logs
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       nodeSelector:
         service.data-sync: allow
       volumes:
       - name: $SERVICE_NAME
         hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - secretName: $SERVICE_NAME.$DOMAIN
+    hosts:
+    - $SERVICE_NAME.$DOMAIN
+  rules:
+  - host: $SERVICE_NAME.$DOMAIN
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80

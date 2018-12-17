@@ -18,6 +18,9 @@ nagios_override: {}
 nagios: "{{ nagios_defaults | combine(nagios_override) }}"
 
 nrpe_command_defaults:
+  data_sync:
+    plugin: check_file_age
+    options: -w 1800 -c 7200 -f /var/lib/docker/k8s-volumes/sync-logs/data-sync/unison-status.txt
   disk_status:
     local: True
   etcd_cluster_health:

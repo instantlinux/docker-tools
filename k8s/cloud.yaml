@@ -4,9 +4,9 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
-  clusterIP: $CLOUD_IP
+  clusterIP: None
   ports:
-  - { port: 80, targetPort: 80, name: $SERVICE_NAME }
+  - port: 80
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -28,16 +28,30 @@ spec:
         env:
         - { name: TZ, value: $TZ }
         image: nextcloud:$VERSION_NEXTCLOUD
+        command: [/bin/bash]
+        args:
+        - -c
+        - >
+          set -x &&
+          usermod -a -G users www-data &&
+          mkdir -p /var/www/html/data/$CLOUD_USER1/files \
+            /var/www/html/data/$CLOUD_USER2/files &&
+          ln -fsT /pictures/DigitalPics/iPhone-sync/$CLOUD_USER1 \
+            /var/www/html/data/$CLOUD_USER1/files/Photos &&
+          ln -fsT /pictures/DigitalPics/iPhone-sync/$CLOUD_USER2 \
+            /var/www/html/data/$CLOUD_USER2/files/Photos &&
+          exec apache2-foreground
         volumeMounts:
         - mountPath: /var/www/html
           name: synced
           subPath: html
-        - mountPath: /var/www/html/data/$CLOUD_USER1/files/Photos
+        - mountPath: /pictures
           name: pictures
-          subPath: DigitalPics/iPhone-sync/$CLOUD_USER1
-        - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos
-          name: pictures
-          subPath: DigitalPics/iPhone-sync/$CLOUD_USER2
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       nodeSelector:
         service.data-sync: allow
       volumes:
@@ -46,3 +60,23 @@ spec:
       - name: pictures
         persistentVolumeClaim:
           claimName: pictures
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - secretName: $SERVICE_NAME.$DOMAIN
+    hosts:
+    - $SERVICE_NAME.$DOMAIN
+  rules:
+  - host: $SERVICE_NAME.$DOMAIN
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80

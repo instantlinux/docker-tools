@@ -16,6 +16,7 @@ k8s_defaults:
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
   kubeadm_opts: ''
+  local_vols: /var/lib/docker/k8s-volumes
   master: False
   master_ip: "{{ hostvars[groups['k8s_master'][0]]['ansible_host'] | default(groups['k8s_master'][0]) }}"
   pod_network: 10.244.0.0/16

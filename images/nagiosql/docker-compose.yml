@@ -18,6 +18,7 @@ services:
       sed -i -e 's:find /opt/nagios :#find /opt/nagios :' /etc/service/nagios/run &&
       /usr/local/bin/start_nagios"
     environment:
+      MAIL_RELAY_HOST: ${NAGIOS_MAIL_RELAY:-smtp}
       NAGIOS_TIMEZONE: ${TZ:-UTC}
       TZ: ${TZ:-UTC}
     volumes:

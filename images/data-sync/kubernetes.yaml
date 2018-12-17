@@ -69,16 +69,12 @@ spec:
           name: gitlab
         - mountPath: /var/data-sync/household
           name: household
-        - mountPath: /var/data-sync/inbox
-          name: inbox
         - mountPath: /var/data-sync/jira
           name: jira
         - mountPath: /var/data-sync/nexus
           name: nexus
         - mountPath: /var/data-sync/user
           name: user
-        - mountPath: /var/data-sync/webmail
-          name: webmail
         - mountPath: /var/data-sync/wx
           name: wx
         - mountPath: /run/secrets/data-sync-sshkey
@@ -99,7 +95,7 @@ spec:
         secret:
           secretName: data-sync-sshkey
       - name: logs
-        emptyDir: {}
+        hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
   volumeClaimTemplates:
   - metadata:
       name: archive
@@ -176,16 +172,6 @@ spec:
         matchLabels:
           volume.group: household
   - metadata:
-      name: inbox
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: inbox
-  - metadata:
       name: jira
     spec:
       accessModes: [ ReadWriteMany ]
@@ -215,16 +201,6 @@ spec:
       selector:
         matchLabels:
           volume.group: user
-  - metadata:
-      name: webmail
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: webmail
   - metadata:
       name: wx
     spec:

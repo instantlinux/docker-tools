@@ -51,6 +51,8 @@ spec:
       hostNetwork: true
       imagePullSecrets:
       - name: regcred
+      nodeSelector:
+        service.$SERVICE_NAME: allow
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: samba-admin-password

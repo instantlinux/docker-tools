@@ -6,9 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
 spec:
+  clusterIP: $DB_IP
   ports:
-  - { port: 3306, targetPort: 3306 }
-  clusterIP: None
+  - port: 3306
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"

@@ -44,33 +44,7 @@ HELM_VERSION   ?= 2.11.0
 SEKRET_VERSION ?= 1.2.1
 STACKS  = $(basename $(wildcard *.yaml))
 
-export DB_HOST              ?= db00.$(DOMAIN)
-export K8S_VOLUMES_PATH     ?= /var/lib/docker/k8s-volumes
-export NAMED_VOLUMES        ?= admin backup share $(LOCAL_VOLUMES)
-export NODES                ?= $(K8S_NODES)
-export PATH_ADM              = $(K8S_VOLUMES_PATH)/admin
-export PATH_BKP              = $(K8S_VOLUMES_PATH)/backup
-export PATH_SHR              = $(K8S_VOLUMES_PATH)/share
-export POOL_NUM_MEDIUM      ?= 0010
-export POOL_NUM_SMALL       ?= 0030
-export POOL_SIZE_MEDIUM      = 8Gi
-export POOL_SIZE_SMALL       = 500Mi
-export PORT_POSTFIX_INTERNAL ?= 3425
-export RSYSLOGD_HOST         = 10.101.1.40
-export RSYSLOGD_PORT        ?= 514
-export SPAMC_HOST            = spamassassin
-export TZ                   ?= UTC
-
-# IP addresses
-export K8S_INGRESS_NGINX_IP ?= 10.101.1.1
-export BLACKLIST_IP         ?= 10.101.1.10
-export CLOUD_IP             ?= 10.101.1.15
-export GITLAB_IP            ?= 10.101.1.20
-export POSTFIX_IP           ?= 10.101.1.25
-export PROFTPD_IP            = 10.101.1.30
-export RSYSLOGD_IP          ?= 10.101.1.40
-export SPLUNK_IP            ?= 10.101.1.60
-export WXCAM_UPLOAD_IP      ?= 10.101.1.70
+include Makefile.vars
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -85,7 +59,7 @@ mariadb-galera::
 
 db00 db01 db02 db03:
 	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$@ \
+	@SERVICE_NAME=$@ DB_IP=$(shell dig +short $@.$(DOMAIN)) \
 	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
 
 wordpress::
@@ -93,7 +67,9 @@ wordpress::
 
 wordpress-ci wordpress-il:
 	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$@ \
+	$(eval fqdn := $(shell case $@ in (wordpress-ci) echo www.ci.net;;\
+	  (wordpress-il) echo www.instantlinux.net;; esac))
+	@SERVICE_NAME=$@ DB_NAME=$(shell echo $@ | tr - _) HOST_FQDN=$(fqdn) \
 	  envsubst < wordpress.yaml | kubectl $(ACTION) -f -
 
 $(STACKS)::
@@ -107,7 +83,7 @@ $(STACKS)::
 .PHONY: helm_install imports install node_labels persistent secrets \
 	untaint_master
 
-IMPORTS      = dashboard flannel ingress-nginx traefic-prom
+IMPORTS      = dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -238,6 +214,7 @@ imports/dashboard.yaml:
 
 imports/flannel.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+	sed -i -e 's/"Type": "vxlan"/"Type": "host-gw"/' $@
 
 imports/ingress-nginx.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml

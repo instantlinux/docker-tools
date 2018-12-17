@@ -18,7 +18,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
     SPAMLIMIT=12 \
     SPAMC_HOST=spamassassin
 
-ARG PYTHON_PIP_VERSION=18.0
+ARG PYTHON_PIP_VERSION=18.1
 
 COPY requirements/ /root/
 COPY src/ /usr/local/bin/
@@ -34,10 +34,11 @@ RUN apk add --no-cache --update \
       gcc git freetype-dev jpeg-dev musl-dev zlib-dev && \
     pip install -r /root/common.txt && \
     chmod -R g+rx,o+rx /usr/local/bin && \
+    adduser -S -u 2026 -g "Spamassassin" -s /bin/sh spamfilter && \
+    addgroup spamfilter postdrop && \
+    apk del .fetch-deps; \
     find /usr/local -depth \( \
         \( -type d -a -name test -o -name tests \) -o \
         \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
       \) -exec rm -rf '{}' +; \
-    apk del .fetch-deps; \
-    adduser -S -u 2026 -g "Spamassassin filter" -s /bin/sh spamfilter; \
     rm -fr /var/log/* /var/cache/apk/* /build

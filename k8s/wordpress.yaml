@@ -2,10 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
+  clusterIP: None
   ports:
-  - { port: 80, targetPort: 80 }
+  - port: 80
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -26,7 +29,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: WORDPRESS_DB_HOST, value: $DB_HOST }
-        - { name: WORDPRESS_DB_NAME, value: $SERVICE_NAME }
+        - { name: WORDPRESS_DB_NAME, value: $DB_NAME }
         - { name: WORDPRESS_DB_USER, value: wordpress }
         - { name: TZ, value: $TZ }
         - name: WORDPRESS_DB_PASSWORD
@@ -80,6 +83,11 @@ spec:
         - mountPath: /var/www/html
           name: share
           subPath: $SERVICE_NAME/html
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       nodeSelector:
         service.data-sync: allow
       volumes:
@@ -87,3 +95,23 @@ spec:
         hostPath: { path: $PATH_ADM }
       - name: share
         hostPath: { path: $PATH_SHR }
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - secretName: $HOST_FQDN
+    hosts:
+    - $HOST_FQDN
+  rules:
+  - host: $HOST_FQDN
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80

@@ -2,6 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
   clusterIP: $POSTFIX_IP
@@ -34,12 +36,12 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: DB_HOST, value: DB_HOST }
-        - { name: CIDR_MIN_SIZE, $CIDR_MIN_SIZE }
-        - { name: HONEYPOT_ADDRS, $HONEYPOT_ADDRS }
+        - { name: DB_HOST, value: $DB_HOST }
+        - { name: CIDR_MIN_SIZE, value: "$CIDR_MIN_SIZE" }
+        - { name: HONEYPOT_ADDRS, value: $HONEYPOT_ADDRS }
         - name: INBOUND_RELAY
           value: by mx-caprica.?\.easydns\.com
-        - { name: SPAMC_HOST, $SPAMC_HOST }
+        - { name: SPAMC_HOST, value: $SPAMC_HOST }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/postfix-python:latest
         ports:
@@ -50,40 +52,43 @@ spec:
           name: admin
           readOnly: true
           subPath: services/$SERVICE_NAME/etc
-        - mountPath: /etc/ssl/certs
-          name: share
-          readOnly: true
-          subPath: common/pki/certs
         - mountPath: /var/spool/postfix
           name: spool
-        - name: mysql-blacklist-user
-          mountPath: /run/secrets/mysql-blacklist-user
+        - mountPath: /run/secrets/mysql-blacklist-user
+          name: mysql-blacklist-user
           readOnly: true
           subPath: mysql-blacklist-user
-        - name: postfix-sasl-passwd
-          mountPath: /run/secrets/postfix-sasl-passwd
+        - mountPath: /run/secrets/postfix-sasl-passwd
+          name: postfix-sasl-passwd
           readOnly: true
           subPath: postfix-sasl-passwd
-        - name: webmail-ci-net-server-key-pem
-          mountPath: /run/secrets/webmail.ci.net-server-key.pem
+        - mountPath: /etc/ssl/certs/$POSTFIX_CERT
+          name: ssl-cert
           readOnly: true
-          subPath: webmail.ci.net-server-key.pem
+          subPath: tls.crt
+        - mountPath: /run/secrets/$POSTFIX_KEY
+          name: ssl-cert
+          readOnly: true
+          subPath: tls.key
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       imagePullSecrets:
       - name: regcred
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
-      - name: share
-        hostPath: { path: $PATH_SHR }
       - name: mysql-blacklist-user
         secret:
           secretName: mysql-blacklist-user
       - name: postfix-sasl-passwd
         secret:
           secretName: postfix-sasl-passwd
-      - name: webmail-ci-net-server-key-pem
+      - name: ssl-cert
         secret:
-          secretName: webmail-ci-net-server-key-pem
+          secretName: webmail.$DOMAIN
   volumeClaimTemplates:
   - metadata:
       name: spool

@@ -40,8 +40,9 @@ spec:
       imagePullSecrets:
       - name: regcred
       dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
         options:
-        - { name: ndots }
+        - name: ndots
       volumes:
       - name: sshkey
         secret:

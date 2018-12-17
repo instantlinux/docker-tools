@@ -18,7 +18,10 @@ spec:
     readOnly: true
   - pathPrefix: $PATH_BKP
   - pathPrefix: $PATH_SHR
+  - pathPrefix: $K8S_VOLUMES_PATH/artifactory
   - pathPrefix: $K8S_VOLUMES_PATH/cloud
+  - pathPrefix: $K8S_VOLUMES_PATH/sync-logs
+  - pathPrefix: $K8S_VOLUMES_PATH/ox-appsuite
   - pathPrefix: $K8S_VOLUMES_PATH/dos
   - pathPrefix: $K8S_VOLUMES_PATH/duplicati
   - pathPrefix: $K8S_VOLUMES_PATH/gitlab
@@ -26,6 +29,8 @@ spec:
   - pathPrefix: $K8S_VOLUMES_PATH/inbox
   - pathPrefix: $K8S_VOLUMES_PATH/jira
   - pathPrefix: $K8S_VOLUMES_PATH/nexus
+  - pathPrefix: $K8S_VOLUMES_PATH/postfix_spool
+  - pathPrefix: $K8S_VOLUMES_PATH/rainloop
   - pathPrefix: $K8S_VOLUMES_PATH/user
   - pathPrefix: $K8S_VOLUMES_PATH/webmail
   - pathPrefix: $K8S_VOLUMES_PATH/wx

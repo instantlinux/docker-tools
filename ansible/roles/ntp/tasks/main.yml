@@ -24,3 +24,9 @@
   service:
     enabled: "{{ ntp.service.enabled }}"
     name: "{{ ntp.service.name }}"
+
+- name: Disable ubuntu's conflicting timesyncd
+  service:
+    enabled: False
+    name: systemd-timesyncd
+  ignore_errors: True

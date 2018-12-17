@@ -29,6 +29,7 @@ rules:
   - ingresses
   - limitranges
   - pods
+  - pods/attach
   - pods/exec
   - pods/log
   - podtemplates
@@ -51,10 +52,15 @@ rules:
   - create
   - delete
   - list
-- apiGroups: ["batch"]
+- apiGroups: [batch]
   resources:
   - jobs
   - cronjobs
+  verbs: ["*"]
+- apiGroups: [rbac.authorization.k8s.io]
+  resources:
+  - rolebindings
+  - roles
   verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -149,4 +155,61 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: $K8S_NAMESPACE-privileged
+  namespace: $K8S_NAMESPACE
+---
+# Instance permissions for ingress
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: $K8S_NAMESPACE:ingress-pod
+rules:
+- apiGroups: ["", extensions]
+  resources:
+  - configmaps
+  - endpoints
+  - ingresses
+  - secrets
+  - services
+  verbs: [list, watch]
+- apiGroups: [""]
+  resources:
+  - events
+  verbs: [patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: $K8S_NAMESPACE:ingress-pod-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: $K8S_NAMESPACE:ingress-pod
+subjects:
+- kind: ServiceAccount
+  name: pod-ingress-privileged
+  namespace: $K8S_NAMESPACE
+---
+# Instance permissions for gitlab
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: $K8S_NAMESPACE:gitlab-pod
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - pods
+  verbs: [list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: $K8S_NAMESPACE:gitlab-pod-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: $K8S_NAMESPACE:gitlab-pod
+subjects:
+- kind: ServiceAccount
+  name: pod-gitlab-privileged
   namespace: $K8S_NAMESPACE

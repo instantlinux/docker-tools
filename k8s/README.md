@@ -101,10 +101,11 @@ export EDITOR=vi
 export ENCRYPTION_KEY=3zQ#LgGGc9R&9z5@Z^68H6Gz6Q7vQ1z2
 export K8S_NAMESPACE=mynamespace
 export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
-export RSYSLOGD_HOST=syslog.$DOMAIN
-export RSYSLOGD_PORT=514
 export TZ=America/Los_Angeles
 ```
+
+Customize the Makefile.vars files with any additional settings you
+desire.
 
 Create group_vars/k8s_master.yml and group_vars/k8s_node files
 that contains definitions like this:
