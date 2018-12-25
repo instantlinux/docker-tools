@@ -84,23 +84,23 @@ spec:
       selector:
         matchLabels:
           volume.group: $SERVICE_NAME
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: $SERVICE_NAME-ingress
-  annotations:
-    kubernetes.io/ingress.class: nginx-internal
-spec:
-  tls:
-  - secretName: $SERVICE_NAME.$DOMAIN
-    hosts:
-    - $SERVICE_NAME.$DOMAIN
-  rules:
-  - host: $SERVICE_NAME.$DOMAIN
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: $SERVICE_NAME
-          servicePort: 80
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: $SERVICE_NAME-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: nginx-internal
+# spec:
+#   tls:
+#   - secretName: $SERVICE_NAME.$DOMAIN
+#     hosts:
+#     - $SERVICE_NAME.$DOMAIN
+#   rules:
+#   - host: $SERVICE_NAME.$DOMAIN
+#     http:
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: $SERVICE_NAME
+#           servicePort: 80

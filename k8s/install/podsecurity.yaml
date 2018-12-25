@@ -18,6 +18,8 @@ spec:
     readOnly: true
   - pathPrefix: $PATH_BKP
   - pathPrefix: $PATH_SHR
+  - pathPrefix: /home
+    readOnly: true
   - pathPrefix: $K8S_VOLUMES_PATH/artifactory
   - pathPrefix: $K8S_VOLUMES_PATH/cloud
   - pathPrefix: $K8S_VOLUMES_PATH/sync-logs

@@ -23,16 +23,17 @@ EOF
   fi
 fi
 chown -R $USERNAME /home/$USERNAME
-touch /var/log/git-dump.log
+[ -e /var/log/git-dump.log ] || touch /var/log/git-dump.log
+[ -e /var/log/git-dump-status.txt ] || touch /var/log/git-dump-status.txt
 mkdir -p -m 750 $DEST_DIR
-chown $USERNAME.$GROUP $DEST_DIR /var/log/git-dump.log
+chown $USERNAME.$GROUP $DEST_DIR /var/log/git-dump.log /var/log/git-dump-status.txt
 
 cat <<EOF >/etc/opt/git-dump
 # Options for /usr/local/bin/git-dump
 API_TOKEN_SECRET=$API_TOKEN_SECRET
 LOGFILE=/var/log/git-dump.log
 REPO_PREFIX=$REPO_PREFIX
-STATFILE=$DEST_DIR/git-dump-status.txt
+STATFILE=/var/log/git-dump-status.txt
 EOF
 cat <<EOF >/etc/crontabs/$USERNAME
 $MINUTE $HOUR * * *  /usr/local/bin/git-dump.sh $DEST_DIR $KEEP_DAYS $REPOS

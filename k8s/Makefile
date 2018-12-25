@@ -40,6 +40,7 @@
 ACTION         ?= apply
 CLUSTER        ?= kubernetes
 ADMIN_CTX      ?= --context=kubernetes-admin@$(CLUSTER)
+CERTMGR_VERSION ?= 299f546b4d8a61af19e94545ed4fc1c35dee35e0
 HELM_VERSION   ?= 2.11.0
 SEKRET_VERSION ?= 1.2.1
 STACKS  = $(basename $(wildcard *.yaml))
@@ -61,6 +62,15 @@ db00 db01 db02 db03:
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$@ DB_IP=$(shell dig +short $@.$(DOMAIN)) \
 	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
+
+gitlab-runner::
+	@echo Use gitlab-agent target
+
+gitlab-agent:
+	@echo Installing service with privileged /var/run/docker.sock access
+	@SERVICE_NAME=gitlab-runner \
+	  envsubst < gitlab-runner.yaml | kubectl $(ACTION) $(ADMIN_CTX) -n gitlab -f -
+	-sekret dec secrets/$(CA_SECRET) | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
 
 wordpress::
 	@echo Please specify a specific instance e.g. wordpress-ci && exit 1
@@ -89,10 +99,11 @@ INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user install/namespace install/namespace-user \
-	install/podsecurity storage_localdefault imports install_imports \
-	install/ingress-nginx-nodeport install/k8s-backup install/local-storage \
-	install/logspout extend_dashboard_ttl helm_install sekret \
-	secrets data-sync-ssh volumes/nfs ~/.kube/config.conf persistent
+	install/namespace-cert-manager install/podsecurity storage_localdefault \
+	imports install_imports install/ingress-nginx-nodeport \
+	install/k8s-backup install/local-storage install/logspout \
+	install/gitlab-rbac xtend_dashboard_ttl helm_install sekret secrets \
+	data-sync-ssh volumes/nfs ~/.kube/config.conf persistent
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'
@@ -195,6 +206,19 @@ SECRETS = secrets/*
 secrets: secrets/*
 secrets/*::
 	-sekret dec $@ | envsubst | kubectl create -f -
+
+##########
+# cert-manager
+##########
+
+# NOT working; TODO resume work on this when setup doc and non-helm install are fixed
+#  See: https://github.com/jetstack/cert-manager/issues/1151
+cert-manager: imports/00-crds.yaml imports/cert-manager.yaml
+	kubectl	$(ADMIN_CTX) $(ACTION) -f imports/00-crds.yaml
+	kubectl	$(ADMIN_CTX) $(ACTION) -f imports/cert-manager.yaml
+
+imports/00-crds.yaml imports/cert-manager.yaml:
+	curl -sLo $@ https://raw.githubusercontent.com/jetstack/cert-manager/$(CERTMGR_VERSION)/deploy/manifests/$(@F)
 
 ##########
 # Add-ons

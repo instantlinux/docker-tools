@@ -15,7 +15,7 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
-  clusterIP: None
+  clusterIP: $AUTHELIA_IP
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
   ports:

@@ -2,8 +2,6 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
   clusterIP: None
@@ -28,62 +26,46 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: OX_CONFIG_DB_HOST, value: $DB_HOST }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/open-xchange-appsuite:latest
-        ports:
-        - containerPort: 80
+        image: nextcloud:$VERSION_NEXTCLOUD
+        command: [/bin/bash]
+        args:
+        - -c
+        - >
+          set -x &&
+          usermod -a -G users www-data &&
+          exec apache2-foreground
+#          mkdir -p /var/www/html/data/$CLOUD_USER1/files \
+#            /var/www/html/data/$CLOUD_USER2/files &&
+#          ln -fsT /pictures/DigitalPics/iPhone-sync/$CLOUD_USER1 \
+#            /var/www/html/data/$CLOUD_USER1/files/Photos &&
+#          ln -fsT /pictures/DigitalPics/iPhone-sync/$CLOUD_USER2 \
+#            /var/www/html/data/$CLOUD_USER2/files/Photos &&
         volumeMounts:
-        - mountPath: /ox/etc
-          name: admin
-          readOnly: true
-          subPath: services/ox-appsuite/etc
-        - mountPath: /ox/store
-          name: share
-          subPath: ox-appsuite/data
-        - mountPath: /var/log/open-xchange
-          name: logs
-        - mountPath: /var/log/apache2
-          name: apache2
-        - name: ox-db-password
-          mountPath: /run/secrets/ox-db-password
-          readOnly: true
-          subPath: ox-db-password
-        - name: ox-admin-password
-          mountPath: /run/secrets/ox-admin-password
-          readOnly: true
-          subPath: ox-admin-password
-        - name: ox-master-password
-          mountPath: /run/secrets/ox-master-password
-          readOnly: true
-          subPath: ox-master-password
+        - mountPath: /var/www/html
+          name: synced
+          subPath: html
+        - mountPath: /pictures
+          name: pictures
+        - mountPath: /var/www/html/data/$CLOUD_USER1/files/Photos/2018
+          name: pictures
+          subPath: DigitalPics/2018/$CLOUD_USER1-nextcloud
+        - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos/2018
+          name: pictures
+          subPath: DigitalPics/2018/$CLOUD_USER2-nextcloud
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
         options:
         - name: use-vc
         - name: ndots
-      imagePullSecrets:
-      - name: regcred
       nodeSelector:
         service.data-sync: allow
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
-      - name: share
-        hostPath: { path: $PATH_SHR }
-      - name: logs
-        emptyDir: {}
-      - name: apache2
-        emptyDir: {}
-      - name: ox-db-password
-        secret:
-          secretName: ox-db-password
-      - name: ox-admin-password
-        secret:
-          secretName: ox-admin-password
-      - name: ox-master-password
-        secret:
-          secretName: ox-master-password
+      - name: synced
+        hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
+      - name: pictures
+        persistentVolumeClaim:
+          claimName: pictures
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -122,7 +104,7 @@ spec:
   - host: $SERVICE_NAME.$DOMAIN
     http:
       paths:
-      - path: /(appsuite/?|appsuite/ui|appsuite/api/login)
+      - path: /index.php/login
         backend:
           serviceName: $SERVICE_NAME
           servicePort: 80

@@ -37,8 +37,10 @@ spec:
           readOnly: true
           subPath: git.$MYDOMAIN-api-token
       dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
         options:
-        - { name: ndots }
+        - name: use-vc
+        - name: ndots
       imagePullSecrets:
       - name: regcred
       nodeSelector:
@@ -47,7 +49,7 @@ spec:
       - name: backup
         hostPath: { path: $PATH_BKP }
       - name: logs
-        emptyDir: {}
+        hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
       - name: secret-sshkey
         secret:
           secretName: git-dump-sshkey

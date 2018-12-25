@@ -29,7 +29,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: GID, value: "$RAINLOOP_GID" }
-        - { name: UID,  value: "$RAINLOOP_UID" }
+        - { name: UID, value: "$RAINLOOP_UID" }
         - { name: LOG_TO_STDOUT, value: "true" }
         image: hardware/rainloop:$VERSION_RAINLOOP
         ports:

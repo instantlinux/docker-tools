@@ -42,8 +42,12 @@ spec:
         - { name: GUACD_PORT, value: $(GUACD_SERVICE_PORT) }
         - { name: MYSQL_DATABASE, value: guacamole }
         - { name: MYSQL_HOSTNAME, value: $DB_HOST }
-        - { name: MYSQL_PASSWORD, value: $GUACAMOLE_DBPASS }
         - { name: MYSQL_USER, value: guacamole_user }
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-db-password
+              key: guacamole-db-password
         image: guacamole/guacamole:$VERSION_GUACAMOLE
         ports:
         - containerPort: 8080
@@ -73,6 +77,11 @@ spec:
         image: guacamole/guacd:$VERSION_GUACAMOLE
         ports:
         - containerPort: 4822
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -81,7 +90,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/app-root: /guacamole
-    nginx.ingress.kubernetes.io/proxy-buffering: off
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
     nginx.ingress.kubernetes.io/enable-access-log: "false"
 spec:
   rules:
@@ -97,3 +106,25 @@ spec:
     - desktop.$DOMAIN
     secretName: desktop.$DOMAIN
 #   secretName: letsencrypt-certs
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-totp
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-url: http://$AUTHELIA_IP/api/verify
+    nginx.ingress.kubernetes.io/auth-signin: https://authtotp.$DOMAIN
+spec:
+  tls:
+  - secretName: $SERVICE_NAME.$DOMAIN
+    hosts:
+    - desktop.$DOMAIN
+  rules:
+  - host: desktop.$DOMAIN
+    http:
+      paths:
+      - path: /guacamole/\#/login
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80

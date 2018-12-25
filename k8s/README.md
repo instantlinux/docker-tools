@@ -30,7 +30,7 @@ kubeadm suite:
 * Encryption for internal etcd
 * Flannel networking
 * ingress-nginx
-* Letsencrypt certs
+* Letsencrypt certs (TODO)
 
 Resource yaml files are in standard k8s format, parameterized by simple
 environment-variable substitution.

@@ -7,16 +7,16 @@ spec:
   clusterIP: $WXCAM_UPLOAD_IP
   ports:
   - { port: 21, targetPort: 21, name: ftp }
-  - { port: 30091, targetPort: 30091, name: pasv1 }
-  - { port: 30092, targetPort: 30092, name: pasv2 }
-  - { port: 30093, targetPort: 30093, name: pasv3 }
-  - { port: 30094, targetPort: 30094, name: pasv4 }
-  - { port: 30095, targetPort: 30095, name: pasv5 }
-  - { port: 30096, targetPort: 30096, name: pasv6 }
-  - { port: 30097, targetPort: 30097, name: pasv7 }
-  - { port: 30098, targetPort: 30098, name: pasv8 }
-  - { port: 30099, targetPort: 30099, name: pasv9 }
-  - { port: 30100, targetPort: 30100, name: pasv10 }
+  - { port: 30081, targetPort: 30081, name: pasv1 }
+  - { port: 30082, targetPort: 30082, name: pasv2 }
+  - { port: 30083, targetPort: 30083, name: pasv3 }
+  - { port: 30084, targetPort: 30084, name: pasv4 }
+  - { port: 30085, targetPort: 30085, name: pasv5 }
+  - { port: 30086, targetPort: 30086, name: pasv6 }
+  - { port: 30087, targetPort: 30087, name: pasv7 }
+  - { port: 30088, targetPort: 30088, name: pasv8 }
+  - { port: 30089, targetPort: 30089, name: pasv9 }
+  - { port: 30090, targetPort: 30090, name: pasv10 }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
@@ -43,17 +43,17 @@ spec:
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
         - containerPort: 21
+        - containerPort: 30080
+        - containerPort: 30081
+        - containerPort: 30082
+        - containerPort: 30083
+        - containerPort: 30084
+        - containerPort: 30085
+        - containerPort: 30086
+        - containerPort: 30087
+        - containerPort: 30088
+        - containerPort: 30089
         - containerPort: 30090
-        - containerPort: 30091
-        - containerPort: 30092
-        - containerPort: 30093
-        - containerPort: 30094
-        - containerPort: 30095
-        - containerPort: 30096
-        - containerPort: 30097
-        - containerPort: 30098
-        - containerPort: 30099
-        - containerPort: 30100
         volumeMounts:
         - mountPath: /home/wx/upload
           name: share

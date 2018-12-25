@@ -30,6 +30,11 @@ spec:
           mountPath: /run/secrets/mysql-backup-creds
           readOnly: true
           subPath: mysql-backup-creds
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       imagePullSecrets:
       - name: regcred
       nodeSelector:
@@ -38,7 +43,7 @@ spec:
       - name: backup
         hostPath: { path: $PATH_BKP }
       - name: logs
-        emptyDir: {}
+        hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
       - name: mysql-backup-creds
         secret:
           secretName: mysql-backup-creds

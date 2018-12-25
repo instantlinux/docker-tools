@@ -111,6 +111,8 @@ metadata:
   name: $SERVICE_NAME-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Server homebase.$MYDOMAIN;
 spec:
   tls:
   - secretName: homebase.$MYDOMAIN
@@ -121,6 +123,28 @@ spec:
     http:
       paths:
       - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $SERVICE_NAME-totp
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-url: http://$AUTHELIA_IP/api/verify
+    nginx.ingress.kubernetes.io/auth-signin: https://authtotp.$DOMAIN
+spec:
+  tls:
+  - secretName: $SERVICE_NAME.$DOMAIN
+    hosts:
+    - $SERVICE_NAME.$DOMAIN
+  rules:
+  - host: $SERVICE_NAME.$DOMAIN
+    http:
+      paths:
+      - path: /TODO/users/login
         backend:
           serviceName: $SERVICE_NAME
           servicePort: 80

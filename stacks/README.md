@@ -21,3 +21,9 @@ represents a separate service running in Swarm.
 |DB_HOST|Load-balanced hostname of primary MySQL database|
 |REGISTRY_URI|Local docker registry hostname:port|
 |SHARE_PATH|Directory pathname to synchronize across hosts|
+
+### Status
+
+With the rise in popularity of Kubernetes in 2018, usage of docker-compose
+file format is declining. I'm no longer using these files and there is
+no validation testing to confirm they still work.

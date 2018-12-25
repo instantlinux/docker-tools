@@ -59,6 +59,8 @@ spec:
           name: logs
         - mountPath: /var/data-sync/share
           name: share
+        - mountPath: /var/data-sync/backup
+          name: backup
         - mountPath: /var/data-sync/cloud
           name: cloud
         - mountPath: /var/data-sync/dos
@@ -73,8 +75,6 @@ spec:
           name: jira
         - mountPath: /var/data-sync/nexus
           name: nexus
-        - mountPath: /var/data-sync/user
-          name: user
         - mountPath: /var/data-sync/wx
           name: wx
         - mountPath: /run/secrets/data-sync-sshkey
@@ -91,6 +91,8 @@ spec:
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
+      - name: backup
+        hostPath: { path: $PATH_BKP }
       - name: data-sync-sshkey
         secret:
           secretName: data-sync-sshkey
@@ -191,16 +193,6 @@ spec:
       selector:
         matchLabels:
           volume.group: nexus
-  - metadata:
-      name: user
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: user
   - metadata:
       name: wx
     spec:

@@ -57,8 +57,8 @@ spec:
           name: logs
       hostname: git
       nodeSelector:
-        service.data-sync: allow
-      serviceAccountName: pod-gitlab-privileged
+        service.$SERVICE_NAME: allow
+      serviceAccountName: gitlab-pod-privileged
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
@@ -69,17 +69,12 @@ spec:
       - name: $SERVICE_NAME
         hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: pod-gitlab-privileged
----
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: $SERVICE_NAME-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
+  name: $SERVICE_NAME-ingress
 spec:
   tls:
   - secretName: git.$MYDOMAIN

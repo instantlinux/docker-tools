@@ -188,28 +188,3 @@ subjects:
 - kind: ServiceAccount
   name: pod-ingress-privileged
   namespace: $K8S_NAMESPACE
----
-# Instance permissions for gitlab
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: $K8S_NAMESPACE:gitlab-pod
-rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - pods
-  verbs: [list, watch]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: $K8S_NAMESPACE:gitlab-pod-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: $K8S_NAMESPACE:gitlab-pod
-subjects:
-- kind: ServiceAccount
-  name: pod-gitlab-privileged
-  namespace: $K8S_NAMESPACE
