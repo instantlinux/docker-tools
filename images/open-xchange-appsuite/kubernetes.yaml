@@ -33,6 +33,12 @@ spec:
         image: $REGISTRY_URI/open-xchange-appsuite:latest
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            memory: 2048Mi
+          requests:
+            cpu: 200m
+            memory: 768Mi
         volumeMounts:
         - mountPath: /ox/etc
           name: admin

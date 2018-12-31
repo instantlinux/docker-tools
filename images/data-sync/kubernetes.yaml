@@ -46,6 +46,11 @@ spec:
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
         - containerPort: 22
+        resources:
+          limits:
+            memory: 4096Mi
+          requests:
+            memory: 256Mi
         volumeMounts:
         - name: archive
           mountPath: /root/.unison

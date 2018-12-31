@@ -33,6 +33,12 @@ spec:
         image: cptactionhank/atlassian-jira:$VERSION_JIRA
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            memory: 6144Mi
+          requests:
+            cpu: 300m
+            memory: 2024Mi
         volumeMounts:
         - mountPath: /var/atlassian/jira
           name: $SERVICE_NAME

@@ -51,6 +51,12 @@ spec:
         image: guacamole/guacamole:$VERSION_GUACAMOLE
         ports:
         - containerPort: 8080
+        resources:
+          limits:
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 768Mi
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
         options:
@@ -77,6 +83,12 @@ spec:
         image: guacamole/guacd:$VERSION_GUACAMOLE
         ports:
         - containerPort: 4822
+        resources:
+          limits:
+            memory: 32Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
         options:

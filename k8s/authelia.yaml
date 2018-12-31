@@ -42,6 +42,12 @@ spec:
         image: clems4ever/authelia:$VERSION_AUTHELIA
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            memory: 1536Mi
+          requests:
+            cpu: 200m
+            memory: 1024Mi
         volumeMounts:
         - mountPath: /etc/authelia/config.yml
           name: config

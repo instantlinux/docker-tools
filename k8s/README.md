@@ -26,14 +26,16 @@ kubeadm suite:
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
 * Helm with tiller
-* Sekret with encryption
+* Sekret with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * Flannel networking
 * ingress-nginx
 * Letsencrypt certs (TODO)
 
 Resource yaml files are in standard k8s format, parameterized by simple
-environment-variable substitution.
+environment-variable substitution. Helm is provided only to enable
+access to published helm charts; resources herein are defined using the
+Kubernetes-native API syntax.
 
 ### Requirements and cost
 

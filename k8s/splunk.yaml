@@ -64,6 +64,12 @@ spec:
         - containerPort: 8088
         - containerPort: 8089
         - containerPort: 9997
+        resources:
+          limits:
+            memory: 4096Mi
+          requests:
+            cpu: 500m
+            memory: 1024Mi
         volumeMounts:
         - mountPath: /opt/splunk/etc
           name: splunk

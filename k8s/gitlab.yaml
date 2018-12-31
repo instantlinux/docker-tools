@@ -43,6 +43,12 @@ spec:
         - containerPort: 22
         - containerPort: 80
         - containerPort: 443
+        resources:
+          limits:
+            memory: 4096Mi
+          requests:
+            cpu: 400m
+            memory: 2048Mi
         volumeMounts:
         - mountPath: /etc/gitlab
           name: $SERVICE_NAME
@@ -60,8 +66,6 @@ spec:
         service.$SERVICE_NAME: allow
       serviceAccountName: gitlab-pod-privileged
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
       - name: backup
         hostPath: { path: $PATH_BKP }
       - name: logs

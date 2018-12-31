@@ -37,6 +37,12 @@ spec:
         image: docker.bintray.io/jfrog/artifactory-oss:$VERSION_ARTIFACTORY
         ports:
         - containerPort: 8081
+        resources:
+          limits:
+            memory: 1536Mi
+          requests:
+            cpu: 200m
+            memory: 768Mi
         volumeMounts:
         - name: data
           mountPath: /var/opt/jfrog/artifactory
@@ -45,6 +51,11 @@ spec:
           mountPath: /opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-5.1.40-bin.jar
           readOnly: true
           subPath: $SERVICE_NAME/mysql-connector-java-5.1.40.jar
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       nodeSelector:
         service.data-sync: allow
       volumes:

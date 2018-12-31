@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: $K8S_NAMESPACE
+spec:
+  limits:
+  - default:
+      memory: $LIMIT_MEM_DEFAULT
+    defaultRequest:
+      memory: $LIMIT_MEM_REQUEST
+    type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limit-range
+  namespace: $K8S_NAMESPACE
+spec:
+  limits:
+  - default:
+      cpu: $LIMIT_CPU_DEFAULT
+    defaultRequest:
+      cpu: $LIMIT_CPU_REQUEST
+    type: Container

@@ -30,6 +30,9 @@ spec:
         resources:
           limits:
             memory: 64Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
         volumeMounts:
         - name: admin
           mountPath: /git

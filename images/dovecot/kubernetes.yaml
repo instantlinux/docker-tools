@@ -140,6 +140,12 @@ spec:
         image: $REGISTRY_URI/data-sync:latest
         ports:
         - containerPort: 22
+        resources:
+          limits:
+            memory: 1536Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
         volumeMounts:
         - name: archive
           mountPath: /root/.unison

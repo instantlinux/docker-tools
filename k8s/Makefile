@@ -98,12 +98,12 @@ INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
-install: install/admin-user install/namespace install/namespace-user \
-	install/namespace-cert-manager install/podsecurity storage_localdefault \
-	imports install_imports install/ingress-nginx-nodeport \
-	install/k8s-backup install/local-storage install/logspout \
-	install/gitlab-rbac xtend_dashboard_ttl helm_install sekret secrets \
-	data-sync-ssh volumes/nfs ~/.kube/config.conf persistent
+install: install/admin-user install/namespace install/limits \
+	install/namespace-user install/namespace-cert-manager \
+	install/podsecurity storage_localdefault imports install_imports \
+	install/k8s-backup install/local-storage \
+	install/logspout install/gitlab-rbac extend_dashboard_ttl helm_install \
+	sekret secrets data-sync-ssh volumes/nfs ~/.kube/config.conf persistent
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'

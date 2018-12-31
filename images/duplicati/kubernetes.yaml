@@ -40,6 +40,12 @@ spec:
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
         - containerPort: 8200
+        resources:
+          limits:
+            memory: 2048Mi
+          requests:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - mountPath: /config
           name: config
@@ -48,9 +54,6 @@ spec:
         - mountPath: /backup/share
           name: share
         # list of volumes to back up, customize as needed
-        - mountPath: /backup/share/artifactory
-          name: artifactory
-          readOnly: true
         - mountPath: /backup/services
           name: backup
           readOnly: true
@@ -111,8 +114,6 @@ spec:
       volumes:
       - name: config
         hostPath: { path: $K8S_VOLUMES_PATH/duplicati/config }
-      - name: artifactory
-        hostPath: { path: $K8S_VOLUMES_PATH/artifactory }
       - name: backup
         hostPath: { path: $PATH_BKP }
       - name: cloud
