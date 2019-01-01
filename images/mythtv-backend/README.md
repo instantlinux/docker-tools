@@ -1,13 +1,26 @@
 ## mythtv-backend
 [![](https://images.microbadger.com/badges/version/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Commit badge")
 
-The MythTV backend built under Ubuntu 16.04 LTS.
+The MythTV backend built under Ubuntu 18.04 LTS.
 
 ### Usage
 
 This image must be run in network_mode:host in order to communicate with HD Homerun tuners; assign a new IP address and hostname for this application, and define it as a secondary IP address on your Docker host's primary interface.
 
 For configuration, see the example docker-compose.yml. Set environment variables and secrets as defined here, then run "docker-compose up -d".
+
+As an alterantive, this can be run directly using environment variables. The mythtv user password cannot be setup this way, but you shouldn't be running ssh after initial setup anyway.
+
+Use -v options to map in the paths to your media. For my purposes, I've mapped a single folder into /dvr.
+~~~
+docker run -d --name mythtv \
+--network=host \
+-e DBNAME='mythtv' \
+-e DBSERVER='<Your mysql server name or ip>' \
+-e DBPASSWORD='<Password for Mythtv User>' \
+-v <Your dvr/media storage path>:/dvr \
+instantlinux/mythtv-backend:latest
+~~~
 
 Reach mythtv-setup in the usual way after starting sshd on port 2022; default password is mythtv:
 ~~~
@@ -31,6 +44,7 @@ Variable | Default | Description
 APACHE_LOG_DIR | /var/log/apache2 | Apache logs
 DBNAME | mythtv | Database name
 DBSERVER | db00 | Database server hostname
+DBPASSWORD |    | Database server password
 LANG | en_US.UTF-8 | 
 LANGUAGE | en_US.UTF-8 | 
 LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml))
