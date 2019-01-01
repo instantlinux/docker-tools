@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -28,7 +28,7 @@ ARG MYTHWEB_PORT=6760
 RUN \
   apt-get -yq update && apt-get install -yq gnupg locales wget && \
   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
-  echo "deb http://ppa.launchpad.net/mythbuntu/$MYTHTV_VERSION/ubuntu xenial main" \
+  echo "deb http://ppa.launchpad.net/mythbuntu/$MYTHTV_VERSION/ubuntu bionic main" \
     > /etc/apt/sources.list.d/mythbuntu.list && \
   apt-get -yq update && \
   locale-gen $LANG && \
@@ -41,14 +41,16 @@ RUN \
 COPY src/ /root/
 
 RUN \
-  echo "Listen $MYTHWEB_PORT" >>/etc/apache2/ports.conf && \
-  sed -i -e "s/Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config && \
+  sed -i -e "s/Listen 80/Listen $MYTHWEB_PORT/" /etc/apache2/ports.conf && \
+  sed -i -e "s/#Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config && \
   mv /root/mythweb.conf /root/mythweb-settings.conf \
     /etc/apache2/sites-available/ && \
   usermod -u $MYTHTV_UID -s /bin/bash mythtv && \
   mkdir -p /var/lib/mythtv $APACHE_LOG_DIR && \
   echo "mythtv:mythtv" | chpasswd && \
   chown $MYTHTV_UID:$MYTHTV_GID /var/lib/mythtv
+RUN \
+  cat /etc/apache2/ports.conf
 
 EXPOSE $MYTHWEB_PORT $SSH_PORT 5000/udp 5002/udp 5004/udp 6543 6544 65001 \
   65001/udp 
