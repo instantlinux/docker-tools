@@ -15,6 +15,12 @@ docker exec mythtvbackend_app_1 /usr/sbin/sshd
 ssh -p 2022 -X mythtv@<host-ip>
 mythtv-setup
 ~~~
+
+If you're performing setup from a multi monitor system, the fullscreen mythtv-setup might not be entirely visible. In this case, use the following to limit the resolution
+~~~
+mythtv-setup -w -geometry 1280x720
+~~~
+
 Change the password by generating a new hashed password and setting mythtv-user-password secret.
 
 Look for MythTV status pages on port 6544, and MythWeb is serviced on 6760.
