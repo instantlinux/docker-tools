@@ -29,6 +29,12 @@ spec:
         - { name: TZ, value: $TZ }
         - { name: WORKGROUP, value: $SAMBA_WORKGROUP }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
+        resources:
+          limits:
+            memory: 2048Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
         volumeMounts:
         - name: etc
           mountPath: /etc/samba

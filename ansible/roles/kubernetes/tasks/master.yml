@@ -47,8 +47,8 @@
     dest: /etc/kubernetes/pki/secrets.conf
     mode: 0600
 
-- name: Adjust kube-apiserver config
+- name: Adjust kube-apiserver config - encrypt etcd values
   lineinfile:
     path: /etc/kubernetes/manifests/kube-apiserver.yaml
     insertafter: etcd-servers=https://127.0.0.1:2379
-    line: '    - --experimental-encryption-provider-config=/etc/kubernetes/pki/secrets.conf'
+    line: '    - --encryption-provider-config=/etc/kubernetes/pki/secrets.conf'

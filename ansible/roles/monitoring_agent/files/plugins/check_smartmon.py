@@ -351,13 +351,12 @@ if __name__ == "__main__":
         vprint(2, "Generate return information")
         # Tolerated errors
         tolerated = False
-        if ((id5Line == 18 and id198Line == 0 and serialNumber == 'PN2334PCKT7UMB') or
-            (id5Line == 8 and id198Line == 0 and serialNumber == 'W1F1GW6Q') or
+        if ((id5Line == 8 and id198Line == 0 and serialNumber == 'W1F1GW6Q') or
             (id198Line == 16 and serialNumber == 'Z1F0T2FE') or
             (id5Line == 1776 and id198Line == 0 and serialNumber == 'Z1F0TAH8') or
             (id5Line == 0 and id197Line == 1069 and id198Line == 1069 and serialNumber == '5XW07ALG') or
-            (id5Line == 8 and id198Line == 40 and serialNumber == 'W1F1GV68') or
             (id5Line == 45 and id196Line == 45 and serialNumber == '170815FF2689') or
+            (id5Line == 42 and id196Line == 42 and serialNumber == 'PN1338P4H8MT3B') or
             (id5Line == 12 and id196Line == 48 and serialNumber == '1631137A183D')):
             tolerated = True
        

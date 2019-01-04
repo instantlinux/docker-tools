@@ -5,7 +5,9 @@
 # routine "user-level" administration of a namespace so services can
 # be managed without distributing the kubernetes-admin client key.
 #
-# Usage - after invoking ansible playbook k8s-master, set up in this sequence:
+# Step 1: cd ../ansible; make k8s-master
+#
+# Usage - after step 1, review Makefile.vars, set your override vars, then do
 #   make install
 #   make storage_localdefault
 #   for node in kube1.domain kube2.domain <etc>; do
@@ -65,12 +67,25 @@ db00 db01 db02 db03:
 
 gitlab-runner::
 	@echo Use gitlab-agent target
+	@exit 1
 
 gitlab-agent:
 	@echo Installing service with privileged /var/run/docker.sock access
+	@K8S_NAMESPACE=gitlab make install/limits
 	@SERVICE_NAME=gitlab-runner \
 	  envsubst < gitlab-runner.yaml | kubectl $(ACTION) $(ADMIN_CTX) -n gitlab -f -
 	-sekret dec secrets/$(CA_SECRET) | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
+
+nut-upsd::
+	@echo Use nut-xx target
+	@exit 1
+
+nut-%:
+	@echo --$(NOTICE) $@--
+	$(eval SERIAL := $(shell case $@ in (nut-01) echo $(UPS_SERIAL_1);; \
+	 (nut-02) echo $(UPS_SERIAL_2);; esac))
+	@SERVICE_NAME=$@ SERIAL=$(SERIAL) envsubst < nut-upsd.yaml | \
+	 kubectl $(ACTION) $(ADMIN_CTX) --namespace $(K8S_NAMESPACE) -f -
 
 wordpress::
 	@echo Please specify a specific instance e.g. wordpress-ci && exit 1
@@ -90,8 +105,8 @@ $(STACKS)::
 ##########
 # Installation
 ##########
-.PHONY: helm_install imports install node_labels persistent secrets \
-	untaint_master
+.PHONY: helm_install imports install node_labels persistent remote_volumes \
+	secrets untaint_master
 
 IMPORTS      = dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
@@ -101,9 +116,9 @@ VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 install: install/admin-user install/namespace install/limits \
 	install/namespace-user install/namespace-cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
-	install/k8s-backup install/local-storage \
-	install/logspout install/gitlab-rbac extend_dashboard_ttl helm_install \
-	sekret secrets data-sync-ssh volumes/nfs ~/.kube/config.conf persistent
+	install/gitlab-rbac install/k8s-backup install/local-storage \
+	install/logspout extend_dashboard_ttl helm_install remote_volumes \
+	sekret secrets data-sync-ssh ~/.kube/config.conf persistent
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'
@@ -120,6 +135,8 @@ data-sync-ssh:
 	@echo -e \\n'Admin and user context configurations installed in ~/.kube'
 	@echo -e \\n'***** Save a copy of these files and keep secure !!!! *****'
 	@echo -e \\n'***** Do not lose or redistribute admin.conf or admin-user.* !! *****'\\n
+
+remote_volumes: $(VOLUMES_YAML)
 
 $(INSTALL_YAML) $(VOLUMES_YAML)::
 	@echo --$(NOTICE) $@--
@@ -144,49 +161,20 @@ storage_localdefault:
 	  '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
 ##########
+# etcd
+##########
+imports/etcd-token:
+	@-kubectl delete secret $(@F)
+	(cd imports && \
+	 basename \
+	  `curl -s 'https://discovery.etcd.io/new?size=$(ETCD_NUM_NODES)'` \
+	  > $(@F) && \
+	 kubectl create secret generic $(@F) --from-file $(@F))
+
+##########
 # Helm
 ##########
-.PHONY: helm_install tiller_install tiller_protect tiller_disable tiller_enable
-helm_install: /usr/local/bin/helm tiller_install tiller_protect \
-	~/.helm/repository/cache/bitnami-index.yaml
-
-tiller_install:
-	helm init --kube-context=kubernetes-admin@$(CLUSTER)
-
-# plug ghastly security hole, https://github.com/anguslees/helm-security-post
-tiller_protect:
-	-kubectl $(ADMIN_CTX) create serviceaccount --namespace kube-system tiller
-	-kubectl $(ADMIN_CTX) create clusterrolebinding tiller-cluster-rule \
-	  --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-	kubectl $(ADMIN_CTX) patch deploy --namespace kube-system tiller-deploy \
-	  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-	-kubectl $(ADMIN_CTX) delete service tiller-deploy --namespace kube-system
-	kubectl $(ADMIN_CTX) patch deployment tiller-deploy --namespace kube-system \
-	  --patch='$(shell cat install/tiller-patch.json)'
-
-# Only run tiller when needed (until its security is tighter, someday)
-tiller_disable: imports/tiller_deploy.yaml
-	kubectl $(ADMIN_CTX) delete deployment.apps/tiller-deploy --namespace kube-system
-
-tiller_enable:
-	kubectl $(ADMIN_CTX) $(ACTION) -f imports/tiller_deploy.yaml
-
-imports/tiller_deploy.yaml:
-	kubectl $(ADMIN_CTX) get deployment.apps/tiller-deploy --namespace kube-system \
-	  -o yaml > $@
-
-/usr/local/bin/helm:
-	wget -O /tmp/helm-amd64.tar.gz \
-	  https://storage.googleapis.com/kubernetes-helm/helm-v$(HELM_VERSION)-linux-amd64.tar.gz
-	wget -O /tmp/helm-amd64.sha256 \
-	  https://storage.googleapis.com/kubernetes-helm/helm-v$(HELM_VERSION)-linux-amd64.tar.gz.sha256
-	echo "$(shell cat /tmp/helm-amd64.sha256)  /tmp/helm-amd64.tar.gz" | sha256sum -c
-	tar xf /tmp/helm-amd64.tar.gz -C /tmp
-	sudo mv /tmp/linux-amd64/helm /tmp/linux-amd64/tiller /usr/local/bin
-	rm -r /tmp/helm-amd64.* /tmp/linux-amd64
-
-~/.helm/repository/cache/bitnami-index.yaml:
-	helm repo add bitnami https://charts.bitnami.com/bitnami
+include Makefile.helm
 
 ##########
 # Secrets
@@ -250,7 +238,8 @@ imports/traefik-prom.yaml:
 imports/weave-net.yaml:
 	curl -sLo $@ https://cloud.weave.works/k8s/net?k8s-version=$(shell kubectl version | base64 | tr -d '\n')
 
-etcd:
+# As of Jan-2019, the helm chart doesn't reliably construct multi-node cluster
+etcd_chart:
 	helm install --name etcd --namespace $(K8S_NAMESPACE) \
 	  --kube-context=kubernetes-admin@$(CLUSTER) \
 	  bitnami/etcd --set auth.rbac.enabled=false

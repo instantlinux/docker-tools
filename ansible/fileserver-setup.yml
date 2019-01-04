@@ -15,6 +15,5 @@
   - { role: monitoring_agent, tags: nagios }
   - { role: bind9, tags: bind9 }
   - { role: ntp, tags: ntp }
-  - { role: kubernetes, tags: kubernetes }
   - { role: fileserver, tags: fileserver }
   - { role: volumes, tags: volumes }

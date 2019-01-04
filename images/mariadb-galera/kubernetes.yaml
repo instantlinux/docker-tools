@@ -37,11 +37,17 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: CLUSTER_NAME, value: $SERVICE_NAME }
-        - { name: DISCOVERY_SERVICE, value: "etcd-etcd:2379" }
-        - { name: CLUSTER_SIZE, value: "3" }
+        - { name: DISCOVERY_SERVICE, value: "$ETCD_IP:2379" }
+        - { name: CLUSTER_SIZE, value: "$DB_CLUSTER_SIZE" }
         image: $REGISTRY_URI/mariadb-galera:latest
         ports:
         - containerPort: 3306
+        resources:
+          limits:
+            memory: 8192Mi
+          requests:
+            cpu: 300m
+            memory: 128Mi
         volumeMounts:
         - mountPath: /etc/mysql/my.cnf.d
           name: config
@@ -59,8 +65,15 @@ spec:
           mountPath: /run/secrets/sst-auth-password
           readOnly: true
           subPath: sst-auth-password
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       imagePullSecrets:
       - name: regcred
+      nodeSelector:
+        service.$SERVICE_NAME: allow
       volumes:
       - name: config
         hostPath: { path: $PATH_ADM }

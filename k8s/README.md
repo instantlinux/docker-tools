@@ -40,7 +40,7 @@ Kubernetes-native API syntax.
 ### Requirements and cost
 
 Set up three or more bare-metal quad-core servers or VMs with at least
-a couple gigabytes of RAM each. At present this is limited to a single
+a couple gigabytes of RAM each. At present [kubeadm is limited](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#limitations) to a single
 master node so the recommended configuration to support clustered
 services such as etc and MariaDB is 4+ nodes. (An inexpensive node
 similar to mine is an [Intel J5005 NUC](https://www.newegg.com/Product/Product.aspx?Item=N82E16856102204) with two 8GB DDR4 RAM modules

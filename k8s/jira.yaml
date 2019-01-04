@@ -25,7 +25,7 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: CATALINA_OPTS, value: -Xms512m -Xmx1280m }
+        - { name: CATALINA_OPTS, value: -Xms1024m -Xmx2048m -Datlassian.plugins.enable.wait=900 }
         - { name: X_PROXY_NAME, value: jira.$DOMAIN }
         - { name: X_PROXY_PORT, value: "443" }
         - { name: X_PROXY_SCHEME, value: https }
@@ -38,7 +38,7 @@ spec:
             memory: 6144Mi
           requests:
             cpu: 300m
-            memory: 2024Mi
+            memory: 2560Mi
         volumeMounts:
         - mountPath: /var/atlassian/jira
           name: $SERVICE_NAME
@@ -52,7 +52,7 @@ spec:
         - name: use-vc
         - name: ndots
       nodeSelector:
-        service.data-sync: allow
+        service.$SERVICE_NAME: allow
       volumes:
       - name: $SERVICE_NAME
         hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }

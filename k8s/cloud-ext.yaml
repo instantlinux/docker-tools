@@ -1,5 +1,4 @@
-# TODO: get nextcloud working under k8s. All kinds of problems with
-#  sluggishness and permissions. This serves it on via external vhost.
+#  Note: this serves nextcloud via external vhost at specified IP address.
 ---
 apiVersion: v1
 kind: Service

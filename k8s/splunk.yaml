@@ -9,7 +9,6 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  # TODO
   clusterIP: $SPLUNK_IP
   ports:
   - name: $SERVICE_NAME
@@ -68,8 +67,8 @@ spec:
           limits:
             memory: 4096Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 384Mi
         volumeMounts:
         - mountPath: /opt/splunk/etc
           name: splunk

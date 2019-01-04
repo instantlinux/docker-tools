@@ -35,6 +35,12 @@ spec:
         ports:
         - containerPort: 5000
         - containerPort: 8081
+        resources:
+          limits:
+            memory: 6144Mi
+          requests:
+            cpu: 500m
+            memory: 1280Mi
         volumeMounts:
         - mountPath: /nexus-data
           name: $SERVICE_NAME
@@ -50,6 +56,11 @@ metadata:
   name: $SERVICE_NAME-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if (${DOL}http_user_agent ~ docker ) {
+        proxy_pass http://$K8S_NAMESPACE-$SERVICE_NAME-$PORT_NEXUS_REGISTRY;
+      }
 spec:
   tls:
   - secretName: $SERVICE_NAME.$MYDOMAIN
@@ -63,3 +74,7 @@ spec:
         backend:
           serviceName: $SERVICE_NAME
           servicePort: 80
+      - path: /
+        backend:
+          serviceName: $SERVICE_NAME
+          servicePort: $PORT_NEXUS_REGISTRY

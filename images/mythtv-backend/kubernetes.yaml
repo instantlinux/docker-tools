@@ -27,6 +27,12 @@ spec:
         - { name: LOCALHOSTNAME, value: $HOSTNAME_MYTHTV }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
+        resources:
+          limits:
+            memory: 2048Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
         volumeMounts:
         - name: apache-log
           mountPath: /var/log/apache2

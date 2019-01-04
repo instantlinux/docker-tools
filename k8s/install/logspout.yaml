@@ -27,7 +27,7 @@ spec:
       - name: $SERVICE_NAME
         command:
         - /bin/logspout
-        - syslog+tcp://$RSYSLOGD_HOST:$PORT_RSYSLOGD
+        - syslog+tcp://$RSYSLOGD_IP:$PORT_RSYSLOGD
         env:
         - name: SYSLOG_FORMAT
           value: rfc3164
@@ -40,7 +40,11 @@ spec:
         image: gliderlabs/logspout:$VERSION_LOGSPOUT
         resources:
           limits:
+            cpu: 500m
             memory: 64Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
         volumeMounts:
         - name: socket
           mountPath: /var/run/docker.sock

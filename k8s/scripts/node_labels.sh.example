@@ -3,15 +3,29 @@
 # specify a nodeSelector label
 
 # Customize as desired
-# TODO - parameterize
 
 SUDO="--context=kubernetes-admin@kubernetes"
 
-kubectl $SUDO label node --overwrite kube1.$DOMAIN service.data-sync=allow
-kubectl $SUDO label node --overwrite kube1.$DOMAIN service.git-dump=allow
-kubectl $SUDO label node --overwrite kube1.$DOMAIN service.mythtv-backend=allow
-kubectl $SUDO label node --overwrite kube1.$DOMAIN service.samba-dc=allow
+NODE=kube1.$DOMAIN
+kubectl $SUDO label node --overwrite $NODE service.data-sync=allow
+kubectl $SUDO label node --overwrite $NODE service.db00=allow
+kubectl $SUDO label node --overwrite $NODE service.dovecot=allow
+kubectl $SUDO label node --overwrite $NODE service.mythtv-backend=allow
+kubectl $SUDO label node --overwrite $NODE service.nut-01=allow
+kubectl $SUDO label node --overwrite $NODE service.samba-dc=allow
+kubectl $SUDO label node --overwrite $NODE service.splunk=allow
 
-kubectl $SUDO label node --overwrite kube2.$DOMAIN service.git-dump=allow
-kubectl $SUDO label node --overwrite kube2.$DOMAIN service.data-sync=allow
+NODE=kube2.$DOMAIN
+kubectl $SUDO label node --overwrite $NODE service.data-sync=allow
+kubectl $SUDO label node --overwrite $NODE service.db00=allow
+kubectl $SUDO label node --overwrite $NODE service.dovecot=allow
+kubectl $SUDO label node --overwrite $NODE service.gitlab=allow
+kubectl $SUDO label node --overwrite $NODE service.git-dump=allow
+kubectl $SUDO label node --overwrite $NODE service.jira=allow
+kubectl $SUDO label node --overwrite $NODE service.mt-daapd=allow
+kubectl $SUDO label node --overwrite $NODE service.mysqldump=allow
+kubectl $SUDO label node --overwrite $NODE service.nut-02=allow
 
+NODE=kube3.$DOMAIN
+kubectl $SUDO label node --overwrite $NODE service.data-sync=allow
+kubectl $SUDO label node --overwrite $NODE service.db00=allow

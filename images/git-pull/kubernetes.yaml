@@ -29,7 +29,7 @@ spec:
         image: $REGISTRY_URI/git-pull:latest
         resources:
           limits:
-            memory: 64Mi
+            memory: 128Mi
           requests:
             cpu: 100m
             memory: 32Mi

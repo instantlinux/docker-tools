@@ -38,7 +38,7 @@ spec:
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        service.data-sync: allow
+        service.$SERVICE_NAME: allow
       volumes:
       - name: backup
         hostPath: { path: $PATH_BKP }
