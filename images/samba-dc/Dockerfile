@@ -20,13 +20,15 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     REALM=ad.example.com \
     SERVER_STRING="Samba Domain Controller" \
     TZ=UTC \
-    WINBIND_TRUSTED_DOMAINS_ONLY=no \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=WORKGROUP
 
 ARG BIND9_VER=9.13.2
 ARG BIND9_SHA=6c044e9ea81add9dbbd2f5dfc224964cc6b6e364e43a8d6d8b574d9282651802
 ARG SAMBA_VERSION=4.8.8-r0
+
+COPY *.conf.j2 /root/
+COPY entrypoint.sh /usr/local/bin/
 
 RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
       libxml2 libcrypto1.0 && \
@@ -51,11 +53,12 @@ RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
     for TARGET in lib bin/delv bin/dig bin/dnssec bin/nsupdate; do \
       make -C $TARGET install; \
     done && \
-    apk del .fetch-deps && rm -r /var/cache/apk/* /tmp/*
+    apk del .fetch-deps && rm -r /var/cache/apk/* /tmp/* && \
+
+# Set permissions to entrypoint.sh
+    chmod 0755 /usr/local/bin/entrypoint.sh
 
 VOLUME /etc/samba /var/lib/samba
-EXPOSE 53 53/udp 88 88/udp 135 137-138/udp 139 389 445 464 464/udp 636 3268-3269
+EXPOSE 53 53/udp 88 88/udp 135 137-138/udp 139 389 389/udp 445 464 464/udp 636 3268-3269 49152-65535
 
-COPY *.conf.j2 /root/
-COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
