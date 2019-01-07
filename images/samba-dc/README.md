@@ -1,11 +1,9 @@
 ## samba-dc
-
 [![](https://images.microbadger.com/badges/version/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Commit badge")
 
 Samba domain controller.
 
 ### Usage
-
 The most-common directives can be specified in environment variables as shown below.  If you need further customizations, put them in one or more files under mount point /etc/samba.d.
 
 Basic requirements:
@@ -21,12 +19,11 @@ The most-common directives can be specified in environment variables as shown be
 Test your configuration and/or manage contents of your directory using Apache Directory Studio. Make a connection on port 636 with method SSL encryption (ldaps); specify simple authentication with username <realm prefix>\<your name>. The ldaps certificate is self-signed so you'll need to accept it first.
 
 ### Status
-* This is tested as a spare domain controller against Active Directory running on Windows Server 2008, and against other samba4 domain controllers
-* The "provision" command to create a new DC does NOT yet work
-* The "BIND_INTERFACES_ONLY" option is NOT working yet from within entrypoint.sh; a workaround is to invoke samba-tool domain join manually (the exact same command)
+* The "join" command is tested as a spare domain controller against Active Directory running on Windows Server 2008, and against other samba4 domain controllers.
+* The "provision" is tested as a Samba4 domain controller with a Windows 7 client.
+* The "BIND_INTERFACES_ONLY" option is working now.
 
 ### Variables
-
 Variable | Default | Description |
 -------- | ------- | ----------- |
 ADMIN_PASSWORD_SECRET | samba-admin-password | admin secret, see below
@@ -41,20 +38,18 @@ MODEL | standard | process model: single, standard, thread
 REALM | ad.example.com | active-directory DNS realm
 SERVER_STRING | Samba Domain Controller | server identity
 TZ | UTC | local timezone
-WINBIND_TRUSTED_DOMAINS_ONLY | no | map Unix user to domain user
 WINBIND_USE_DEFAULT_DOMAIN | yes | allow username without domain component
 WORKGROUP | WORKGROUP | NT workgroup
 
 ### Secrets
-
 This is only needed at first run, for samba domain provision or join. Do NOT leave your domain-controller administrator secret activated at any other time.
+For clarity, this is a docker-secret with the initial Samba admin password, not the password itself.
 
 Secret | Description
 ------ | -----------
 samba-admin-password | domain-administrator pw
 
 ### Notes
-
 Getting a domain-controller cluster up and running properly requires a lot of correctly-configured trust relationships established between domain controllers, and Samba's documentation of error messages and problem-resolutions is pretty thin. If you're only running this version of samba, it's likely there will be few problems. But in a mixed environment with Microsoft Active Directory servers and/or older versions of samba4, you're bound to run into problems that require tweaking. A few diagnostic commands are available within this container; here are notes that might help you get up and running more quickly:
 
 * You need an obscure DNS entry for your new domain controller that sometimes isn't automatically set up via samba-tool: go onto the instance and type the following "magic" to do it:
