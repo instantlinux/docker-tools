@@ -12,8 +12,8 @@ if [ "$OSTYPE" == "opensuse" ]; then
 elif [ "$OSTYPE" == "ubuntu" ]; then
   if [[ $(cat /etc/timezone) != $TZ ]]; then
     echo $TZ > /etc/timezone
-    sed -i -e "s#;date.timezone.*#date.timezone = ${TZ}#g" /etc/php/7.0/apache2/php.ini
-    sed -i -e "s#;date.timezone.*#date.timezone = ${TZ}#g" /etc/php/7.0/cli/php.ini
+    sed -i -e "s#;date.timezone.*#date.timezone = ${TZ}#g" /etc/php/7.2/apache2/php.ini
+    sed -i -e "s#;date.timezone.*#date.timezone = ${TZ}#g" /etc/php/7.2/cli/php.ini
     dpkg-reconfigure -f noninteractive tzdata
   fi
   CONF_DIR=/etc/apache2/sites-available
@@ -55,6 +55,7 @@ mkdir -p /var/run/sshd
 
 for mod in deflate filter headers rewrite; do a2enmod $mod; done
 a2ensite mythweb mythweb-settings
+a2dissite 000-default-mythbuntu
 apache2ctl start
 
 for retry in $(seq 1 10); do
