@@ -16,6 +16,11 @@
 #   (run step 3: ansible playbook k8s-node)
 #   make node_labels
 #
+# If setting up MythTV, mount the main storage on each of two nodes as
+#     /var/lib/docker/k8s-volumes/mythtv and invoke:
+#   NODE=kube1.domain make mythtv_vol
+#   NODE=kube2.domain make mythtv_vol
+#
 # If running a single-node minikube-like installation, do this:
 #   NODE=(master).domain make untaint_master
 #

@@ -78,4 +78,12 @@ Resource definitions include:
 | mythtv-backend | [![](https://images.microbadger.com/badges/version/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") | MythTV backend |
 | weewx | [![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") | Weather station software (Davis VantagePro2 etc.) |
 
-Contents created 2017-18 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
+### Credits
+
+Thank you to the following contributors!
+
+* [Chad Hedstrom](https://github.com/Hadlock) - [personal site](http://nearlydeaf.com/)
+* [Sean Mollet](https://github.com/SeanMollet)
+* [Juan Manuel Carrillo Moreno](https://github.com/inetshell) - [personal site](https://wiki.inetshell.mx/)
+ 
+Contents created 2017-19 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.

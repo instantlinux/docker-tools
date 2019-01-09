@@ -35,12 +35,6 @@ spec:
           set -x &&
           usermod -a -G users www-data &&
           exec apache2-foreground
-#          mkdir -p /var/www/html/data/$CLOUD_USER1/files \
-#            /var/www/html/data/$CLOUD_USER2/files &&
-#          ln -fsT /pictures/DigitalPics/iPhone-sync/$CLOUD_USER1 \
-#            /var/www/html/data/$CLOUD_USER1/files/Photos &&
-#          ln -fsT /pictures/DigitalPics/iPhone-sync/$CLOUD_USER2 \
-#            /var/www/html/data/$CLOUD_USER2/files/Photos &&
         resources:
           limits:
             memory: 4096Mi
@@ -53,12 +47,21 @@ spec:
           subPath: html
         - mountPath: /pictures
           name: pictures
+        # TODO: figure out a better way to handle NextCloud's upside-
+        #  down naming hierarchy. If your photo collection has the year
+        #  at a high level of the hierarchy, there's a conflict.
         - mountPath: /var/www/html/data/$CLOUD_USER1/files/Photos/2018
           name: pictures
           subPath: DigitalPics/2018/$CLOUD_USER1-nextcloud
+        - mountPath: /var/www/html/data/$CLOUD_USER1/files/Photos/2019
+          name: pictures
+          subPath: DigitalPics/2019/$CLOUD_USER1-nextcloud
         - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos/2018
           name: pictures
-          subPath: DigitalPics/2018/$CLOUD_USER2-nextcloud
+          subPath: DigitalPics/2019/$CLOUD_USER2-nextcloud
+        - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos/2019
+          name: pictures
+          subPath: DigitalPics/2019/$CLOUD_USER2-nextcloud
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
         options:

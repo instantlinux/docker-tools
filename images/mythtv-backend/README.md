@@ -11,17 +11,18 @@ For configuration, see the example docker-compose.yml (for swarm or standalone d
 
 If you have two Kubernetes nodes set up, run the kubernetes-ha.yaml to set up data sync between two identical drives across the nodes, and define a floating IP address. One copy of mythbackend will be running on one of the nodes at any given time, providing a simple high-availability configuration. See more details in the Makefile in k8s directory.
 
-As an alterantive, this can be run directly using environment variables. The mythtv user password cannot be setup this way, but you shouldn't be running ssh after initial setup anyway.
+You can also run this directly (without compose or kubernetes) using environment variables and secrets files.
 
-Use -v options to map in the paths to your media. For my purposes, I've mapped a single folder into /dvr.
+Use -v options to map in the paths to your media. Here's an example, mapped a single folder into /dvr. Put the two secrets files into a protected directory and launch with:
 ~~~
 docker run -d --name mythtv \
---network=host \
--e DBNAME='mythtv' \
--e DBSERVER='<Your mysql server name or ip>' \
--e DBPASSWORD='<Password for Mythtv User>' \
--v <Your dvr/media storage path>:/dvr \
-instantlinux/mythtv-backend:latest
+  --network=host \
+  -e DBNAME='mythtv' \
+  -e DBSERVER='<Your mysql server name or ip>' \
+  -v <Your dvr/media storage path>:/dvr \
+  -v <secrets path>/mythtv-db-password:/run/secrets/mythtv-db-password:ro \
+  -v <secrets path>/mythtv-user-password:/run/secrets/mythtv-user-password:ro \
+  instantlinux/mythtv-backend:latest
 ~~~
 
 Reach mythtv-setup in the usual way after starting sshd on port 2022; default password is mythtv:
@@ -46,7 +47,6 @@ Variable | Default | Description
 APACHE_LOG_DIR | /var/log/apache2 | Apache logs
 DBNAME | mythtv | Database name
 DBSERVER | db00 | Database server hostname
-DBPASSWORD |    | Database server password
 LANG | en_US.UTF-8 | 
 LANGUAGE | en_US.UTF-8 | 
 LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml))
@@ -54,7 +54,7 @@ TZ | UTC | Time zone
 
 ### Secrets
 
-Because this (most likely) won't be running in swarm mode, specify these with source type "file". See the example docker-compose.yml.
+Add these as Kubernetes secrets, or if you're running standalone specify these with source type "file". See the above volume mounts or the sample docker-compose.yml.
 
 Secret | Description
 ------ | -----------

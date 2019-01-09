@@ -21,21 +21,23 @@ ENV APACHE_LOG_DIR=/var/log/apache2 \
 ARG APT_KEY=13551B881504888C
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
-ARG MYTHTV_VERSION=0.29
+ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/0.29
+ARG MYTHTV_VERSION=2:29.1+fixes.20181228.af5d819~ubuntu18.04.1
 ARG SSH_PORT=2022
 ARG MYTHWEB_PORT=6760
 
 RUN \
   apt-get -yq update && apt-get install -yq gnupg locales wget && \
   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
-  echo "deb http://ppa.launchpad.net/mythbuntu/$MYTHTV_VERSION/ubuntu bionic main" \
+  echo "deb $MYTHTV_PPA/ubuntu bionic main" \
     > /etc/apt/sources.list.d/mythbuntu.list && \
   apt-get -yq update && \
   locale-gen $LANG && \
   apt-get -yq --no-install-recommends install \
     apache2 curl iputils-ping less lsb-release mariadb-client net-tools \
-    openssh-client openssh-server mythtv-backend mythtv-common \
-    mythtv-transcode-utils mythweb php-mythtv psmisc tzdata v4l-utils vim \
+    openssh-client openssh-server mythtv-backend=$MYTHTV_VERSION \
+    mythtv-common=$MYTHTV_VERSION mythtv-transcode-utils=$MYTHTV_VERSION \
+    mythweb=$MYTHTV_VERSION php-mythtv psmisc tzdata v4l-utils vim \
     w3m x11-utils xauth xterm
 
 COPY src/ /root/
