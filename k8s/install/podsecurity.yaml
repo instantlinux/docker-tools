@@ -30,6 +30,7 @@ spec:
   - pathPrefix: $K8S_VOLUMES_PATH/household
   - pathPrefix: $K8S_VOLUMES_PATH/inbox
   - pathPrefix: $K8S_VOLUMES_PATH/jira
+  - pathPrefix: $K8S_VOLUMES_PATH/mythtv
   - pathPrefix: $K8S_VOLUMES_PATH/nexus
   - pathPrefix: $K8S_VOLUMES_PATH/postfix_spool
   - pathPrefix: $K8S_VOLUMES_PATH/rainloop
@@ -175,6 +176,7 @@ spec:
   - pathPrefix: $PATH_SHR
   - pathPrefix: $K8S_VOLUMES_PATH/dos
   - pathPrefix: $K8S_VOLUMES_PATH/household
+  - pathPrefix: $K8S_VOLUMES_PATH/mythtv
   - pathPrefix: /dev/ttyUSB0
   allowPrivilegeEscalation: false
   fsGroup:

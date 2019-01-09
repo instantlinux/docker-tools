@@ -156,6 +156,12 @@ persistent_dirs:
 	  $(K8S_VOLUMES_PATH)/{$(shell echo $(NAMED_VOLUMES)|tr " " ,)}'
 	ssh "$(NODE)" sudo chmod 700 $(K8S_VOLUMES_PATH)/pool-[sm]
 
+mythtv_vol:
+	NAME=$(NODE)-mythtv VOLUME_ROOT=$(K8S_VOLUMES_PATH)/mythtv \
+	VOLUME_ID=$(shell uuidgen | cut -d - -f 1) \
+	VOLUME_SIZE=$(MYTHTV_VOL_SIZE) NODENAME=$(NODE) GROUP=mythtv \
+	make install/persistent-item
+
 storage_localdefault:
 	kubectl $(ADMIN_CTX) patch storageclass local-storage -p \
 	  '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
