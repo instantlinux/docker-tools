@@ -146,6 +146,8 @@ spec:
           name: etc
           readOnly: true
       hostNetwork: true
+      nodeSelector:
+        service.mythtv-backend: allow
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: etc
@@ -162,9 +164,9 @@ data:
       enable_script_security
     }
     vrrp_script chk_port {
-      script "/bin/busybox /usr/bin/nc -z localhost 6543"
+      script "/bin/busybox /usr/bin/nc -z localhost 6549"
       fall 3
-      interval 10
+      interval 20
       user nobody
       rise 1
       weight 2

@@ -54,7 +54,7 @@ RUN \
 RUN \
   cat /etc/apache2/ports.conf
 
-EXPOSE $MYTHWEB_PORT $SSH_PORT 5000/udp 5002/udp 5004/udp 6543 6544 65001 \
-  65001/udp 
+EXPOSE $MYTHWEB_PORT $SSH_PORT 5000/udp 5002/udp 5004/udp 6543 6544 6549 \
+  65001 65001/udp 
 VOLUME $APACHE_LOG_DIR
 ENTRYPOINT ["/root/entrypoint.sh"]

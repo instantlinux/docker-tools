@@ -1,4 +1,4 @@
 #!/bin/bash
-TAG=$(grep "ARG .*_VERSION" Dockerfile | grep -oP '(?<=ION=2:).*(?=[+~])'
+TAG=$(grep "ARG .*_VERSION" Dockerfile | grep -oP '(?<=ION=2:).*(?=[+~])')
 docker tag $IMAGE_NAME $DOCKER_REPO:$TAG
 docker push $DOCKER_REPO:$TAG
