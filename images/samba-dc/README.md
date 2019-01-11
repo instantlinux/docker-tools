@@ -10,7 +10,7 @@ Basic requirements:
 
 * A Domain Controller must have a static IP address and persistent DNS entry
 * This container must be run in network_mode:host
-* A hostname must be specified, which becomes the netbios name.
+* A NETBIOS_NAME or hostname must be specified, which becomes the netbios name.
 
 The directories /etc/samba and /var/lib/samba must be mounted as persistent volumes. If /var/lib/samba is empty, the "provision" or "join" action specified in DOMAIN_ACTION variable will be taken.
 
@@ -35,6 +35,7 @@ DOMAIN_MASTER | no | "WAN-wide browse list collation"--haha, see [man page](http
 INTERFACES | lo eth0 | list of IP addresses or interfaces
 LOG_LEVEL | 1 | log verbosity
 MODEL | standard | process model: single, standard, thread
+NETBIOS_NAME | (hostname -s) | the NETBIOS name
 REALM | ad.example.com | active-directory DNS realm
 SERVER_STRING | Samba Domain Controller | server identity
 TZ | UTC | local timezone

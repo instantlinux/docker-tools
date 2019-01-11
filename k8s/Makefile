@@ -84,13 +84,22 @@ gitlab-agent:
 nut-upsd::
 	@echo Use nut-xx target
 	@exit 1
-
 nut-%:
 	@echo --$(NOTICE) $@--
 	$(eval SERIAL := $(shell case $@ in (nut-01) echo $(UPS_SERIAL_1);; \
 	 (nut-02) echo $(UPS_SERIAL_2);; esac))
 	@SERVICE_NAME=$@ SERIAL=$(SERIAL) envsubst < nut-upsd.yaml | \
 	 kubectl $(ACTION) $(ADMIN_CTX) --namespace $(K8S_NAMESPACE) -f -
+
+samba-dc::
+	@echo Use dcxx target for domain controllers
+	@exit 1
+dc0%:
+	@echo --$(NOTICE) $@--
+	$(eval BIND_IP := $(shell case $@ in (dc03) echo $(DC03_IP);; \
+	 (dc05) echo $(DC05_IP);; esac))
+	@SERVICE_NAME=$@ BIND_IP=$(BIND_IP) SAMBADC_INTERFACES="lo $(BIND_IP)" \
+	 envsubst < samba-dc.yaml | kubectl $(ACTION) -f -
 
 wordpress::
 	@echo Please specify a specific instance e.g. wordpress-ci && exit 1

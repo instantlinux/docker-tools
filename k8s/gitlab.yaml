@@ -61,6 +61,11 @@ spec:
           subPath: $SERVICE_NAME
         - mountPath: /var/log/gitlab
           name: logs
+      dnsConfig:
+        nameservers: [ $DNS_SERVERS ]
+        options:
+        - name: use-vc
+        - name: ndots
       hostname: git
       nodeSelector:
         service.$SERVICE_NAME: allow

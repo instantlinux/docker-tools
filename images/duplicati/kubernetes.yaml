@@ -57,50 +57,11 @@ spec:
         - mountPath: /backup/services
           name: backup
           readOnly: true
-        - mountPath: /backup/share/cloud
-          name: cloud
-          readOnly: true
-        - mountPath: /backup/samba_dos
-          name: dos
-          readOnly: true
-        - mountPath: /backup/ftp
-          name: ftp
-          readOnly: true
         - mountPath: /backup/share/gitlab
           name: gitlab
           readOnly: true
         - mountPath: /backup/home
           name: home
-          readOnly: true
-        - mountPath: /backup/share/household
-          name: household
-          readOnly: true
-        - mountPath: /backup/inbox
-          name: inbox
-          readOnly: true
-        - mountPath: /backup/share/jira
-          name: jira
-          readOnly: true
-        - mountPath: /backup/pc/MP3
-          name: mp3
-          readOnly: true
-        - mountPath: /backup/share/nexus
-          name: nexus
-          readOnly: true
-        - mountPath: /backup/share/ox-appsuite
-          name: ox-appsuite
-          readOnly: true
-        - mountPath: /backup/pc/Pictures
-          name: pictures
-          readOnly: true
-        - mountPath: /backup/share/rainloop
-          name: rainloop
-          readOnly: true
-        - mountPath: /backup/u
-          name: user
-          readOnly: true
-        - mountPath: /backup/webmail
-          name: webmail
           readOnly: true
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
@@ -116,42 +77,10 @@ spec:
         hostPath: { path: $K8S_VOLUMES_PATH/duplicati/config }
       - name: backup
         hostPath: { path: $PATH_BKP }
-      - name: cloud
-        hostPath: { path: $K8S_VOLUMES_PATH/cloud }
-      - name: dos
-        hostPath: { path: $K8S_VOLUMES_PATH/dos }
-      - name: ftp
-        persistentVolumeClaim:
-          claimName: ftp
       - name: gitlab
         hostPath: { path: $K8S_VOLUMES_PATH/gitlab }
       - name: home
         hostPath: { path: /home }
-      - name: household
-        hostPath: { path: $K8S_VOLUMES_PATH/household }
-      - name: inbox
-        hostPath: { path: $K8S_VOLUMES_PATH/inbox }
-      - name: jira
-        hostPath: { path: $K8S_VOLUMES_PATH/jira }
-      - name: mp3
-        persistentVolumeClaim:
-          claimName: mp3
-      - name: nexus
-        hostPath: { path: $K8S_VOLUMES_PATH/nexus }
-      - name: ox-appsuite
-        hostPath: { path: $K8S_VOLUMES_PATH/ox-appsuite }
-      - name: pictures
-        persistentVolumeClaim:
-          claimName: pictures
-      - name: rainloop
-        hostPath: { path: $K8S_VOLUMES_PATH/rainloop }
-      - name: share
-        hostPath: { path: $PATH_SHR }
-      - name: user
-        persistentVolumeClaim:
-          claimName: user
-      - name: webmail
-        hostPath: { path: $K8S_VOLUMES_PATH/webmail }
   volumeClaimTemplates:
   - metadata:
       name: restore

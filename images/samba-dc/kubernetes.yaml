@@ -25,10 +25,11 @@ spec:
         env:
         - { name: DOMAIN_ACTION, value: join }
         - { name: INTERFACES, value: $SAMBADC_INTERFACES }
+        - { name: NETBIOS_NAME, value: $SERVICE_NAME }
         - { name: REALM, value: $SAMBA_REALM }
         - { name: TZ, value: $TZ }
         - { name: WORKGROUP, value: $SAMBA_WORKGROUP }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/samba-dc:latest
         resources:
           limits:
             memory: 2048Mi
@@ -36,15 +37,19 @@ spec:
             cpu: 500m
             memory: 512Mi
         volumeMounts:
-        - name: etc
-          mountPath: /etc/samba
-        - name: var
-          mountPath: /var/lib/samba
-        - name: samba-admin-password
-          mountPath: /run/secrets/samba-admin-password
+        - mountPath: /var/lib/samba
+          name: var
+        - mountPath: /run/secrets/samba-admin-password
+          name: samba-admin-password
           readOnly: true
           subPath: samba-admin-password
-      hostname: $SAMBADC_HOSTNAME
+      hostAliases:
+      - ip: $BIND_IP
+        hostnames: [ $SERVICE_NAME.$SAMBA_REALM, $SERVICE_NAME ]
+      # TODO: this will join with incorrect hostname until the following
+      #  directive is actually implemented when hostNetwork=true.
+      #  See issue https://github.com/kubernetes/kubernetes/issues/67019
+      hostname: $SERVICE_NAME.$SAMBA_REALM
       hostNetwork: true
       imagePullSecrets:
       - name: regcred
@@ -56,13 +61,6 @@ spec:
         secret:
           secretName: samba-admin-password
   volumeClaimTemplates:
-  - metadata:
-      name: etc
-    spec:
-      accessModes: [ ReadWriteOnce ]
-      resources:
-        requests:
-          storage: 500Mi
   - metadata:
       name: var
     spec:

@@ -32,8 +32,8 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: usb
-          mountPath: /dev/ttyUSB0
+#        - name: usb
+#          mountPath: /dev/ttyUSB0
         - name: secret
           mountPath: /run/secrets/nut-upsd-password
           readOnly: true
@@ -44,8 +44,8 @@ spec:
         service.$SERVICE_NAME: allow
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
-      - name: usb
-        hostPath: { path: /dev/ttyUSB0 }
+#      - name: usb
+#        hostPath: { path: /dev/ttyUSB0 }
       - name: secret
         secret:
           secretName: nut-upsd-password

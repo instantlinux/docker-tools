@@ -1,15 +1,14 @@
+# Ad-hoc services
+#   These are containers run without Kubernetes
+
 HOST = $(shell hostname -s)
 REGISTRY_URI ?= nexus.instantlinux.net
-SERVICES = dhcpd-dns-pxe etcd haproxy-keepalived mt-daapd mythtv-backend ntpd \
-    nut-upsd samba samba-dc weewx
-
-# Before starting etcd, see notes in etcd/docker-compose.yml.
+SERVICES = haproxy-keepalived nut-upsd weewx
 
 default: $(HOST)
 
-mckinley: dhcpd-dns-pxe etcd mt-daapd mythtv-backend ntpd nut-upsd samba-dc weewx
-vinson: dhcpd-dns-pxe etcd mt-daapd samba-dc
-denali: dhcpd-dns-pxe etcd nut-upsd samba
+mckinley: nut-upsd weewx
+denali: nut-upsd
 k2: nagios haproxy-keepalived
 
 $(SERVICES)::

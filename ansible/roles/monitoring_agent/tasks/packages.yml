@@ -13,6 +13,11 @@
     name: "{{ ubuntu_packages }}"
   when: ansible_os_family == 'Debian'
 
+- name: Install bionic packages
+  apt:
+    name: "{{ ubuntu_packages_bionic }}"
+  when: ansible_distribution_release == 'bionic'
+
 - name: Install system packages
   zypper:
     name: "{{ opensuse_packages }}"

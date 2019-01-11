@@ -17,6 +17,7 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     INTERFACES="lo eth0" \
     LOG_LEVEL=1 \
     MODEL=standard \
+    NETBIOS_NAME= \
     REALM=ad.example.com \
     SERVER_STRING="Samba Domain Controller" \
     TZ=UTC \

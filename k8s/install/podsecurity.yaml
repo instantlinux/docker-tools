@@ -44,7 +44,7 @@ spec:
       - min: 1
         max: 65535
   hostIPC: false
-  # TODO
+  # TODO - when etcd launches properly as kubernetes.io/psp: approved
   # hostNetwork: false
   hostNetwork: true
   hostPorts:

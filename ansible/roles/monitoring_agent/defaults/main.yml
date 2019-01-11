@@ -36,10 +36,6 @@ nrpe_command_defaults:
     local: True
     plugin: check_docker_syscod.sh
     options: -n ntpd_app_1 -c 5,10 -m 5,7 -s
-  swarm_sync:
-    plugin: check_file_age
-    options: -w 1800 -c 7200 -f {{ docker.local_volumes 
-      }}/swarm-sync_logs/_data/unison-status.txt
 
 nrpe_command_override: {}
 nrpe_commands: "{{ nrpe_command_defaults | combine(nrpe_command_override) }}"
@@ -56,7 +52,10 @@ opensuse_repos:
 
 ubuntu_packages:
   - bc
-  - etcd-client
-  #  TODO mcelog
   - nagios-nrpe-server
   - smartmontools
+  # deprecated
+  # - mcelog
+
+ubuntu_packages_bionic:
+  - etcd-client

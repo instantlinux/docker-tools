@@ -12,6 +12,9 @@ if [ "$DHCP_ENABLE" == yes ]; then
   fi
   if [ ! -z "$DHCP_RANGE" ]; then
     RANGE_OPTION="range $DHCP_RANGE;"
+  elif [ "$(ls -A /etc/dhcpd.d/ranges)" ]; then
+    RANGE=$(cat /etc/dhcpd.d/ranges/$POD_NAME)
+    [ -z "$RANGE" ] || RANGE_OPTION="range $RANGE;"
   fi
   if [ "$TFTP_SERVER" == self ]; then
     TFTP_SERVER=$(ifconfig $SUBNET1_INTERFACE | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}')

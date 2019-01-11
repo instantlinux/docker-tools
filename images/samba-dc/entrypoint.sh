@@ -1,7 +1,11 @@
 #!/bin/sh -e
 
 ADMIN_PASSWORD=$(cat /run/secrets/$ADMIN_PASSWORD_SECRET)
-NETBIOS_NAME=$(hostname -s | tr [a-z] [A-Z])
+if [ -z "$NETBIOS_NAME" ]; then
+  NETBIOS_NAME=$(hostname -s | tr [a-z] [A-Z])
+else
+  NETBIOS_NAME=$(echo $NETBIOS_NAME | tr [a-z] [A-Z])
+fi
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo 'Set timezone'
