@@ -1,7 +1,7 @@
 ## ez-ipupdate
 [![](https://images.microbadger.com/badges/version/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Commit badge")
 
-Dynamic-DNS client - set up for Docker Swarm to ensure it's always running.
+Dynamic-DNS client - set up for Kubernetes Docker Swarm to ensure it's always running.
 
 First create a secret:
 
@@ -20,5 +20,10 @@ Then deploy this service, see the example kubernetes.yaml / docker-compose.yml f
 | SERVICE_TYPE | DNS vendor, see [available services](http://leaf.sourceforge.net/doc/bucu-ezipupd.html) |
 | USER_SECRET | Name of the Docker secret to deploy |
 
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 [![](https://images.microbadger.com/badges/license/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "License badge")

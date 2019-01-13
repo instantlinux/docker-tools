@@ -6,7 +6,8 @@ else
   STATS_PASSWORD=changeme
 fi
 
-cat <<EOF >/etc/haproxy.cfg
+if [ ! -e /etc/haproxy.cfg ]; then
+  cat <<EOF >/etc/haproxy.cfg
 global
 	log 127.0.0.1	local0
 	log 127.0.0.1	local1 notice
@@ -25,7 +26,9 @@ defaults
 	timeout connect	5000
 	timeout	client	$TIMEOUT
 	timeout server	$TIMEOUT
-
+EOF
+  if [ $STATS_ENABLE == yes ]; then
+    cat <<EOF >>/etc/haproxy.cfg
 listen stats
        bind		*:$PORT_HAPROXY_STATS
        mode		http
@@ -33,8 +36,10 @@ listen stats
        stats		hide-version
        stats auth	haproxy:$STATS_PASSWORD
        stats realm	HAProxy\ Statistics
-       stats uri	$STATS
+       stats uri	$STATS_URI
 EOF
+  fi
+fi
 
 if [ -d /etc/haproxy.d ] && [ "$(ls -A /etc/haproxy.d)" ]; then
   CMD_OPTS="-- /etc/haproxy.d/*"
@@ -47,7 +52,9 @@ sed -i -e '/$UDPServerRun 514/a $UDPServerAddress 127.0.0.1' /etc/rsyslog.conf
 > /var/log/messages
 rm -f /run/rsyslogd.pid && rsyslogd
 
-keepalived -i $KEEPALIVE_CONFIG_ID
+if ! keepalived -i $KEEPALIVE_CONFIG_ID; then
+  echo keepalived did not start, needs working /etc/keepalived/keepalived.conf
+fi
 sleep 10
 haproxy -f /etc/haproxy.cfg $CMD_OPTS || true
 tail +1 -f /var/log/messages

@@ -10,7 +10,11 @@ configured via the (installed) swarm plugin or can be launched on
 demand via the docker-slaves plugin.
 
 ### Usage
-Set the variables as defined below, and run the docker-compose stack.
+Set the variables as defined below, and run the docker-compose stack. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 

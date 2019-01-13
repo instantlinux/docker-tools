@@ -6,10 +6,17 @@ DaVITE is an event-invitations server modeled after eVite, written in
 httpd Apache image.
 
 ### Usage
-Set the variables as defined below, and run the docker-compose stack. The
-service will be visible as http://host/cgi-bin/DaVite.cgi. Create an
-invitation by entering your email address; that will generate a URI which
-you can then use to edit your event invitation
+Set the variables as defined below, and run with docker-compose or
+kubernetes. The service will be visible as
+http://host/cgi-bin/DaVite.cgi. Create an invitation by entering your
+email address; that will generate a URI which you can then use to edit
+your event invitation.
+
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 

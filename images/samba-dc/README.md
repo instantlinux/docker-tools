@@ -18,6 +18,12 @@ The most-common directives can be specified in environment variables as shown be
 
 Test your configuration and/or manage contents of your directory using Apache Directory Studio. Make a connection on port 636 with method SSL encryption (ldaps); specify simple authentication with username <realm prefix>\<your name>. The ldaps certificate is self-signed so you'll need to accept it first.
 
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/samba-dc/kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
+
 ### Status
 * The "join" command is tested as a spare domain controller against Active Directory running on Windows Server 2008, and against other samba4 domain controllers.
 * The "provision" is tested as a Samba4 domain controller with a Windows 7 client.

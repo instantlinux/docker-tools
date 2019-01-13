@@ -80,6 +80,12 @@
     src: thinpool.profile.j2
   notify: Activate thinpool autoextend
 
+- name: Initiate thinpool autoextend
+  shell: >
+    lvchange --metadataprofile {{ thinpool_vg }}-thinpool {{ thinpool_vg }}/thinpool &&
+    lvs -o+seg_monitor
+  changed_when: False
+
 - name: Docker repo key
   apt_key:
     id: "{{ docker.apt_repo.key }}"

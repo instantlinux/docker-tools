@@ -18,7 +18,11 @@ Mount these under /etc:
 
 Mount your PXE boot images and client definitions under /tftpboot/pxelinux.
 
-See the kubernetes.yaml provided here. If you're using Swarm, see the docker-compose.yml file provided here in the source directory; this needs to run on host network with kernel capability CAP_NET_ADMIN, so it will not currently run in Docker Swarm. (You can run a single instance of this via _docker run_ or _docker-compose_.)
+See the kubernetes.yaml provided here. If you're using Swarm, see the docker-compose.yml file provided here in the source directory; this needs to run on host network with kernel capability CAP_NET_ADMIN, so it will not currently run in Docker Swarm. (You can run a single instance of this via _docker run_ or _docker-compose_.) This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 You can build a failsafe cluster of DHCP servers under kubernetes using the kubernetes.yaml definition here. Define a ConfigMap with non-overlapping range definitions such as "192.168.1.32 192.168.1.63", "192.16.1.64 192.168.1.95", "192.168.1.96 192.168.1.127" for a set of 3 replicas. If a replica goes down, the others will continue to assign addresses. They won't conflict thanks to the way DHCP protocol works; a client will use the first address offered and ignore any additional offers from the server pool. If a blank range is specified, the dhcp server will offer only reserved MAC/IP assignments.
 

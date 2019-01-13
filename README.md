@@ -2,8 +2,7 @@
 
 Kubernetes is hard--or is it? This repo is a collection of images and
 container resource definitions for managing a software-dev
-organization using Kubernetes or Swarm with tools to make it
-easier. Contents:
+organization using Kubernetes with tools to make it easier. Contents:
 
 | Directory | Description |
 | --------- | ----------- |
@@ -16,7 +15,7 @@ easier. Contents:
 | stacks | container resources in docker-compose format |
 
 Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
-Find more details about the Kubernetes bare-metal installer in [k8s/README](k8s/README.md).
+Find a lot more details about the Kubernetes bare-metal installer in [k8s/README](k8s/README.md).
 
 Resource definitions include:
 
@@ -40,6 +39,7 @@ Resource definitions include:
 | authelia | ** | single-signon multi-factor auth |
 | cloud | ** | nextcloud, private sync like Apple iCloud |
 | docs | [![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") | OX Appsuite, private cloud like Google Docs |
+| data-sync | [![](https://images.microbadger.com/badges/version/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | duplicati | [![](https://images.microbadger.com/badges/version/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Version badge") | backups |
 | ez-ipupdate | [![](https://images.microbadger.com/badges/version/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
 | haproxy-keepalived | [![](https://images.microbadger.com/badges/version/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Version badge") | load balancer |
@@ -53,8 +53,6 @@ Resource definitions include:
 | samba-dc | [![](https://images.microbadger.com/badges/version/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") | Active-Directory compatible domain controller |
 | [secondshot](https://github.com/instantlinux/secondshot) | [![](https://images.microbadger.com/badges/version/instantlinux/secondshot.svg)](https://microbadger.com/images/instantlinux/secondshot "Version badge") | rsnapshot-based backups |
 | splunk | ** | the free version |
-| swarm-sync | [![](https://images.microbadger.com/badges/version/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Version badge") | poor-man's SAN for persistent storage |
-| udp-nginx-proxy | [![](https://images.microbadger.com/badges/version/instantlinux/udp-nginx-proxy.svg)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Version badge") | UDP load-balancer |
 | vsftpd | [![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") | ftp server |
 
 **Email**
@@ -77,6 +75,7 @@ Resource definitions include:
 | mt-daapd | [![](https://images.microbadger.com/badges/version/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") | iTunes server |
 | mythtv-backend | [![](https://images.microbadger.com/badges/version/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") | MythTV backend |
 | weewx | [![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") | Weather station software (Davis VantagePro2 etc.) |
+| wxcam-upload | [![](https://images.microbadger.com/badges/version/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Version badge") | Upload webcam images to Weather Underground |
 
 ### Credits
 

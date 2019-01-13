@@ -123,9 +123,9 @@ spec:
   tls:
   - secretName: $SERVICE_NAME.$DOMAIN
     hosts:
-    - repo.$DOMAIN
+    - $SERVICE_NAME.$DOMAIN
   rules:
-  - host: repo.$DOMAIN
+  - host: $SERVICE_NAME.$DOMAIN
     http:
       paths:
       - path: /en-US/account/login

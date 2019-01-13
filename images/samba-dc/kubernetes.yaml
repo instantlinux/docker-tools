@@ -64,7 +64,7 @@ spec:
   - metadata:
       name: var
     spec:
-      accessModes: [ ReadWriteOnce ]
+      accessModes: [ ReadWriteMany ]
       resources:
         requests:
           storage: 500Mi

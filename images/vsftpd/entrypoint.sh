@@ -45,4 +45,6 @@ if [ "$(ls -A /etc/vsftpd.d)" ]; then
   cat /etc/vsftpd.d/* >> /etc/vsftpd/vsftpd.conf
 fi
 
-exec vsftpd /etc/vsftpd/vsftpd.conf
+# Invoke as a child process; version 3.0.3 crashes if run as PID 1
+# See https://github.com/InfrastructureServices/vsftpd/commit/970711fde95bee3de1e4a5e0b557c3132d0c3e3f
+vsftpd /etc/vsftpd/vsftpd.conf

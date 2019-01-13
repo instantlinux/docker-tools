@@ -194,9 +194,48 @@ tiller-deploy-6b6d4b6895-d8mxt          1/1     Running   0          26m
 Check /var/log/syslog, and the output logs of pods that you can access
 via the Kubernetes console, to troubleshoot problems.
 
-### Status
+### Additional notes
 
-This section of the repo is very much alpha, it's intended to help get
-started with kubectl, helm, letsencrypt and sekret but there will
-still be a learning curve to get the volume mounts set up, permissions
-set and application configurations fully working.
+I've run into a ton of issues, minor and major, setting up Kubernetes on
+bare-metal. Where practical, I've implemented solutions-as-code to every
+issue but some things aren't quite as readily automated or will likely
+be addressed in future versions of the rapidly-evolving codebase. These
+notes are as of Jan 2019 on version 1.13.1:
+
+* VirtualBox, the de facto way of setting up test environments under Linux,
+  doesn't play nicely at all with Kubernetes networking. If you run
+  coredns under VirtualBox, you simply don't get DNS resolution outside
+  the node it's running on--the UDP packets disappear more often than not.
+  Run coredns on bare-metal or some other virtualiizion or cloud method.
+  There are hints of how to address this in [issue #70851](https://github.com/kubernetes/kubernetes/issues/70851).
+
+* The eviction manager's default settings lead to an unstable installation
+  unless you have a way of ensuring ample image-store space on each node.
+  For whatever reason, Kubernetes' maintainers decided it was a good idea
+  to (repeatedly) shut down running pods in a vain attempt to free up
+  image-store when this resource is low, even though there's little or
+  no log-file output to indicate what the problem might be. And there
+  are bugs, such as [issue #60558](https://github.com/kubernetes/kubernetes/issues/60558).
+  My specific advice: disable this entirely by changing the setting of
+  evictionHard:imagefs.available from 15% to 0% in /var/lib/kubelet/config.yaml.
+  There's a [Dynamic Kubelet Config](https://github.com/kubernetes/enhancements/issues/281)
+  project to automate updating this file so I haven't added such
+  automation here. That way you can use your own favorite tools for alerting
+  on or handling low volume storage (I use the thinpool autoextend method,
+  which is part of the ansible docker role here).
+
+* Static IP addresses to set up in your routing infrastructure, and
+  ways to set up HA load-balancing, for bare-metal installations are
+  glaringly less-than-obvious in the docs. I've gotten a
+  just-barely-working setup going myself; it's far less straightforward
+  to get true HA networking with kubernetes than it was with Swarm.
+
+* I haven't yet sorted out how to separate database write traffic from
+  database reads, and how to send the write traffic to a specified node
+  from any given application (splitting database writes across a MariaDB
+  cluster isn't fully supported at this time, there are race conditions
+  which create performance problems).
+
+* I haven't yet addressed cert-manager/letsencrypt here. It looked to me
+  like that project is in rapid evolution so I tabled the idea until a
+  future date when their doc is more polished.

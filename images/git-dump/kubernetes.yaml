@@ -36,11 +36,6 @@ spec:
           mountPath: /run/secrets/git.$MYDOMAIN-api-token
           readOnly: true
           subPath: git.$MYDOMAIN-api-token
-      dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: use-vc
-        - name: ndots
       imagePullSecrets:
       - name: regcred
       nodeSelector:

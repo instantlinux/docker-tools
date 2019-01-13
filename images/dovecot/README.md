@@ -26,7 +26,13 @@ Configuration is defined as files in a volume mounted as
 
 Also configure postfix as described in the postfix image.
 
-See etc-example directory and docker-compose.yml.
+See etc-example directory and kubernetes.yaml / docker-compose.yml.
+
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 

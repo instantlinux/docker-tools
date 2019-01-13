@@ -102,11 +102,6 @@ spec:
         - mountPath: /backup/webmail
           name: webmail
           readOnly: true
-      dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: use-vc
-        - name: ndots
       imagePullSecrets:
       - name: regcred
       nodeSelector:
@@ -145,6 +140,9 @@ spec:
           claimName: pictures
       - name: rainloop
         hostPath: { path: $K8S_VOLUMES_PATH/rainloop }
+      - name: samba-dc
+        persistentVolumeClaim:
+          claimName: var-dc03-0
       - name: share
         hostPath: { path: $PATH_SHR }
       - name: user

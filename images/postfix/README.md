@@ -18,7 +18,11 @@ will be added/updated into main.cf (via postconf).
 
 * Define local users (if not using directory service) as users.sh.
 
-See etc-example directory and docker-compose.yml.
+See etc-example directory and kubernetes.yaml / docker-compose.yml. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 

@@ -12,7 +12,9 @@ Configuration is defined as files in volumes mounted as
 
 * Define your keepalived settings in /etc/keepalived/keepalived.conf; see [man page](https://www.mankier.com/5/keepalived.conf).
 
-See the haproxy-keepalived/examples/ directory under this git repository to get started.
+* If you want to override the haproxy.cfg defined in this image, mount your own as /etc/haproxy.cfg with read-only set.
+
+See the [haproxy-keepalived/examples/](https://github.com/instantlinux/docker-tools/blob/master/images/haproxy-keepalived/examples) directory under this git repository to get started.
 
 This requires NET_ADMIN privileges. Also, you will need the ip_vs kernel module and ip_nonlocal set on the host running docker engine:
 ```
@@ -21,7 +23,11 @@ echo net.ipv4.ip_nonlocal_bind=1 >/etc/sysctl.d/99-haproxy.conf
 sysctl -p /etc/sysctl.d/99-haproxy.conf
 ```
 
-After starting this service using _kubectl apply_ or _docker-compose_, you can connect to http://<host>:<port>/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below.
+After starting this service using _kubectl apply_ or _docker-compose_, you can connect to http://<host>:<port>/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 
@@ -29,6 +35,7 @@ After starting this service using _kubectl apply_ or _docker-compose_, you can c
 | -------- | ------- | ----------- |
 |KEEPALIVE_CONFIG_ID| main | Which configuration to use (usually a hostname) |
 |PORT_HAPROXY_STATS| 8080 | What port to use for stats page |
+|STATS_ENABLE| yes | Whether to include stats | 
 |STATS_SECRET|haproxy-stats-password | Secret to use for stats page |
 |STATS_URI|/stats| URI for stats page |
 |TIMEOUT|50000| Timeout for haproxy (ms)|

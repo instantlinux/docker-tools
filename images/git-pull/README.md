@@ -22,6 +22,15 @@ way of propagating configurations (such as /etc files) across the
 cluster. Note that any Docker mounts must be made with ro
 (read-only) set to keep this container running without merge conflicts.
 
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
+
+There's less need for this tool under Kubernetes than Docker Swarm: see
+the [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) documentation for the current recommended method for making config files available.
+
 ### Variables
 
 | Variable | Description |

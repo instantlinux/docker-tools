@@ -11,6 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ARG KEEPALIVED_VERSION=2.0.11-r0
 ENV KEEPALIVE_CONFIG_ID=main \
     PORT_HAPROXY_STATS=8080 \
+    STATS_ENABLE=yes \
     STATS_SECRET=haproxy-stats-password \
     STATS_URI=/stats \
     TIMEOUT=50000 \

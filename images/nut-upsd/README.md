@@ -19,6 +19,14 @@ As a read-only service intended for monitoring, this container makes no attempt 
 
 Verified with the most-common type of UPS, the APC consumer-grade product. Note that the usbhid-ups driver for APC requires you to provide the correct 12-digit hardware serial number. All other parameter defaults will work.
 
+If you have more than one UPS connected to a host, run more than one copy of this container and bind the container port 3493 from each to a separate TCP port.
+
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/nut-upsd/kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
+
 ### Variables
 
 Variable | Default | Description |
@@ -28,7 +36,7 @@ DESCRIPTION | UPS | user-assigned description
 DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html))
 GROUP | nut | local group
 NAME | ups | user-assigned config name
-PORT | auto | device port on host
+PORT | auto | device port (e.g. /dev/ttyUSB0) on host
 SECRET | nut-upsd-password | secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts

@@ -9,7 +9,7 @@ For more details, see the vendor's site [OX App Suite](http://open-xchange.com/e
 
 ### Usage
 
-See the docker-compose.yml here; set up the variables and secrets as defined below, and invoke the stack under Docker Swarm.
+See the kubernetes or docker-compose.yml here; set up the variables and secrets as defined below, and invoke the resource.
 
         echo -n mysecret1 | docker secret create ox-admin-password -
         echo -n mysecret2 | docker secret create ox-db-password -
@@ -38,6 +38,12 @@ Once the container is launched, context-admin can register new users:
 
 
 UI is available at http://yourhost/appsuite. One setting you will probably want to change is com.openexchange.capability.presentation in file etc/documents.properties: Open Xchange has the Text word-processor and Spreadsheet utilities enabled by default, but Presentation remains disabled until you activate this setting.
+
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/open-xchange-appsuite/kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 

@@ -7,7 +7,11 @@ The MythTV backend built under Ubuntu 18.04 LTS.
 
 This image must be run in network_mode:host in order to communicate with HD Homerun tuners; assign a new IP address and hostname for this application, and define it as a secondary IP address on your Docker host's primary interface.
 
-For configuration, see the example docker-compose.yml (for swarm or standalone docker) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, customize volume mounts as desired, then run _envsubst kubernetes.yaml | kubectl apply -f -_ or _docker-compose up -d_.
+For configuration, see the example docker-compose.yml (for swarm or standalone docker) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, customize volume mounts as desired. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can then deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 If you have two Kubernetes nodes set up, run the kubernetes-ha.yaml to set up data sync between two identical drives across the nodes, and define a floating IP address. One copy of mythbackend will be running on one of the nodes at any given time, providing a simple high-availability configuration. See more details in the Makefile in k8s directory.
 

@@ -28,11 +28,11 @@ Add a mysql-blacklist-user that contains the $PSWD you've set:
     user=blacklister
     password=$PSWD
 ~~~
-Decide on a subdomain name, such as blacklist.yourdomain.com. See
-docker-compose.yml for an example; set that name as an environment variable
-RBL_DOMAIN. To delegate to this subdomain, list hosts where you'll
-be running this in environment variable NS_SERVERS (if you're running
-a swarm cluster, this will be the DNS names of the cluster nodes).
+Decide on a subdomain name, such as blacklist.yourdomain.com. Set that
+name as an environment variable RBL_DOMAIN. To delegate to this
+subdomain, list hosts where you'll be running this in environment
+variable NS_SERVERS (if you're running a swarm cluster, this will be
+the DNS names of the cluster nodes).
 
 In the local.cf file for spamassassin (separate Docker image), define
 these rules for your local blacklist:
@@ -66,6 +66,13 @@ Add a .my.cnf file with db credentials:
 ~~~
 This script can also be invoked as a spamfilter under postfix; use
 the --pipe-stdout command option for that use case.
+
+Launch this docker image in kubernetes or docker-compose using one of the
+files provided here. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can launch [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/blacklist/kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Variables
 | Variable | Default | Description |
