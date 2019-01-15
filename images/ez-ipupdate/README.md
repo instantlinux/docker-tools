@@ -21,7 +21,7 @@ Then deploy this service, see the example kubernetes.yaml / docker-compose.yml f
 | USER_SECRET | Name of the Docker secret to deploy |
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/ez-ipupdate/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

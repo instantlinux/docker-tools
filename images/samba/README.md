@@ -22,7 +22,7 @@ Retype new SMB password:
 Added user myself.
 ```
 See [Samba IDMAP](https://www.samba.org/samba/docs/man/Samba-HOWTO-Collection/idmapper.html) documentation for the many other supported identity mapping options. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/samba/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

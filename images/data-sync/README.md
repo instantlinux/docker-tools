@@ -16,7 +16,7 @@ make data-sync
 Set the value of $PATH_ADM to the top-level directory synchronized by the admin-git (git-pull) service also defined in this repo, and $SERVICE_NAME to data-sync (you can run more than one copy of this by setting different SERVICE_NAME and PATH_ADM values).
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

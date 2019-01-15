@@ -13,7 +13,7 @@ email address; that will generate a URI which you can then use to edit
 your event invitation.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/davite/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

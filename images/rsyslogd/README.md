@@ -10,7 +10,7 @@ Why is this image customized? I couldn't find a stock Docker rsyslogd image that
 Set up a load balancer with your desired port number and aim it at this. Put your /etc/rsyslog.d and /etc/logrotate.d customizations into read-only volume mounts. There's really not much to this.
 
 An example compose file is provided here in docker-compose.yml. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/rsyslogd/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

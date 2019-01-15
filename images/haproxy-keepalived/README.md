@@ -24,7 +24,7 @@ sysctl -p /etc/sysctl.d/99-haproxy.conf
 ```
 
 After starting this service using _kubectl apply_ or _docker-compose_, you can connect to http://<host>:<port>/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/haproxy-keepalived/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

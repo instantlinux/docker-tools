@@ -2,7 +2,7 @@
 [![](https://images.microbadger.com/badges/version/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Commit badge")
 
 The postfix daemon in a small Alpine Linux container, with client
-support for separate spamassassin container.
+support for separate spamassassin container. This is a layer which supports related image [postfix-python](https://hub.docker.com/r/instantlinux/postfix-python).
 
 ### Usage
 
@@ -18,11 +18,7 @@ will be added/updated into main.cf (via postconf).
 
 * Define local users (if not using directory service) as users.sh.
 
-See etc-example directory and kubernetes.yaml / docker-compose.yml. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
-~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
-~~~
+See etc-example directory and kubernetes.yaml / docker-compose.yml.
 
 ### Variables
 

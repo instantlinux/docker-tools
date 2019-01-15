@@ -123,11 +123,21 @@ luks_volumes:
     vg: "{{ luks_vg }}"
 ```
 
-The ansible playbook k8s-master install dockers and configures
-master. The playbook can generate LUKS-encrypted volume mounts for
-your data as above; the ansible playbook includes a role that can
-reference a remote volume (I use sshfs for this) that holds the keys
-under a /masterlock directory. Build the master thus:
+The ansible directory includes a role that can reference a remote
+volume (using sshfs) that holds the keys under a /masterlock
+directory. To set up the LUKS disk encryption provided by this role:
+
+* make a volume /masterlock on a secure server, owned by username _masterlock_
+* generate random keyfiles for each node's volumes under /masterlock/keys/<node>/<volume>.
+* generate a ssh keypair for the masterlock user
+* put the private key into an ansible-vault variable vault_ssh_keys_private.masterkey (convert newline characters into \n)
+* put the public key into ~masterlock/.ssh/authorized_keys on the secure server
+* the secure server is only needed by each node at reboot time (so it can be defined "serverless" with a launch trigger at reboot, but that's outside scope of this doc)
+* next step will then generate correct fstab entries for each node
+
+The ansible playbook k8s-master installs docker and configures
+master. The playbook will generate LUKS-encrypted volume mounts for
+your data as above; build the master thus:
 
 ```
 ansible-playbook k8s-master.yml

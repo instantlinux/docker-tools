@@ -12,6 +12,7 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
+  sessionAffinity: ClientIP
 ---
 apiVersion: apps/v1
 kind: StatefulSet

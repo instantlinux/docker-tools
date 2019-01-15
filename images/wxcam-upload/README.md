@@ -6,7 +6,7 @@ This wraps an upload script along with proftpd for publishing still images from 
 ### Usage
 
 Sign up with Weather Underground to get a user login, and set up one or more webcams. Add secrets to your Docker Swarm installation (or define them as plain-text files), and set parameters as defined below. An example compose file is provided here in docker-compose.yml. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/wxcam-upload/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

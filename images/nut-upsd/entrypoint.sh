@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -e
 
 API_PASSWORD=$(cat /run/secrets/$SECRET)
 
@@ -23,10 +23,15 @@ MONITOR $NAME@localhost 1 $API_USER $API_PASSWORD $SERVER
 RUN_AS_USER $USER
 EOF
   touch /etc/nut/.setup
+else
+  # restarting - eliminate flakiness noted in issue #7
+  killall upsmon || true
+  rm -f /var/run/nut/upsd.pid    
 fi
 
-mkdir -p -m 2750 /var/run/nut
-chown $USER.$GROUP /var/run/nut
+mkdir -m 2750 /dev/shm/nut
+chown $USER.$GROUP /dev/shm/nut
+[ -e /var/run/nut ] || ln -s /dev/shm/nut /var/run
 
 /usr/sbin/upsdrvctl -u root start
 /usr/sbin/upsd -u nut

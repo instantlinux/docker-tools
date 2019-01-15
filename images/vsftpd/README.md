@@ -22,7 +22,7 @@ An example compose file is provided here in docker-compose.yml. This is for the 
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~
 
-Status: DO NOT USE. I've had constant segfault crashes with vsftpd version 3.0.3 under Alpine and Ubuntu. I've switched to proftpd (see that image).
+Status: There's a recent fix for segfault crashes with vsftpd version 3.0.3 under Alpine that will come out in a future version. This one has a workaround that may work for you. I've switched to proftpd (see that image).
 
 ### Variables
 

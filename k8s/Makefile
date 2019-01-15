@@ -119,7 +119,7 @@ $(STACKS)::
 ##########
 # Installation
 ##########
-.PHONY: helm_install imports install node_labels persistent remote_volumes \
+.PHONY: imports install node_labels persistent remote_volumes \
 	secrets untaint_master
 
 IMPORTS      = dashboard flannel ingress-nginx
@@ -131,7 +131,7 @@ install: install/admin-user install/namespace install/limits \
 	install/namespace-user install/namespace-cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
-	install/logspout extend_dashboard_ttl helm_install remote_volumes \
+	install/logspout extend_dashboard_ttl remote_volumes \
 	sekret secrets data-sync-ssh ~/.kube/config.conf persistent
 
 untaint_master:
@@ -258,7 +258,8 @@ imports/traefik-prom.yaml:
 imports/weave-net.yaml:
 	curl -sLo $@ https://cloud.weave.works/k8s/net?k8s-version=$(shell kubectl version | base64 | tr -d '\n')
 
-# As of Jan-2019, the helm chart doesn't reliably construct multi-node cluster
+# As of Jan-2019, the helm chart for etcd doesn't reliably construct multi-node
+# cluster, just use 'make etcd' rather than 'make etcd_chart'
 etcd_chart:
 	helm install --name etcd --namespace $(K8S_NAMESPACE) \
 	  --kube-context=kubernetes-admin@$(CLUSTER) \

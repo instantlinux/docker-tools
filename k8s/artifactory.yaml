@@ -33,16 +33,17 @@ spec:
         - { name: DB_HOST, value: $DB_HOST }
         - { name: DB_PASSWORD, value: $DB_PASSWORD }
         - { name: DB_TYPE, value: $DB_TYPE }
+        - { name: EXTRA_JAVA_OPTIONS, value: -Xms1g -Xmx4g }
         - { name: TZ, value: $TZ }
         image: docker.bintray.io/jfrog/artifactory-oss:$VERSION_ARTIFACTORY
         ports:
         - containerPort: 8081
         resources:
           limits:
-            memory: 1536Mi
+            memory: 4Gi
           requests:
             cpu: 200m
-            memory: 768Mi
+            memory: 1Gi
         volumeMounts:
         - name: data
           mountPath: /var/opt/jfrog/artifactory
