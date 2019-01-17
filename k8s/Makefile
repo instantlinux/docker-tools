@@ -68,6 +68,7 @@ mariadb-galera::
 db00 db01 db02 db03:
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$@ DB_IP=$(shell dig +short $@.$(DOMAIN)) \
+	  DB_IP_RO=$(shell dig +short $@-ro.$(DOMAIN)) \
 	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
 
 gitlab-runner::

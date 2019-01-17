@@ -1,18 +1,56 @@
 ---
+# Primary IP is served by customized haproxy instance defined
+# below; served by a single cluster member. Safe for reading
+# and writing.
+#
 apiVersion: v1
 kind: Service
 metadata:
-  name: $SERVICE_NAME
+  name: $SERVICE_NAME-primary
   labels:
-    app.kubernetes.io/name: $SERVICE_NAME
+    app.kubernetes.io/name: $SERVICE_NAME-primary
 spec:
   clusterIP: $DB_IP
+  ports:
+  - { port: 3306, targetPort: 3306, name: db }
+  - { port: 8080, targetPort: 8080, name: stats }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME-haproxy
+  sessionAffinity: ClientIP
+---
+# Secondary IP is served directly by k8s service here; splits
+# across cluster. Use for horizontal-scaling read-only db access.
+# If your applications write to this IP, beware of multi-master
+# (MDL) conflicts that cause severe performance and stability
+# problems.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-readonly
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME-readonly
+    release: "0.1"
+spec:
+  clusterIP: $DB_IP_RO
   ports:
   - port: 3306
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
   sessionAffinity: ClientIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME-headless
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+    release: "0.1"
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -51,9 +89,8 @@ spec:
             memory: 128Mi
         volumeMounts:
         - mountPath: /etc/mysql/my.cnf.d
-          name: config
+          name: etc
           readOnly: true
-          subPath: mariadb/etc
         - mountPath: /var/log/mysql
           name: logs
         - mountPath: /var/lib/mysql
@@ -67,7 +104,6 @@ spec:
           readOnly: true
           subPath: sst-auth-password
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
         options:
         - name: use-vc
         - name: ndots
@@ -76,8 +112,9 @@ spec:
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
-      - name: config
-        hostPath: { path: $PATH_ADM }
+      - name: etc
+        configMap:
+          name: $SERVICE_NAME-etc
       - name: mysql-root-password
         secret:
           secretName: mysql-root-password
@@ -99,3 +136,175 @@ spec:
       resources:
         requests:
           storage: 500Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME-etc
+data:
+  my.cnf: |
+    # --- Deployed from kubernetes configmap ---
+    #
+    # The MySQL database server configuration file.
+    #
+    # You can copy this to one of:
+    # - "/etc/mysql/my.cnf" to set global options,
+    # - "~/.my.cnf" to set user-specific options.
+    #
+    # One can use all long options that the program supports.
+    # Run program with --help to get a list of available options and with
+    # --print-defaults to see which it would actually understand and use.
+    #
+    # For explanations see
+    # http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+    # This will be passed to all mysql clients
+    # It has been reported that passwords should be enclosed with ticks/quotes
+    # escpecially if they contain "#" chars...
+    # Remember to edit /etc/mysql/debian.cnf when changing the socket location.
+    [client]
+    port		    = 3306
+    [mysqld_safe]
+    nice		    = 0
+
+    [mysqld]
+    #
+    # * Basic Settings
+    #
+    basedir		    = /usr
+    tmpdir	            = /tmp
+    skip-external-locking
+    #
+    # * Fine Tuning
+    #
+    ft_min_word_len         = 3
+    join_buffer_size        = 131072
+    key_buffer_size         = 128M
+    max_allowed_packet      = 256M
+    #max_connections        = 100
+    max_heap_table_size     = 16777216
+    read_buffer_size        = 131072
+    read_rnd_buffer_size    = 262144
+    table_open_cache        = 4096
+    thread_stack            = 192K
+    thread_cache_size       = 8
+    #thread_concurrency     = 12
+    tmp_table_size          = 16777216
+
+    interactive_timeout     = 28800
+    net_read_timeout        = 30
+    net_write_timeout       = 60
+    wait_timeout            = 3600
+
+    character_set_server    = utf8
+    ignore_db_dirs          = lost+found
+
+    #
+    # * Query Cache Configuration
+    #
+    query_cache_limit       = 1M
+    query_cache_size        = 16M
+
+    #
+    # Here you can see queries with especially long duration
+    #
+    slow_query_log_file = /var/log/mysql/mysql-slow.log
+    slow_query_log      = 1
+    long_query_time     = 4
+    #log_queries_not_using_indexes
+
+    #
+    # * InnoDB
+    #
+    # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
+    # Read the manual for more InnoDB related options. There are many!
+
+    innodb_data_file_path   = ibdata1:10M:autoextend
+    innodb_buffer_pool_size = 1024M
+    innodb_log_file_size    = 32M
+
+    [mysqldump]
+    quick
+    quote-names
+    max_allowed_packet	    = 16M
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME-haproxy
+  name: $SERVICE_NAME-haproxy
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME-haproxy
+    spec:
+      containers:
+      - name: $SERVICE_NAME-haproxy
+        image: haproxy:1.9.1-alpine
+        env:
+        - name: STATS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: haproxy-stats-password
+              key: haproxy-stats-password
+        ports:
+        - containerPort: 3306
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /usr/local/etc/haproxy
+          name: etc
+          readOnly: true
+      dnsConfig:
+        options:
+        - name: use-vc
+        - name: ndots
+      volumes:
+      - name: etc
+        configMap:
+          name: $SERVICE_NAME-haproxy
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME-haproxy
+data:
+  haproxy.cfg: |
+    global
+      log 127.0.0.1   local0
+      log 127.0.0.1   local1 notice
+      maxconn         4096
+      user            nobody
+      group           nobody
+      daemon
+    defaults
+      log             global
+      option          dontlognull
+      option          dontlog-normal
+      retries         3
+      option          redispatch
+      maxconn         2000
+      timeout connect 5000
+      timeout client  50000
+      timeout server  50000
+    listen stats
+      bind            *:8080
+      mode            http
+      stats           enable
+      stats           hide-version
+      stats auth      "haproxy:$DOL{STATS_PASSWORD}"
+      stats realm     HAProxy\ Statistics
+      stats uri       /stats
+    listen db
+      bind            *:3306
+      timeout connect 10s
+      timeout client  30m
+      timeout server  30m
+      mode            tcp
+      # OPTIONAL: create a passwordless 'ha_check'@'10.244.*' user
+      # option mysql-check user ha_check
+      server node0 $SERVICE_NAME-0.$SERVICE_NAME.$K8S_NAMESPACE.svc.cluster.local:3306 check inter 10000
+      server node1 $SERVICE_NAME-1.$SERVICE_NAME.$K8S_NAMESPACE.svc.cluster.local:3306 check inter 10000 backup
+      server node2 $SERVICE_NAME-2.$SERVICE_NAME.$K8S_NAMESPACE.svc.cluster.local:3306 check inter 10000 backup

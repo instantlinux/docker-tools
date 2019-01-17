@@ -41,16 +41,17 @@ rm /dev/shm/new.yaml
 Do the same for an sst-auth-password.
 
 Set any local my.cnf values in files under a volume mount for
-/etc/mysql/my.cnf.d (mapped as $ADMIN_PATH/mariadb/etc/).
+/etc/mysql/my.cnf.d (mapped as $ADMIN_PATH/mariadb/etc/). Use
+a ConfigMap when running under Kubernetes (example is included).
 
 ### Networking
 
 The container exposes ports 3306, 4567 and 4568 on the ingress network. An
 internal network is needed for cluster-sync traffic and/or backups (use
 mariabackup, or the mysqldump container provided here). In order to enable
-connections directly to each cluster member for troubleshooting, if you're
-running a recent version of Docker you can override the ingress
-load-balancer thus:
+connections directly to each cluster member for write-safe access or
+troubleshooting, if you're running a recent version of Docker you can override
+its ingress load-balancer thus:
 
 ~~~
     version: "3.2"
@@ -63,13 +64,41 @@ load-balancer thus:
           protocol: tcp
           mode: host
 ~~~
-You may want a separate load-balancer for serving your published port.
+You almost definitely want a separate load-balancer for serving your published port.
+This method is defined and documented here in [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml).
+
+### DNS names and read/write
+
+With MariaDB technology, write performance is limited to I/O throughput of the slowest single node in the cluster. Read performance can be scaled across the full cluster and is limited only by network capacity.
+
+If you set up a cluster and spread database write traffic across all nodes, performance will be worse than with a single cluster because of issues described in [multi-master conflicts](http://galeracluster.com/documentation-webpages/dealingwithmultimasterconflicts.html). Your logs will have messages like these:
+```
+WSREP: MDL conflict db=jira7 table=rundetails ticket=6 solved by abort
+```
+and the cluster won't provide stable performance. To make this long story short, here are the steps to take:
+
+* Allocate two static IP addresses on your LAN
+* Define a primary and read-only DNS name, for example db.mysite.com and db-ro.mysite.com and add address A records for the two IPs
+* Set up an haproxy (or other) load balancer for the primary IP address, with one cluster node configured to serve traffic and the others defined as backup
+* Bind the built-in Docker or Kubernetes service to all the cluster members
+
+For Docker Swarm users, this exercise is left to the reader. For Kubernetes, the [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) and [Makefile](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile) provided here will automate these steps once you've set up the two DNS entries.
 
 ### Logging
 
 Logs are sent to stdout / stderr with one exception: the slow query
 log. Add a volume mount of /var/log/mysql if you want to preserve
 that log.
+
+### Setting up etcd
+
+See the k8s/Makefile for a _make etcd_ to start	etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
+
+This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) with the Makefile or:
+~~~
+cat kubernetes.yaml | envsubst | kubectl apply -f -
+~~~
 
 ### Notes
 
@@ -90,16 +119,6 @@ to handle edge cases.
 This container image is intended to be run in a 3-, 5-node, or larger
 configuration.  It requires a stable etcd configuration for node
 discovery and master election at restart.
-
-### Setting up etcd
-
-See the k8s/Makefile for a _make etcd_ to start	etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
-
-This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) with the Makefile or:
-~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
-~~~
 
 ### Credits
 

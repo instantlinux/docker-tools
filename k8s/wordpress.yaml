@@ -76,25 +76,34 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - mountPath: /usr/local/etc/php/conf.d/ci-php.ini
-          name: admin
+        - mountPath: /usr/local/etc/php/conf.d/local-php.ini
+          name: init
           readOnly: true
-          subPath: services/wordpress/ci-php.ini
+          subPath: local-php.ini
         - mountPath: /var/www/html
           name: share
           subPath: $SERVICE_NAME/html
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
         options:
         - name: use-vc
         - name: ndots
       nodeSelector:
         service.data-sync: allow
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
+      - name: init
+        configMap:
+          name: $SERVICE_NAME
       - name: share
         hostPath: { path: $PATH_SHR }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME
+data:
+  local-php.ini: |
+    upload_max_filesize = 32M
+    post_max_size = 40M
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
