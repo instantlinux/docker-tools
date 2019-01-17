@@ -26,7 +26,7 @@ kubeadm suite:
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
 * Helm with tiller
-* Sekret with encryption (to keep credentials in local git repo)
+* Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * Flannel networking
 * ingress-nginx
@@ -152,14 +152,14 @@ passed in as shell environment variables in the form $VARIABLE_NAME.
 
 Set a symlink from a directory under this one (k8s/secrets) to a
 subdirectory in your local administrative repo. This is where you will
-store kubernetes secrets, encrypted by a tool called _sekret_.
+store kubernetes secrets, encrypted by a tool called _sops_.
 
 Then invoke the following in this directory:
 ```
 make install
 ```
 This will add flannel networking, the dashboard, an nginx ingress
-load-balancer, helm and sekret. Create directories for persistent
+load-balancer, helm and sops. Create directories for persistent
 volumes for each node, and optionally set node-affinity labels:
 ```
 for node in $K8S_NODES; do
@@ -203,6 +203,14 @@ tiller-deploy-6b6d4b6895-d8mxt          1/1     Running   0          26m
 
 Check /var/log/syslog, and the output logs of pods that you can access
 via the Kubernetes console, to troubleshoot problems.
+
+Credentials can be kept in a local git repo; invoke
+_make sops sops_gen_gpg_ to install sops and create your private
+key. Once you've done that, add new secrets by invoking
+_make secrets/keyname.yml_.  Upload them to Kubernetes by invoking
+_make secrets/keyname_. Manage their contents and lifecycle using the
+_sops_ command. This tool also supports cloud key-managers like KMS,
+but gpg is suitable for bare-metal data center setups.
 
 ### Additional notes
 

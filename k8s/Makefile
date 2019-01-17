@@ -49,7 +49,8 @@ CLUSTER        ?= kubernetes
 ADMIN_CTX      ?= --context=kubernetes-admin@$(CLUSTER)
 CERTMGR_VERSION ?= 299f546b4d8a61af19e94545ed4fc1c35dee35e0
 HELM_VERSION   ?= 2.11.0
-SEKRET_VERSION ?= 1.2.1
+SOPS_VERSION   ?= 3.2.0
+SOPS_SHA       ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
 STACKS  = $(basename $(wildcard *.yaml))
 
 include Makefile.vars
@@ -80,7 +81,7 @@ gitlab-agent:
 	@K8S_NAMESPACE=gitlab make install/limits
 	@SERVICE_NAME=gitlab-runner \
 	  envsubst < gitlab-runner.yaml | kubectl $(ACTION) $(ADMIN_CTX) -n gitlab -f -
-	-sekret dec secrets/$(CA_SECRET) | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
+	-sops -d secrets/$(CA_SECRET) | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
 
 nut-upsd::
 	@echo Use nut-xx target
@@ -121,7 +122,7 @@ $(STACKS)::
 # Installation
 ##########
 .PHONY: imports install node_labels persistent remote_volumes \
-	secrets untaint_master
+	secrets sops untaint_master
 
 IMPORTS      = dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
@@ -133,7 +134,7 @@ install: install/admin-user install/namespace install/limits \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
 	install/logspout extend_dashboard_ttl remote_volumes \
-	sekret secrets data-sync-ssh ~/.kube/config.conf persistent
+	sops secrets data-sync-ssh ~/.kube/config.conf persistent
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'
@@ -200,21 +201,7 @@ include Makefile.helm
 ##########
 # Secrets
 ##########
-sekret: /usr/local/bin/sekret
-/usr/local/bin/sekret:
-	curl -sLo /tmp/sekret_linux_amd64 \
-	  https://github.com/nownabe/sekret/releases/download/v$(SEKRET_VERSION)/sekret_linux_amd64
-	curl -sLo /tmp/sekret.sha256 \
-	  https://github.com/nownabe/sekret/releases/download/v$(SEKRET_VERSION)/sekret_$(SEKRET_VERSION)_checksums.txt
-	cd /tmp && grep linux_amd64 sekret.sha256 | sha256sum -c
-	sudo mv /tmp/sekret $@
-	sudo chmod 755 $@
-	rm /tmp/sekret*
-
-SECRETS = secrets/*
-secrets: secrets/*
-secrets/*::
-	-sekret dec $@ | envsubst | kubectl create -f -
+include Makefile.sops
 
 ##########
 # cert-manager

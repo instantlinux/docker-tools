@@ -1,0 +1,62 @@
+# Secrets management with Mozilla sops
+#
+# Usage:
+#    export EDITOR=<your editor>
+#    make secrets/foo.yml - Create a new secret
+#    make secrets/foo     - (without .yml) Upload secret to k8s
+#
+# Note:
+#    Key material added to data section has to be base64 encoded
+
+.PHONY: gen_sops_gpg
+
+sops: /usr/bin/sops
+/usr/bin/sops:
+	curl -sLo /tmp/sops.deb \
+	  https://github.com/mozilla/sops/releases/download/$(SOPS_VERSION)/sops_$(SOPS_VERSION)_amd64.deb
+	cd /tmp && echo "$(SOPS_SHA)  sops.deb" | sha256sum -c
+	@sudo dpkg -i /tmp/sops.deb
+	@rm /tmp/sops.deb
+
+gen_sops_gpg:
+	$(eval EXISTS := $(shell gpg --list-keys | grep "PGP credentials"))
+ifneq ($(EXISTS),)
+	@echo Creating GPG private/public key for encryption
+	@echo "  Answer questions as follows:"
+	@echo "  kind?       1"
+	@echo "  keysize?    3072"
+	@echo "  valid for?  0"
+	@echo "  correct?    y"
+	@echo "  real name?  <mydomain> PGP"
+	@echo "  email?      <myname>@<mydomain>"
+	@echo "  comment?    PGP credentials for <mydomain> secrets"
+	@echo "  Okay?       O"
+	@echo There is no need to set a passphrase.
+	@echo When complete, preserve and secure contents of $$HOME/.gnupg, then
+	@echo "  export GPG_FINGERPRINT=<copy/paste new value>"
+	@echo "  make secrets/.sops.yaml\n\n"
+	@gpg --full-gen-key
+else
+	@gpg --list-keys
+endif
+
+secrets/.sops.yaml:
+ifndef GPG_FINGERPRINT
+	$(error Need GPG_FINGERPRINT)
+endif
+	@echo Creating file $@
+	echo creation_rules: > $@
+	echo "  - pgp: $(GPG_FINGERPRINT)" >> $@
+
+SECRETS = $(basename $(wildcard secrets/*.yml))
+secrets: $(SECRETS)
+$(SECRETS):
+	-sops -d $@.yml | envsubst | kubectl create -f -
+
+secrets/%.yml:
+	@echo Creating secret $(@F)
+	$(eval TMP := $(shell mktemp /tmp/sops-XXXXX.yml))
+	@KEY=$(basename $(@F)) envsubst < tpl-secret.yml > $(TMP)
+	@sops --config secrets/.sops.yaml -e $(TMP) > $@
+	@rm $(TMP)
+	cd secrets && sops $(@F)
