@@ -70,8 +70,6 @@ spec:
           name: cloud
         - mountPath: /var/data-sync/dos
           name: dos
-        - mountPath: /var/data-sync/duplicati
-          name: duplicati
         - mountPath: /var/data-sync/gitlab
           name: gitlab
         - mountPath: /var/data-sync/household
@@ -148,16 +146,6 @@ spec:
       selector:
         matchLabels:
           volume.group: dos
-  - metadata:
-      name: duplicati
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: duplicati
   - metadata:
       name: gitlab
     spec:

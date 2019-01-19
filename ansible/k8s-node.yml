@@ -15,6 +15,7 @@
 - hosts: k8s_nodes
   become: True
   force_handlers: True
+  strategy: free
   roles:
   - { role: users, tags: users }
   - { role: network, tags: network }

@@ -38,7 +38,7 @@ spec:
             memory: 6144Mi
           requests:
             cpu: 300m
-            memory: 2560Mi
+            memory: 2048Mi
         volumeMounts:
         - mountPath: /var/atlassian/jira
           name: $SERVICE_NAME

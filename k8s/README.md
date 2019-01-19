@@ -30,6 +30,7 @@ kubeadm suite:
 * Encryption for internal etcd
 * Flannel networking
 * ingress-nginx
+* Local-volume sync
 * Letsencrypt certs (TODO)
 
 Resource yaml files are in standard k8s format, parameterized by simple
@@ -95,12 +96,11 @@ kube2.domain.com
 kube3.domain.com
 ```
 
-Choose a namespace and a 32-byte encryption key, and define these
+Choose a namespace and a random (~32 bytes) encryption key, and define these
 environment variables with values as desired:
 ```
 export DOMAIN=domain.com
 export EDITOR=vi
-export ENCRYPTION_KEY=3zQ#LgGGc9R&9z5@Z^68H6Gz6Q7vQ1z2
 export K8S_NAMESPACE=mynamespace
 export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
 export TZ=America/Los_Angeles
@@ -109,8 +109,10 @@ export TZ=America/Los_Angeles
 Customize the Makefile.vars files with any additional settings you
 desire.
 
-Create group_vars/k8s_master.yml and group_vars/k8s_node files
-that contains definitions like this:
+Put the encryption key into an ansible vault variable
+_vault_k8s.encryption_key_ under group_vars/all/vault.yml. Create
+group_vars/k8s_master.yml and group_vars/k8s_node files that contains
+definitions like this:
 
 ```
 luks_vg: vg01
@@ -211,6 +213,24 @@ _make secrets/keyname.yml_.  Upload them to Kubernetes by invoking
 _make secrets/keyname_. Manage their contents and lifecycle using the
 _sops_ command. This tool also supports cloud key-managers like KMS,
 but gpg is suitable for bare-metal data center setups.
+
+### Network and local storage
+
+Storage management is a mostly-unsolved problem in the container world; indeed there are startup companies raising cash to try to solve this in ways that will be affordable only to big enterprises (a blogger at StorageOS has [this to say](https://medium.com/@saliloquy/storage-is-the-achilles-heel-of-containers-97d0341e8d87)). Long before Swarm and Kubernetes came out, I was using LVM snapshots to quickly clone LXC containers, and grew accustomed to the speedy performance of direct-attached SSD storage. At a former employer, in order to provide resiliency for database masters, I used [drbd](http://www.drbd.org) to sync volumes at the block level across the network.
+
+The solutions I present here in this repo are based on those years of experience, and rely only on free open-source tools. Kubernetes does not support Docker's local named volumes, so I had to develop a new paradigm when switching from Swarm to Kubernetes.
+
+* To generate k8s _pv_ objects for each local nodes' volumes (pools and named volumes), invoke _make persistent_ which triggers a script [persistent.sh](https://github.com/instantlinux/docker-tools/tree/master/k8s/scripts).
+* To create the named LUKS-encrypted volumes, mount points and local directories, configure variables for the Ansible role [volumes](https://github.com/instantlinux/docker-tools/tree/master/ansible/roles/volumes) and invoke the playbook [k8s-node.yml](https://github.com/instantlinux/docker-tools/blob/master/ansible/k8s-node.yml).
+* My customized NFS mount points, which are provided to k8s through _pvc_ objects, are defined in [k8s/volumes](https://github.com/instantlinux/docker-tools/tree/master/k8s/volumes).
+* At present, k8s only supports NFS v3 protocol--which means it's a single point of failure--and it doesn't yet support CIFS. It's unfortunate that I need to use NFS at all; if you can avoid it, do so wherever possible--the kubelet will go unstable if the NFS server's mount points ever go away.
+* To provide resiliency, I created a [data-sync](https://cloud.docker.com/repository/docker/instantlinux/data-sync) container and [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) deployment to keep multiple copies of a local storage volume in sync. These volumes currently have to be mounted using hostPath (not 100% secure) by the application containers.
+* The k8s _statefulset_ resource can attach local named volumes or assign them from a pool; it's designed for clustered applications that can run multiple instances in parallel, each with its own data storage
+* The k8s _deployment_ resource can attach to a hostPath or NFS mount point; this resource type is preferred for non-clustered applications that run as a single instance within your k8s cluster
+
+I've tried several different approaches to keeping volumes in sync; the most popular alternative is GlusterFS but my own experience with that included poor performance on volumes with more than about 10,000 files, difficult recovery in split-brain network failures, and sporadic undetected loss of sync. All those tools (drbd included) are hugely complex to understand/administer. The [unison](https://www.cis.upenn.edu/~bcpierce/unison/) tool is as easy to understand as _rsync_ and has never had any failures in my years of use. The main catch with unison is that you need to identify and exclude files that are constantly being written to by your application, and/or create a script to quiesce the application during sync operations.
+
+Explore this repo for several different approaches to data backups. Duplicati is the main off-the-shelf tool that I've found as an alternative to CrashPlan for Home, though it's got one major achille's heel (metadata indexing) it's better than any other no-cost Linux tool. My [secondshot](https://github.com/instantlinux/secondshot)_ tool adds metadata-indexing and monitoring to the _rsnapshot_ method.
 
 ### Additional notes
 
