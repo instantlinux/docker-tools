@@ -16,6 +16,9 @@ EOF
     if [ ! -z "$VENDORID" ]; then
       echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
     fi
+    if [ ! -z "$POLLINTERVAL" ]; then
+      echo "        pollinterval = $POLLINTERVAL" >> /etc/nut/ups.conf
+    fi
   fi
   if [ -e /etc/nut/local/ups.conf ]; then
     cp /etc/nut/local/ups.conf /etc/nut/ups.conf
