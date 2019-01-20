@@ -18,7 +18,8 @@ ENV API_USER=upsmon \
     SECRET=nut-upsd-password \
     SERIAL= \
     SERVER=master \
-    USER=nut
+    USER=nut \
+    VENDORID=
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
