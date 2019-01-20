@@ -45,6 +45,33 @@ SERVER | master | master or slave priority for scripts
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
 
+### Notes
+
+For Tripp Lite models, you may need to specify VENDORID 09ae in the environment; for any make or model, here's how to identify the idVendor and iSerial values from a root shell on your host:
+
+```
+# lsusb
+ ...
+Bus 001 Device 005: ID 051d:0002 American Power Conversion Uninterruptible Power Supply
+# lsusb -D /dev/bus/usb/001/005
+Device: ID 051d:0002 American Power Conversion Uninterruptible Power Supply
+ ...
+  idVendor           0x051d American Power Conversion
+  idProduct          0x0002 Uninterruptible Power Supply
+  bcdDevice            0.90
+  iManufacturer           1 American Power Conversion
+  iProduct                2 Back-UPS RS 1500G FW:865.L6 .D USB FW:L6 
+  iSerial                 3 4B1624P26350  
+```
+
+If you require udev rules to set permissions, configure your host prior to running the container. For example:
+```
+cat >/etc/udev/rules.d/99-usb-serial.rules <<EOF
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}==“09ae”, ATTRS{idProduct}==“2012”, MODE="0660", GROUP="nut"
+EOF
+udevadm control --reload-rules && udevadm trigger
+```
+
 ### Secrets
 
 | Secret | Description |

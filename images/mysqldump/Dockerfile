@@ -18,7 +18,7 @@ ENV HOUR=3 MINUTE=30 \
 
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=10.3.12-r1
+ARG CLIENT_VERSION=10.3.12-r2
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
