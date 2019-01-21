@@ -38,16 +38,16 @@ DESCRIPTION | UPS | user-assigned description
 DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html))
 GROUP | nut | local group
 NAME | ups | user-assigned config name
+POLLINTERVAL | | Poll Interval for ups.conf
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
 SECRET | nut-upsd-password | secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
-POLLINTERVAL | | Poll Interval for ups.conf
 ### Notes
 
-For Tripp Lite models, you may need to specify VENDORID 09ae in the environment; for any make or model, here's how to identify the idVendor and iSerial values from a root shell on your host:
+For Tripp Lite models, you may need to specify VENDORID 09ae in the environment. Also check to see if you need a POLLINTERVAL setting. For any make or model, here's how to identify the idVendor and iSerial values from a root shell on your host:
 
 ```
 # lsusb

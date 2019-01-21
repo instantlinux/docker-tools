@@ -58,7 +58,7 @@ spec:
           subPath: DigitalPics/2019/$CLOUD_USER1-nextcloud
         - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos/2018
           name: pictures
-          subPath: DigitalPics/2019/$CLOUD_USER2-nextcloud
+          subPath: DigitalPics/2018/$CLOUD_USER2-nextcloud
         - mountPath: /var/www/html/data/$CLOUD_USER2/files/Photos/2019
           name: pictures
           subPath: DigitalPics/2019/$CLOUD_USER2-nextcloud

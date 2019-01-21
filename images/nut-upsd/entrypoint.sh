@@ -13,11 +13,11 @@ if [ ! -e /etc/nut/.setup ]; then
         serial = "$SERIAL"
         desc = "$DESCRIPTION"
 EOF
-    if [ ! -z "$VENDORID" ]; then
-      echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
-    fi
     if [ ! -z "$POLLINTERVAL" ]; then
       echo "        pollinterval = $POLLINTERVAL" >> /etc/nut/ups.conf
+    fi
+    if [ ! -z "$VENDORID" ]; then
+      echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
     fi
   fi
   if [ -e /etc/nut/local/ups.conf ]; then
@@ -45,15 +45,14 @@ RUN_AS_USER $USER
 EOF
   fi
   touch /etc/nut/.setup
-else
-  # restarting - eliminate flakiness noted in issue #7
-  killall upsmon || true
-  rm -f /var/run/nut/upsd.pid    
 fi
 
 mkdir -m 2750 /dev/shm/nut
 chown $USER.$GROUP /dev/shm/nut
 [ -e /var/run/nut ] || ln -s /dev/shm/nut /var/run
+# Issue #15 - change pid warning message from "No such file" to "Ignoring"
+echo 0 > /var/run/nut/upsd.pid && chown $USER.$GROUP /var/run/nut/upsd.pid
+echo 0 > /var/run/upsmon.pid
 
 /usr/sbin/upsdrvctl -u root start
 /usr/sbin/upsd -u $USER
