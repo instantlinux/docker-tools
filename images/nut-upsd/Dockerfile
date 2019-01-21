@@ -19,7 +19,8 @@ ENV API_USER=upsmon \
     SERIAL= \
     SERVER=master \
     USER=nut \
-    VENDORID=
+    VENDORID= \
+    POLLINTERVAL=
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \

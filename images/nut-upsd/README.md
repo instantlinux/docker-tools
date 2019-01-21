@@ -44,7 +44,7 @@ SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
-
+POLLINTERVAL | | Poll Interval for ups.conf
 ### Notes
 
 For Tripp Lite models, you may need to specify VENDORID 09ae in the environment; for any make or model, here's how to identify the idVendor and iSerial values from a root shell on your host:
