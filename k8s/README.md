@@ -13,6 +13,8 @@ a single-instance minikube setup) on bare-metal. Most of this will
 probably work in IaaS providers like Google or AWS but the purpose
 of this repo is to set up production-grade K8S with your own servers / VMs.
 
+See [How to use this](#how-to-use-this) below to get started.
+
 ### Features
 
 The ansible playbook deploys master and node instances with kubeadm,
@@ -31,7 +33,7 @@ kubeadm suite:
 * Flannel networking
 * ingress-nginx
 * Local-volume sync
-* Letsencrypt certs (TODO)
+* Automatic certificate issuing/renewal with Letsencrypt
 
 Resource yaml files are in standard k8s format, parameterized by simple
 environment-variable substitution. Helm is provided only to enable
@@ -96,12 +98,12 @@ kube2.domain.com
 kube3.domain.com
 ```
 
-Choose a namespace and a random (~32 bytes) encryption key, and define these
-environment variables with values as desired:
+Choose a namespace and define these environment variables with values
+as desired:
 ```
 export DOMAIN=domain.com
-export EDITOR=vi
-export K8S_NAMESPACE=mynamespace
+export EDITOR=vi export
+K8S_NAMESPACE=mynamespace
 export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
 export TZ=America/Los_Angeles
 ```
@@ -109,10 +111,10 @@ export TZ=America/Los_Angeles
 Customize the Makefile.vars files with any additional settings you
 desire.
 
-Put the encryption key into an ansible vault variable
-_vault_k8s.encryption_key_ under group_vars/all/vault.yml. Create
-group_vars/k8s_master.yml and group_vars/k8s_node files that contains
-definitions like this:
+Choose a random (~32 bytes) encryption key and put it into an ansible
+vault variable _vault_k8s.encryption_key_ under
+group_vars/all/vault.yml. Create group_vars/k8s_master.yml and
+group_vars/k8s_node files that contains definitions like this:
 
 ```
 luks_vg: vg01
@@ -273,7 +275,3 @@ notes are as of Jan 2019 on version 1.13.1:
   from any given application (splitting database writes across a MariaDB
   cluster isn't fully supported at this time, there are race conditions
   which create performance problems).
-
-* I haven't yet addressed cert-manager/letsencrypt here. It looked to me
-  like that project is in rapid evolution so I tabled the idea until a
-  future date when their doc is more polished.

@@ -47,7 +47,6 @@
 ACTION         ?= apply
 CLUSTER        ?= kubernetes
 ADMIN_CTX      ?= --context=kubernetes-admin@$(CLUSTER)
-CERTMGR_VERSION ?= 299f546b4d8a61af19e94545ed4fc1c35dee35e0
 HELM_VERSION   ?= 2.11.0
 SOPS_VERSION   ?= 3.2.0
 SOPS_SHA       ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
@@ -130,7 +129,7 @@ INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user install/namespace install/limits \
-	install/namespace-user install/namespace-cert-manager \
+	install/namespace-user install/cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
 	install/logspout extend_dashboard_ttl remote_volumes \
@@ -207,14 +206,11 @@ include Makefile.sops
 # cert-manager
 ##########
 
-# NOT working; TODO resume work on this when setup doc and non-helm install are fixed
-#  See: https://github.com/jetstack/cert-manager/issues/1151
-cert-manager: imports/00-crds.yaml imports/cert-manager.yaml
-	kubectl	$(ADMIN_CTX) $(ACTION) -f imports/00-crds.yaml
-	kubectl	$(ADMIN_CTX) $(ACTION) -f imports/cert-manager.yaml
-
-imports/00-crds.yaml imports/cert-manager.yaml:
-	curl -sLo $@ https://raw.githubusercontent.com/jetstack/cert-manager/$(CERTMGR_VERSION)/deploy/manifests/$(@F)
+# TODO: make this work without helm, while tracking doc problem:
+#  https://github.com/jetstack/cert-manager/issues/1151
+cert-manager: helm_install
+	helm install --name cert-manager --namespace kube-system \
+	 stable/cert-manager --kube-context=sudo
 
 ##########
 # Add-ons

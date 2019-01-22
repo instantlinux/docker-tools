@@ -17,6 +17,7 @@ kind: Ingress
 metadata:
   name: $SERVICE_NAME-ingress
   annotations:
+    # TODO - letsencrypt (can't deal with these redirects and basic-auth)
     kubernetes.io/ingress.class: nginx
 spec:
   tls:

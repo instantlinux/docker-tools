@@ -51,8 +51,13 @@ kind: Ingress
 metadata:
   name: $SERVICE_NAME-ingress
   annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
 spec:
+  tls:
+  - secretName: tls-$SERVICE_NAME
+    hosts:
+    - $SERVICE_NAME.$DOMAIN
   rules:
   - host: $SERVICE_NAME.$DOMAIN
     http:

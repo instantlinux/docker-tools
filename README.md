@@ -17,7 +17,24 @@ organization using Kubernetes with tools to make it easier. Contents:
 Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
 Find a lot more details about the Kubernetes bare-metal installer in [k8s/README](k8s/README.md).
 
-Resource definitions include:
+### Kubernetes capabilities
+
+The cluster-deployment tools here include ansible playbooks to spin up bare-metal or VM master/worker nodes, and a Makefile to add several additional features.
+
+* Pod security policies
+* Direct-attached SSD local storage pools
+* Dashboard
+* Non-default namespace with its own service account (full permissions
+  within namespace, limited read-only in kube-system namespaces)
+* Helm with tiller
+* Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
+* Encryption for internal etcd
+* Flannel networking
+* ingress-nginx
+* Local-volume sync
+* Automatic certificate issuing/renewal with Letsencrypt
+
+### Resource definitions
 
 **Developer infrastructure**
 
