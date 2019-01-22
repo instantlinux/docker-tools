@@ -34,21 +34,69 @@ spec:
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         volumeMounts:
         - mountPath: /etc/logrotate.d
-          name: admin
+          name: logrotate
           readOnly: true
-          subPath: services/$SERVICE_NAME/etc/logrotate.d
         - mountPath: /etc/rsyslog.d
-          name: admin
+          name: config
           readOnly: true
-          subPath: services/$SERVICE_NAME/etc/rsyslog.2
       dnsConfig:
         options:
         - { name: ndots }
       imagePullSecrets:
       - name: regcred
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
+      - name: config
+        configMap:
+          name: $SERVICE_NAME
+      - name: logrotate
+        configMap:
+          name: $SERVICE_NAME-logrotate
       - name: logs
         emptyDir: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME
+data:
+  custom.conf: |
+    # This file created from k8s configmap
+    ${DOL}ModLoad imtcp.so
+    ${DOL}InputTCPServerRun 514
+    *.*;local1.!=info;cron.!=info;local2.!=notice @@splunk:$PORT_SPLUNK_SYSLOG
 
+    ${DOL}MarkMessagePeriod 3600
+    ${DOL}RepeatedMsgReduction on
+
+    :msg,contains,"CACHEMGR: <unknown>@127.0.0.1 requesting" stop
+    :msg, contains, "Invalid response packet from host 192.168" stop
+    :msg, regex, "Connection closed by 192.168.2.[0-9]\\{1,3\\} \\[preauth\\]" stop
+    :msg, contains, "netstream session" stop
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME-logrotate
+data:
+  syslog: |
+    # This file created from k8s configmap
+    # the mail log files are used by all syslog daemons
+    # the news log files are used by all syslog daemons
+    /var/log/warn /var/log/messages /var/log/allmessages /var/log/localmessages
+    /var/log/mail /var/log/mail.info /var/log/mail.warn /var/log/mail.err
+    /var/log/news/news.crit /var/log/news/news.err /var/log/news/news.notice
+    /var/log/cron /var/log/secure
+    {
+        compress
+        dateext
+        maxage 365
+        rotate 45
+        missingok
+        notifempty
+        size +4096k
+        create 640 root root
+        sharedscripts
+        postrotate
+            /usr/bin/killall -HUP rsyslogd
+        endscript
+    }
