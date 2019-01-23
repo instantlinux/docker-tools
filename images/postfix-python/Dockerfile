@@ -18,7 +18,9 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
     SPAMLIMIT=12 \
     SPAMC_HOST=spamassassin
 
-ARG PYTHON_PIP_VERSION=18.1
+ARG GETPIP_SHA=dc84268cc3271fc05d0638dc8a50e49a1450c73abbf67cb12ff1dc1e1a9b3a66
+ARG GETPIP_URI=https://bootstrap.pypa.io/3.3/get-pip.py
+ARG PYTHON_PIP_VERSION=19.0
 
 COPY requirements/ /root/
 COPY src/ /usr/local/bin/
@@ -26,7 +28,8 @@ COPY src/ /usr/local/bin/
 RUN apk add --no-cache --update \
      curl openssl python2 python2-dev py-configobj py-mysqldb  && \
     mkdir build && cd build && \
-    wget -q -O get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    wget -q -O get-pip.py $GETPIP_URI && \
+    echo "$GETPIP_SHA  get-pip.py" | sha256sum -c && \
     python get-pip.py --disable-pip-version-check --no-cache-dir \
       pip==$PYTHON_PIP_VERSION && \
     pip --version && \

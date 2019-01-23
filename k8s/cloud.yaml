@@ -33,7 +33,8 @@ spec:
         - -c
         - >
           set -x &&
-          usermod -a -G users www-data &&
+          usermod -a -G $NEXTCLOUD_GROUP www-data &&
+          umask $NEXTCLOUD_UMASK &&
           exec apache2-foreground
         resources:
           limits:

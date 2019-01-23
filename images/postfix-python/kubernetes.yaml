@@ -88,7 +88,7 @@ spec:
           secretName: postfix-sasl-passwd
       - name: ssl-cert
         secret:
-          secretName: $POSTFIX_SECRET
+          secretName: $POSTFIX_TLS_SECRET
   volumeClaimTemplates:
   - metadata:
       name: spool

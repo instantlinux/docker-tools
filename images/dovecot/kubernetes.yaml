@@ -57,11 +57,11 @@ spec:
           name: postfix-sasl-passwd
           readOnly: true
           subPath: postfix-sasl-passwd
-        - mountPath: /etc/ssl/certs/$POSTFIX_CERT
+        - mountPath: /etc/ssl/certs/smtpd-cert.pem
           name: ssl-cert
           readOnly: true
           subPath: tls.crt
-        - mountPath: /run/secrets/$POSTFIX_KEY
+        - mountPath: /run/secrets/smtpd-key.pem
           name: ssl-cert
           readOnly: true
           subPath: tls.key
@@ -91,7 +91,7 @@ spec:
           secretName: postfix-sasl-passwd
       - name: ssl-cert
         secret:
-          secretName: webmail.$DOMAIN
+          secretName: $POSTFIX_TLS_SECRET
 ---
 apiVersion: v1
 kind: Service

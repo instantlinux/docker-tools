@@ -38,16 +38,18 @@ ENV ALTITUDE="100, foot" \
     WX_USER=weewx \
     XTIDE_LOCATION=unset
 
-ARG PYTHON_PIP_VERSION=18.0
+ARG PYTHON_PIP_VERSION=19.0
 ARG FORECAST_VERSION=3.2.17
+ARG GETPIP_URI=https://bootstrap.pypa.io/3.3/get-pip.py
 ARG HARMONICS_VERSION=20161231
 ARG LIBTCD_VERSION=2.2.7-r2
-ARG WEEWX_VERSION=3.8.0
+ARG WEEWX_VERSION=3.8.2
 ARG XTIDE_VERSION=2.15.1
 ARG FORECAST_SHA=dbc7b875ec20c702e44d57d7c8d30666494561dd054f6b96096d8635c39160e9
+ARG GETPIP_SHA=dc84268cc3271fc05d0638dc8a50e49a1450c73abbf67cb12ff1dc1e1a9b3a66
 ARG HARMONICS_SHA=7e5da40c19fd4f5d0897d6a7f68bc4b66a3eb7c3852135c8a6c4c56b82c01cdd
 ARG LIBTCD_SHA=aff1f218b84106c572d094912cd11c828e1ea212db5661cdcc0e2e6253020a94
-ARG WEEWX_SHA=9f4e59f3c488f7b7545d6d28cc33d21995e8a21045868433612d45a860ec7d08
+ARG WEEWX_SHA=d0740ef0a83d3aa36c055f5ea75243283760646d800d4dd08af9393c0c6cc28f
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
 ARG XTIDE_SHA=e5c4afbb17269fdde296e853f2cb84845ed1c1bb1932f780047ad71d623bc681
@@ -59,7 +61,7 @@ RUN apk add --no-cache --update \
       py-mysqldb rsync rsyslog && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mkdir -p /usr/share/xtide /build/libtcd /build/xtide && cd build && \
-    curl -sLo get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    curl -sLo get-pip.py $GETPIP_URI && \
     curl -sLo harmonics.tar.bz2 \
       ftp://ftp.flaterco.com/xtide/harmonics-dwf-$HARMONICS_VERSION-free.tar.bz2 && \
     curl -sLo libtcd.tar.bz2 \
@@ -72,6 +74,7 @@ RUN apk add --no-cache --update \
       ftp://ftp.flaterco.com/xtide/xtide-$XTIDE_VERSION.tar.bz2 &&\
     echo "$FORECAST_SHA  weewx-forecast.tgz" >> /build/checksums && \
     echo "$HARMONICS_SHA  harmonics.tar.bz2" >> /build/checksums && \
+    echo "$GETPIP_SHA  get-pip.py" >> /build/checksums && \
     echo "$LIBTCD_SHA  libtcd.tar.bz2" >> /build/checksums && \
     echo "$WEEWX_SHA  weewx.tar.gz" >> /build/checksums && \
     echo "$XTIDE_SHA  xtide.tar.bz2" >> /build/checksums && \
