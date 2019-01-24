@@ -115,7 +115,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME-sync
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME-sync
@@ -135,7 +135,7 @@ spec:
         - name: SYNC_SSHKEY
           valueFrom:
             configMapKeyRef:
-              name: data-sync
+              name: $DATA_SYNC_PUBLIC
               key: sync-sshkey
         image: $REGISTRY_URI/data-sync:latest
         ports:
@@ -144,15 +144,15 @@ spec:
           limits:
             memory: 1536Mi
           requests:
-            cpu: 200m
+            cpu: 100m
             memory: 256Mi
         volumeMounts:
         - name: archive
           mountPath: /root/.unison
-        - name: admin
-          mountPath: /etc/unison.d
+        - name: config
+          mountPath: /etc/unison.d/common.prf
           readOnly: true
-          subPath: services/data-sync
+          subPath: common.prf
         - mountPath: /etc/ssh
           name: etc
         - mountPath: /var/log/unison
@@ -171,13 +171,14 @@ spec:
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        service.$SERVICE_NAME: allow
+        service.data-sync: allow
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
+      - name: config
+        configMap:
+          name: data-sync
       - name: data-sync-sshkey
         secret:
-          secretName: data-sync-sshkey
+          secretName: $DATA_SYNC_SECRET
       - name: logs
         hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
   volumeClaimTemplates:

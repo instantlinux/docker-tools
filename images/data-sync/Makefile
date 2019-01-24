@@ -18,7 +18,7 @@ $(KEY_NAME):
 	 ssh-keygen -b 2048 -f $(KEY_NAME) -N '' -q && \
 	 echo -n 'no-pty,no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command=\"/usr/bin/unison -server\" ' > sync-sshkey && \
 	 cat $(KEY_NAME).pub >> sync-sshkey"
-	kubectl create configmap data-sync --namespace $(K8S_NAMESPACE) --from-file=$(TEMPDIR)/sync-sshkey
+	kubectl create configmap data-sync-pubkey --namespace $(K8S_NAMESPACE) --from-file=$(TEMPDIR)/sync-sshkey
 	kubectl create secret generic --namespace $(K8S_NAMESPACE) --from-file=$(TEMPDIR)/$(KEY_NAME) $(KEY_NAME)-sshkey
 	@rm -r $(TEMPDIR)
 

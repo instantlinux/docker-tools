@@ -20,7 +20,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: $ETCD_NUM_NODES
+  replicas: $ETCD_CLUSTER_SIZE
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME

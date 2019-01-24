@@ -222,7 +222,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME-sync
 spec:
-  replicas: 2
+  replicas: $DATA_SYNC_CLUSTER_SIZE
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME-sync
@@ -237,7 +237,7 @@ spec:
       containers:
       - name: $SERVICE_NAME-sync
         env:
-        - { name: SYNC_INTERVAL, value: "720" }
+        - { name: SYNC_INTERVAL, value: "180" }
         - { name: TZ, value: $TZ }
         - name: SYNC_SSHKEY
           valueFrom:

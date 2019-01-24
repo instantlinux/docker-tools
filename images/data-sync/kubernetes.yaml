@@ -1,4 +1,14 @@
 ---
+# Usage:
+#  Create the ssh keypair using Makefile found in images/data-sync:
+#    cd ../images/data-sync
+#    make data-sync
+#
+#  Edit this file to mount your desired volumes
+#  Then launch this here with 'make data-sync'
+#  If you want more than 2 nodes kept in sync, add the service.data-sync
+#    label to more nodes and invoke kubectl scale.
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,7 +31,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: 3
+  replicas: $DATA_SYNC_CLUSTER_SIZE
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME
@@ -41,7 +51,7 @@ spec:
         - name: SYNC_SSHKEY
           valueFrom:
             configMapKeyRef:
-              name: $SERVICE_NAME
+              name: $DATA_SYNC_PUBLIC
               key: sync-sshkey
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
@@ -54,10 +64,10 @@ spec:
         volumeMounts:
         - name: archive
           mountPath: /root/.unison
-        - name: admin
-          mountPath: /etc/unison.d
+        - name: config
+          mountPath: /etc/unison.d/common.prf
           readOnly: true
-          subPath: services/$SERVICE_NAME
+          subPath: common.prf
         - mountPath: /etc/ssh
           name: etc
         - mountPath: /var/log/unison
@@ -92,13 +102,14 @@ spec:
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
       - name: backup
         hostPath: { path: $PATH_BKP }
+      - name: config
+        configMap:
+          name: $SERVICE_NAME
       - name: data-sync-sshkey
         secret:
-          secretName: data-sync-sshkey
+          secretName: $DATA_SYNC_SECRET
       - name: logs
         hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
   volumeClaimTemplates:
@@ -196,3 +207,52 @@ spec:
       selector:
         matchLabels:
           volume.group: wx
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME
+data:
+  common.prf: |
+    # Directives for unison
+    ignore = Name .Xauthority
+    ignore = Name atlassian-jira-security.log
+    ignore = Name DVRWorkDirectory
+    ignore = Name ldapi
+    ignore = Name lost+found
+    ignore = Name msg.sock
+    # jenkins
+    ignore = Name *KubernetesClients.log
+    ignore = Name *socket
+    ignore = Name .s.PGSQL.5432
+    ignore = Name pgstat.stat
+    ignore = Path data-sync/duplicati/config
+    ignore = Path data-sync/gitlab/data/postgresql/data/pg_stat_tmp
+    ignore = Path data-sync/gitlab/data/prometheus/data
+    ignore = Path data-sync/gitlab/data/redis/dump.rdb
+    ignore = Path data-sync/gitlab/logs/sshd/current
+    ignore = Path data-sync/jira/home/monitor/ConnectionPoolGraph.rrd4j
+    ignore = Path data-sync/jira/home/monitor/DatabaseReadWritesGraph.rrd4j
+    ignore = Path data-sync/jira/home/analytics-logs
+    ignore = Path data-sync/jira/logs
+    ignore = Path redis/current
+    ignore = Path data-sync/samba-dc/var/lib/winbindd_privileged/pipe
+    ignore = Path data-sync/syslog/log/messages
+    ignore = Path data-sync/syslog/log/secure
+    ignore = Path data-sync/nexus/elasticsearch
+    ignore = Path data-sync/nexus/log/nexus.log
+    ignore = Path data-sync/nexus/log/request.log
+
+    auto   = true
+    batch  = true
+    confirmbigdel = true
+
+    group  = true
+    owner  = true
+    times  = true
+
+    prefer = newer
+    silent = true
+
+    sshargs = -i /root/.ssh/data-sync.rsa
+    logfile = /var/log/unison/unison.log

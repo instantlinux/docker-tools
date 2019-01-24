@@ -32,9 +32,10 @@ spec:
         image: $REGISTRY_URI/samba-dc:latest
         resources:
           limits:
+            cpu: 500m
             memory: 2048Mi
           requests:
-            cpu: 500m
+            cpu: 100m
             memory: 512Mi
         volumeMounts:
         - mountPath: /var/lib/samba

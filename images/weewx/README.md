@@ -17,8 +17,9 @@ Then deploy this service with docker-compose; see the example
 docker-compose.yml. Available environment variables are below.
 
 To create the external-facing web site, use the simple nginx.conf
-configuration provided [here](https://github.com/instantlinux/docker-tools/blob/master/images/weewx/nginx.conf). You can run nginx under docker swarm with
-the docker-compose-nginx.yml stack definition.
+configuration provided [here](https://github.com/instantlinux/docker-tools/blob/master/images/weewx/nginx.conf) under docker swarm with
+the docker-compose-nginx.yml stack definition, or (even easier) under
+Kubernetes deploy the [wx-nginx.yaml](https://github.com/instantlinux/docker-tools/blob/master/k8s/wx-nginx.yaml) resource definition.
 
 ### Variables
 

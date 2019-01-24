@@ -1,0 +1,47 @@
+# This is an example set of users/groups for LDAP to be
+# used by Authelia. Copy this file to base.ldif, make
+# your changes, then:
+#   kubectl create secret generic ldap-prepopulate --from-file=base.ldif
+#
+# In this example, mary is the admin and joseph is a user
+#   Her password is 'password' and his is 'secret'
+# To generate new passwords, install slapd or use the openldap
+#   container to invoke slappasswd -h {SSHA} -s newpassword
+
+dn: ou=groups,dc=mydomain,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: groups
+
+dn: ou=users,dc=mydomain,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: users
+
+dn: cn=dev,ou=groups,dc=mydomain,dc=com
+cn: dev
+member: cn=mary,ou=users,dc=mydomain,dc=com
+objectclass: groupOfNames
+objectclass: top
+
+dn: cn=admin,ou=groups,dc=mydomain,dc=com
+cn: admin
+member: cn=mary,ou=users,dc=mydomain,dc=com
+objectclass: groupOfNames
+objectclass: top
+
+dn: cn=mary,ou=users,dc=mydomain,dc=com
+cn: mary
+objectclass: inetOrgPerson
+objectclass: top
+mail: mary@mydomain.com
+sn: Mary Magdalene
+userpassword: {SSHA}OuzEE4zDKRSzD8Sr0W031sJKG1vg8Yde
+
+dn: cn=joseph,ou=users,dc=mydomain,dc=com
+cn: joseph
+objectclass: inetOrgPerson
+objectclass: top
+mail: joseph@mydomain.com
+sn: Joseph Smith
+userpassword: {SSHA}UsG6dCl2GTo9XerLuB/rLW7dQLXvvrXp

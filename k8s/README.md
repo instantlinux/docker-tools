@@ -30,6 +30,7 @@ kubeadm suite:
 * Helm with tiller
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
+* MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Flannel networking
 * ingress-nginx
 * Local-volume sync

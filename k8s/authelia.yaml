@@ -8,7 +8,8 @@
 #    metadata:
 #      name: redis-config
 #    type: Opaque
-
+#  Create a secret ldap-prepopulate based on example in
+#    install/ldap-prepopulate-ldif.example
 ---
 apiVersion: v1
 kind: Service
@@ -46,8 +47,8 @@ spec:
           limits:
             memory: 1536Mi
           requests:
-            cpu: 200m
-            memory: 1024Mi
+            cpu: 50m
+            memory: 256Mi
         volumeMounts:
         - mountPath: /etc/authelia/config.yml
           name: config
@@ -134,12 +135,12 @@ spec:
         - containerPort: 389
         volumeMounts:
         - mountPath: /etc/ldap.dist/prepopulate
-          name: admin
+          name: prepopulate
           readOnly: true
-          subPath: services/$SERVICE_NAME/ldap
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
+      - name: prepopulate
+        secret:
+          secretName: ldap-prepopulate
 ---
 apiVersion: v1
 kind: Service

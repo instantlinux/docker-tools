@@ -39,7 +39,7 @@ spec:
           limits:
             memory: 6144Mi
           requests:
-            cpu: 500m
+            cpu: 200m
             memory: 1280Mi
         volumeMounts:
         - mountPath: /nexus-data
