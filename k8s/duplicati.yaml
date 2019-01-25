@@ -242,7 +242,7 @@ spec:
         - name: SYNC_SSHKEY
           valueFrom:
             configMapKeyRef:
-              name: data-sync
+              name: data-sync-pubkey
               key: sync-sshkey
         image: $REGISTRY_URI/data-sync:latest
         ports:

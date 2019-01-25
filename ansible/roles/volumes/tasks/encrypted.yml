@@ -83,7 +83,7 @@
     dev: /dev/mapper/luks-{{ item.key }}
     fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
     opts: "{{ '-N %s000' % item.value.inodes if 'inodes' in item.value
-      else '' }}"
+      else '' }} -m 0"
   with_dict: "{{ luks_volumes }}"
 
 - name: Remove temporary crypttab symlink

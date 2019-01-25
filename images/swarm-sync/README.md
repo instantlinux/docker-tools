@@ -1,6 +1,11 @@
 ## swarm-sync
 [![](https://images.microbadger.com/badges/version/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Commit badge")
 
+*Status: DEPRECATED*
+
+Use [instantlinux/data-sync](https://hub.docker.com/r/instantlinux/data-sync) image instead.
+
+---
 This HA tool provides sync for persistent storage between two swarm nodes,
 with automatic recovery after a failure of either node.
 

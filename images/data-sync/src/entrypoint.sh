@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -e
 mkdir -m 700 /root/.ssh
 SYNC_ROLE=peer
 if echo $HOSTNAME | grep -E '[-]([0-9]+)$'; then
@@ -13,8 +13,16 @@ elif [ ! -z "$PEERNAME" ]; then
 fi
 
 if [ $SYNC_ROLE == "active" ]; then
-  echo "0-59/$SYNC_INTERVAL * * * *   /root/src/data-sync.sh $PEERNAME" \
-       | crontab -
+  if [ ! -s /run/secrets/$SECRET ]; then
+    echo "** This container will not run without secret $SECRET **"
+    sleep 10
+    exit 1
+  fi
+  if [ -z "$PEERNAME" ]; then
+    echo "** This container will not run without setting for PEERNAME **"
+    sleep 10
+    exit 1
+  fi
   cp /run/secrets/$SECRET /run/$SECRET.rsa
   chmod 400 /run/$SECRET.rsa
   ln -s /run/$SECRET.rsa /root/.ssh/data-sync.rsa
@@ -46,16 +54,23 @@ EOF
     fi
   done
   mv /tmp/peerkey /root/.ssh/known_hosts
-  crond
 else
   ssh-keygen -A
   if [ ! -s /etc/ssh/sshd_config ]; then
     echo "AuthorizedKeysFile  .ssh/authorized_keys" > /etc/ssh/sshd_config
   fi
-  /usr/sbin/sshd
   echo "$SYNC_SSHKEY" >>/root/.ssh/authorized_keys
   echo sshd listening
   ip addr | grep inet | grep -v 127.0.0.1
+  exec /usr/sbin/sshd -D
 fi
+
 touch /var/log/unison/unison.log
-tail -f -n 1 /var/log/unison/unison.log
+tail -f -n 1 /var/log/unison/unison.log &
+while [ 1 == 1 ]; do
+  START=$(date +%s)
+  /root/src/data-sync.sh $PEERNAME
+  while [ $(( $(date +%s) - (60 * $SYNC_INTERVAL))) -lt $START ]; do
+    sleep 5
+  done
+done

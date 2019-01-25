@@ -32,21 +32,22 @@ Files in $PATH_ADM/$SERVICE_NAME mounted as /etc/unison.d contain customizable d
 
 To scale this beyond the first two nodes, add the service.data-sync=allow label to more nodes and invoke the _kubectl scale_ command. The main scaling issue you'll run into with _unison_ is high memory usage as the number of nodes and files increases. The host with ordinal 0 is configured as the hub of a star topology as defined in the UPenn doc.
 
+Not running under Kubernetes? Omit PEERNAME value on the primary node, and set PEERNAME to the primary's hostname on each of the additional nodes.
+
 ### Variables
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
+| PEERNAME | | destination peer's hostname (if not running in k8s) |
 | SECRET | data-sync_sshkey | override name of secret described below |
 | SYNC_SSHKEY |  | public key as stored in configmap |
 | SYNC_INTERVAL | 5 | frequency, in minutes |
 
+Interval is slightly inexact, intentionally. An earlier version of this used cron for precision, but that causes more resource contention than necessary.
+
 ### Secrets
-Secret | Description
------- | -----------
-data-sync-sshkey | private half of ssh keypair
-
-### Status
-
-The swarm-sync image has been stable since early 2017; as of Nov 2018 this is new for k8s so there might be memory-related issues to resolve.
+| Secret | Description |
+| ------ | ----------- |
+| data-sync-sshkey | private half of ssh keypair |
 
 [![](https://images.microbadger.com/badges/license/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "License badge")
