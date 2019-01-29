@@ -1,4 +1,15 @@
 ---
+# There is a problem with kubelet volume mounting
+#  See https://github.com/kubernetes/kubernetes/pull/71663
+#  Workaround here requires manually copying data into mounted
+#  path after installation completes
+- name: TODO remove when bug 1294 is fixed - unmount kubelet vol
+  mount:
+    fstype: ext4
+    path: /var/lib/kubelet
+    src: /dev/mapper/luks-kubelet
+    state: unmounted
+
 - name: Reset Kubernetes component
   command: kubeadm reset --force
   register: reset_cluster
@@ -23,11 +34,12 @@
       ---
       apiVersion: kubeadm.k8s.io/v1alpha3
       kind: ClusterConfiguration
-      apiServerExtraArgs:
-        enable-admission-plugins: PodSecurityPolicy
+      # TODO cluster will not bootstrap, has to be added after
+      # apiServerExtraArgs:
+      #  enable-admission-plugins: PodSecurityPolicy
       controllerManagerExtraArgs:
         address: 0.0.0.0
-      kubernetesVersion: {{ k8s.version }}
+      kubernetesVersion: v{{ k8s.version }}
       networking:
         podSubnet: {{ k8s.pod_network }}
         serviceSubnet: {{ k8s.service_network }}

@@ -25,7 +25,7 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: v1.13.1
+  version: 1.13.2
 
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
@@ -35,6 +35,7 @@ sysctl:
   vm.swappiness: 0
   
 ubuntu_packages:
-  - kubeadm
+  - kubeadm={{ k8s.version }}-00
+  - kubelet={{ k8s.version }}-00
 
 ubuntu_package_additions: []

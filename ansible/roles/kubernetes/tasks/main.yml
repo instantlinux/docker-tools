@@ -54,6 +54,7 @@
   include: join.yml
   when: not k8s.master
 
+# TODO bug 1294
 - name: Add RequiresMountsFor to kubelet.service
   replace:
     dest: /lib/systemd/system/kubelet.service
@@ -62,6 +63,7 @@
       [Unit] 
       \n# Added by Ansible
       \nRequiresMountsFor=/var/lib/kubelet
+  when: False
 
 - name: Add kubelet service
   systemd:

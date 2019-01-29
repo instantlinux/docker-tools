@@ -44,6 +44,7 @@ spec:
         - mountPath: /tftpboot/pxelinux
           name: share
           readOnly: true
+          subPath: $SERVICE_NAME/pxelinux
         - mountPath: /etc/dhcpd.d/ranges
           name: ranges
         - mountPath: /etc/dhcpd.d/local

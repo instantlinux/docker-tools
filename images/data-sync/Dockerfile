@@ -15,7 +15,7 @@ ENV PEERNAME= \
 
 ARG UNISON_VERSION=2.48.15_p4-r0
 
-RUN apk add --update --no-cache openssh-client openssh-server \
+RUN apk add --update --no-cache openssh-client openssh-server rsync \
       unison=$UNISON_VERSION && \
     rm -fr /var/log/* && \
     mkdir /var/log/unison /root/.unison

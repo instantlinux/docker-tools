@@ -30,7 +30,7 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
-* Flannel networking
+* Calico or flannel networking
 * ingress-nginx
 * Local-volume sync
 * Automatic certificate issuing/renewal with Letsencrypt
@@ -102,5 +102,6 @@ Thank you to the following contributors!
 * [Chad Hedstrom](https://github.com/Hadlock) - [personal site](http://nearlydeaf.com/)
 * [Sean Mollet](https://github.com/SeanMollet)
 * [Juan Manuel Carrillo Moreno](https://github.com/inetshell) - [personal site](https://wiki.inetshell.mx/)
- 
+* [nicxvan]( https://github.com/nicxvan)
+
 Contents created 2017-19 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.

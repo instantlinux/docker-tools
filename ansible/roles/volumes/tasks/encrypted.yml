@@ -103,11 +103,6 @@
     dest: /etc/systemd/system/crypt-vols.service
     src: crypt-vols.service
 
-- name: Enable crypt-vols
-  systemd:
-    name: crypt-vols
-    enabled: yes
-
 - name: Add fstab entries
   mount:
     fstype: "{{ item.value.type if 'type' in item.value else fs_type }}"
@@ -116,6 +111,12 @@
     opts: "{{ item.value.options if 'options' in item.value else '_netdev,noauto' }}"
     state: present
   with_dict: "{{ luks_volumes }}"
+
+- name: Enable crypt-vols
+  systemd:
+    name: crypt-vols
+    enabled: yes
+    state: restarted
 
 - name: Unmount master key
   mount:

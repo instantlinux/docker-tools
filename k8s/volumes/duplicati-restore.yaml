@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: duplicati-restore
+  labels:
+    volume.group: duplicati-restore
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadWriteMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/backup/restore
+    server: $NFS_HOST
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: duplicati-restore
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: duplicati-restore
+  storageClassName: nfs-client

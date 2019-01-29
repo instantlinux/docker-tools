@@ -53,6 +53,7 @@ SOPS_SHA       ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a
 STACKS  = $(basename $(wildcard *.yaml))
 
 include Makefile.vars
+include Makefile.instances
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -61,56 +62,6 @@ else
 endif
 
 all: imports $(INSTALL_YAML) $(STACKS)
-
-mariadb-galera::
-	@echo Please specify a specific instance e.g. db03 && exit 1
-
-db00 db01 db02 db03:
-	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$@ DB_IP=$(shell dig +short $@.$(DOMAIN)) \
-	  DB_IP_RO=$(shell dig +short $@-ro.$(DOMAIN)) \
-	  envsubst < mariadb-galera.yaml | kubectl $(ACTION) -f -
-
-gitlab-runner::
-	@echo Use gitlab-agent target
-	@exit 1
-
-gitlab-agent:
-	@echo Installing service with privileged /var/run/docker.sock access
-	@K8S_NAMESPACE=gitlab make install/limits
-	@SERVICE_NAME=gitlab-runner \
-	  envsubst < gitlab-runner.yaml | kubectl $(ACTION) $(ADMIN_CTX) -n gitlab -f -
-	-sops -d secrets/$(CA_SECRET) | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
-
-nut-upsd::
-	@echo Use nut-xx target
-	@exit 1
-nut-%:
-	@echo --$(NOTICE) $@--
-	$(eval SERIAL := $(shell case $@ in (nut-01) echo $(UPS_SERIAL_1);; \
-	 (nut-02) echo $(UPS_SERIAL_2);; esac))
-	@SERVICE_NAME=$@ SERIAL=$(SERIAL) envsubst < nut-upsd.yaml | \
-	 kubectl $(ACTION) $(ADMIN_CTX) --namespace $(K8S_NAMESPACE) -f -
-
-samba-dc::
-	@echo Use dcxx target for domain controllers
-	@exit 1
-dc0%:
-	@echo --$(NOTICE) $@--
-	$(eval BIND_IP := $(shell case $@ in (dc03) echo $(DC03_IP);; \
-	 (dc05) echo $(DC05_IP);; esac))
-	@SERVICE_NAME=$@ BIND_IP=$(BIND_IP) SAMBADC_INTERFACES="lo $(BIND_IP)" \
-	 envsubst < samba-dc.yaml | kubectl $(ACTION) -f -
-
-wordpress::
-	@echo Please specify a specific instance e.g. wordpress-ci && exit 1
-
-wordpress-ci wordpress-il:
-	@echo --$(NOTICE) $@--
-	$(eval fqdn := $(shell case $@ in (wordpress-ci) echo www.ci.net;;\
-	  (wordpress-il) echo www.instantlinux.net;; esac))
-	@SERVICE_NAME=$@ DB_NAME=$(shell echo $@ | tr - _) HOST_FQDN=$(fqdn) \
-	  envsubst < wordpress.yaml | kubectl $(ACTION) -f -
 
 $(STACKS)::
 	@echo --$(NOTICE) $@--
@@ -123,13 +74,13 @@ $(STACKS)::
 .PHONY: imports install node_labels persistent remote_volumes \
 	secrets sops untaint_master
 
-IMPORTS      = dashboard flannel ingress-nginx
+IMPORTS      = calico calico-etcd dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user install/namespace install/limits \
-	install/namespace-user install/cert-manager \
+	cluster_network install/namespace-user install/cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
 	install/logspout extend_dashboard_ttl remote_volumes \
@@ -198,6 +149,11 @@ imports/etcd-token:
 include Makefile.helm
 
 ##########
+# Network
+##########
+include Makefile.network
+
+##########
 # Secrets
 ##########
 include Makefile.sops
@@ -228,19 +184,11 @@ imports/dashboard.yaml:
 	mkdir -p imports
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
-imports/flannel.yaml:
-	curl -sLo $@ https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-	sed -i -e 's/"Type": "vxlan"/"Type": "host-gw"/' $@
-
 imports/ingress-nginx.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 
 imports/traefik-prom.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml
-
-# Not used, TODO consider calico network
-imports/weave-net.yaml:
-	curl -sLo $@ https://cloud.weave.works/k8s/net?k8s-version=$(shell kubectl version | base64 | tr -d '\n')
 
 # As of Jan-2019, the helm chart for etcd doesn't reliably construct multi-node
 # cluster, just use 'make etcd' rather than 'make etcd_chart'

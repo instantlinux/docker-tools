@@ -1,12 +1,13 @@
-VENV ?= python_env
-VDIR ?= $(PWD)/$(VENV)
+VENV      ?= python_env
+VDIR      ?= $(PWD)/$(VENV)
+INVENTORY ?= hosts
 
 test: test_requirements
 	ansible-lint *.yml
 
 PLAYBOOKS = $(basename $(wildcard *.yml))
 $(PLAYBOOKS):
-	ansible-playbook $(@F).yml
+	ansible-playbook -i $(INVENTORY) $(@F).yml
 
 .PHONY: test test_requirements $(PLAYBOOKS)
 

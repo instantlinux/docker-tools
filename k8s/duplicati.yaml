@@ -10,27 +10,19 @@ spec:
   - { port: 80, targetPort: 8200 }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
-    release: "0.1"
 ---
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
-    release: "0.1"
   name: $SERVICE_NAME
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: $SERVICE_NAME
-      release: "0.1"
-  serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
         app.kubernetes.io/name: $SERVICE_NAME
-        release: "0.1"
     spec:
       containers:
       - name: $SERVICE_NAME
@@ -111,6 +103,9 @@ spec:
         hostPath: { path: $K8S_VOLUMES_PATH/duplicati/config }
       - name: backup
         hostPath: { path: $PATH_BKP }
+      - name: restore
+        persistentVolumeClaim:
+          claimName: duplicati-restore
       - name: cloud
         hostPath: { path: $K8S_VOLUMES_PATH/cloud }
       - name: dos
@@ -147,14 +142,6 @@ spec:
           claimName: user
       - name: webmail
         hostPath: { path: $K8S_VOLUMES_PATH/webmail }
-  volumeClaimTemplates:
-  - metadata:
-      name: restore
-    spec:
-      accessModes: [ ReadWriteOnce ]
-      resources:
-        requests:
-          storage: 8Gi
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -254,8 +241,12 @@ spec:
             cpu: 100m
             memory: 256Mi
         volumeMounts:
-        - name: archive
-          mountPath: /root/.unison
+        - mountPath: /root/.unison
+          name: archive
+        - mountPath: /etc/unison.d/common.prf
+          name: config
+          readOnly: true
+          subPath: common.prf
         - mountPath: /etc/ssh
           name: etc
         - mountPath: /var/log/unison
@@ -274,6 +265,9 @@ spec:
       nodeSelector:
         service.data-sync: allow
       volumes:
+      - name: config
+        configMap:
+          name: data-sync
       - name: data-sync-sshkey
         secret:
           secretName: data-sync-sshkey

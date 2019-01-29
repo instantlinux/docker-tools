@@ -1,0 +1,25 @@
+# Network add-on for cluster
+#   Supports calico or flannel
+#
+# Usage:
+#    export CLUSTER_NETWORK=calico
+#    make cluster_network
+#
+# TODO: calico etcd_endpoints and IPV4POOL_CIDR have to be edited if overriding
+# TODO: flannel netconf.json.Network has to be edited if overriding 10.244.0.0/16
+
+.PHONY: cluster_network
+
+cluster_network: imports/$(CLUSTER_NETWORK)
+
+imports/calico.yaml: imports/calico-etcd.yaml
+	curl -sLo $@ https://docs.projectcalico.org/v$(VERSION_CALICO)/getting-started/kubernetes/installation/hosted/calico.yaml
+
+imports/calico-etcd.yaml:
+	curl -sLo $@ https://docs.projectcalico.org/v$(VERSION_CALICO)/getting-started/kubernetes/installation/hosted/etcd.yaml
+
+imports/calico:: imports/calico-etcd
+
+imports/flannel.yaml:
+	curl -sLo $@ https://raw.githubusercontent.com/coreos/flannel/v$(VERSION_FLANNEL)/Documentation/kube-flannel.yml
+	sed -i -e 's/"Type": "vxlan"/"Type": "host-gw"/' $@

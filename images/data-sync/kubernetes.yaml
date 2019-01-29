@@ -246,6 +246,8 @@ data:
     auto   = true
     batch  = true
     confirmbigdel = true
+    # TODO make rsync work
+    # copythreshold = 1024
 
     group  = true
     owner  = true
