@@ -1,4 +1,8 @@
 #! /bin/sh -e
+# TODO: rsync needs a separate secret from unison, so for now the
+#  script cannot support the more-efficient rsync method for large files
+#  https://serverfault.com/questions/749474/ssh-authorized-keys-command-option-multiple-commands
+
 mkdir -m 700 /root/.ssh
 SYNC_ROLE=peer
 if echo $HOSTNAME | grep -E '[-]([0-9]+)$'; then
