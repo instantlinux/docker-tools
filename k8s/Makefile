@@ -44,13 +44,14 @@
 # and set an environment variable LOCAL_VOLUMES to generate k8s pvs for
 # each node.
 
-ACTION         ?= apply
-CLUSTER        ?= kubernetes
-ADMIN_CTX      ?= --context=kubernetes-admin@$(CLUSTER)
-HELM_VERSION   ?= 2.11.0
-SOPS_VERSION   ?= 3.2.0
-SOPS_SHA       ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
-STACKS  = $(basename $(wildcard *.yaml))
+ACTION          ?= apply
+CLUSTER         ?= kubernetes
+ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
+VERSION_HELM    ?= 2.11.0
+VERSION_METRICS ?= v0.3.1
+VERSION_SOPS    ?= 3.2.0
+SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
+STACKS = $(basename $(wildcard *.yaml))
 
 include Makefile.vars
 include Makefile.instances
@@ -71,7 +72,7 @@ $(STACKS)::
 ##########
 # Installation
 ##########
-.PHONY: imports install node_labels persistent remote_volumes \
+.PHONY: imports install install_metrics node_labels persistent remote_volumes \
 	secrets sops untaint_master
 
 IMPORTS      = calico calico-etcd dashboard flannel ingress-nginx
@@ -83,7 +84,7 @@ install: install/admin-user install/namespace install/limits \
 	cluster_network install/namespace-user install/cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
-	install/logspout extend_dashboard_ttl remote_volumes \
+	install/logspout install_metrics extend_dashboard_ttl remote_volumes \
 	sops secrets data-sync-ssh ~/.kube/config.conf persistent
 
 untaint_master:
@@ -182,7 +183,16 @@ extend_dashboard_ttl:
 
 imports/dashboard.yaml:
 	mkdir -p imports
-	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/dashboard/v$(VERSION_DASHBOARD)/src/deploy/recommended/kubernetes-dashboard.yaml
+
+imports/metrics-$(VERSION_METRICS):
+	mkdir -p imports
+	git clone --depth=1 --branch=$(VERSION_METRICS) \
+	 https://github.com/kubernetes-incubator/metrics-server.git $@
+
+install_metrics: imports/metrics-$(VERSION_METRICS)
+	kubectl $(ADMIN_CTX) $(ACTION) -f \
+	  imports/metrics-$(VERSION_METRICS)/deploy/1.8+/
 
 imports/ingress-nginx.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml

@@ -44,9 +44,8 @@ spec:
           name: samba-admin-password
           readOnly: true
           subPath: samba-admin-password
-      hostAliases:
-      - ip: $BIND_IP
-        hostnames: [ $SERVICE_NAME.$SAMBA_REALM, $SERVICE_NAME ]
+      dnsConfig:
+        nameservers: [ $BIND_IP ]
       # TODO: this will join with incorrect hostname until the following
       #  directive is actually implemented when hostNetwork=true.
       #  See issue https://github.com/kubernetes/kubernetes/issues/67019

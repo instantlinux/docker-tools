@@ -28,6 +28,7 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 * The "join" command is tested as a spare domain controller against Active Directory running on Windows Server 2008, and against other samba4 domain controllers.
 * The "provision" is tested as a Samba4 domain controller with a Windows 7 client.
 * The "BIND_INTERFACES_ONLY" option is working now.
+* It is very difficult to get multiple instances of samba-dc replicating with one another. I've given up on it as of version 4.8.8; perhaps a future version will fix these poblems.
 
 ### Variables
 Variable | Default | Description |

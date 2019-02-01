@@ -4,6 +4,7 @@
 #    export EDITOR=<your editor>
 #    make secrets/foo.yml - Create a new secret
 #    make secrets/foo     - (without .yml) Upload secret to k8s
+#    sops secrets/foo.yml - Edit secret
 #
 # Note:
 #    Key material added to data section has to be base64 encoded
@@ -13,7 +14,7 @@
 sops: /usr/bin/sops
 /usr/bin/sops:
 	curl -sLo /tmp/sops.deb \
-	  https://github.com/mozilla/sops/releases/download/$(SOPS_VERSION)/sops_$(SOPS_VERSION)_amd64.deb
+	  https://github.com/mozilla/sops/releases/download/$(VERSION_SOPS)/sops_$(VERSION_SOPS)_amd64.deb
 	cd /tmp && echo "$(SOPS_SHA)  sops.deb" | sha256sum -c
 	@sudo dpkg -i /tmp/sops.deb
 	@rm /tmp/sops.deb
