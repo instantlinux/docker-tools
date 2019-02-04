@@ -8,6 +8,11 @@
     name: docker
     state: restarted
 
+- name: Restart snmpd
+  service:
+    name: snmpd
+    state: restarted
+
 - name: Restart sshd
   service:
     name: sshd

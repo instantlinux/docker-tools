@@ -172,6 +172,13 @@
     state: absent
   changed_when: False
 
+- name: Suppress annoying error on subcontainer 'ia_addr' logs
+  replace:
+    path: /lib/systemd/system/snmpd.service
+    regexp: 'snmpd -Lsd'
+    replace: 'snmpd -LSid'
+  notify: Restart snmpd
+
 - name: Reload systemd again
   systemd:
     daemon_reload: yes

@@ -176,6 +176,9 @@ imports: $(foreach file,$(IMPORTS),imports/$(file).yaml)
 install_imports: $(foreach file, $(IMPORTS), imports/$(file))
 
 # extend annoying default 15-minute timeout
+# (temporarily) disable metrics healthcheck
+# TODO: re-enable metric-client-check when metrics-server is working
+#  See https://github.com/kubernetes/dashboard/issues/2986
 .PHONY: extend_dashboard_ttl
 extend_dashboard_ttl:
 	kubectl $(ADMIN_CTX) patch deployment kubernetes-dashboard --namespace kube-system \

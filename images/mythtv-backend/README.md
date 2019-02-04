@@ -13,11 +13,14 @@ For configuration, see the example docker-compose.yml (for swarm or standalone d
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~
 
-If you have two Kubernetes nodes set up, run the kubernetes-ha.yaml to set up data sync between two identical drives across the nodes, and define a floating IP address. One copy of mythbackend will be running on one of the nodes at any given time, providing a simple high-availability configuration. See more details in the Makefile in k8s directory.
+If you have two Kubernetes nodes set up, run the kubernetes-ha.yaml to set up data sync between two identical drives across the nodes, and define a floating IP address. One copy of mythbackend will be running on one of the nodes at any given time, providing a simple high-availability configuration. See more details in the Makefile in k8s directory. The kubernetes.yaml sample provided here can also set up the mythweb virtual-host https://mythweb.yourdomain.com so you can schedule recordings when you're not home; create an htpasswd file with name _auth_ and then:
+~~~
+kubectl create secret generic mythweb-auth --from-file=auth
+~~~
 
-You can also run this directly (without compose or kubernetes) using environment variables and secrets files.
+You can also run this image directly (without compose or kubernetes) using environment variables and secrets files.
 
-Use -v options to map in the paths to your media. Here's an example, mapped a single folder into /dvr. Put the two secrets files into a protected directory and launch with:
+Use -v options to map in the paths to your media. Here's an example, mapped a single folder into /dvr. Put the secrets files into a protected directory and launch with:
 ~~~
 docker run -d --name mythtv \
   --network=host \
@@ -64,5 +67,6 @@ Secret | Description
 ------ | -----------
 mythtv-db-password | Password of MythTV db user
 mythtv-user-password | Hashed password of MythTV ssh user
+mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 [![](https://images.microbadger.com/badges/license/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "License badge")

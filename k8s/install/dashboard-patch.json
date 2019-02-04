@@ -6,7 +6,7 @@
           "name": "kubernetes-dashboard",
           "args": [
             "--auto-generate-certificates",
-            "--disable-skip", 
+            "--metric-client-check-period", "86400",
             "--token-ttl", "10800"]
         }]
       }
