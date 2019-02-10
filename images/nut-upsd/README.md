@@ -1,7 +1,7 @@
 ## nut-upsd
-[![](https://images.microbadger.com/badges/version/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") arm64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm64.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm64 "Image badge") arm32:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm32.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm-32 "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Commit badge")
 
-The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units.
+The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units. Supported on: [amd64]((https://hub.docker.com/r/instantlinux/nut-upsd/) [arm64]((https://hub.docker.com/r/instantlinux/nut-upsd-arm64/) [amd32]((https://hub.docker.com/r/instantlinux/nut-upsd-arm32/).
 
 ### Usage
 
