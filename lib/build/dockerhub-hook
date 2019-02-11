@@ -3,7 +3,7 @@
 DOCKERFILE_OPT=
 if [[ $DOCKER_REPO == *-armhf ]]; then
   DOCKERFILE_OPT="-f Dockerfile.armhf"
-if [[ $DOCKER_REPO == *-arm64 ]]; then
+elif [[ $DOCKER_REPO == *-arm64 ]]; then
   DOCKERFILE_OPT="-f Dockerfile.arm64"
 elif [[ $DOCKER_REPO == *-arm32 ]]; then
   DOCKERFILE_OPT="-f Dockerfile.arm32"

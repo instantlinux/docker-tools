@@ -67,10 +67,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | ox-db-password | configuration database password |
 | ox-master-password |system admin password |
 
-### License
-
-[GPLv2](https://www.open-xchange.com//fileadmin/user_upload/open-xchange/document/license/GNU_General_Public_License.pdf)
-
-
-
 [![](https://images.microbadger.com/badges/license/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "License badge")
