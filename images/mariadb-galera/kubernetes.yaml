@@ -109,8 +109,6 @@ spec:
         - name: ndots
       imagePullSecrets:
       - name: regcred
-      nodeSelector:
-        service.$SERVICE_NAME: allow
       volumes:
       - name: etc
         configMap:

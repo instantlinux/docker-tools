@@ -52,8 +52,6 @@ spec:
           mountPath: /opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-5.1.40-bin.jar
           readOnly: true
           subPath: $SERVICE_NAME/mysql-connector-java-5.1.40.jar
-      nodeSelector:
-        service.data-sync: allow
       volumes:
       - name: data
         hostPath: { path: $PATH_SHR }

@@ -356,7 +356,7 @@ if __name__ == "__main__":
             (id5Line == 1776 and id198Line == 0 and serialNumber == 'Z1F0TAH8') or
             (id5Line == 0 and id197Line == 1069 and id198Line == 1069 and serialNumber == '5XW07ALG') or
             (id5Line == 45 and id196Line == 45 and serialNumber == '170815FF2689') or
-            (id5Line == 42 and id196Line == 42 and serialNumber == 'PN1338P4H8MT3B') or
+            (id5Line == 47 and id196Line == 47 and serialNumber == 'PN1338P4H8MT3B') or
             (id5Line == 12 and id196Line == 48 and serialNumber == '1631137A183D')):
             tolerated = True
        

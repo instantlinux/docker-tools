@@ -40,8 +40,6 @@ spec:
           subPath: $SERVICE_NAME
       imagePullSecrets:
       - name: regcred
-      nodeSelector:
-        service.data-sync: allow
       volumes:
       - name: share
         hostPath: { path: $PATH_SHR }

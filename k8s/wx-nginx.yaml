@@ -62,8 +62,6 @@ spec:
           name: html
       dnsConfig:
         options: [ name: ndots ]
-      nodeSelector:
-        service.data-sync: allow
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }

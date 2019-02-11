@@ -63,8 +63,6 @@ spec:
         - name: ndots
       imagePullSecrets:
       - name: regcred
-      nodeSelector:
-        service.data-sync: allow
       volumes:
       - name: share
         hostPath: { path: $PATH_SHR }

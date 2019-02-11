@@ -87,8 +87,6 @@ spec:
         options:
         - name: use-vc
         - name: ndots
-      nodeSelector:
-        service.data-sync: allow
       volumes:
       - name: init
         configMap:

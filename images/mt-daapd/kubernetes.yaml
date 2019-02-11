@@ -27,8 +27,6 @@ spec:
       imagePullSecrets:
       - name: regcred
       serviceAccountName: $K8S_NAMESPACE-privileged
-      nodeSelector:
-        service.$SERVICE_NAME: allow
       volumes:
       - name: cache
         emptyDir: {}
