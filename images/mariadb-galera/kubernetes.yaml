@@ -104,11 +104,8 @@ spec:
           readOnly: true
           subPath: sst-auth-password
       dnsConfig:
-        options:
-        - name: use-vc
-        - name: ndots
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: etc
         configMap:

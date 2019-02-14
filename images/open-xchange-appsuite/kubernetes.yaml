@@ -68,10 +68,7 @@ spec:
         options:
         - name: use-vc
         - name: ndots
-      imagePullSecrets:
-      - name: regcred
-      nodeSelector:
-        service.data-sync: allow
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }

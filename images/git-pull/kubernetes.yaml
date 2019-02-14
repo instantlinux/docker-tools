@@ -40,12 +40,9 @@ spec:
           mountPath: /run/secrets/git-deploy-sshkey
           readOnly: true
           subPath: git-deploy-sshkey
-      imagePullSecrets:
-      - name: regcred
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: ndots
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: sshkey
         secret:

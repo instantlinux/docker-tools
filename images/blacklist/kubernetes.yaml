@@ -51,8 +51,7 @@ spec:
           mountPath: /run/secrets/mysql-blacklist-user
           readOnly: true
           subPath: mysql-blacklist-user
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: mysql-blacklist-user
         secret:

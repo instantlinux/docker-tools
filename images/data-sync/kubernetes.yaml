@@ -46,13 +46,18 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
+        - name: PUBKEY1
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey1
+        - name: PUBKEY2
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey2
         - { name: SYNC_INTERVAL, value: "2" }
         - { name: TZ, value: $TZ }
-        - name: SYNC_SSHKEY
-          valueFrom:
-            configMapKeyRef:
-              name: $DATA_SYNC_PUBLIC
-              key: sync-sshkey
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:
         - containerPort: 22
@@ -74,6 +79,7 @@ spec:
           name: logs
         - mountPath: /var/data-sync/share
           name: share
+        # Customize your list of mounted volumes here
         - mountPath: /var/data-sync/backup
           name: backup
         - mountPath: /var/data-sync/cloud
@@ -90,15 +96,17 @@ spec:
           name: nexus
         - mountPath: /var/data-sync/wx
           name: wx
-        - mountPath: /run/secrets/data-sync-sshkey
-          name: data-sync-sshkey
+        - mountPath: /run/secrets/data-sync-sshkey1
+          name: sshkeys
           readOnly: true
-          subPath: data-sync
+          subPath: sshkey1
+        - mountPath: /run/secrets/data-sync-sshkey2
+          name: sshkeys
+          readOnly: true
+          subPath: sshkey2
       dnsConfig:
-        options:
-        - { name: ndots }
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
@@ -107,7 +115,7 @@ spec:
       - name: config
         configMap:
           name: $SERVICE_NAME
-      - name: data-sync-sshkey
+      - name: sshkeys
         secret:
           secretName: $DATA_SYNC_SECRET
       - name: logs
@@ -246,8 +254,7 @@ data:
     auto   = true
     batch  = true
     confirmbigdel = true
-    # TODO make rsync work
-    # copythreshold = 1024
+    copythreshold = 10000
 
     group  = true
     owner  = true

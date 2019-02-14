@@ -76,8 +76,7 @@ spec:
       - ip: 127.0.1.1
         hostnames: [ $HOSTNAME_MYTHTV ]
       hostNetwork: true
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       serviceAccountName: $K8S_NAMESPACE-privileged

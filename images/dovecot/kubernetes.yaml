@@ -70,8 +70,7 @@ spec:
         options:
         - name: use-vc
         - name: ndots
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
@@ -130,13 +129,18 @@ spec:
       containers:
       - name: $SERVICE_NAME-sync
         env:
+        - name: PUBKEY1
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey1
+        - name: PUBKEY2
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey2
         - { name: SYNC_INTERVAL, value: "2" }
         - { name: TZ, value: $TZ }
-        - name: SYNC_SSHKEY
-          valueFrom:
-            configMapKeyRef:
-              name: $DATA_SYNC_PUBLIC
-              key: sync-sshkey
         image: $REGISTRY_URI/data-sync:latest
         ports:
         - containerPort: 22
@@ -161,10 +165,14 @@ spec:
           name: inbox
         - mountPath: /var/data-sync/webmail
           name: webmail
-        - mountPath: /run/secrets/data-sync-sshkey
-          name: data-sync-sshkey
+        - mountPath: /run/secrets/data-sync-sshkey1
+          name: sshkeys
           readOnly: true
-          subPath: data-sync
+          subPath: sshkey1
+        - mountPath: /run/secrets/data-sync-sshkey2
+          name: sshkeys
+          readOnly: true
+          subPath: sshkey2
       dnsConfig:
         options:
         - { name: ndots }
@@ -176,7 +184,7 @@ spec:
       - name: config
         configMap:
           name: data-sync
-      - name: data-sync-sshkey
+      - name: sshkeys
         secret:
           secretName: $DATA_SYNC_SECRET
       - name: logs

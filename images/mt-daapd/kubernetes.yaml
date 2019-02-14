@@ -24,8 +24,7 @@ spec:
           mountPath: /srv/music
           readOnly: true
       hostNetwork: true
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: cache

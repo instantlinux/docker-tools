@@ -36,13 +36,18 @@ spec:
       containers:
       - name: $SERVICE_NAME-sync
         env:
+        - name: PUBKEY1
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey1
+        - name: PUBKEY2
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey2
         - { name: SYNC_INTERVAL, value: "240" }
         - { name: TZ, value: $TZ }
-        - name: SYNC_SSHKEY
-          valueFrom:
-            configMapKeyRef:
-              name: $DATA_SYNC_PUBLIC
-              key: sync-sshkey
         image: $REGISTRY_URI/data-sync:latest
         ports:
         - containerPort: 22
@@ -68,15 +73,17 @@ spec:
         - mountPath: /var/data-sync/home
           name: share
           subPath: $SERVICE_NAME/home
-        - mountPath: /run/secrets/data-sync-sshkey
-          name: data-sync-sshkey
+        - mountPath: /run/secrets/data-sync-sshkey1
+          name: sshkeys
           readOnly: true
-          subPath: data-sync
+          subPath: sshkey1
+        - mountPath: /run/secrets/data-sync-sshkey2
+          name: sshkeys
+          readOnly: true
+          subPath: sshkey2
       dnsConfig:
-        options:
-        - { name: ndots }
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.mythtv-backend: allow
       volumes:
@@ -85,7 +92,7 @@ spec:
           name: data-sync
       - name: share
         hostPath: { path: $PATH_SHR }
-      - name: data-sync-sshkey
+      - name: sshkeys
         secret:
           secretName: $DATA_SYNC_SECRET
       - name: logs

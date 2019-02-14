@@ -94,8 +94,7 @@ spec:
         - mountPath: /backup/webmail
           name: webmail
           readOnly: true
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
@@ -209,7 +208,9 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME-sync
 spec:
-  replicas: $DATA_SYNC_CLUSTER_SIZE
+  # TODO - deal with IO overload
+  # replicas: $DATA_SYNC_CLUSTER_SIZE
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME-sync
@@ -224,13 +225,18 @@ spec:
       containers:
       - name: $SERVICE_NAME-sync
         env:
+        - name: PUBKEY1
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey1
+        - name: PUBKEY2
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey2
         - { name: SYNC_INTERVAL, value: "180" }
         - { name: TZ, value: $TZ }
-        - name: SYNC_SSHKEY
-          valueFrom:
-            configMapKeyRef:
-              name: data-sync-pubkey
-              key: sync-sshkey
         image: $REGISTRY_URI/data-sync:latest
         ports:
         - containerPort: 22
@@ -253,10 +259,14 @@ spec:
           name: logs
         - mountPath: /var/data-sync/configdata
           name: configdata
-        - mountPath: /run/secrets/data-sync-sshkey
-          name: data-sync-sshkey
+        - mountPath: /run/secrets/data-sync-sshkey1
+          name: sshkeys
           readOnly: true
-          subPath: data-sync
+          subPath: sshkey1
+        - mountPath: /run/secrets/data-sync-sshkey2
+          name: sshkeys
+          readOnly: true
+          subPath: sshkey2
       dnsConfig:
         options:
         - { name: ndots }
@@ -268,9 +278,9 @@ spec:
       - name: config
         configMap:
           name: data-sync
-      - name: data-sync-sshkey
+      - name: sshkeys
         secret:
-          secretName: data-sync-sshkey
+          secretName: $DATA_SYNC_SECRET
       - name: logs
         hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
   volumeClaimTemplates:

@@ -70,8 +70,7 @@ spec:
         options:
         - name: use-vc
         - name: ndots
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.data-sync: allow
       volumes:

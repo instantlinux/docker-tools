@@ -9,9 +9,11 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV PEERNAME= \
-    SYNC_SSHKEY= \
+    PUBKEY1= \
+    PUBKEY2= \
     SYNC_INTERVAL=5 \
-    SECRET=data-sync-sshkey
+    SSHKEY1=data-sync-sshkey1 \
+    SSHKEY2=data-sync-sshkey2
 
 ARG UNISON_VERSION=2.48.15_p4-r0
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f

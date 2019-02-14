@@ -54,12 +54,8 @@ spec:
           readOnly: true
           subPath: squirrelmail-db-password
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: use-vc
-        - name: ndots
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: share
         hostPath: { path: $PATH_SHR }

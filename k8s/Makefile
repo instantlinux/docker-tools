@@ -95,7 +95,8 @@ node_labels:
 	./scripts/node_labels.sh
 
 data-sync-ssh:
-	@cd ../images/data-sync && make data-sync || echo Already exists/ignored
+	if ! (kubectl get secrets | grep -q "^$@ "); then \
+	  cd ../images/data-sync && make $@; fi
 
 ~/.kube/config.conf:
 	@./scripts/kube-conf-gen.sh ~/.kube/admin.conf $@ $(ADMIN_CTX) $(CLUSTER)

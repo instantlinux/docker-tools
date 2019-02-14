@@ -51,8 +51,7 @@ spec:
       #  See issue https://github.com/kubernetes/kubernetes/issues/67019
       hostname: $SERVICE_NAME.$SAMBA_REALM
       hostNetwork: true
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       serviceAccountName: $K8S_NAMESPACE-privileged

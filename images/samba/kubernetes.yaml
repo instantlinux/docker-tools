@@ -55,8 +55,7 @@ spec:
           readOnly: true
           subPath: samba-admin-password
       hostNetwork: true
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       serviceAccountName: $K8S_NAMESPACE-privileged

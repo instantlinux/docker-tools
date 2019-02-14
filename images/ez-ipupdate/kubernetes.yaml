@@ -23,10 +23,8 @@ spec:
           readOnly: true
           subPath: ez-ipupdate-user
       dnsConfig:
-        options:
-        - { name: ndots }
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: secret
         secret:

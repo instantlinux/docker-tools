@@ -44,8 +44,7 @@ spec:
           readOnly: true
           subPath: haproxy-stats-password
       hostNetwork: true
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: config

@@ -64,12 +64,9 @@ spec:
           name: pictures
           subPath: DigitalPics/2019/$CLOUD_USER2-nextcloud
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
         options:
         - name: use-vc
         - name: ndots
-      nodeSelector:
-        service.data-sync: allow
       volumes:
       - name: synced
         hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }

@@ -6,6 +6,7 @@ ignore = Name *socket
 auto   = true
 batch  = true
 confirmbigdel = true
+copythreshold = 10000
 
 group  = true
 owner  = true

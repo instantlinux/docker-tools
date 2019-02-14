@@ -56,8 +56,7 @@ spec:
         volumeMounts:
         - name: ftp
           mountPath: /var/lib/ftp
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: ftp
         persistentVolumeClaim:

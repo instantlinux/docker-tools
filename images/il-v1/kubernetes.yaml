@@ -70,11 +70,8 @@ spec:
           readOnly: true
           subPath: mysql-backup-creds
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: ndots
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: share
         hostPath: { path: $PATH_SHR }

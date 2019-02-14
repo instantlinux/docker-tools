@@ -1,7 +1,4 @@
 #! /bin/sh -e
-# TODO: rsync needs a separate secret from unison, so for now the
-#  script cannot support the more-efficient rsync method for large files
-#  https://serverfault.com/questions/749474/ssh-authorized-keys-command-option-multiple-commands
 
 mkdir -m 700 /root/.ssh
 SYNC_ROLE=peer
@@ -17,8 +14,8 @@ elif [ ! -z "$PEERNAME" ]; then
 fi
 
 if [ $SYNC_ROLE == "active" ]; then
-  if [ ! -s /run/secrets/$SECRET ]; then
-    echo "** This container will not run without secret $SECRET **"
+  if [ ! -s /run/secrets/$SSHKEY1 ] || [ ! -s /run/secrets/$SSHKEY2 ]; then
+    echo "** This container will not run without secrets $SSHKEY1/$SSHKEY2 **"
     sleep 10
     exit 1
   fi
@@ -27,9 +24,11 @@ if [ $SYNC_ROLE == "active" ]; then
     sleep 10
     exit 1
   fi
-  cp /run/secrets/$SECRET /run/$SECRET.rsa
-  chmod 400 /run/$SECRET.rsa
-  ln -s /run/$SECRET.rsa /root/.ssh/data-sync.rsa
+  cp /run/secrets/$SSHKEY1 /run/$SSHKEY1.rsa
+  cp /run/secrets/$SSHKEY2 /run/$SSHKEY2.rsa
+  chmod 400 /run/$SSHKEY1.rsa /run/$SSHKEY2.rsa
+  ln -s /run/$SSHKEY1.rsa /root/.ssh/data-sync.rsa
+  ln -s /run/$SSHKEY2.rsa /root/.ssh/id_rsa
   cat <<EOF >/root/.unison/default.prf
 # Path specifications for unison
 root = /var
@@ -38,13 +37,12 @@ path = data-sync
 include common
 EOF
 
-  # Add a default configuration file if not present
-  if [ ! -e /root/.unison/common.prf ]; then
-    if [ -d /etc/unison.d ] && [ "$(ls -A /etc/unison.d)" ]; then
-      cp -a /etc/unison.d/. /root/.unison
-    else
-      cp /root/src/*.prf /root/.unison
-    fi
+  # Add configuration files from mounted unison.d; or use
+  # defaults from src image (but don't overwrite)
+  if [ -d /etc/unison.d ] && [ "$(ls -A /etc/unison.d)" ]; then
+    cp -a /etc/unison.d/. /root/.unison
+  elif [ ! -e /root/.unison/common.prf ]; then
+    cp /root/src/*.prf /root/.unison
   fi
 
   RETRIES=10
@@ -63,7 +61,8 @@ else
   if [ ! -s /etc/ssh/sshd_config ]; then
     echo "AuthorizedKeysFile  .ssh/authorized_keys" > /etc/ssh/sshd_config
   fi
-  echo "$SYNC_SSHKEY" >>/root/.ssh/authorized_keys
+  echo -n "no-pty,no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command=\"/usr/bin/unison -server\" $PUBKEY1" > /root/.ssh/authorized_keys
+  echo -n "no-pty,no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command=\"/usr/local/bin/rrsync -ro/\" $PUBKEY2" >> /root/.ssh/authorized_keys
   echo sshd listening
   ip addr | grep inet | grep -v 127.0.0.1
   exec /usr/sbin/sshd -D

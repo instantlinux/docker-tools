@@ -40,10 +40,8 @@ spec:
           name: config
           readOnly: true
       dnsConfig:
-        options:
-        - { name: ndots }
-      imagePullSecrets:
-      - name: regcred
+        options: [ name: ndots ]
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: config
         configMap:

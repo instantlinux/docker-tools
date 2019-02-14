@@ -27,6 +27,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: HOSTNAME, value: davite.$DOMAIN }
+        - { name: SCHEME, value: https }
         - { name: SMTP_PORT, value: "25" }
         - { name: SMTP_SMARTHOST, value: smtp.$DOMAIN }
         - { name: TCP_PORT, value: "" }
@@ -38,8 +39,7 @@ spec:
         - name: share
           mountPath: /var/adm/DaVite_Data
           subPath: $SERVICE_NAME
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: share
         hostPath: { path: $PATH_SHR }

@@ -36,8 +36,7 @@ spec:
           mountPath: /run/secrets/git.$MYDOMAIN-api-token
           readOnly: true
           subPath: git.$MYDOMAIN-api-token
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:

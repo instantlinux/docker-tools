@@ -75,8 +75,7 @@ spec:
         options:
         - name: use-vc
         - name: ndots
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }

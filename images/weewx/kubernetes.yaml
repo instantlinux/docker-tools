@@ -64,8 +64,7 @@ spec:
           mountPath: /run/secrets/weewx-wunderground-password
           readOnly: true
           subPath: weewx-wunderground-password
-      imagePullSecrets:
-      - name: regcred
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
