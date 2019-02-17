@@ -5,7 +5,7 @@ flake8==3.5.0
 Flask==1.0.2
 jsonschema==2.6.0
 mock==2.0.0
-setuptools==39.1.0.post20180508
+setuptools==40.8.0
 supervisor==3.3.4
 unittest2==1.1.0
 urllib3==1.23
