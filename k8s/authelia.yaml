@@ -145,8 +145,7 @@ kind: Service
 metadata:
   name: redis
 spec:
-  # TODO remove fixed IP address once kubedns issues are fixed
-  clusterIP: $REDIS_IP
+  clusterIP: None
   selector:
     app.kubernetes.io/name: redis
   ports:

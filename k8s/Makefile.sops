@@ -9,15 +9,20 @@
 # Note:
 #    Key material added to data section has to be base64 encoded
 
-.PHONY: gen_sops_gpg
+.PHONY: sops gen_sops_gpg
 
-sops: /usr/bin/sops
-/usr/bin/sops:
+sops: /usr/local/bin/sops
+
+/usr/local/bin/sops:
+ifeq ($(shell uname -s),Darwin)
+	brew install sops
+else
 	curl -sLo /tmp/sops.deb \
 	  https://github.com/mozilla/sops/releases/download/$(VERSION_SOPS)/sops_$(VERSION_SOPS)_amd64.deb
-	cd /tmp && echo "$(SOPS_SHA)  sops.deb" | sha256sum -c
+	@cd /tmp && echo "$(SOPS_SHA)  sops.deb" | sha256sum -c
 	@sudo dpkg -i /tmp/sops.deb
 	@rm /tmp/sops.deb
+endif
 
 gen_sops_gpg:
 	$(eval EXISTS := $(shell gpg --list-keys | grep "PGP credentials"))

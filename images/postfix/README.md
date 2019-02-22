@@ -14,7 +14,7 @@ will be added/updated into main.cf (via postconf).
 
 * Define aliases in aliases.
 
-* Define any map files such as virtusertable as *.map.
+* Name any map files you need such as virtusertable with a _.map_ suffix (such as /etc/postfix/postfix.d/virtusertable.map).
 
 * Define local users (if not using directory service) as users.sh.
 
@@ -32,6 +32,8 @@ See etc-example directory and kubernetes.yaml / docker-compose.yml.
 | Secret | Description |
 | ------ | ----------- |
 | postfix-sasl-passwd | mapped list of credentials for SASL destinations|
+
+Look for sasl_passwd in [SASL_README.html](http://www.postfix.org/SASL_README.html#smtpd_sasl_security_options) for the format of the postfix-sasl-passwd secret.
 
 Also, if you're using TLS, create a secret containing the SSL private key and
 reference it in your smtpd_tls_key_file directive as shown in the example.

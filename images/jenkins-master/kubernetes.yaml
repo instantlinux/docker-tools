@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
+  clusterIP: None
   ports:
   - { port: 80, targetPort: 8080 }
   selector:

@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: $SERVICE_NAME
 spec:
-  clusterIP: $GITLAB_IP
+  clusterIP: None
   ports:
   - { port: $PORT_GITLAB_SSH, targetPort: 22, name: ssh }
   - { port: 80, name: $SERVICE_NAME }
@@ -45,10 +45,10 @@ spec:
         - containerPort: 443
         resources:
           limits:
-            memory: 4096Mi
+            memory: 6144Mi
           requests:
             cpu: 400m
-            memory: 2048Mi
+            memory: 3172Mi
         volumeMounts:
         - mountPath: /etc/gitlab
           name: $SERVICE_NAME

@@ -72,8 +72,8 @@ $(STACKS)::
 ##########
 # Installation
 ##########
-.PHONY: imports install install_metrics node_labels persistent remote_volumes \
-	secrets sops untaint_master
+.PHONY: envsubst imports install install_metrics node_labels persistent \
+	remote_volumes secrets sops untaint_master
 
 IMPORTS      = calico calico-etcd dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
@@ -110,6 +110,15 @@ $(INSTALL_YAML) $(VOLUMES_YAML)::
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$(@F) \
 	  envsubst < $@.yaml | kubectl $(ADMIN_CTX) $(ACTION) -f -
+
+ifeq ($(shell uname -s),Darwin)
+envsubst: /usr/local/bin/envsubst
+else
+envsubst: /usr/bin/envsubst
+endif
+
+/usr/local/bin/envsubst:
+	brew install gettext && brew link --force gettext
 
 ##########
 # Storage

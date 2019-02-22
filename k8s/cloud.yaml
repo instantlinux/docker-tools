@@ -1,14 +1,15 @@
 # Usage:
 #  Update Makefile.vars to suit
+#  Create secrets nextcloud-db-password (with a random string) and
+#    nextcloud-secret (with blank content)
 #  In your bash environment, define these:
-#    export NC_DB_PASSWORD="yourlocaldbsecret"
 #    export NC_DB_SCHEMA=
 #    export NC_INSTANCEID=
 #    export NC_PASSWORDSALT=
-#    export NC_SECRET=
 #  After initial startup, update your startup shell variables based on:
 #    kubectl exec cloud-xxx diff /var/www/html/config/config.php \
 #      /var/www/html/config/config.php.k8s
+#  and update the nextcloud-secret with base64 code of generated content.
 #  Note that the DB_SCHEMA is called "version" in config.php; this will
 #  need updating after each upgrade.
 ---
@@ -39,6 +40,16 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-db-password
+              key: nextcloud-db-password
+        - name: SECRET
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-secret
+              key: nextcloud-secret
         - { name: REDIS_HOST, value: $SERVICE_NAME-redis }
         - { name: TZ, value: $TZ }
         image: nextcloud:$VERSION_NEXTCLOUD
@@ -124,7 +135,7 @@ data:
       # TODO set these env vars after auto-generation.
       'instanceid' => '$NC_INSTANCEID',
       'passwordsalt' => '$NC_PASSWORDSALT',
-      'secret' => '$NC_SECRET',
+      'secret' => getenv('SECRET'),
       'version' => '$NC_DB_SCHEMA',
       'trusted_domains' => array ('$SERVICE_NAME.$DOMAIN'),
       'datadirectory' => '/var/www/html/data',
@@ -136,7 +147,7 @@ data:
       'dbtableprefix' => 'oc_',
       'mysql.utf8mb4' => true,
       'dbuser' => 'nextcloud',
-      'dbpassword' => '$NC_DB_PASSWORD',
+      'dbpassword' => getenv('DB_PASSWORD'),
       'installed' => true,
       'overwriteprotocol' => 'https',
       'ldapIgnoreNamingRules' => false,
@@ -221,10 +232,11 @@ kind: Service
 metadata:
   name: $SERVICE_NAME-redis
 spec:
-  selector:
-    app.kubernetes.io/name: $SERVICE_NAME-redis
+  clusterIP: None
   ports:
   - port: 6379
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME-redis
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

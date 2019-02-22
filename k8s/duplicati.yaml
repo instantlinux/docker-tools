@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
+  clusterIP: None
   ports:
   - { port: 80, targetPort: 8200 }
   selector:
@@ -209,8 +210,7 @@ metadata:
   name: $SERVICE_NAME-sync
 spec:
   # TODO - deal with IO overload
-  # replicas: $DATA_SYNC_CLUSTER_SIZE
-  replicas: 2
+  replicas: $DATA_SYNC_CLUSTER_SIZE
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME-sync
