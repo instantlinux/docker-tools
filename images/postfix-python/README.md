@@ -7,6 +7,8 @@ Postfix with python support. (Python needed for blacklist utility.) This repo ha
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~
 
+See also the variables and secrets defined in base image [README](https://github.com/instantlinux/docker-tools/blob/master/images/postfix/README.md).
+
 ### Variables
 
 | Variable | Default | Description |

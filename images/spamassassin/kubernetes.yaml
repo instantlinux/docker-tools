@@ -46,7 +46,7 @@ spec:
         - mountPath: /etc/mail/spamassassin/local.cf
           name: admin
           readOnly: true
-          subPath: $SERVICE_NAME/etc/local.cf
+          subPath: services/$SERVICE_NAME/etc/local.cf
         - mountPath: /var/lib/spamassassin
           name: home
         - mountPath: /var/log

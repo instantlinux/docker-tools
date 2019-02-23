@@ -140,27 +140,8 @@ data:
   my.cnf: |
     # --- Deployed from kubernetes configmap ---
     #
-    # The MySQL database server configuration file.
-    #
-    # You can copy this to one of:
-    # - "/etc/mysql/my.cnf" to set global options,
-    # - "~/.my.cnf" to set user-specific options.
-    #
-    # One can use all long options that the program supports.
-    # Run program with --help to get a list of available options and with
-    # --print-defaults to see which it would actually understand and use.
-    #
-    # For explanations see
-    # http://dev.mysql.com/doc/mysql/en/server-system-variables.html
-
-    # This will be passed to all mysql clients
-    # It has been reported that passwords should be enclosed with ticks/quotes
-    # escpecially if they contain "#" chars...
-    # Remember to edit /etc/mysql/debian.cnf when changing the socket location.
-    [client]
-    port		    = 3306
-    [mysqld_safe]
-    nice		    = 0
+    # For documentation see
+    # https://mariadb.com/kb/en/library/server-system-variables
 
     [mysqld]
     #
@@ -169,54 +150,48 @@ data:
     basedir		    = /usr
     tmpdir	            = /tmp
     skip-external-locking
+    character_set_server    = utf8
+    ignore_db_dirs          = lost+found
+
     #
     # * Fine Tuning
     #
     ft_min_word_len         = 3
     join_buffer_size        = 131072
-    key_buffer_size         = 128M
+    key_buffer_size         = 16M
     max_allowed_packet      = 256M
     #max_connections        = 100
-    max_heap_table_size     = 16777216
+    max_heap_table_size     = 16M
+    query_cache_type        = OFF
+    query_cache_size        = 0
     read_buffer_size        = 131072
     read_rnd_buffer_size    = 262144
     table_open_cache        = 4096
     thread_stack            = 192K
     thread_cache_size       = 8
     #thread_concurrency     = 12
-    tmp_table_size          = 16777216
+    tmp_table_size          = 16M
 
     interactive_timeout     = 28800
     net_read_timeout        = 30
     net_write_timeout       = 60
     wait_timeout            = 3600
 
-    character_set_server    = utf8
-    ignore_db_dirs          = lost+found
-
     #
-    # * Query Cache Configuration
+    # * Slow query log
     #
-    query_cache_limit       = 1M
-    query_cache_size        = 16M
-
-    #
-    # Here you can see queries with especially long duration
-    #
-    slow_query_log_file = /var/log/mysql/mysql-slow.log
-    slow_query_log      = 1
-    long_query_time     = 4
+    slow_query_log_file     = /var/log/mysql/mysql-slow.log
+    slow_query_log          = 1
+    long_query_time         = 4
     #log_queries_not_using_indexes
 
     #
     # * InnoDB
     #
-    # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
-    # Read the manual for more InnoDB related options. There are many!
-
-    innodb_data_file_path   = ibdata1:10M:autoextend
-    innodb_buffer_pool_size = 1024M
-    innodb_log_file_size    = 32M
+    innodb_data_file_path        = ibdata1:10M:autoextend
+    innodb_buffer_pool_instances = 1
+    innodb_buffer_pool_size      = 1024M
+    innodb_log_file_size         = 32M
 
     [mysqldump]
     quick
