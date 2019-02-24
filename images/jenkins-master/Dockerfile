@@ -1,4 +1,4 @@
-FROM openjdk:8u171-jdk-alpine3.8
+FROM openjdk:8u191-jre-alpine3.9
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
@@ -30,14 +30,14 @@ ENV ARTIFACTORY_URI=artifactory.domain.com \
 ARG _COMPOSE_VERSION=1.22.0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${_COMPOSE_VERSION}/docker-compose-Linux-x86_64
-ARG _JENKINS_VERSION=2.150.1
+ARG _JENKINS_VERSION=2.150.3
 ARG _TINI_DOWNLOADS=https://github.com/krallin/tini/releases/download
 ARG _TINI_VERSION=0.18.0
 ARG DOCKER_GID=485
 ARG JENKINS_UID=1000
 # sha256sum values for each download
 ARG COMPOSE_SHA=f679a24b93f291c3bffaff340467494f388c0c251649d640e661d509db9d57e9
-ARG JENKINS_SHA=7a38586d5a3a1a83498809a83715728bb2f01b58a7dd3a88366f076efdaf6669
+ARG JENKINS_SHA=4fc2700a27a6ccc53da9d45cc8b2abd41951b361e562e1a1ead851bea61630fd
 ARG TINI_SHA=eadb9d6e2dc960655481d78a92d2c8bc021861045987ccd3e27c7eae5af0cf33
 
 # gid for docker must match that on container host
@@ -70,10 +70,10 @@ RUN addgroup -g ${DOCKER_GID} docker && \
 #  Put groovy scripts under ref/init.groovy.d/; plugins in ref/plugins/
 #  Put configuration xml files at ref/ top-level
 COPY ref/ $JENKINS_REF
-COPY entrypoint.sh /usr/local/bin/
 COPY plugins.sh plugins.txt /tmp/
-RUN chmod -R g+rX,o+rX $JENKINS_REF /usr/local/bin/entrypoint.sh && \
-    /tmp/plugins.sh /tmp/plugins.txt && rm /tmp/*
+RUN /tmp/plugins.sh /tmp/plugins.txt && rm /tmp/*
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod -R g+rX,o+rX $JENKINS_REF /usr/local/bin/entrypoint.sh
 
 EXPOSE 8080 50000
 VOLUME $JENKINS_HOME

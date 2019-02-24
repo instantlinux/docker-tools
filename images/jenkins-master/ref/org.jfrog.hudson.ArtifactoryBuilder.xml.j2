@@ -17,11 +17,15 @@
         <overridingCredentials>false</overridingCredentials>
         <ignoreCredentialPluginDisabled>false</ignoreCredentialPluginDisabled>
       </deployerCredentialsConfig>
+      <resolverCredentialsConfig>
+        <credentials>
+          <username>{{ ARTIFACTORY_USER }}</username>
+          <password>{{ ARTIFACTORY_PASS }}</password>
+        </credentials>
+        <credentialsId></credentialsId>
+        <overridingCredentials>false</overridingCredentials>
+        <ignoreCredentialPluginDisabled>false</ignoreCredentialPluginDisabled>
+      </resolverCredentialsConfig>
     </org.jfrog.hudson.ArtifactoryServer>
   </artifactoryServers>
-  <pushToBintrayEnabled>true</pushToBintrayEnabled>
-  <buildInfoProxyEnabled>false</buildInfoProxyEnabled>
-  <buildInfoProxyPort>0</buildInfoProxyPort>
-  <buildInfoProxyCertPublic>/var/jenkins_home/secrets/jfrog/certs/jfrog.proxy.crt</buildInfoProxyCertPublic>
-  <buildInfoProxyCertPrivate>/var/jenkins_home/secrets/jfrog/certs/jfrog.proxy.key</buildInfoProxyCertPrivate>
 </org.jfrog.hudson.ArtifactoryBuilder_-DescriptorImpl>

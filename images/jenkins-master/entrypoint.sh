@@ -34,7 +34,9 @@ copy_reference_file() {
     mkdir -p $JENKINS_HOME/${dir:23}
     cp -r $JENKINS_REF/${rel} $JENKINS_HOME/${rel}
     # pin plugins on initial copy
-    [ ${rel} == plugins/*.jpi ] && touch $JENKINS_HOME/${rel}.pinned
+    #   TODO what's this??
+    #   [ ${rel} == plugins/*.jpi ] &&
+    touch $JENKINS_HOME/${rel}.pinned
   else
     echo " $file skipped" >> $COPY_REFERENCE_FILE_LOG
   fi
