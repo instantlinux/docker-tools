@@ -10,6 +10,15 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   cp /usr/share/zoneinfo/$TZ /etc/localtime
   echo $TZ >/etc/timezone
 fi
+if [ -z "$HOSTNAME" ]; then
+  echo "** This container will not run without setting for HOSTNAME **"
+  sleep 10
+  exit 1
+elif ! nc -z $SMTP_SMARTHOST $SMTP_PORT; then
+  echo "** This container cannot reach SMTP host $SMTP_SMARTHOST **"
+  sleep 10
+  exit 1
+fi
 
 mkdir -p $DATADIR/Events
 [ -f $DATADIR/Names ] || touch $DATADIR/Names

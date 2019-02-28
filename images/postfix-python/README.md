@@ -9,6 +9,8 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 
 See also the variables and secrets defined in base image [README](https://github.com/instantlinux/docker-tools/blob/master/images/postfix/README.md).
 
+Messages flagged with a high spam score are diverted to subdirectories under /var/spool/postfix/quarantine. Set this path up as a volume mount if you want to preserve or process those messages with other tools.
+
 ### Variables
 
 | Variable | Default | Description |

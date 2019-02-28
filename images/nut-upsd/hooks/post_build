@@ -1,4 +1,4 @@
 #!/bin/bash
 curl -X post https://hooks.microbadger.com/images/instantlinux/nut-upsd/wDY1Awon2F-yqIkWfKrS7R35S3g=
 curl -X post https://hooks.microbadger.com/images/instantlinux/nut-upsd-arm64/mod259g705mSKxp1rytnydqC_cs=
-curl -X post https://hooks.microbadger.com/images/instantlinux/nut-upsd-arm32/TODO
+curl -X post https://hooks.microbadger.com/images/instantlinux/nut-upsd-arm32/qlizq7bqH2tsjSqIVoPJZ6lrLoU=

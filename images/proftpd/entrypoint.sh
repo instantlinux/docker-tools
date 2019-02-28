@@ -6,6 +6,12 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
+if [ -z "$PASV_ADDRESS" ]; then
+  echo "** This container will not run without setting for PASV_ADDRESS **"
+  sleep 10
+  exit 1
+fi
+
 if [ -e /run/secrets/$FTPUSER_PASSWORD_SECRET ]; then
   adduser -u $FTPUSER_UID -s /bin/sh -g "ftp user" -D $FTPUSER_NAME
   echo "$FTPUSER_NAME:$(cat /run/secrets/$FTPUSER_PASSWORD_SECRET)" \

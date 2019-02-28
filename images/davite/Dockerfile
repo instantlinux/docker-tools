@@ -1,4 +1,4 @@
-FROM httpd:2.4.25-alpine
+FROM httpd:2.4.38-alpine
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF

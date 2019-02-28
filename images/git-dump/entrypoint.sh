@@ -7,6 +7,12 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
+if [ -z "$REPOS" ] && [ ! -s /run/secrets/$API_TOKEN_SECRET ]; then
+  echo "** This container requires setting for REPOS or API_TOKEN_SECRET **"
+  sleep 10
+  exit 1
+fi
+
 SSH_PATH=/home/$USERNAME/.ssh
 mkdir -p -m 700 $SSH_PATH
 if [ ! -z "$SSHKEY_SECRET" ]; then
