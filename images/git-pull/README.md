@@ -33,13 +33,13 @@ the [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configu
 
 ### Variables
 
-| Variable | Description |
-| -------- | ----------- |
-|DEST| destination directory under /git |
-|GIT_COMMIT| branch name or hash |
-|GIT_HOST| hostname of git repo (for keyscan) |
-|GIT_REPO| repository name |
-|INTERVAL| polling interval, 0 for one-shot|
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+|DEST| . | destination directory under /git |
+|GIT_COMMIT| master | branch name or hash |
+|GIT_HOST| github.com | hostname of git repo (for keyscan) |
+|GIT_REPO| uri | repository name |
+|INTERVAL| 0 | polling interval, 0 for one-shot|
 
 ### Secrets
 | Secret | Description |

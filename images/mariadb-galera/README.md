@@ -15,7 +15,6 @@ MariaDB 10.3 with automatic cluster generation under kubernetes / swarm using na
 | ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
 | TTL | 10 | longevity (in seconds) of keys posted to etcd |
 | TZ | UTC | timezone |
-| SST_PASSWORD | | password for SST transfers (don't use this, use secret) |
 | SST_AUTH_SECRET | sst-auth-password | name of secret for password |
 
 ### Usage
