@@ -117,7 +117,8 @@ to handle edge cases.
 
 This container image is intended to be run in a 3-, 5-node, or larger
 configuration.  It requires a stable etcd configuration for node
-discovery and master election at restart.
+discovery and master election at restart. A single instance can
+be invoked without HA resources using kubernetes-single.yaml.
 
 ### Credits
 

@@ -50,9 +50,10 @@ VOLUME /var/lib/mysql
 HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
     CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
 
-COPY my.cnf /etc/mysql/
-COPY wsrep.cnf /etc/
-COPY src/entrypoint.py src/healthcheck.sh /usr/local/bin/
+COPY --chown=root my.cnf /etc/mysql/
+COPY --chown=root wsrep.cnf /etc/
+COPY --chown=root src/entrypoint.py src/healthcheck.sh /usr/local/bin/
+RUN chmod o-w /etc/mysql/my.cnf /etc/wsrep.cnf /usr/local/bin/entrypoint.py
 ENTRYPOINT ["/usr/local/bin/entrypoint.py"]
 
 # TODO: fix healthcheck.sh to handle long-duration bootstrap
