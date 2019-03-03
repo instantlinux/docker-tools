@@ -42,7 +42,6 @@ spec:
           name: var
         - mountPath: /run/secrets/samba-admin-password
           name: samba-admin-password
-          readOnly: true
           subPath: samba-admin-password
       dnsConfig:
         nameservers: [ $BIND_IP ]

@@ -20,7 +20,6 @@ spec:
         volumeMounts:
         - name: secret
           mountPath: /run/secrets/ez-ipupdate-user
-          readOnly: true
           subPath: ez-ipupdate-user
       dnsConfig:
         options: [ name: ndots ]

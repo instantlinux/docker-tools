@@ -51,11 +51,9 @@ spec:
           subPath: $SERVICE_NAME
         - mountPath: /run/secrets/artifactory-user-password
           name: artifactory-user-password
-          readOnly: true
           subPath: artifactory-user-password
         - mountPath: /run/secrets/jenkins-admin-password
           name: jenkins-admin-password
-          readOnly: true
           subPath: jenkins-admin-password
       dnsConfig:
         options: [ name: ndots ]
@@ -98,7 +96,6 @@ spec:
 #          name: docker-socket
         - mountPath: /run/secrets/jenkins-agent-password
           name: jenkins-agent-password
-          readOnly: true
           subPath: jenkins-agent-password
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]

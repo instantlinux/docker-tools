@@ -52,7 +52,6 @@ spec:
         volumeMounts:
         - mountPath: /etc/authelia/config.yml
           name: config
-          readOnly: true
           subPath: config.yml
         - mountPath: /var/lib/authelia/store
           name: share
@@ -134,7 +133,6 @@ spec:
         volumeMounts:
         - mountPath: /etc/ldap.dist/prepopulate
           name: prepopulate
-          readOnly: true
       volumes:
       - name: prepopulate
         secret:
@@ -177,7 +175,6 @@ spec:
         volumeMounts:
         - mountPath: /etc/redis/redis.conf
           name: redis-config
-          readOnly: true
           subPath: redis.conf
       volumes:
       - name: redis-config

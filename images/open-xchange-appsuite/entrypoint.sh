@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 if [ ! -s /run/secrets/ox-admin-password ] || \
    [ ! -s /run/secrets/ox-db-password ] || \
@@ -11,7 +11,6 @@ elif ! nc -z $OX_CONFIG_DB_HOST 3306; then
   echo "** This container cannot reach DB host $OX_CONFIG_DB_HOST **"
   sleep 10
   exit 1
-fi
 fi
 OX_ADMIN_PASSWORD=`cat /run/secrets/ox-admin-password`
 OX_DATADIR=/ox/store

@@ -52,18 +52,15 @@ spec:
         volumeMounts:
         - mountPath: /etc/mysql/my.cnf.d
           name: etc
-          readOnly: true
         - mountPath: /var/log/mysql
           name: logs
         - mountPath: /var/lib/mysql
           name: data
         - name: mysql-root-password
           mountPath: /run/secrets/mysql-root-password
-          readOnly: true
           subPath: mysql-root-password
         - name: sst-auth-password
           mountPath: /run/secrets/sst-auth-password
-          readOnly: true
           subPath: sst-auth-password
       dnsConfig:
         options: [ name: ndots ]

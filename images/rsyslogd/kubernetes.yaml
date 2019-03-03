@@ -35,10 +35,8 @@ spec:
         volumeMounts:
         - mountPath: /etc/logrotate.d
           name: logrotate
-          readOnly: true
         - mountPath: /etc/rsyslog.d
           name: config
-          readOnly: true
       dnsConfig:
         options: [ name: ndots ]
       imagePullSecrets: [ $IMAGEPULL_SPEC ]

@@ -78,7 +78,6 @@ spec:
         volumeMounts:
         - mountPath: /usr/local/etc/php/conf.d/local-php.ini
           name: init
-          readOnly: true
           subPath: local-php.ini
         - mountPath: /var/www/html
           name: share

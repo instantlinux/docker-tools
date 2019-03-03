@@ -28,7 +28,6 @@ spec:
           name: logs
         - name: mysql-backup-creds
           mountPath: /run/secrets/mysql-backup-creds
-          readOnly: true
           subPath: mysql-backup-creds
       dnsConfig:
         options: [ name: ndots ]

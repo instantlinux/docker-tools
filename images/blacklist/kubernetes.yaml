@@ -49,7 +49,6 @@ spec:
           name: data
         - name: mysql-blacklist-user
           mountPath: /run/secrets/mysql-blacklist-user
-          readOnly: true
           subPath: mysql-blacklist-user
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:

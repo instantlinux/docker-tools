@@ -62,7 +62,6 @@ spec:
           mountPath: /root/.unison
         - name: config
           mountPath: /etc/unison.d/common.prf
-          readOnly: true
           subPath: common.prf
         - mountPath: /etc/ssh
           name: etc
@@ -75,11 +74,9 @@ spec:
           subPath: $SERVICE_NAME/home
         - mountPath: /run/secrets/data-sync-sshkey1
           name: sshkeys
-          readOnly: true
           subPath: sshkey1
         - mountPath: /run/secrets/data-sync-sshkey2
           name: sshkeys
-          readOnly: true
           subPath: sshkey2
       dnsConfig:
         options: [ name: ndots ]
@@ -152,7 +149,6 @@ spec:
         volumeMounts:
         - mountPath: /usr/local/etc/keepalived
           name: etc
-          readOnly: true
       hostNetwork: true
       nodeSelector:
         service.mythtv-backend: allow

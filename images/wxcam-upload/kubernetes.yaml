@@ -59,11 +59,9 @@ spec:
           name: synced
         - name: wunderground-user-password
           mountPath: /run/secrets/wunderground-user-password
-          readOnly: true
           subPath: wunderground-user-password
         - name: wxcam-password-hashed
           mountPath: /run/secrets/wxcam-password-hashed
-          readOnly: true
           subPath: wxcam-password-hashed
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]

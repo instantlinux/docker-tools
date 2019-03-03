@@ -51,7 +51,6 @@ spec:
           name: logs
         - name: squirrelmail-db-password
           mountPath: /run/secrets/squirrelmail-db-password
-          readOnly: true
           subPath: squirrelmail-db-password
       dnsConfig:
         options: [ name: ndots ]

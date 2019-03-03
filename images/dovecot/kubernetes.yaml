@@ -49,7 +49,6 @@ spec:
           name: etc
         - mountPath: /etc/postfix.d
           name: postfix-etc
-          readOnly: true
         - mountPath: /etc/postfix/aliases
           name: admin
           readOnly: true
@@ -388,7 +387,7 @@ data:
     myorigin = $HOSTNAME_EMAIL
     mynetworks = 127.0.0.0/24
     mynetworks_style = subnet
-    relay_domains = $DOVECOT_RELAY_DOMAINS
+    relay_domains = $POSTFIX_RELAY_DOMAINS
     relayhost = [$POSTFIX_IP]:$PORT_POSTFIX_INTERNAL
     smtp_sasl_auth_enable = yes
     smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd

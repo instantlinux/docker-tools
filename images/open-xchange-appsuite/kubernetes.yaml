@@ -53,15 +53,12 @@ spec:
           name: apache2
         - name: ox-db-password
           mountPath: /run/secrets/ox-db-password
-          readOnly: true
           subPath: ox-db-password
         - name: ox-admin-password
           mountPath: /run/secrets/ox-admin-password
-          readOnly: true
           subPath: ox-admin-password
         - name: ox-master-password
           mountPath: /run/secrets/ox-master-password
-          readOnly: true
           subPath: ox-master-password
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]

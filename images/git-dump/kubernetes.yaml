@@ -30,11 +30,9 @@ spec:
           name: logs
         - name: secret-sshkey
           mountPath: /run/secrets/git-dump_sshkey
-          readOnly: true
           subPath: git-dump-sshkey
         - name: secret-token
           mountPath: /run/secrets/git.$MYDOMAIN-api-token
-          readOnly: true
           subPath: git.$MYDOMAIN-api-token
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
