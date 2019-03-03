@@ -21,7 +21,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     OX_SERVER_MEMORY=2048
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y apt-transport-https gnupg wget && \
+    apt-get install -y apt-transport-https gnupg netcat wget && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY open-xchange.list /etc/apt/sources.list.d/open-xchange.list

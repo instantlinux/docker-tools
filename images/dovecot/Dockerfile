@@ -25,4 +25,4 @@ EXPOSE 143 993
 VOLUME /etc/dovecot/conf.local /home /var/spool/mail
 
 COPY entrypoint-dovecot.sh /usr/local/bin/
-ENTRYPOINT /usr/local/bin/entrypoint-dovecot.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint-dovecot.sh"]

@@ -7,6 +7,12 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
+if ! ls -A /run/secrets/*key.pem; then
+  echo "** Must provide ssl_dh key secret (smtpd-key.pem) **"
+  sleep 10
+  exit 1
+fi
+
 ETC=/etc/dovecot
 export SSLDIR=/etc/ssl/dovecot
 if [ ! -f $SSLDIR/server.pem ]; then
@@ -17,7 +23,7 @@ if [ ! -f $SSLDIR/server.pem ]; then
   ln -s $SSLDIR/private/dovecot.pem $SSLDIR/server.key
 fi
 if [ -s $ETC/conf.local/dovecot.conf ]; then
-  cp -a $ETC/conf.local/dovecot.conf $ETC
+  cp $ETC/conf.local/dovecot.conf $ETC
 fi
 if [ -z "$SSH_DH" ]; then
   openssl dhparam -dsaparam -out $ETC/dh.pem 4096
@@ -26,6 +32,11 @@ else
   echo "ssl_dh = <$ETC/conf.local/$SSH_DH" >> $ETC/dovecot.conf
 fi
 if [ -s $ETC/conf.local/dovecot-ldap.conf ]; then
+  if [ ! -s /run/secrets/$LDAP_PASSWD_SECRET ]; then
+    echo "** Config dovecot-ldap.conf requires secret $LDAP_PASSWD_SECRET **"
+    sleep 10
+    exit 1
+  fi
   cp $ETC/conf.local/dovecot-ldap.conf $ETC
   sed -i -e "s/PASSWORD/`cat /run/secrets/$LDAP_PASSWD_SECRET`/" \
     $ETC/dovecot-ldap.conf

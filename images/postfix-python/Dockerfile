@@ -1,4 +1,6 @@
-FROM instantlinux/postfix:latest
+ARG POSTFIX_VERSION=3.3.2-r0
+
+FROM instantlinux/postfix:$POSTFIX_VERSION
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -20,7 +22,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
 
 ARG GETPIP_SHA=dc84268cc3271fc05d0638dc8a50e49a1450c73abbf67cb12ff1dc1e1a9b3a66
 ARG GETPIP_URI=https://bootstrap.pypa.io/3.3/get-pip.py
-ARG PYTHON_PIP_VERSION=19.0
+ARG PYTHON_PIP_VERSION=19.0.3
 
 COPY requirements/ /root/
 COPY src/ /usr/local/bin/
@@ -39,7 +41,7 @@ RUN apk add --no-cache --update \
     chmod -R g+rx,o+rx /usr/local/bin && \
     adduser -S -u 2026 -g "Spamassassin" -s /bin/sh spamfilter && \
     addgroup spamfilter postdrop && \
-    apk del .fetch-deps; \
+    apk del .fetch-deps && \
     find /usr/local -depth \( \
         \( -type d -a -name test -o -name tests \) -o \
         \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \

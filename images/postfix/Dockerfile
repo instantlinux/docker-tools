@@ -22,4 +22,4 @@ VOLUME [ "/etc/postfix/postfix.d", "/var/spool/postfix" ]
 COPY rsyslog.conf /etc/rsyslog.conf
 COPY entrypoint.sh /root
 
-ENTRYPOINT /root/entrypoint.sh
+ENTRYPOINT ["/root/entrypoint.sh"]

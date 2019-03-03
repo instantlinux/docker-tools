@@ -30,19 +30,30 @@ spec:
       containers:
       - name: $SERVICE_NAME
         image: $REGISTRY_URI/$SERVICE_NAME:latest
+        command: [/bin/sh]
+        args:
+        - -c
+        - >-
+          # TODO: latest version of postfix changed some things
+          # which need to be updated in that image
+          cp -r /etc/postfix.d /etc/postfix &&
+          newaliases &&
+          sh /etc/postfix.d/users.sh &&
+          exec /usr/local/bin/entrypoint-dovecot.sh
         ports:
         - containerPort: 25
         - containerPort: 143
         - containerPort: 993
         volumeMounts:
         - mountPath: /etc/dovecot/conf.local
+          name: etc
+        - mountPath: /etc/postfix.d
+          name: postfix-etc
+          readOnly: true
+        - mountPath: /etc/postfix/aliases
           name: admin
           readOnly: true
-          subPath: services/$SERVICE_NAME/etc
-        - mountPath: /etc/postfix/postfix.d
-          name: admin
-          readOnly: true
-          subPath: services/$SERVICE_NAME/postfix/etc
+          subPath: services/$SERVICE_NAME/postfix/etc/aliases
         - mountPath: /var/spool/mail
           name: inbox
         - mountPath: /var/spool/postfix
@@ -51,19 +62,15 @@ spec:
           name: webmail
         - mountPath: /run/secrets/ldap-ro-password
           name: ldap-ro-password
-          readOnly: true
           subPath: ldap-ro-password
         - mountPath: /run/secrets/postfix-sasl-passwd
           name: postfix-sasl-passwd
-          readOnly: true
           subPath: postfix-sasl-passwd
         - mountPath: /etc/ssl/certs/smtpd-cert.pem
           name: ssl-cert
-          readOnly: true
           subPath: tls.crt
         - mountPath: /run/secrets/smtpd-key.pem
           name: ssl-cert
-          readOnly: true
           subPath: tls.key
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
@@ -76,6 +83,12 @@ spec:
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
+      - name: etc
+        configMap:
+          name: $SERVICE_NAME-etc
+      - name: postfix-etc
+        configMap:
+          name: $SERVICE_NAME-postfix
       - name: inbox
         hostPath: { path: $K8S_VOLUMES_PATH/inbox }
       - name: spool
@@ -153,9 +166,8 @@ spec:
         volumeMounts:
         - name: archive
           mountPath: /root/.unison
-        - name: config
+        - name: config-sync
           mountPath: /etc/unison.d/common.prf
-          readOnly: true
           subPath: common.prf
         - mountPath: /etc/ssh
           name: etc
@@ -167,11 +179,9 @@ spec:
           name: webmail
         - mountPath: /run/secrets/data-sync-sshkey1
           name: sshkeys
-          readOnly: true
           subPath: sshkey1
         - mountPath: /run/secrets/data-sync-sshkey2
           name: sshkeys
-          readOnly: true
           subPath: sshkey2
       dnsConfig:
         options:
@@ -181,7 +191,7 @@ spec:
       nodeSelector:
         service.data-sync: allow
       volumes:
-      - name: config
+      - name: config-sync
         configMap:
           name: data-sync
       - name: sshkeys
@@ -224,3 +234,194 @@ spec:
       selector:
         matchLabels:
           volume.group: webmail
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME-etc
+data:
+  dovecot.conf: |
+    auth_mechanisms = plain login
+    disable_plaintext_auth = yes
+    mail_access_groups = mail
+    protocols = imap
+    mail_location = mbox:~/Mail:INBOX=/var/spool/mail/%u
+    mail_debug = no
+
+    first_valid_uid = 300
+    passdb {
+      driver = ldap
+      args = /etc/dovecot/dovecot-ldap.conf
+    }
+    userdb {
+      driver = passwd
+    }
+    service auth {
+      user = root
+      unix_listener /var/spool/postfix/private/auth {
+        mode = 0660
+        user = postfix
+        group = postfix
+      }
+    }
+    service imap-login {
+      inet_listener imaps {
+        address = 0.0.0.0
+        port = $PORT_DOVECOT_IMAPS
+        ssl = yes
+      }
+    }
+    ssl_cert = </etc/ssl/certs/smtpd-cert.pem
+    ssl_key = </etc/ssl/private/smtpd-key.pem
+    ssl_min_protocol = TLSv1.1
+    syslog_facility = "local1"
+  dovecot-ldap.conf: |
+    hosts = $LDAP_HOSTS
+    dn = $LDAP_DN
+    dnpass = PASSWORD
+    ldap_version = 3
+    base = $LDAP_BASE
+    auth_bind = yes
+    user_attrs = sAMAccountName=home=/home/%$DOL
+    user_filter = (&(ObjectClass=user)(sAMAccountName=%u))
+    pass_filter = (&(ObjectClass=user)(sAMAccountName=%u))
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME-postfix
+data:
+  master.cf: |
+    # Postfix master process configuration file.  For details on the format
+    # of the file, see the master(5) manual page (command: "man 5 master").
+    #
+    # ==========================================================================
+    # service type  private unpriv  chroot  wakeup  maxproc command + args
+    #               (yes)   (yes)   (yes)   (never) (100)
+    # ==========================================================================
+    smtp      inet  n       -       n       -       -       smtpd
+    $PORT_DOVECOT_SMTP      inet  n       -       n       -       -       smtpd
+
+    #628      inet  n       -       n       -       -       qmqpd
+    pickup    fifo  n       -       n       60      1       pickup
+    cleanup   unix  n       -       n       -       0       cleanup
+    qmgr      fifo  n       -       n       300     1       qmgr
+    tlsmgr    unix  -       -       n       1000?   1       tlsmgr
+    rewrite   unix  -       -       n       -       -       trivial-rewrite
+    bounce    unix  -       -       n       -       0       bounce
+    defer     unix  -       -       n       -       0       bounce
+    trace     unix  -       -       n       -       0       bounce
+    verify    unix  -       -       n       -       1       verify
+    flush     unix  n       -       n       1000?   0       flush
+    proxymap  unix  -       -       n       -       -       proxymap
+    smtp      unix  -       -       n       -       -       smtp
+    # When relaying mail as backup MX, disable fallback_relay to avoid MX loops
+    relay     unix  -       -       n       -       -       smtp
+            -o fallback_relay=
+    #       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+    showq     unix  n       -       n       -       -       showq
+    error     unix  -       -       n       -       -       error
+    discard   unix  -       -       n       -       -       discard
+    local     unix  -       n       n       -       -       local
+    virtual   unix  -       n       n       -       -       virtual
+    lmtp      unix  -       -       n       -       -       lmtp
+    anvil     unix  -       -       n       -       1       anvil
+    scache	  unix	-	-	n	-	1	scache
+    #
+    # ====================================================================
+    # Interfaces to non-Postfix software. Be sure to examine the manual
+    # pages of the non-Postfix software to find out what options it wants.
+    #
+    # Many of the following services use the Postfix pipe(8) delivery
+    # agent.  See the pipe(8) man page for information about $DOL{recipient}
+    # and other message envelope options.
+    # ====================================================================
+    #
+    # maildrop. See the Postfix MAILDROP_README file for details.
+    # Also specify in main.cf: maildrop_destination_recipient_limit=1
+    #
+    maildrop  unix  -       n       n       -       -       pipe
+      flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d $DOL{recipient}
+    #
+    # The Cyrus deliver program has changed incompatibly, multiple times.
+    #
+    old-cyrus unix  -       n       n       -       -       pipe
+      flags=R user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -m $DOL{extension} $DOL{user}
+    # Cyrus 2.1.5 (Amos Gouaux)
+    # Also specify in main.cf: cyrus_destination_recipient_limit=1
+    cyrus     unix  -       n       n       -       -       pipe
+      user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -r $DOL{sender} -m $DOL{extension} $DOL{user}
+    #
+    # See the Postfix UUCP_README file for configuration details.
+    #
+    uucp      unix  -       n       n       -       -       pipe
+      flags=Fqhu user=uucp argv=uux -r -n -z -a${DOL}sender - ${DOL}nexthop!rmail (${DOL}recipient)
+    #
+    # Other external delivery methods.
+    #
+    ifmail    unix  -       n       n       -       -       pipe
+      flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r ${DOL}nexthop (${DOL}recipient)
+    bsmtp     unix  -       n       n       -       -       pipe
+      flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f ${DOL}sender ${DOL}nexthop ${DOL}recipient
+
+    #
+    # local additions
+    bigdest   unix  -       -       n       -       25       smtp
+  postfix.cf: |
+    #  See postfix documentation at http://www.postfix.org/postconf.5.html
+    #  Any values placed here will be inserted to the container's /etc/postfix/main.cf
+    alias_database = hash:/etc/postfix/aliases
+    alias_maps = hash:/etc/postfix/aliases
+    bigdest_destination_concurrency_failed_cohort_limit = 100
+    bigdest_destination_concurrency_limit = 25
+    bounce_queue_lifetime = 8h
+    data_directory = /var/run/postfix
+    default_destination_concurrency_limit = 4
+    delay_warning_time = 4h
+    in_flow_delay = 0
+    mail_spool_directory = /var/spool/mail
+    mailbox_size_limit = 0
+    maximal_queue_lifetime = 8h
+    message_size_limit = 30720000
+    mydestination = $DOVECOT_MYDESTINATION
+    mydomain = $DOMAIN
+    myorigin = $HOSTNAME_EMAIL
+    mynetworks = 127.0.0.0/24
+    mynetworks_style = subnet
+    relay_domains = $DOVECOT_RELAY_DOMAINS
+    relayhost = [$POSTFIX_IP]:$PORT_POSTFIX_INTERNAL
+    smtp_sasl_auth_enable = yes
+    smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+    smtp_sasl_security_options = noanonymous
+    smtp_sasl_tls_security_options = noanonymous
+    smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
+    smtp_tls_note_starttls_offer = yes
+    smtp_tls_protocols =!SSLv2,!SSLv3
+    smtp_tls_session_cache_database = btree:${DOL}data_directory/smtp_tls_session_cache
+    smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+    smtpd_sasl_auth_enable = yes
+    smtpd_sasl_type = dovecot
+    smtpd_sasl_path = private/auth
+    smtpd_sasl_security_options = noanonymous
+    smtpd_tls_cert_file = /etc/ssl/certs/smtpd-cert.pem
+    smtpd_tls_ciphers = high
+    smtpd_tls_key_file = /run/secrets/smtpd-key.pem
+    smtpd_tls_mandatory_ciphers = high
+    smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+    smtpd_tls_protocols = !SSLv2, !SSLv3
+    smtpd_tls_received_header = yes
+    smtpd_tls_security_level = may
+    smtpd_tls_session_cache_timeout = 3600s
+    smtputf8_enable = no
+    tls_high_cipherlist = EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA256:EECDH:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!IDEA:!ECDSA:kEDH:CAMELLIA128-SHA:AES128-SHA
+    tls_preempt_cipherlist = yes
+    tls_random_source = dev:/dev/urandom
+    transport_maps = hash:/etc/postfix/transport
+  transport.map: |
+    # Empty file
+  users.sh: |
+    #! /bin/sh
+    if ! grep -q $CLOUD_USER1 /etc/passwd; then
+      adduser -u 300 -G users -D -s /bin/sh -g "$USER1_GECOS" $CLOUD_USER1
+      adduser -u 301 -G users -D -s /bin/sh -g "$USER2_GECOS" $CLOUD_USER2
+    fi

@@ -11,10 +11,22 @@ For more details, see the vendor's site [OX App Suite](http://open-xchange.com/e
 
 See the kubernetes or docker-compose.yml here; set up the variables and secrets as defined below, and invoke the resource.
 
-        echo -n mysecret1 | docker secret create ox-admin-password -
-        echo -n mysecret2 | docker secret create ox-db-password -
-        echo -n mysecret3 | docker secret create ox-master-password -
+kubernetes:
+```
+    kubectl create secret generic --from-literal=ox-admin-password=mysecret1 \
+      ox-admin-password
+    kubectl create secret generic --from-literal=ox-db-password=mysecret1 \
+      ox-db-password
+    kubectl create secret generic --from-literal=ox-master-password=mysecret1 \
+      ox-master-password
+```
 
+docker swarm:
+```
+    echo -n mysecret1 | docker secret create ox-admin-password -
+    echo -n mysecret2 | docker secret create ox-db-password -
+    echo -n mysecret3 | docker secret create ox-master-password -
+```
 Create database and grant access:
 
         mysql> CREATE DATABASE oxdata;

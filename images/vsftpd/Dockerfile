@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG VSFTPD_VERSION=3.0.3-r5
+ARG VSFTPD_VERSION=3.0.3-r6
 ENV ANONYMOUS_ENABLE=YES \
     ANON_MKDIR_WRITE_ENABLE=NO \
     ANON_UPLOAD_ENABLE=NO \

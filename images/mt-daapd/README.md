@@ -12,4 +12,12 @@ docker-compose up -d
 kubectl apply -f kubernetes.yaml
 ```
 
+Volume attachments: mount the media as /srv/music; add an index cache mount /var/cache/forked-daapd and a log path /var/log if avahi logging is desired. Most activity is logged to the container's standard output.
+
+### Variables
+
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+| SERVER_BANNER | Firefly Media on Ubuntu | Name of service |
+
 [![](https://images.microbadger.com/badges/license/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "License badge")

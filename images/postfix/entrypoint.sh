@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/sh -e
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone
@@ -31,8 +31,9 @@ for item in *.map; do
   postmap ../`basename $item .map`
 done
 [ -f master.cf ] && cp master.cf ..
-[ -f aliases ] && cp aliases .. && newaliases
+[ -f aliases ] && cp aliases ..
 [ -x users.sh ] && ./users.sh
+newaliases
 cd ..
 if [ -s /run/secrets/$SASL_PASSWD_SECRET ]; then
   cp /run/secrets/$SASL_PASSWD_SECRET sasl_passwd
@@ -42,7 +43,7 @@ fi
 if [ -x /usr/local/bin/postfix-extras.sh ]; then
   . /usr/local/bin/postfix-extras.sh
 fi
-meta_directory=/etc/postfix /usr/lib/postfix/post-install create-missing
+meta_directory=/etc/postfix /usr/libexec/postfix/post-install create-missing
 # two of the directories aren't set correctly by post-install
 chgrp postdrop /var/spool/postfix/maildrop /var/spool/postfix/public
 /usr/lib/postfix/master &

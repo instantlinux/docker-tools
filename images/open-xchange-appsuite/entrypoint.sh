@@ -1,5 +1,18 @@
 #!/bin/bash
 
+if [ ! -s /run/secrets/ox-admin-password ] || \
+   [ ! -s /run/secrets/ox-db-password ] || \
+   [ ! -s /run/secrets/ox-master-password ]; then
+  echo "** This container will not run without secrets **"
+  echo "** Specify ox-admin-password, ox-db-password, ox-master-password **"
+  sleep 10
+  exit 1
+elif ! nc -z $OX_CONFIG_DB_HOST 3306; then
+  echo "** This container cannot reach DB host $OX_CONFIG_DB_HOST **"
+  sleep 10
+  exit 1
+fi
+fi
 OX_ADMIN_PASSWORD=`cat /run/secrets/ox-admin-password`
 OX_DATADIR=/ox/store
 OX_ETCBACKUP=/ox/etc

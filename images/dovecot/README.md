@@ -34,6 +34,8 @@ This repo has complete instructions for
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~
 
+See the Makefile and Makefile.vars files under k8s directory for default values referenced within kubernetes.yaml.
+
 ### Variables
 
 | Variable | Default | Description |
