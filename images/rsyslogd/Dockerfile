@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG RSYSLOG_VERSION=8.34.0-r3
+ARG RSYSLOG_VERSION=8.40.0-r3
 ENV TZ=UTC
 RUN apk add --update gzip logrotate rsyslog=$RSYSLOG_VERSION \
       rsyslog-mysql=$RSYSLOG_VERSION tar xz && \

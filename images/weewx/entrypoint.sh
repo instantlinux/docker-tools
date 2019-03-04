@@ -64,7 +64,7 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   wee_device --set-tz-code=$TZ_CODE
 fi
 
-sed -i -e "s/^\$ModLoad imklog/#\$ModLoad imklog/" /etc/rsyslog.conf
+sed -i -e 's/^.*imklog/# disabled ("imklog/' /etc/rsyslog.conf
 rsyslogd
 
 cp /run/secrets/$SSHKEY /run/$SSHKEY && chmod 400 /run/$SSHKEY
