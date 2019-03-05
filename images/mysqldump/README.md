@@ -48,6 +48,7 @@ than $KEEP_DAYS will be automatically removed.
 | LOCK_FOR_BACKUP | | true if using Percona, blank for MariaDB |
 | MINUTE | 30 | cron-syntax minutes past hour |
 | SERVERS | dbhost | servers (space-separated list) to back up |
+| SKEW_SECONDS | 15 | wait between dumps |
 | USERNAME | mysqldump | username to run as |
 | TZ | UTC | time zone |
 
@@ -73,9 +74,9 @@ data:
 ### Notes
 
 Dumps run in parallel in order to use available multi-core CPUs
-(mainly for compression). The script doesn't provide a way to limit
-the number of simultaneous runs, so if your server has many databases,
-it could consume excessive memory or CPU.
+(mainly for compression). You can limit the number of simultaneous
+runs by changing the value of SKEW_SECONDS, so if your server has many
+databases, increase this to prevent consuming excessive memory or CPU.
 
 It's tested on MariaDB, so the LOCK_FOR_BACKUP parameter isn't really
 supported unless someone submits a pull-request to make this work with

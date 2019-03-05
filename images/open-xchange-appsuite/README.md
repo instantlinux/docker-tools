@@ -48,8 +48,10 @@ Once the container is launched, context-admin can register new users:
           -A oxadmin -c 1 -d jennifer_wu -e jwu@domain.com \
           -g Jennifer -s Wu -l en_US -p password -u jwu -P <admin password>
 
+UI is available at http://yourhost/appsuite. There are at least two settings you will probably want to change:
 
-UI is available at http://yourhost/appsuite. One setting you will probably want to change is com.openexchange.capability.presentation in file etc/documents.properties: Open Xchange has the Text word-processor and Spreadsheet utilities enabled by default, but Presentation remains disabled until you activate this setting.
+* com.openexchange.capability.presentation in file etc/documents.properties: Open Xchange has the Text word-processor and Spreadsheet utilities enabled by default, but Presentation remains disabled until you activate this setting.
+* com.openexchange.hazelcast.group.password in file hazelcast.properties: this has a widely-known default value; change it to a random string.
 
 This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/open-xchange-appsuite/kubernetes.yaml) with the Makefile or:

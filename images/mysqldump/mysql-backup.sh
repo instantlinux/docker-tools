@@ -96,6 +96,7 @@ do
       ( $MYSQLDUMP $OPTS $DUMPOPTS --databases $DBNAME >$BACKUP_TARGET && \
         nice $COMPRESS $BACKUP_TARGET && \
         echo "`date -R` dumped $DBNAME" > $STATFILE & )
+      sleep $SKEW_SECONDS
     done
 done
 

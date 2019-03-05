@@ -18,7 +18,7 @@ OX_ETCBACKUP=/ox/etc
 OX_DB_PASSWORD=`cat /run/secrets/ox-db-password`
 OX_MASTER_PASSWORD=`cat /run/secrets/ox-master-password`
 
-chown open-xchange /var/log/open-xchange $OX_DATADIR
+chown -R open-xchange /var/log/open-xchange $OX_DATADIR
 
 FIRST_TIME=0
 if [ -d ${OX_ETCBACKUP}/settings ]; then
@@ -95,4 +95,5 @@ if [ "$FIRST_TIME" == 1 ]; then
 fi
 apachectl -d /etc/apache2 -k start
 exec bash -c 'while [ 1 == 1 ]; 
-  do tail -500f /var/log/open-xchange/open-xchange.log.0; sleep 5; done'
+  do tail -500f /var/log/open-xchange/open-xchange.log.0;
+  echo Have patience, waiting for server to start; sleep 5; done'

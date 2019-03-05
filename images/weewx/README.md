@@ -44,7 +44,7 @@ Kubernetes deploy the [wx-nginx.yaml](https://github.com/instantlinux/docker-too
 | RSYNC_HOST | web01 | rsync destination host |
 | RSYNC_PORT | 22 | rsync ssh port |
 | RSYNC_USER | wx | rsync username |
-| SKIN | standard | skin to enable |
+| SKIN | Standard | skin to enable (Seasons, Standard, WeeGreen) |
 | STATION_ID | unset | Weather Underground station ID |
 | STATION_TYPE | Vantage | station type (see [usersguide](http://www.weewx.com/docs/usersguide.htm) |
 | SYSLOG_DEST | /var/log/messages | Syslog file or TCP dest (@@host:port) |
@@ -53,6 +53,8 @@ Kubernetes deploy the [wx-nginx.yaml](https://github.com/instantlinux/docker-too
 | WEEK_START | 6 | day of week to start weekly data (0 = Mon) |
 | WX_USER | weewx | run-as username |
 | XTIDE_LOCATION | unset | xtide setting, see [index](http://tides.mobilegeographics.com/) |
+
+You can volume-mount a different skin to a subdirectory of /home/weewx/skins if you prefer one that isn't already included.
 
 ### Secrets
 

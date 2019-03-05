@@ -8,7 +8,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OX_VERSION=7.10.1
+ARG OX_VERSION=7.10.1-7
+ARG OX_GID=261
+ARG OX_UID=2061
 ENV DEBIAN_FRONTEND=noninteractive \
     OX_ADMIN_MASTER_LOGIN=oxadminmaster \
     OX_CONFIG_DB_HOST=db00 \
@@ -26,29 +28,32 @@ RUN apt-get update && apt-get upgrade -y && \
 
 COPY open-xchange.list /etc/apt/sources.list.d/open-xchange.list
 
-RUN sed -i -e "s/{{ VERSION }}/${OX_VERSION}/" \
+RUN sed -i -e "s/{{ VERSION }}/$(echo $OX_VERSION | cut -d- -f 1)/" \
         /etc/apt/sources.list.d/open-xchange.list && \
     wget -q http://software.open-xchange.com/oxbuildkey.pub -O - \
         | apt-key add - && \
     mkdir -p /usr/share/man/man1 && \
+    groupadd -g $OX_GID open-xchange && \
+    useradd -u $OX_UID -g $OX_GID -s /bin/false -d /opt/open-xchange \
+        -M open-xchange && \
     apt-get update && \
     apt-get install -y \
-        hunspell open-xchange \
-        open-xchange-admin \
-        open-xchange-appsuite \
-        open-xchange-appsuite-backend \
-        open-xchange-appsuite-help-en-us \
-        open-xchange-appsuite-l10n-* \
-        open-xchange-appsuite-manifest \
-        open-xchange-authentication-database \
-        open-xchange-caldav \
-        open-xchange-carddav \
+        hunspell open-xchange=$OX_VERSION \
+        open-xchange-admin=$OX_VERSION \
+        open-xchange-appsuite=$OX_VERSION \
+        open-xchange-appsuite-backend=$OX_VERSION \
+        open-xchange-appsuite-help-en-us=$OX_VERSION \
+        open-xchange-appsuite-l10n-*=$OX_VERSION \
+        open-xchange-appsuite-manifest=$OX_VERSION \
+        open-xchange-authentication-database=$OX_VERSION \
+        open-xchange-caldav=$OX_VERSION \
+        open-xchange-carddav=$OX_VERSION \
         open-xchange-documentconverter-api \
         open-xchange-documents-backend \
         open-xchange-documents-help-en-us \
         open-xchange-documents-ui \
         open-xchange-documents-ui-static \
-        open-xchange-grizzly \
+        open-xchange-grizzly=$OX_VERSION \
         open-xchange-l10n-* \
         open-xchange-passwordchange-database vim && \
     apt-get install -y --allow-unauthenticated oxldapsync && \

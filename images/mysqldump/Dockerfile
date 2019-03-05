@@ -13,6 +13,7 @@ ENV HOUR=3 MINUTE=30 \
     DB_CREDS_SECRET=mysql-backup-creds \
     LOCK_FOR_BACKUP= \
     SERVERS=dbhost \
+    SKEW_SECONDS=15 \
     USERNAME=mysqldump \
     TZ=UTC
 
