@@ -37,7 +37,6 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   -e "s/lid =/#lid =/" \
   -e "s/foid =/#foid =/" \
   -e "s/api_key = INSERT_WU_API_KEY_HERE/api_key = $WUNDER_API_KEY/" \
-  -e "s/skin = Standard/skin = $SKIN/" \
   -e "s/driver = weedb.mysql/driver = $DB_DRIVER/" \
   -e "s/rapidfire = False/rapidfire = $RAPIDFIRE/" \
   -e "s/database = archive_sqlite/database = archive_$DB_BINDING_SUFFIX/" \
@@ -47,10 +46,16 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   -e "s/user = weewx/user = $DB_USER/" \
   -e "s/password = weewx/password = $DB_PASS/" \
   -e "s/database_name = weewx$/database_name = $DB_NAME/" \
-  -e "s/#server = replace with the rsync/server = $RSYNC_HOST  #/" \
-  -e "s/#user = replace with the rsync username/user = $RSYNC_USER/" \
-  -e "s:#path = replace with the:path = $RSYNC_DEST  #:" \
+  -e "s/server = replace_me/server = $RSYNC_HOST/" \
+  -e "s/user = replace_me/user = $RSYNC_USER/" \
+  -e "s:path = replace_me:path = $RSYNC_DEST:" \
   $HOMEDIR/weewx.conf
+  if [ $SKIN != Season ]; then
+    sed -i \
+      "/skin = Season/,/enable = true/c skin = Seasons\n enable = false" $HOMEDIR/weewx.conf
+    sed -i \
+      "/skin = Standard/,/enable = false/c skin = $SKIN\n enable = true" $HOMEDIR/weewx.conf
+  fi
 
   # Change the 5th "enable = false" which is Wunderground StdRESTful toggle
   awk '/enable = false/{c++;if(c==5){sub("enable = false","enable = true");c=0}}1' \
