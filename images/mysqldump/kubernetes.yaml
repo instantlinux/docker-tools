@@ -15,7 +15,9 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
+        - { name: HOUR, value: "5" }
         - { name: SERVERS, value: "$DB_SERVERS" }
+        - { name: SKEW_SECONDS, value: "30" }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/$SERVICE_NAME:latest
         ports:

@@ -33,4 +33,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 DaVite is authored by David Madison who maintains links to the
 original (long-deprecated) code at [marginalhacks](http://marginalhacks.com/Hacks/DaVite).
 
-[![](https://images.microbadger.com/badges/license/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/davite.svg)](https://microbadger.com/images/instantlinux/davite "License badge") [![](https://img.shields.io/badge/code-instantlinux%2Fdocker_tools-blue.svg)](https://github.com/instantlinux/docker-tools/tree/master/images/davite/src "Code repo")

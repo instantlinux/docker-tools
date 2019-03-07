@@ -39,4 +39,4 @@ wunderground-user-password | credential for Weather Underground API
 wxcam-password-hashed | hashed password of 
 wxuser-password-hashed | hashed password of ftp upload user
 
-[![](https://images.microbadger.com/badges/license/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "License badge") [![](https://img.shields.io/badge/code-proftpd%2Fproftpd-blue.svg)](https://github.com/proftpd/proftpd "Code repo") [![](https://img.shields.io/badge/code-nftpd_com%2Fclient-blue.svg)](http://www.ncftpd.com/download "Code repo")

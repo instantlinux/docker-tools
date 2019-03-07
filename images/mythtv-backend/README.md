@@ -69,4 +69,4 @@ mythtv-db-password | Password of MythTV db user
 mythtv-user-password | Hashed password of MythTV ssh user
 mythweb-auth | htpasswd for mythweb user(s) under k8s
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "License badge") [![](https://img.shields.io/badge/code-mythtv%2Fmythtv-blue.svg)](https://github.com/mythtv/mythtv "Code repo")

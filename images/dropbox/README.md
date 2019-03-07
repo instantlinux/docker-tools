@@ -27,4 +27,4 @@ Variable | Default | Description
 -------- | ------- | -----------
 UID | 1000 | Linux user ID
 
-[![](https://images.microbadger.com/badges/license/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "License badge") [![](https://img.shields.io/badge/code-dropbox%2Fnautilus_dropbox-blue.svg)](https://github.com/dropbox/nautilus-dropbox "Code repo")

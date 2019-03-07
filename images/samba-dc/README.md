@@ -107,4 +107,4 @@ done
 samba-tool domain demote --remove-other-dead-server=xxx
 {noformat}
 
-[![](https://images.microbadger.com/badges/license/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "License badge") [![](https://img.shields.io/badge/code-samba_team%2Fsamba-blue.svg)](https://gitlab.com/samba-team/samba "Code repo")

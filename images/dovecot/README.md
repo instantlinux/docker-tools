@@ -51,4 +51,4 @@ See the Makefile and Makefile.vars files under k8s directory for default values 
 | ldap-ro-passwd | password for looking up LDAP users |
 | *key.pem | keyfile specified for ssl_dh certificate |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")

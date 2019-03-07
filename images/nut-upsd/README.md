@@ -78,4 +78,4 @@ udevadm control --reload-rules && udevadm trigger
 | ------ | ----------- |
 | nut-upsd-password | Password for API user |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "License badge") [![](https://img.shields.io/badge/code-networkupstools%2Fnut-blue.svg)](https://github.com/networkupstools/nut "Code repo")

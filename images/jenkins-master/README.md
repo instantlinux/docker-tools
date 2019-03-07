@@ -47,4 +47,4 @@ artifactory-user-password | password for artifactory repo access
 jenkins-admin-password | password for new Jenkins admin user
 jenkins-agent-password | password for agents
 
-[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "License badge") [![](https://img.shields.io/badge/code-jenkinsci%2Fjenkins-blue.svg)](https://github.com/jenkinsci/jenkins "Code repo")

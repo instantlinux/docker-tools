@@ -56,4 +56,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | ------ | ----------- |
 | git-dump_sshkey | read-only key for git repos (override name above) |
 | xxx-api-token | API token for fetching project list from gitlab |
-[![](https://images.microbadger.com/badges/license/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "License badge") [![](https://img.shields.io/badge/code-git%2Fgit.git-blue.svg)](https://git.kernel.org/pub/scm/git/git.git/ "Code repo")

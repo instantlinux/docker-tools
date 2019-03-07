@@ -81,4 +81,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | ox-db-password | configuration database password |
 | ox-master-password |system admin password |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "License badge") [![](https://img.shields.io/badge/code-open_xchange%2Fscm-blue.svg)](https://code.open-xchange.com "Code repo")

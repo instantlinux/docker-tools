@@ -21,4 +21,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | -------- | ------- | ----------- |
 | TZ       | UTC     | timezone    |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/rsyslogd.svg)](https://microbadger.com/images/instantlinux/rsyslogd "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/rsyslogd.svg)](https://microbadger.com/images/instantlinux/rsyslogd "License badge") [![](https://img.shields.io/badge/code-rsyslog%2Frsyslog-blue.svg)](https://github.com/rsyslog/rsyslog "Code repo")

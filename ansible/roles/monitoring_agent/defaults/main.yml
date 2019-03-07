@@ -1,4 +1,11 @@
 ---
+journald_conf_defaults:
+  SystemMaxFiles: 10
+  SystemMaxFileSize: 20M
+
+journald_conf_override: {}
+journald_conf: "{{ journald_conf_defaults | combine(journald_conf_override) }}"
+
 nagios_defaults:
   allowed_hosts:
   - localhost

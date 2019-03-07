@@ -26,4 +26,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | PYZOR_SITE | public.pyzor.org:24441 | pyzor URI |
 | TZ | UTC | time zone |
 | USERNAME | debian-spamd | user name to run as |
-[![](https://images.microbadger.com/badges/license/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "License badge") [![](https://img.shields.io/badge/code-apache_svn%2Fspamassassin-blue.svg)](https://svn.apache.org/viewvc/spamassassin "Code repo")

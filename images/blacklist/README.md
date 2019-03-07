@@ -87,4 +87,4 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | TZ | UTC| time zone |
 | USERNAME | rbldns | username to run as |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "License badge") [![](https://img.shields.io/badge/code-spamhaus%2Frbldnsd-blue.svg)](https://github.com/spamhaus/rbldnsd "Code repo")

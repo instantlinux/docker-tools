@@ -85,4 +85,4 @@ standard). So the SYSLOG_DEST environment variable provided here
 can provide a way to send proper logging (via the rsyslogd
 process included in this image) to a central syslog service.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "License badge") [![](https://img.shields.io/badge/code-weewx%2Fweewx-blue.svg)](https://github.com/weewx/weewx "Code repo")

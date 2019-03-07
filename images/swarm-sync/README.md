@@ -59,4 +59,4 @@ Secret | Description
 ------ | -----------
 swarm-sync_sshkey | private half of ssh keypair
 
-[![](https://images.microbadger.com/badges/license/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "License badge") [![](https://img.shields.io/badge/code-bcpierce00%2Funison-blue.svg)](https://github.com/bcpierce00/unison "Code repo")

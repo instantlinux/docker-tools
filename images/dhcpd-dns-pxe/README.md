@@ -59,4 +59,4 @@ SUBNET1_NETMASK | 255.255.255.0 | network mask
 TFTP_ENABLE | yes | enable tftp server
 TFTP_ROOT | /tftpboot/pxelinux | don't change this
 
-[![](https://images.microbadger.com/badges/license/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "License badge") [![](https://img.shields.io/badge/code-isc%2Fdhcp-blue.svg)](https://source.isc.org/git/dhcp.git "Code repo") [![](https://img.shields.io/badge/code-thekelleys%2Fdnsmasq-blue.svg)](http://thekelleys.org.uk/gitweb/?p=dnsmasq.git "Code repo")

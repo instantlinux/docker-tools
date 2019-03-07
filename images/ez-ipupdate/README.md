@@ -5,7 +5,7 @@ Dynamic-DNS client - automatically updates a public DNS name with your dynamic I
 
 First create a secret:
 
-    echo -n user:pw ez-ipudate-user
+    echo -n user:pw ez-ipupdate-user
     kubectl create secret generic ez-ipupdate-user --from-file=./ez-ipupdate-user
     # or #
     docker secret create ez-ipupdate-user ez-ipupdate-user
@@ -26,4 +26,4 @@ This repo has complete instructions for
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~
 
-[![](https://images.microbadger.com/badges/license/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fez_ipupdate-blue.svg)](https://sourceforge.net/projects/ez-ipupdate/ "Code repo")

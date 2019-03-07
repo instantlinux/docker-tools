@@ -57,3 +57,9 @@
     dest: /etc/rsyslog.d/custom.conf
     src: rsyslog-custom.conf.j2
   notify: Restart rsyslogd
+
+- name: Put a leash on journald (default log files are huge)
+  template:
+    dest: /etc/systemd/journald.conf
+    src: journald.conf.j2
+  notify: Restart journald

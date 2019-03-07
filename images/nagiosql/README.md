@@ -39,6 +39,6 @@ TZ | UTC | local timezone
 Secret | Description
 ------ | -----------
 nagiosql-db-password | database credential
-<hostname>-server-key.pem | SSL cert private key
+\<hostname>-server-key.pem | SSL cert (if using docker-compose)
 
-[![](https://images.microbadger.com/badges/license/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fnagiosql-blue.svg)](https://sourceforge.net/projects/nagiosql/ "Code repo")

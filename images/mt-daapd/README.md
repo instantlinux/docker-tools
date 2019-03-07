@@ -20,4 +20,4 @@ Volume attachments: mount the media as /srv/music; add an index cache mount /var
 | -------- | ------- | ----------- |
 | SERVER_BANNER | Firefly Media on Ubuntu | Name of service |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "License badge") [![](https://img.shields.io/badge/code-ejurgensen%2Fforked_daapd-blue.svg)](https://github.com/ejurgensen/forked-daapd "Code repo")

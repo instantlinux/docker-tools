@@ -15,7 +15,7 @@ db00 db01 db02 db03:
 	  envsubst < $(RESOURCE).yaml | kubectl $(ACTION) -f -
 
 gitlab-runner::
-	@echo Use gitlab-agent target
+	@echo Invoke 'make gitlab-agent' instead
 	@exit 1
 
 gitlab-agent:
@@ -23,10 +23,10 @@ gitlab-agent:
 	@K8S_NAMESPACE=gitlab make install/limits
 	@SERVICE_NAME=gitlab-runner \
 	  envsubst < gitlab-runner.yaml | kubectl $(ACTION) $(ADMIN_CTX) -n gitlab -f -
-	-sops -d secrets/$(CA_SECRET) | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
+	-sops -d secrets/$(CA_SECRET).yml | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
 
 nut-upsd::
-	@echo Use nut-xx target
+	@echo Invoke 'make nut-xx' (e.g. nut-01) instead
 	@exit 1
 nut-%:
 	@echo --$(NOTICE) $@--
@@ -36,7 +36,7 @@ nut-%:
 	 kubectl $(ACTION) $(ADMIN_CTX) --namespace $(K8S_NAMESPACE) -f -
 
 samba-dc::
-	@echo Use dcxx target for domain controllers
+	@echo Invoke 'make dcxx' target for domain controllers
 	@exit 1
 dc0%:
 	@echo --$(NOTICE) $@--

@@ -22,7 +22,7 @@ An example compose file is provided here in docker-compose.yml. This is for the 
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~
 
-Status: There's a recent fix for segfault crashes with vsftpd version 3.0.3 under Alpine that will come out in a future version. This one has a workaround that may work for you. I've switched to proftpd (see that image).
+Status: There's a recent fix for segfault crashes with vsftpd version 3.0.3 under Alpine that will come out in a future version. This one has a workaround that may work for you. [Wikipedia|https://en.wikipedia.org/wiki/Vsftpd] has a brief history of how vsftpd met its demise after 2011. I've switched to proftpd (see that image).
 
 ### Variables
 
@@ -50,4 +50,4 @@ Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
 
-[![](https://images.microbadger.com/badges/license/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "License badge") [![](https://img.shields.io/badge/code-ubuntu%2Fvsftpd-blue.svg)](https://launchpad.net/ubuntu/+source/vsftpd "Code")
