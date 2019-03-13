@@ -9,7 +9,7 @@ For more details, see the vendor's site [OX App Suite](http://open-xchange.com/e
 
 ### Usage
 
-See the kubernetes or docker-compose.yml here; set up the variables and secrets as defined below, and invoke the resource.
+See the kubernetes or docker-compose.yml here; make sure you have a compatible database running first (the [mariadb-galera](https://cloud.docker.com/repository/docker/instantlinux/mariadb-galera) service is one option), set up the variables and secrets as defined below, and invoke the resource.
 
 kubernetes:
 ```
@@ -34,7 +34,6 @@ Create database and grant access:
                IDENTIFIED BY 'mysecret2';
         mysql> GRANT ALL PRIVILEGES ON `oxdatabase_5`.* TO 'openxchange'@'%'
                IDENTIFIED BY 'mysecret2';
-
 
 Change the mounted volume /ox/etc to allow read/write; it is populated
 with default settings at first launch. Afterward, you can set it to

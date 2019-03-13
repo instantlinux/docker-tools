@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OX_VERSION=7.10.1-7
+ARG OX_VERSION=7.10.1-9
 ARG OX_GID=261
 ARG OX_UID=2061
 ENV DEBIAN_FRONTEND=noninteractive \

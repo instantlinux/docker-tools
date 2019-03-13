@@ -28,7 +28,7 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: OX_CONFIG_DB_HOST, value: $DB_HOST }
+        - { name: OX_CONFIG_DB_HOST, value: $OX_CONFIG_DB_HOST }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/open-xchange-appsuite:latest
         ports:
@@ -61,7 +61,6 @@ spec:
           mountPath: /run/secrets/ox-master-password
           subPath: ox-master-password
       dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
         options:
         - name: use-vc
         - name: ndots
