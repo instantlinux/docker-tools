@@ -151,26 +151,10 @@ data:
     maildrop  unix  -       n       n       -       -       pipe
       flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d $DOL{recipient}
     #
-    # The Cyrus deliver program has changed incompatibly, multiple times.
-    #
-    old-cyrus unix  -       n       n       -       -       pipe
-      flags=R user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -m $DOL{extension} $DOL{user}
-    # Cyrus 2.1.5 (Amos Gouaux)
-    # Also specify in main.cf: cyrus_destination_recipient_limit=1
-    cyrus     unix  -       n       n       -       -       pipe
-      user=cyrus argv=/usr/lib/cyrus-imapd/deliver -e -r $DOL{sender} -m $DOL{extension} $DOL{user}
-    #
     # See the Postfix UUCP_README file for configuration details.
     #
     uucp      unix  -       n       n       -       -       pipe
       flags=Fqhu user=uucp argv=uux -r -n -z -a${DOL}sender - ${DOL}nexthop!rmail (${DOL}recipient)
-    #
-    # Other external delivery methods.
-    #
-    ifmail    unix  -       n       n       -       -       pipe
-      flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r ${DOL}nexthop (${DOL}recipient)
-    bsmtp     unix  -       n       n       -       -       pipe
-      flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f ${DOL}sender ${DOL}nexthop ${DOL}recipient
 
     #
     # local additions

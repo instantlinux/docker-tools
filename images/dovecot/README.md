@@ -19,17 +19,18 @@ Configuration is defined as files in a volume mounted as
   ```
 * (Optional, to save startup time) generate self-signed server.pem and server.key files for mounting to /etc/ssl/dovecot
   ```
-  wget https://raw.githubusercontent.com/dovecot/core/release-2.3.2/doc/mkcert.sh
+  wget https://raw.githubusercontent.com/dovecot/core/release-2.3.4/doc/mkcert.sh
+  wget https://dovecot.org/doc/dovecot-openssl.cnf
   # (edit dovecot-openssl.cnf to suit)
   ./mkcert.sh
   ```
 
+For settings, see etc-example directory and kubernetes.yaml / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) file defines default values.
+
 Also configure postfix as described in the postfix image.
 
-See etc-example directory and kubernetes.yaml / docker-compose.yml.
-
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dovecot/kubernetes.yaml) with the Makefile or:
 ~~~
 cat kubernetes.yaml | envsubst | kubectl apply -f -
 ~~~

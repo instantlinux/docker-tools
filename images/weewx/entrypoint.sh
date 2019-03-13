@@ -81,7 +81,17 @@ Host $RSYNC_HOST
   Port $RSYNC_PORT
   User $RSYNC_USER
 EOF
-  ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST >>$HOMEDIR/.ssh/known_hosts
+  RETRIES=10
+  while [ ! -s /tmp/sshkey ]; do
+    sleep 5
+    ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST > /tmp/sshkey
+    RETRIES=$((RETRIES - 1))
+    if [ $RETRIES == 0 ]; then
+      echo "Could not reach sshd on $RSYNC_HOST after 10 tries"
+      exit 1
+    fi
+  done
+  cat /tmp/sshkey >> $HOMEDIR/.ssh/known_hosts && rm /tmp/sshkey
 fi
 
 chown -R $WX_USER $HOMEDIR $HTML_ROOT /run/$SSHKEY

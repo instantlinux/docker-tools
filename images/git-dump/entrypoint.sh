@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -e
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone
@@ -25,7 +25,17 @@ Host *
 EOF
   if [ ! -z "$REPO_PREFIX" ]; then
     SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d: -f 1)
-    ssh-keyscan -p $SSH_PORT $SSH_HOST >>$SSH_PATH/known_hosts
+    RETRIES=10
+    while [ ! -s /tmp/sshkey ]; do
+      sleep 5
+      ssh-keyscan -p $SSH_PORT $SSH_HOST > /tmp/sshkey
+      RETRIES=$((RETRIES - 1))
+      if [ $RETRIES == 0 ]; then
+        echo "Could not reach sshd on $SSH_HOST after 10 tries"
+        exit 1
+      fi
+    done
+    cat /tmp/sshkey >> $SSH_PATH/known_hosts && rm /tmp/sshkey
   fi
 fi
 chown -R $USERNAME /home/$USERNAME
