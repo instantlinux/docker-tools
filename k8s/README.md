@@ -109,8 +109,9 @@ export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
 export TZ=America/Los_Angeles
 ```
 
-Customize the Makefile.vars files with any additional settings you
-desire.
+Customize the [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) file with any additional settings you
+desire. (You can override settings in that file without editing,
+if you prefer, with environment variables in a bash .profile.)
 
 Choose a random (~32 bytes) encryption key and put it into an ansible
 vault variable _vault_k8s.encryption_key_ under

@@ -9,9 +9,11 @@ Duplicati 2.0 software for secure online/local backups. After CrashPlan disconti
 In your kubernetes.yaml or docker-compose file, add the list of volumes you wish to back up under /backup. If you're backing up a server, set the PUID environment value to root user (0), otherwise set it to any user-id that has read access to your files. Bring up the stack and define backup configurations; see [software documentation](https://github.com/duplicati/duplicati/wiki). All other configuration is done via the UI on TCP port 8200.
 
 Example kubernetes.yaml and docker-compose.yml files are provided here. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/duplicati/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/duplicati/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make duplicati
 ~~~
 
 ### Variables

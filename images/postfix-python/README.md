@@ -2,9 +2,11 @@
 [![](https://images.microbadger.com/badges/version/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Commit badge")
 
 Postfix with python support. (Python needed for blacklist utility.) This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/postfix-python/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/postfix-python/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make postfix
 ~~~
 
 See also the variables and secrets defined in base image [README](https://github.com/instantlinux/docker-tools/blob/master/images/postfix/README.md).

@@ -30,9 +30,11 @@ For settings, see etc-example directory and kubernetes.yaml / docker-compose.yml
 Also configure postfix as described in the postfix image.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dovecot/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dovecot/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make dovecot
 ~~~
 
 See the Makefile and Makefile.vars files under k8s directory for default values referenced within kubernetes.yaml.
@@ -44,6 +46,8 @@ See the Makefile and Makefile.vars files under k8s directory for default values 
 | LDAP_PASSWD_SECRET | ldap-ro-passwd | name of secret for LDAP credential |
 | SSL_DH |  | Filename (in conf.local) of DH parameters |
 | TZ | UTC | time zone |
+
+Need more configurability? Edit the ConfigMap defined in kubernetes.yaml.
 
 ### Secrets
 

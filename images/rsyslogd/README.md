@@ -10,9 +10,11 @@ Why is this image customized? I couldn't find a stock Docker rsyslogd image that
 Set up a load balancer with your desired port number and aim it at this. Put your /etc/rsyslog.d and /etc/logrotate.d customizations into read-only volume mounts. Map /var/log to a persistent volume if you want to preserve it. There's really not much to this.
 
 Example kubernetes and docker-compose resource definition files are provided here. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/rsyslogd/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/rsyslogd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make rsyslogd
 ~~~
 
 ### Variables
@@ -20,5 +22,7 @@ cat kubernetes.yaml | envsubst | kubectl apply -f -
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
 | TZ       | UTC     | timezone    |
+
+Most configuration is done via config file; see the ConfigMap defined in kubernetes.yaml.
 
 [![](https://images.microbadger.com/badges/license/instantlinux/rsyslogd.svg)](https://microbadger.com/images/instantlinux/rsyslogd "License badge") [![](https://img.shields.io/badge/code-rsyslog%2Frsyslog-blue.svg)](https://github.com/rsyslog/rsyslog "Code repo")

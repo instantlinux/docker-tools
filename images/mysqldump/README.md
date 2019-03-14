@@ -5,7 +5,7 @@ This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. This image is based on
 MariaDB 10.3.x client.
 
-This Kubernetes Docker compose service definition will cause a dump to happen
+This Kubernetes or docker-compose service definition will cause a dump to happen
 at the default hour (3:30am in $TZ) from a server named dbhost onto
 a subdirectory "mysql" in volume "backup".
 
@@ -37,6 +37,15 @@ the directory you will find a subdirectory dbhost, and within that a
 separate directory for each day of the month. If you set $KEEP_DAYS
 to 7, it will keep a directory for each day of the week. Backups older
 than $KEEP_DAYS will be automatically removed.
+
+Launch this docker image in kubernetes or docker-compose using one of the
+files provided here. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can launch [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/blacklist/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+~~~
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make mysqldump
+~~~
 
 ### Variables
 

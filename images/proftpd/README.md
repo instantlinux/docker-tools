@@ -17,12 +17,16 @@ A single upload user can be specified via the FTPUSER_xxx variables. It is activ
     docker secret create ftp-user-password-secret -
 
 An example compose file is provided here in docker-compose.yml. This is for the common scenario of sharing from Docker swarm the contents of a network-attached volume as a read-only anonymous-ftp service. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/proftpd/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/proftpd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make proftpd
 ~~~
 
 ### Variables
+
+These variables can be passed to the image from kubernetes.yaml or docker-compose.yml as needed:
 
 Variable | Default | Description |
 -------- | ------- | ----------- |

@@ -19,9 +19,11 @@ Mount these under /etc:
 Mount your PXE boot images and client definitions under /tftpboot/pxelinux.
 
 See the kubernetes.yaml provided here. If you're using Swarm, see the docker-compose.yml file provided here in the source directory; this needs to run on host network with kernel capability CAP_NET_ADMIN, so it will not currently run in Docker Swarm. (You can run a single instance of this via _docker run_ or _docker-compose_.) This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dhcpd-dns-pxe/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dhcpd-dns-pxe/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make dhcpd-dns-pxe
 ~~~
 
 You can build a failsafe cluster of DHCP servers under kubernetes using the kubernetes.yaml definition here. Define a ConfigMap with non-overlapping range definitions such as "192.168.1.32 192.168.1.63", "192.16.1.64 192.168.1.95", "192.168.1.96 192.168.1.127" for a set of 3 replicas. If a replica goes down, the others will continue to assign addresses. They won't conflict thanks to the way DHCP protocol works; a client will use the first address offered and ignore any additional offers from the server pool. If a blank range is specified, the dhcp server will offer only reserved MAC/IP assignments.
@@ -35,6 +37,8 @@ along, simply set variable DHCP_ENABLE=no and volume-mount your configuration as
 DHCP on port 67 if you have any such options specified.
 
 ### Variables
+
+These variables can be passed to the image from kubernetes.yaml or docker-compose.yml as needed:
 
 Variable | Default | Description |
 -------- | ------- | ----------- |

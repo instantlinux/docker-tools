@@ -19,9 +19,12 @@ The most-common directives can be specified in environment variables as shown be
 Test your configuration and/or manage contents of your directory using Apache Directory Studio. Make a connection on port 636 with method SSL encryption (ldaps); specify simple authentication with username <realm prefix>\<your name>. The ldaps certificate is self-signed so you'll need to accept it first.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/samba-dc/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/samba-dc/kubernetes.yaml)  using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+# This take target is defined in Makefile.instances
+make dc03
 ~~~
 
 ### Status

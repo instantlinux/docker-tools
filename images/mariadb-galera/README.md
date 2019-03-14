@@ -94,9 +94,12 @@ that log.
 See the k8s/Makefile for a _make etcd_ to start	etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+# This make target is defined in Makefile.instances
+make db00
 ~~~
 
 ### Notes

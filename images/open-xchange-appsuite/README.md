@@ -53,9 +53,12 @@ UI is available at http://yourhost/appsuite. There are at least two settings you
 * com.openexchange.hazelcast.group.password in file hazelcast.properties: this has a widely-known default value; change it to a random string.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/open-xchange-appsuite/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/open-xchange-appsuite/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+# docs.yaml is a symlink to openx-xchange-appsuite/kubernetes.yaml
+make docs
 ~~~
 
 ### Variables

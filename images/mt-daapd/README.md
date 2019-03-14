@@ -5,12 +5,17 @@ This is Ron Pedde's [Firefly Media server](https://en.wikipedia.org/wiki/Firefly
 
 Devices such as Roku, Sonos and other brands of audio players or applications such as the Amarok music play for Linux will be able to connect to this service using mDNS/DNS-SD (Avahi).
 
-Requires --net=host in order to support mDNS. See the [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mt-daapd/kubernetes.yaml) or [docker-compose.yml](docker-compose.yml) file for examples. To start, set environment variables as desired and invoke one of these commands:
+Requires --net=host in order to support mDNS. See the [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mt-daapd/kubernetes.yaml) or [docker-compose.yml](docker-compose.yml) file for examples. To start, set environment variables as desired and invoke this:
 
-```
+~~~
 docker-compose up -d
-kubectl apply -f kubernetes.yaml
-```
+~~~
+or under Kubernetes customize [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) and invoke _make_ after cloning this repo:
+~~~
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make mt-daapd
+~~~
 
 Volume attachments: mount the media as /srv/music; add an index cache mount /var/cache/forked-daapd and a log path /var/log if avahi logging is desired. Most activity is logged to the container's standard output.
 

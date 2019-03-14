@@ -18,9 +18,11 @@ make data-sync
 Define any custom directives in the data-sync ConfigMap, and set environment variable $SERVICE_NAME to data-sync (you can run more than one copy of this by setting different SERVICE_NAME and ConfigMap names).
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make data-sync
 ~~~
 
 For monitoring, put nagios-nrpe-data-sync.cfg into your /etc/nagios
@@ -37,6 +39,8 @@ To scale this beyond the first two nodes, add the service.data-sync=allow label 
 Not running under Kubernetes? Omit PEERNAME value on the primary node, and set PEERNAME to the primary's hostname on each of the additional nodes.
 
 ### Variables
+
+These variables can be passed to the image from kubernetes.yaml or docker-compose.yml as needed:
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |

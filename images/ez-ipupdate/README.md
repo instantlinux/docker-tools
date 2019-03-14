@@ -21,9 +21,11 @@ Then deploy this service, see the example kubernetes.yaml / docker-compose.yml f
 | USER_SECRET | ez-ipupdate-user |Name of the Docker secret to deploy |
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/ez-ipupdate/kubernetes.yaml) with the Makefile or:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/ez-ipupdate/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
-cat kubernetes.yaml | envsubst | kubectl apply -f -
+git clone https://github.com/instantlinux/docker-tools.git
+cd docker-tools/k8s
+make ez-ipupdate
 ~~~
 
 [![](https://images.microbadger.com/badges/license/instantlinux/ez-ipupdate.svg)](https://microbadger.com/images/instantlinux/ez-ipupdate "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fez_ipupdate-blue.svg)](https://sourceforge.net/projects/ez-ipupdate/ "Code repo")
