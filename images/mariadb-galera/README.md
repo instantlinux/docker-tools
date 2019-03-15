@@ -3,21 +3,9 @@
 
 MariaDB 10.3 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 
-### Variables
-
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| CLUSTER_JOIN | | join address--usually not needed |
-| CLUSTER_NAME | cluster01 | cluster name |
-| CLUSTER_SIZE | 3 | expected number of nodes |
-| DISCOVERY_SERVICE | etcd:2379 | etcd host list, e.g. etcd1:2379,etcd2:2379 |
-| REINSTALL_OK | | set to any value to enable reinstall over old volume |
-| ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
-| TTL | 10 | longevity (in seconds) of keys posted to etcd |
-| TZ | UTC | timezone |
-| SST_AUTH_SECRET | sst-auth-password | name of secret for password |
-
 ### Usage
+
+Define the following dependencies before launching the cluster: passwords for root and SST, network load balancer, and a dedicated etcd key-value store. Here's how:
 
 Create a random root password:
 ```
@@ -91,7 +79,7 @@ that log.
 
 ### Setting up etcd
 
-See the k8s/Makefile for a _make etcd_ to start	etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
+See the [k8s/Makefile](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile) for a _make etcd_ to start etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
 
 This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
@@ -101,6 +89,20 @@ cd docker-tools/k8s
 # This make target is defined in Makefile.instances
 make db00
 ~~~
+
+### Variables
+
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+| CLUSTER_JOIN | | join address--usually not needed |
+| CLUSTER_NAME | cluster01 | cluster name |
+| CLUSTER_SIZE | 3 | expected number of nodes |
+| DISCOVERY_SERVICE | etcd:2379 | etcd host list, e.g. etcd1:2379,etcd2:2379 |
+| REINSTALL_OK | | set to any value to enable reinstall over old volume |
+| ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
+| TTL | 10 | longevity (in seconds) of keys posted to etcd |
+| TZ | UTC | timezone |
+| SST_AUTH_SECRET | sst-auth-password | name of secret for password |
 
 ### Notes
 

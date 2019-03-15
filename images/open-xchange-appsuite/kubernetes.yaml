@@ -42,7 +42,7 @@ spec:
         volumeMounts:
         - mountPath: /ox/etc
           name: admin
-          readOnly: true
+          readOnly: $OX_ETC_READONLY
           subPath: services/ox-appsuite/etc
         - mountPath: /ox/store
           name: share

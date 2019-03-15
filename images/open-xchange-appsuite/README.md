@@ -58,8 +58,10 @@ This repo has complete instructions for
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
 # docs.yaml is a symlink to openx-xchange-appsuite/kubernetes.yaml
-make docs
+OX_ETC_READONLY=false make docs
 ~~~
+
+After the first run, you can customize settings in the mounted /ox/etc (optionally store the full directory into a source-code repo) and restart the container without OX_ETC_READONLY.
 
 ### Variables
 
@@ -74,6 +76,8 @@ make docs
 | OX_CONTEXT_ID | 1 | context id (number) |
 | OX_SERVER_NAME | oxserver | server name |
 | OX_SERVER_MEMORY | 2048 | server memory limit (MB) |
+
+The kubernetes.yaml file supports one additional variable, OX_ETC_READONLY.
 
 ### Secrets
 
