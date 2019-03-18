@@ -23,6 +23,8 @@ effort.
 * Add any ssh public keys for your user(s) into files/keys/ssh_public_keys,
   with file names <user>-<keyname>.pub; these will be added to
   ~<user>/.ssh/authorized_keys.
+* Make sure your .kube/config default context specifies the namespace
+  where you want to deploy resources.
 
 This includes a Makefile with the following targets, to be run in the
 following (approximate) order for kubernetes (see detailed readme in k8s

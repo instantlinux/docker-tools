@@ -71,3 +71,11 @@
     daemon_reload: yes
     state: "{{ k8s.service.state }}"
     enabled: "{{ k8s.service.enabled }}"
+
+- name: Create local_vols shared directory
+  file:
+    name: "{{ item }}"
+    state: directory
+  with_items:
+  - "{{ k8s.local_vols }}"
+  - "{{ k8s.local_vols }}/share"

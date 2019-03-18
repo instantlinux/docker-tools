@@ -13,6 +13,7 @@ See the kubernetes or docker-compose.yml here; make sure you have a compatible d
 
 kubernetes:
 ```
+    # edit .kube/config to ensure desired default namespace, and then:
     kubectl create secret generic --from-literal=ox-admin-password=mysecret1 \
       ox-admin-password
     kubectl create secret generic --from-literal=ox-db-password=mysecret1 \
@@ -34,6 +35,9 @@ Create database and grant access:
                IDENTIFIED BY 'mysecret2';
         mysql> GRANT ALL PRIVILEGES ON `oxdatabase_5`.* TO 'openxchange'@'%'
                IDENTIFIED BY 'mysecret2';
+
+Verify database can be reached at the DNS name you've defined for
+OX_CONFIG_DB_HOST.
 
 Change the mounted volume /ox/etc to allow read/write; it is populated
 with default settings at first launch. Afterward, you can set it to
