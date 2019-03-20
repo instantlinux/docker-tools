@@ -53,6 +53,9 @@ spec:
         - mountPath: /etc/gitlab
           name: $SERVICE_NAME
           subPath: config
+        - mountPath: /etc/gitlab/gitlab.rb
+          name: config
+          subPath: gitlab.rb
         - mountPath: /var/opt/gitlab
           name: $SERVICE_NAME
           subPath: data
@@ -73,6 +76,9 @@ spec:
       volumes:
       - name: backup
         hostPath: { path: $PATH_BKP }
+      - name: config
+        configMap:
+          name: $SERVICE_NAME
       - name: logs
         emptyDir: {}
       - name: $SERVICE_NAME
@@ -98,3 +104,23 @@ spec:
         backend:
           serviceName: $SERVICE_NAME
           servicePort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME
+data:
+  gitlab.rb: |
+    external_url 'http://git.$MYDOMAIN'
+    gitlab_rails['time_zone'] = '$TZ'
+    gitlab_rails['smtp_enable'] = true
+    gitlab_rails['smtp_address'] = 'smtp.$DOMAIN'
+    gitlab_rails['smtp_port'] = 25
+    gitlab_rails['smtp_domain'] = '$HOSTNAME_EMAIL'
+    gitlab_rails['smtp_enable_starttls_auto'] = true
+    gitlab_rails['smtp_openssl_verify_mode'] = 'none'
+    prometheus['flags'] = {
+      #'storage.tsdb.retention.time' => '3d',
+      'storage.tsdb.retention' => '3d',
+      'config.file' => "#{node['gitlab']['prometheus']['home']}/prometheus.yml"
+    }

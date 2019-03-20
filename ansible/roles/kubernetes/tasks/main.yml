@@ -65,10 +65,23 @@
       \nRequiresMountsFor=/var/lib/kubelet
   when: False
 
+- name: Add systemd unit file for disabling transparent huge pages
+  copy:
+    dest: /etc/systemd/system/disable-thp.service
+    src: disable-thp.service
+
+- name: Start disable-thp service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    name: disable-thp
+    state: started
+  when: not k8s.master
+
 - name: Add kubelet service
   systemd:
-    name: "{{ k8s.service.name }}"
     daemon_reload: yes
+    name: "{{ k8s.service.name }}"
     state: "{{ k8s.service.state }}"
     enabled: "{{ k8s.service.enabled }}"
 
