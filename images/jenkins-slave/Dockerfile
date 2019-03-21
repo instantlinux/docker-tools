@@ -46,8 +46,8 @@ RUN addgroup -g $DOCKER_GID docker && \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
-      bash curl docker==$_DOCKER_VERSION gcc git gzip make musl-dev \
-      openssh-client python python-dev \
+      bash curl docker==$_DOCKER_VERSION gcc git gzip make \
+      musl=1.1.20-r4 musl-dev openssh-client python python-dev \
       py-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py-pip py-virtualenv \
       tar tzdata uwsgi-python wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
