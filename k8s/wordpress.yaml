@@ -132,6 +132,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/auth-url: http://$AUTHELIA_IP/api/verify
     nginx.ingress.kubernetes.io/auth-signin: https://authtotp.$DOMAIN
+    nginx.ingress.kubernetes.io/rewrite-target: ${DOL}baseuri
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   tls:
