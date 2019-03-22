@@ -26,16 +26,22 @@ if [ ! -d .git ]; then
   git clone $GIT_REPO $DEST
 fi
 LAST_HASH=
+RETVAL=0
 while [ 1 == 1 ]; do
-  git fetch
-  HASH=`git rev-parse refs/remotes/origin/$GIT_COMMIT`
-  git checkout $GIT_COMMIT -q
-  if [ "$HASH" != "$LAST_HASH" ]; then
-    git pull origin $GIT_COMMIT
-    [ $? -ne 0 ] && exit 1
-    echo `date --rfc-2822` updating to hash=$HASH
-    LAST_HASH=$HASH
+  if ! git fetch; then
+    echo Cannot fetch repo=$GIT_REPO status=warning
+    RETVAL=1
+  else
+    HASH=`git rev-parse refs/remotes/origin/$GIT_COMMIT`
+    git checkout $GIT_COMMIT -q
+    if [ "$HASH" != "$LAST_HASH" ]; then
+      git pull origin $GIT_COMMIT
+      [ $? -ne 0 ] && exit 1
+      echo `date --rfc-2822` updating to hash=$HASH
+      LAST_HASH=$HASH
+    fi
   fi
   [ $INTERVAL -eq 0 ] && break
   sleep $INTERVAL
 done
+exit $RETVAL

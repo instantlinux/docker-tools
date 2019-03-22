@@ -45,16 +45,21 @@ ro/read-only as in the example docker-compose.yml (and manage its
 contents with your favorite source-code tool such as git; subsequent restarts
 copy these files into /opt/open-xchange/etc).
 
+There are at least three settings you will probably want to change under /ox/etc after default values are populated:
+
+| Setting | File | Value | Why |
+| ------- | ---- | ----- | --- |
+| com.openexchange.capability.presentation | documents.properties | true | Text word-processor and Spreadsheet utilities enabled by default; Presentation default value is false |
+| com.openexchange.hazelcast.group.password | hazelcast.properties | `uuidgen` | Has a widely-known default value; change it to a random string |
+| com.openexchange.IPCheck | permissions.properties | false | Under Docker you're likely to suffer frequent logouts with _Client login IP changed_ in the logs. |
+
 Once the container is launched, context-admin can register new users:
 
         docker exec <container_name> /opt/open-xchange/sbin/createuser \
           -A oxadmin -c 1 -d jennifer_wu -e jwu@domain.com \
           -g Jennifer -s Wu -l en_US -p password -u jwu -P <admin password>
 
-UI is available at http://yourhost/appsuite. There are at least two settings you will probably want to change:
-
-* com.openexchange.capability.presentation in file etc/documents.properties: Open Xchange has the Text word-processor and Spreadsheet utilities enabled by default, but Presentation remains disabled until you activate this setting.
-* com.openexchange.hazelcast.group.password in file hazelcast.properties: this has a widely-known default value; change it to a random string.
+UI is available at http://yourhost/appsuite.
 
 This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/open-xchange-appsuite/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:

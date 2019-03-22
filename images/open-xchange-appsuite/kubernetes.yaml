@@ -29,16 +29,17 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: OX_CONFIG_DB_HOST, value: $OX_CONFIG_DB_HOST }
+        - { name: OX_SERVER_MEMORY, value: "$OX_SERVER_MEMORY" }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/open-xchange-appsuite:latest
         ports:
         - containerPort: 80
         resources:
           limits:
-            memory: 2048Mi
+            memory: 4096Mi
           requests:
             cpu: 200m
-            memory: 768Mi
+            memory: ${OX_SERVER_MEMORY}Mi
         volumeMounts:
         - mountPath: /ox/etc
           name: admin
