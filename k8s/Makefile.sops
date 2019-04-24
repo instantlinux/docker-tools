@@ -2,6 +2,7 @@
 #
 # Usage:
 #    export EDITOR=<your editor>
+#    make gen_sops_gpg    - Set up local PGP private key
 #    make secrets/foo.yml - Create a new secret
 #    make secrets/foo     - (without .yml) Upload secret to k8s
 #    sops secrets/foo.yml - Edit secret
@@ -25,8 +26,8 @@ else
 endif
 
 gen_sops_gpg:
-	$(eval EXISTS := $(shell gpg --list-keys | grep "PGP credentials"))
-ifneq ($(EXISTS),)
+	gpg --list-keys | grep "PGP credentials" || make new_sops_gpg
+new_sops_gpg:
 	@echo Creating GPG private/public key for encryption
 	@echo "  Answer questions as follows:"
 	@echo "  kind?       1"
@@ -39,12 +40,9 @@ ifneq ($(EXISTS),)
 	@echo "  Okay?       O"
 	@echo There is no need to set a passphrase.
 	@echo When complete, preserve and secure contents of $$HOME/.gnupg, then
-	@echo "  export GPG_FINGERPRINT=<copy/paste new value>"
-	@echo "  make secrets/.sops.yaml\n\n"
+	@echo "  # (find the 40-byte hex value from gpg --list-keys)
+	@echo "  GPG_FINGERPRINT=<hex value> make secrets/.sops.yaml\n\n"
 	@gpg --full-gen-key
-else
-	@gpg --list-keys
-endif
 
 secrets/.sops.yaml:
 ifndef GPG_FINGERPRINT

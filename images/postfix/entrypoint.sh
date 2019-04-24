@@ -46,5 +46,5 @@ fi
 meta_directory=/etc/postfix /usr/libexec/postfix/post-install create-missing
 # two of the directories aren't set correctly by post-install
 chgrp postdrop /var/spool/postfix/maildrop /var/spool/postfix/public
-/usr/lib/postfix/master &
+/usr/libexec/postfix/master &
 rm -f /var/run/rsyslogd.pid && rsyslogd -n

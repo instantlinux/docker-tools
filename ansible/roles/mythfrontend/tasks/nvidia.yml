@@ -14,7 +14,8 @@
     mode: 0755
     url: "{{ nvidia_driver.download_uri }}/{{ nvidia_driver.version
       }}/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run"
-  when: ansible_os_family == 'Suse'
+  when: False
+# when: ansible_os_family == 'Suse'
 
 # If this fails, most likely there isn't an Nvidia GPU on the
 # target system, or the nouveau driver hasn't been deinstalled
@@ -25,7 +26,8 @@
   args:
     creates: "{{ nvidia_driver.creates }}"
   ignore_errors: True
-  when: ansible_os_family == 'Suse'
+  when: False
+# when: ansible_os_family == 'Suse'
 
 - name: Set DPI so fonts are sized properly
   template:

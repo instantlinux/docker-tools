@@ -1,4 +1,4 @@
-FROM docker:18.06.1
+FROM docker:18.06.3
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
@@ -11,14 +11,14 @@ ENV BUILD_DIR=/build \
     BUILD_USER=build \
     TZ=UTC
 
-ARG COMPOSE_VERSION=1.22.0
-ARG PYTHON_VERSION=3.6.6-r0
-ARG PYCRYPTOGRAPHY_VERSION=2.3.1-r0
+ARG COMPOSE_VERSION=1.23.2
+ARG PYTHON_VERSION=3.6.8-r2
+ARG PYCRYPTOGRAPHY_VERSION=2.4.2-r2
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64
 ARG DOCKER_GID=485
 ARG BUILD_UID=1001
-ARG COMPOSE_SHA=f679a24b93f291c3bffaff340467494f388c0c251649d640e661d509db9d57e9
+ARG COMPOSE_SHA=4d618e19b91b9a49f36d041446d96a1a0a067c676330a4f25aca6bbd000de7a9
 
 COPY requirements.txt /root/
 
@@ -31,7 +31,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       bash curl gcc git gzip jq make musl-dev openssh-client \
       python3==$PYTHON_VERSION python3-dev \
       py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION py3-virtualenv tar \
-      tzdata uwsgi-python wget && \
+      tzdata uwsgi-python3 wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo /usr/local/bin/docker-compose ${_COMPOSE_URL} && \

@@ -1,5 +1,7 @@
 ARG POSTFIX_VERSION=3.3.2-r0
 
+# TODO python3 update
+
 FROM instantlinux/postfix:$POSTFIX_VERSION
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE

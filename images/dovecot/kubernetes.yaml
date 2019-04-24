@@ -33,13 +33,13 @@ spec:
         command: [/bin/sh]
         args:
         - -c
-        - >-
-          # TODO: latest version of postfix changed some things
-          # which need to be updated in that image
+        - >
           cp -r /etc/postfix.d /etc/postfix &&
           newaliases &&
           sh /etc/postfix.d/users.sh &&
           exec /usr/local/bin/entrypoint-dovecot.sh
+          # TODO: latest version of postfix changed some things
+          # which need to be updated in that image
         ports:
         - containerPort: 25
         - containerPort: 143

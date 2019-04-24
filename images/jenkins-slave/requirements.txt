@@ -1,11 +1,10 @@
-coverage==4.5.1
+coverage==4.5.3
 cryptography==2.4.2
 docopt==0.6.2
-flake8==3.5.0
+flake8==3.7.7
 Flask==1.0.2
-jsonschema==2.6.0
+jsonschema==3.0.1
 mock==2.0.0
-setuptools==40.8.0
-supervisor==3.3.4
+setuptools==40.6.2
 unittest2==1.1.0
-urllib3==1.23
+urllib3==1.25

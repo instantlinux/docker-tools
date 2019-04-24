@@ -22,7 +22,7 @@ ENV SWARM_CLIENT_EXECUTORS=4 \
     SWARM_WORKDIR=/opt/jenkins \
     TZ=UTC
     
-ARG _CLIENT_VERSION=3.13
+ARG _CLIENT_VERSION=3.14
 ARG _COMPOSE_VERSION=1.23.2
 ARG _DOCKER_VERSION=18.09.1-r0
 ARG _PYCRYPTOGRAPHY_VERSION=2.4.2-r2
@@ -33,7 +33,7 @@ ARG _PLUGIN_DOWNLOADS=https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugin
 ARG _TINI_DOWNLOADS=https://github.com/krallin/tini/releases/download
 ARG DOCKER_GID=485
 ARG JENKINS_UID=1000
-ARG CLIENT_SHA=85197cced609bb36efc677813bcd3242813569970ff32bef49a10ee6ad7fb630
+ARG CLIENT_SHA=d3bdef93feda423b4271e6b03cd018d1d26a45e3c2527d631828223a5e5a21fc
 ARG COMPOSE_SHA=4d618e19b91b9a49f36d041446d96a1a0a067c676330a4f25aca6bbd000de7a9
 ARG TINI_SHA=eadb9d6e2dc960655481d78a92d2c8bc021861045987ccd3e27c7eae5af0cf33
 
@@ -47,9 +47,9 @@ RUN addgroup -g $DOCKER_GID docker && \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker==$_DOCKER_VERSION gcc git gzip make \
-      musl=1.1.20-r4 musl-dev openssh-client python python-dev \
-      py-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py-pip py-virtualenv \
-      tar tzdata uwsgi-python wget && \
+      musl=1.1.20-r4 musl-dev openssh-client python3 python3-dev \
+      py3-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py3-pip py3-virtualenv \
+      tar tzdata uwsgi-python3 wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo $SWARM_CLIENT_JAR \
@@ -63,8 +63,8 @@ RUN addgroup -g $DOCKER_GID docker && \
     echo "$COMPOSE_SHA  /usr/local/bin/docker-compose" >> /tmp/checksums && \
     sha256sum -c /tmp/checksums && rm /tmp/checksums && \
     chmod +x /bin/tini /usr/local/bin/docker-compose && \
-    pip install --upgrade pip && \
-    pip install -r /root/requirements.txt && \
+    pip3 install --upgrade pip && \
+    pip3 install -r /root/requirements.txt && \
     chown $SWARM_JENKINS_USER $SWARM_WORKDIR /etc/localtime /etc/timezone && \
     rm -f /var/cache/apk/*
 
