@@ -16,6 +16,8 @@ services:
       [ -e /usr/local/nagios ] || ln -s /opt/nagios /usr/local/nagios &&
       sed -i -e 's/^smtp      inet/2525 inet/' /etc/postfix/master.cf &&
       sed -i -e 's:find /opt/nagios :#find /opt/nagios :' /etc/service/nagios/run &&
+      sed -i -e 's/nagiosadmin/$USER,iphone7/' /opt/nagios/etc/cgi.cfg &&
+      cp /run/secrets/nagios-htpasswd /opt/nagios/etc/htpasswd.users &&
       /usr/local/bin/start_nagios"
     environment:
       MAIL_RELAY_HOST: ${NAGIOS_MAIL_RELAY:-smtp}
@@ -29,6 +31,8 @@ services:
     - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
     ports:
     - ${PORT_NAGIOS:-8080}:80
+    secrets:
+    - nagios-htpasswd
     network_mode: host
 
   nagiosql:
@@ -77,7 +81,9 @@ volumes:
   var:
 
 secrets:
+  nagios-htpasswd:
+    file: /var/adm/secrets/nagios-htpasswd
   nagiosql-db-password:
-    file: /var/adm/admin/secrets/nagiosql-db-password
+    file: /var/adm/secrets/nagiosql-db-password
   monitor.ci.net-server-key.pem:
     file: ${ADMIN_PATH}/../tls/monitor.ci.net-server-key.pem
