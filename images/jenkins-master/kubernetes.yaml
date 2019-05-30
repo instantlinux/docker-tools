@@ -41,7 +41,7 @@ spec:
             memory: 6144Mi
           requests:
             cpu: 100m
-            memory: 3072Mi
+            memory: 2048Mi
         volumeMounts:
         - mountPath: /var/jenkins_home
           name: share

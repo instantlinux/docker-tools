@@ -67,7 +67,7 @@
     lvconvert -y --zero n -c 512K --thinpool {{ thinpool_vg }}/thinpool
       --poolmetadata {{ thinpool_vg }}/thinpoolmeta
   args:
-    creates: /dev/mapper/{{ thinpool_vg }}-thinpool_tdata
+    creates: /dev/mapper/{{ thinpool_vg_alt }}-thinpool_tdata
 
 - name: LVM profile path
   file:
@@ -123,7 +123,7 @@
 
 - name: Docker engine package
   apt:
-    name: "{{ docker.apt_repo.package_name }}"
+    name: "{{ docker.apt_repo.package_name }}={{ docker.apt_repo.package_ver }}"
     update_cache: yes
 
 - name: Options directory

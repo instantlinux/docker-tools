@@ -72,20 +72,22 @@ $(STACKS)::
 ##########
 # Installation
 ##########
-.PHONY: envsubst imports install install_metrics node_labels persistent \
-	remote_volumes secrets sops untaint_master
+.PHONY: envsubst imports install install_metrics namespace_config node_labels \
+	persistent remote_volumes secrets sops untaint_master
 
 IMPORTS      = calico calico-etcd dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
-install: install/admin-user install/namespace install/limits \
-	cluster_network install/namespace-user install/cert-manager \
+install: install/admin-user cluster_network install/cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
 	install/logspout install_metrics extend_dashboard_ttl remote_volumes \
-	sops secrets data-sync-ssh ~/.kube/config.conf persistent
+	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config
+
+namespace_config: install/namespace install/limits install/namespace-user \
+	secrets
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'

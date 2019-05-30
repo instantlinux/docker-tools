@@ -25,6 +25,8 @@ spec:
           readOnly: true
       hostNetwork: true
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
+      nodeSelector:
+        service.$SERVICE_NAME: allow
       serviceAccountName: $K8S_NAMESPACE-privileged
       volumes:
       - name: cache

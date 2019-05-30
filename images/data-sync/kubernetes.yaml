@@ -242,6 +242,7 @@ data:
     ignore = Path data-sync/jira/home/monitor/DatabaseReadWritesGraph.rrd4j
     ignore = Path data-sync/jira/home/analytics-logs
     ignore = Path data-sync/jira/logs
+    ignore = Path data-sync/nexus/db/accesslog
     ignore = Path redis/current
     ignore = Path data-sync/samba-dc/var/lib/winbindd_privileged/pipe
     ignore = Path data-sync/syslog/log/messages

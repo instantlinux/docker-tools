@@ -4,3 +4,9 @@
     dest: /etc/samba/conf.d
     src: etc/
   notify: Restart smbd
+
+- name: smb.conf main config
+  template:
+    dest: /etc/samba/smb.conf
+    src: smb.conf.j2
+  notify: Restart smbd

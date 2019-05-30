@@ -7,7 +7,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: 3
+  replicas: $K8S_WORKER_COUNT
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME
@@ -90,3 +90,5 @@ data:
   $SERVICE_NAME-0: ""
   $SERVICE_NAME-1: $DHCP_RANGE_1
   $SERVICE_NAME-2: $DHCP_RANGE_2
+  $SERVICE_NAME-3: ""
+  $SERVICE_NAME-4: ""

@@ -7,7 +7,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: 3
+  replicas: $K8S_WORKER_COUNT
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME

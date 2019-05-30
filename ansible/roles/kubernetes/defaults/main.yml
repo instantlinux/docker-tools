@@ -37,5 +37,6 @@ sysctl:
 ubuntu_packages:
   - kubeadm={{ k8s.version }}-00
   - kubelet={{ k8s.version }}-00
+  - kubernetes-cni=0.6.0-00
 
 ubuntu_package_additions: []

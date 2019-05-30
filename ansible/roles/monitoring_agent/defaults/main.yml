@@ -61,6 +61,8 @@ ubuntu_packages:
   - bc
   - nagios-nrpe-server
   - smartmontools
+  - snmpd
+  - sysstat
   # deprecated
   # - mcelog
 

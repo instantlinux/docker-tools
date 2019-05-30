@@ -209,8 +209,7 @@ metadata:
     release: "0.1"
   name: $SERVICE_NAME-sync
 spec:
-  # TODO - deal with IO overload
-  replicas: $DATA_SYNC_CLUSTER_SIZE
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME-sync
@@ -273,7 +272,7 @@ spec:
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        service.data-sync: allow
+        service.$SERVICE_NAME-sync: allow
       volumes:
       - name: config
         configMap:

@@ -26,7 +26,8 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: CATALINA_OPTS, value: -Xms1024m -Xmx2048m -Datlassian.plugins.enable.wait=900 }
+        - { name: CATALINA_OPTS,
+            value: -Xms1536m -Xmx2048m -Datlassian.plugins.enable.wait=2400 }
         - { name: X_PROXY_NAME, value: jira.$DOMAIN }
         - { name: X_PROXY_PORT, value: "443" }
         - { name: X_PROXY_SCHEME, value: https }

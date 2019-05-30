@@ -2,8 +2,23 @@
 nfs_exports:
   /var/ftp: "*(ro,root_squash,crossmnt,fsid=0,no_subtree_check)"
 
+samba_defaults:
+  conf: "{{ lookup('fileglob', 'roles/fileserver/files/etc/*.conf'
+    ).split(',') | sort }}"
+  hosts_allow:
+  - 192.168.1.0/255.255.255.0
+  interfaces:
+  - lo
+  - "{{ ansible_default_ipv4.address }}"
+  log_level: 1
+  logon_drive: H
+  server_string: Authorized use only!
+  workgroup: WORKGROUP
+
+samba_override: {}
+samba: "{{ samba_defaults | combine(samba_override) }}"
+
 ubuntu_packages:
-  - gksu
   - lm-sensors
   - mdadm
   - nfs-server
@@ -30,4 +45,3 @@ vsftpd:
   pasv_max_port: 30100
   nopriv_user: ftp
   write_enable: YES
-  
