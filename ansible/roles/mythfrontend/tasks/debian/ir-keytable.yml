@@ -1,0 +1,5 @@
+---
+- name: IR codes for rc-6 remote
+  template:
+    src: ir_rc6_mce.j2
+    dest: /etc/rc_keymaps/rc6_mce

@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+Section "Device"
+  Identifier "Device0"
+  Driver "{{ display_driver.type }}"
+  VendorName "{{ display_driver.type|upper }} Corporation"
+  Option "TearFree" "true"
+EndSection

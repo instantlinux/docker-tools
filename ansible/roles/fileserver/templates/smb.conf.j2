@@ -1,0 +1,22 @@
+{{ ansible_managed | comment }}
+[global]
+        bind interfaces only = yes
+	domain logons = No
+	domain master = No
+	encrypt passwords = Yes
+	hosts allow = {{ samba.hosts_allow | join(' ') }}
+        interfaces = {{ samba.interfaces | join(' ') }}
+	log level = {{ samba.log_level }}
+	logon drive = {{ samba.logon_drive }}:
+	logon home = \\%L\%U\.9xprofile
+	logon path = \\%L\profiles\.msprofile
+	map to guest = Bad Password
+	netbios name = {{ ansible_hostname }}
+	security = user
+	server string = {{ ansible_hostname }}--{{ samba.server_string }}
+	usershare max shares = 0
+	workgroup = {{ samba.workgroup }}
+
+{% for item in samba.conf %}
+include = /etc/samba/conf.d/{{ item | basename }}
+{% endfor %}

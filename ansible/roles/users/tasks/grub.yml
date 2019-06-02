@@ -1,0 +1,16 @@
+---
+# grub.yml
+
+# TODO put this in its own role; too small to bother with now
+
+- name: Reduce grub boot time default
+  lineinfile:
+    line: GRUB_TIMEOUT={{ grub_timeout }}
+    path: /etc/default/grub
+  notify: Update grub
+
+- name: Also specify RECORDFAIL timeout
+  lineinfile:
+    line: GRUB_RECORDFAIL_TIMEOUT={{ grub_timeout }}
+    path: /etc/default/grub
+  notify: Update grub
