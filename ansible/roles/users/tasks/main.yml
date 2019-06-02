@@ -4,6 +4,7 @@
 # This is heavily customized: replace with your own security policies
 
 - include: packages.yml
+- include: grub.yml
 
 - name: Define group ids
   group:

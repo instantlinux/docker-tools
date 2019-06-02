@@ -31,3 +31,11 @@
     - kmail
     - korganizer
     state: absent
+
+- name: Enable dvdcss
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  command: dpkg-reconfigure libdvd-pkg
+  args:
+    creates: /usr/lib/x86_64-linux-gnu/libdvdcss.so
+  when: ansible_distribution_release == 'bionic'

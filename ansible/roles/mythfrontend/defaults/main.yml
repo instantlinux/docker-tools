@@ -6,21 +6,33 @@ db_defaults:
   name: mythtv
   context: local
 
+display_driver_defaults:
+  type: nvidia
+  download: False
+  nvidia:
+    checksum: d2cf81b5994a1728dc4851cdf0480cde0a34b040c94de0d5265edcfe3b90680a
+    creates: /usr/lib64/xorg/modules/libnvidia-wfb.so.1
+    download_uri: http://us.download.nvidia.com/XFree86/Linux-x86_64
+    version: 340.101
+  packages:
+  - nvidia-304
+  screen:
+    modes:
+    - 1280x720
+    - 1920x1080
+    - 1980x1080i
+display_driver: "{{ display_driver_defaults | combine(display_driver_overrides) }}"
+
 ir_device:
   device: /dev/lirc0
   module: lirc_mceusb2
   product_name: Media Center Ed. eHome Infrared Remote Transceiver (1784:0008)
+  service_name: lirc
 
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"
 
 mythtv_version: 0.29
-
-nvidia_driver:
-  checksum: d2cf81b5994a1728dc4851cdf0480cde0a34b040c94de0d5265edcfe3b90680a
-  creates: /usr/lib64/xorg/modules/libnvidia-wfb.so.1
-  download_uri: http://us.download.nvidia.com/XFree86/Linux-x86_64
-  version: 340.101
 
 opensuse_packages:
   - ImageMagick-devel
@@ -94,20 +106,19 @@ suspend:
   weekday: 1-5
 
 ubuntu_apt_keys:
-  google: 1397BC53640DB551
+  # google: 1397BC53640DB551
   graphics: FCAE110B1118213C
   mythbuntu: 13551B881504888C
 
 ubuntu_packages:
+  - evtest
   - google-chrome-stable
+  - ir-keytable
   - libdvd-pkg
-  - lirc
-  - lirc-x
   - mariadb-client
   - mythtv-common
   - mythtv-frontend
-  - plasma-desktop
-  - nvidia-304
+  - kde-plasma-desktop
   - xserver-xorg-core
   - xserver-xorg-input-all
   - xterm

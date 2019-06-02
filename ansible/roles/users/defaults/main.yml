@@ -1,4 +1,6 @@
 ---
+grub_timeout: 5
+
 local_group_defaults:
   nagcmd: 486
   nrpe: 552

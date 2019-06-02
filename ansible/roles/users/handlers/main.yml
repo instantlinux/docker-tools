@@ -7,3 +7,6 @@
   service:
     name: sshd
     state: restarted
+
+- name: Update grub
+  command: update-grub2

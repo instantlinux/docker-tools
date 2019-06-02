@@ -49,5 +49,5 @@
 
 - name: Enable lirc
   service:
-    name: lirc
+    name: "{{ ir_device.service_name }}"
     enabled: yes
