@@ -112,6 +112,7 @@ metadata:
 data:
   gitlab.rb: |
     external_url 'http://git.$MYDOMAIN'
+    gitaly['logging_level'] = 'warn'
     gitlab_rails['time_zone'] = '$TZ'
     gitlab_rails['smtp_enable'] = true
     gitlab_rails['smtp_address'] = 'smtp.$DOMAIN'

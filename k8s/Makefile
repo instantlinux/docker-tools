@@ -1,3 +1,6 @@
+# INITIAL SETUP
+# -------------
+#
 # Step 2: configure kubernetes master resources
 #
 # This is the second step of three in kubernetes installation--picks up where
@@ -44,6 +47,22 @@
 # and set an environment variable LOCAL_VOLUMES to generate k8s pvs for
 # each node.
 
+# AFTER INITIAL SETUP
+# -------------------
+#
+# Once you have your first namespace set up, this Makefile can handle additional
+# maintenance tasks:
+#
+# 1) Adding a new namespace
+#   K8S_NAMESPACE=<new> make namespace_config
+#   sops -d secrets/regcred.yml | envsubst | kubectl create \
+#     -n $K8S_NAMESPACE --context=sudo -f -
+# 2) Adding a new node
+#   export K8S_WORKER_COUNT=$newcount
+#   make node_labels
+#   NODES=$node make persistent
+#   NODE=$node make persistent_dirs
+
 ACTION          ?= apply
 CLUSTER         ?= kubernetes
 ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
@@ -84,10 +103,11 @@ install: install/admin-user cluster_network install/cert-manager \
 	install/podsecurity storage_localdefault imports install_imports \
 	install/gitlab-rbac install/k8s-backup install/local-storage \
 	install/logspout install_metrics extend_dashboard_ttl remote_volumes \
-	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config
+	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config \
+	secrets
 
 namespace_config: install/namespace install/limits install/namespace-user \
-	secrets
+	secrets/regcred
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'

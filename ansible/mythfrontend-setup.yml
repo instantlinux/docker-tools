@@ -10,6 +10,7 @@
   force_handlers: True
   roles:
   - users
+  - network
   - monitoring_agent
   - mythfrontend
   - ntp

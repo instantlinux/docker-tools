@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG POSTFIX_VERSION=3.3.2-r0
+ARG POSTFIX_VERSION=3.4.5-r0
 ENV SASL_PASSWD_SECRET=postfix-sasl-passwd \
     TZ=UTC
 

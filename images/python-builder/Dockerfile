@@ -11,14 +11,18 @@ ENV BUILD_DIR=/build \
     BUILD_USER=build \
     TZ=UTC
 
-ARG COMPOSE_VERSION=1.23.2
+ARG COMPOSE_VERSION=1.24.0
+ARG KUBECTL_VERSION=1.14.1
 ARG PYTHON_VERSION=3.6.8-r2
 ARG PYCRYPTOGRAPHY_VERSION=2.4.2-r2
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
+ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64
+ARG _KUBECTL_URL=${_KUBECTL_DOWNLOADS}/v$KUBECTL_VERSION/bin/linux/amd64/kubectl
 ARG DOCKER_GID=485
 ARG BUILD_UID=1001
-ARG COMPOSE_SHA=4d618e19b91b9a49f36d041446d96a1a0a067c676330a4f25aca6bbd000de7a9
+ARG COMPOSE_SHA=bee6460f96339d5d978bb63d17943f773e1a140242dfa6c941d5e020a302c91b
+ARG KUBECTL_SHA=829c00f0401a0887154d640349a974055a87199714a8d7d741d635ed20c70ee9
 
 COPY requirements.txt /root/
 
@@ -28,15 +32,17 @@ RUN addgroup -g $DOCKER_GID docker && \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
-      bash curl gcc git gzip jq make musl-dev openssh-client \
+      bash curl gcc gettext git gzip jq make musl-dev openssh-client \
       python3==$PYTHON_VERSION python3-dev \
       py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION py3-virtualenv tar \
       tzdata uwsgi-python3 wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo /usr/local/bin/docker-compose ${_COMPOSE_URL} && \
-    echo "$COMPOSE_SHA  /usr/local/bin/docker-compose" | sha256sum -c && \
-    chmod +x /usr/local/bin/docker-compose && \
+    curl -sLo /usr/local/bin/kubectl ${_KUBECTL_URL} && \
+    echo -e "$COMPOSE_SHA  /usr/local/bin/docker-compose\n$KUBECTL_SHA" \
+        " /usr/local/bin/kubectl" | sha256sum -c && \
+    chmod +x /usr/local/bin/docker-compose /usr/local/bin/kubectl && \
     pip3 install --upgrade pip && \
     pip install -r /root/requirements.txt && \
     chown $BUILD_USER /etc/localtime /etc/timezone && \

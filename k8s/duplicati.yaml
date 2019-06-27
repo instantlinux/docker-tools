@@ -50,7 +50,7 @@ spec:
         - mountPath: /backup/services
           name: backup
           readOnly: true
-        - mountPath: /backup/share/cloud
+        - mountPath: /backup/cloud
           name: cloud
           readOnly: true
         - mountPath: /backup/samba_dos
@@ -59,25 +59,25 @@ spec:
         - mountPath: /backup/ftp
           name: ftp
           readOnly: true
-        - mountPath: /backup/share/gitlab
+        - mountPath: /backup/gitlab
           name: gitlab
           readOnly: true
         - mountPath: /backup/home
           name: home
           readOnly: true
-        - mountPath: /backup/share/household
+        - mountPath: /backup/household
           name: household
           readOnly: true
         - mountPath: /backup/inbox
           name: inbox
           readOnly: true
-        - mountPath: /backup/share/jira
+        - mountPath: /backup/jira
           name: jira
           readOnly: true
         - mountPath: /backup/pc/MP3
           name: mp3
           readOnly: true
-        - mountPath: /backup/share/nexus
+        - mountPath: /backup/nexus
           name: nexus
           readOnly: true
         - mountPath: /backup/share/ox-appsuite
@@ -129,12 +129,12 @@ spec:
       - name: nexus
         hostPath: { path: $K8S_VOLUMES_PATH/nexus }
       - name: ox-appsuite
-        hostPath: { path: $K8S_VOLUMES_PATH/ox-appsuite }
+        hostPath: { path: $K8S_VOLUMES_PATH/share/ox-appsuite }
       - name: pictures
         persistentVolumeClaim:
           claimName: pictures
       - name: rainloop
-        hostPath: { path: $K8S_VOLUMES_PATH/rainloop }
+        hostPath: { path: $K8S_VOLUMES_PATH/share/rainloop }
       - name: share
         hostPath: { path: $PATH_SHR }
       - name: user

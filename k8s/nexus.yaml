@@ -45,7 +45,7 @@ spec:
         - mountPath: /nexus-data
           name: $SERVICE_NAME
       nodeSelector:
-        service.data-sync: allow
+        service.$SERVICE_NAME: allow
       volumes:
       - name: $SERVICE_NAME
         hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }

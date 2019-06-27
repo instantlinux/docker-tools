@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -26,11 +26,9 @@ ENV ALLOW_OVERWRITE=on \
     TZ=UTC \
     WRITE_ENABLE=AllowAll
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \
-    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
-      >>/etc/apk/repositories && \
-    apk add --update libcrypto1.1@edge proftpd@testing=$PROFTPD_VERSION tzdata
+    apk add --update libcrypto1.1 proftpd@testing=$PROFTPD_VERSION tzdata
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 
 VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp
