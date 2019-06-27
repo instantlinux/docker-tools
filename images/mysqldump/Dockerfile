@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -19,16 +19,14 @@ ENV HOUR=3 MINUTE=30 \
 
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=10.3.13-r0
+ARG CLIENT_VERSION=10.3.16-r0
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
+RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \
     addgroup -g $BACKUP_GID backup && \
     adduser -u $UID -G backup -s /bin/sh -g "MariaDB" -D $USERNAME && \
     apk add --update --no-cache \
-     bzip2 dcron mariadb-client@edge=$CLIENT_VERSION && \
+     bzip2 dcron mariadb-client=$CLIENT_VERSION && \
     rm -fr /var/cache/apk/* /var/log/*
 
 COPY *.sh /usr/local/bin/

@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -22,12 +22,10 @@ ENV API_USER=upsmon \
     USER=nut \
     VENDORID=
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
+RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \
     apk add --update nut@testing=$NUT_VERSION \
-      libcrypto1.1@edge libssl1.1@edge net-snmp-libs@edge
+      libcrypto1.1 libssl1.1 net-snmp-libs
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/
