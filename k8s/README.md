@@ -277,3 +277,55 @@ notes are as of Jan 2019 on version 1.13.1:
   from any given application (splitting database writes across a MariaDB
   cluster isn't fully supported at this time, there are race conditions
   which create performance problems).
+
+### The version 1.15.0 upgrade fiasco
+
+The kubeadm update procedure didn't work for 1.13->1.14 upgrade so
+when an unknown fault took down my single master, I opted to do a
+fresh install of 1.15.0. That led to a multiple-day total outage of
+all services. Here are notes that might help others prevent similar
+debacles:
+
+* Networking and DNS are fundamental, and can fail silently on a newly
+  built cluster. Use a busybox container to ensure you can do DNS
+  lookups against the nameserver listed in /etc/resolv.conf after
+  generating a new master and worker(s). Do not proceed until you've
+  solved any mysteries that prevent this from working (and THIS CAN
+  TAKE DAYS on a bare-metal cluster.)
+
+* If you only have a single master that has failed, don't do anything
+  intrusive to it (like, say, the obvious--restoring a backup; this
+  totally clobbered my setup). If it's been running for more than a
+  couple months, chances are it's got some hard-to-replace
+  configurations and the currently available backup/restore procedures
+  may not (or probably won't) save you. Build a new one and use the
+  old server as reference.
+
+* Switching from flannel to calico 3.8 was fraught with
+  problems. Hours into things, I couldn't figure out why coredns
+  wouldn't resolve any names from any pod: wound up sticking with
+  flannel for the foreseeable future. Also, it's easy to get both
+  flannel and calico installed, a major conflict.
+
+* Installation procedure for cert-manager is 100% different from 5
+  months ago. That took me about 3 hours to resolve. And I'd become
+  over-reliant on cert-manager: without valid TLS certificates, my
+  local Docker registry wouldn't come up. Without the registry, most
+  services wind up in ImagePullBackoff failure state.
+
+* When restoring cert-manager, get ingress-nginx working first.
+
+* My efforts to lock down kubernetes security (based mostly on tutorial-
+  style procedures found online) backfired big-time: bottom line is that
+  if you have to do something manual to get your setup running after
+  the community-supplied installer (kubeadm) finishes, then it's quite
+  likely whatever script or resource definition you created to automate
+  such manual processes *won't* work next time you need to do disaster-
+  recovery or routine upgrades.
+
+* One thing I'd done that compromised availability in the interest of
+  security was to encrypt etcd key-value storage. If I revisit that in
+  the future, make sure to practice backup/restore a couple times, and
+  make sure to document in an obvious place what the restore procedure
+  is and where to get the decyption codes. I probably won't revisit
+  this until the feature is fully GA.

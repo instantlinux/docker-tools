@@ -12,6 +12,19 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-nodeport
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+spec:
+  type: NodePort
+  ports:
+  - { port: 22, nodePort: $NODEPORT_GITLAB_SSH, name: ssh }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

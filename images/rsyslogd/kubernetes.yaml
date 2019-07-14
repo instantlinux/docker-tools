@@ -31,7 +31,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: instantlinux/$SERVICE_NAME:latest
         volumeMounts:
         - mountPath: /etc/logrotate.d
           name: logrotate

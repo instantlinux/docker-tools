@@ -14,6 +14,18 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-external
+spec:
+  type: NodePort
+  ports:
+  - { port: 25, nodePort: $NODEPORT_DOVECOT_INT, name: dovecot-smtp }
+  - { port: 143, nodePort: $NODEPORT_IMAPD, name: dovecot-imapd }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -188,7 +200,7 @@ spec:
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        service.data-sync: allow
+        service.$SERVICE_NAME: allow
       volumes:
       - name: config-sync
         configMap:

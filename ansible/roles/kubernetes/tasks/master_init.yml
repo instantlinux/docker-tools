@@ -19,7 +19,7 @@
     dest: /etc/kubernetes/kubeadm-config.yaml
     content: |
       ---
-      apiVersion: kubeadm.k8s.io/v1alpha3
+      apiVersion: kubeadm.k8s.io/v1beta1
       kind: InitConfiguration
       bootstrapTokens:
       - groups:
@@ -31,20 +31,32 @@
         - authentication
       localAPIEndpoint:
         advertiseAddress: {{ k8s.master_ip }}
+      nodeRegistration:
+        criSocket: /var/run/dockershim.sock
+        name: {{ ansible_fqdn }}
+        taints:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
       ---
-      apiVersion: kubeadm.k8s.io/v1alpha3
+      apiVersion: kubeadm.k8s.io/v1beta1
       kind: ClusterConfiguration
       # TODO cluster will not bootstrap, has to be added after
       # apiServerExtraArgs:
       #  enable-admission-plugins: PodSecurityPolicy
-      controllerManagerExtraArgs:
-        address: 0.0.0.0
+      apiServer:
+        certSans:
+        - {{ k8s.master_ip }}
+      certificatesDir: /etc/kubernetes/pki
+      controllerManager:
+        extraArgs:
+          address: 0.0.0.0
       kubernetesVersion: v{{ k8s.version }}
       networking:
         podSubnet: {{ k8s.pod_network }}
         serviceSubnet: {{ k8s.service_network }}
-      schedulerExtraArgs:
-        address: 0.0.0.0
+      scheduler:
+        extraArgs:
+          address: 0.0.0.0
 
 - name: Init Kubernetes cluster
   command: kubeadm init --config /etc/kubernetes/kubeadm-config.yaml

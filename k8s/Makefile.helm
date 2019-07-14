@@ -2,11 +2,16 @@
 # Helm
 ##########
 .PHONY: helm_install tiller_install tiller_protect tiller_disable tiller_enable
-helm_install: /usr/local/bin/helm tiller_install tiller_protect \
+helm_install: /usr/local/bin/helm tiller_install \
 	~/.helm/repository/cache/bitnami-index.yaml
 
-tiller_install:
-	helm init --kube-context=kubernetes-admin@$(CLUSTER)
+# TODO do I still need tiller_protect? Does not seem to work with k8s 1.15.0
+
+tiller_install: install/tiller-rbac
+	helm init --kube-context=kubernetes-admin@$(CLUSTER) \
+	  --service-account=tiller
+	kubectl $(ADMIN_CTX) patch deploy --namespace kube-system tiller-deploy \
+	  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 
 # plug ghastly security hole, https://github.com/anguslees/helm-security-post
 tiller_protect:

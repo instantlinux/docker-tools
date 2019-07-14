@@ -56,7 +56,9 @@ metadata:
   name: $SERVICE_NAME-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if (${DOL}http_user_agent ~ docker ) {
         proxy_pass http://$K8S_NAMESPACE-$SERVICE_NAME-$PORT_NEXUS_REGISTRY;

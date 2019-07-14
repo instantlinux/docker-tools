@@ -66,7 +66,7 @@
 ACTION          ?= apply
 CLUSTER         ?= kubernetes
 ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
-VERSION_HELM    ?= 2.11.0
+VERSION_HELM    ?= 2.14.1
 VERSION_METRICS ?= v0.3.1
 VERSION_SOPS    ?= 3.2.0
 SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
@@ -99,12 +99,13 @@ INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
-install: install/admin-user cluster_network install/cert-manager \
-	install/podsecurity storage_localdefault imports install_imports \
-	install/gitlab-rbac install/k8s-backup install/local-storage \
+install: install/admin-user cluster_network \
+	install/podsecurity install/local-storage storage_localdefault imports \
+	install_imports install/gitlab-rbac install/k8s-backup \
 	install/logspout install_metrics extend_dashboard_ttl remote_volumes \
 	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config \
 	secrets
+ # TODO install/cert-manager
 
 namespace_config: install/namespace install/limits install/namespace-user \
 	secrets/regcred
@@ -198,8 +199,15 @@ include Makefile.sops
 # TODO: make this work without helm, while tracking doc problem:
 #  https://github.com/jetstack/cert-manager/issues/1151
 cert-manager: helm_install
-	helm install --name cert-manager --namespace kube-system \
-	 stable/cert-manager --kube-context=sudo
+	kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml --context=sudo
+	helm install stable/cert-manager \
+	 --name cert-manager --namespace cert-manager \
+	 --set ingressShim.defaultIssuerName=letsencrypt-prod \
+	 --set ingressShim.defaultIssuerKind=ClusterIssuer \
+	 --set webhook.enabled=false \
+	 --kube-context=sudo
+	kubectl label namespace cert-manager --context=sudo \
+	 certmanager.k8s.io/disable-validation=true
 
 ##########
 # Add-ons

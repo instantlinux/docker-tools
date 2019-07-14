@@ -18,15 +18,15 @@ k8s_defaults:
   kubeadm_opts: ''
   local_vols: /var/lib/docker/k8s-volumes
   master: False
-  master_ip: "{{ hostvars[groups['k8s_master'][0]]['ansible_host'] | default(groups['k8s_master'][0]) }}"
+  master_ip: "{{ hostvars[groups['k8s_master'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_master'][0]) }}"
   pod_network: 10.244.0.0/16
   service:
     enabled: yes
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.13.2
-
+  version: 1.15.0
+  cni_version: 0.7.5
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
 
@@ -37,6 +37,6 @@ sysctl:
 ubuntu_packages:
   - kubeadm={{ k8s.version }}-00
   - kubelet={{ k8s.version }}-00
-  - kubernetes-cni=0.6.0-00
+  - kubernetes-cni={{ k8s.cni_version }}-00
 
 ubuntu_package_additions: []

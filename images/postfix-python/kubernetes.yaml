@@ -13,6 +13,18 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-external
+spec:
+  type: NodePort
+  ports:
+  - { port: 25, nodePort: $NODEPORT_POSTFIX_INT, name: postfix-int }
+  - { port: 3525, nodePort: $NODEPORT_POSTFIX_EXT, name: postfix-ext }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME
+---
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:

@@ -1,7 +1,5 @@
 ---
-# Primary IP is served by customized haproxy instance defined
-# below; served by a single cluster member. Safe for reading
-# and writing.
+# Primary NodePort is safe for reading and writing.
 #
 apiVersion: v1
 kind: Service
@@ -10,13 +8,12 @@ metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME-primary
 spec:
-  clusterIP: $DB_IP
+  type: NodePort
   ports:
-  - { port: 3306, targetPort: 3306, name: db }
-  - { port: 8080, targetPort: 8080, name: stats }
+  - { port: 3306, nodePort: $DB_NODEPORT, name: db }
   selector:
-    app.kubernetes.io/name: $SERVICE_NAME-haproxy
-  sessionAffinity: ClientIP
+    app.kubernetes.io/name: $SERVICE_NAME
+    release: "0.1"
 ---
 # Secondary IP is served directly by k8s service here; splits
 # across cluster. Use for horizontal-scaling read-only db access.
@@ -194,84 +191,3 @@ data:
     quick
     quote-names
     max_allowed_packet	    = 16M
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/name: $SERVICE_NAME-haproxy
-  name: $SERVICE_NAME-haproxy
-spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: $SERVICE_NAME-haproxy
-    spec:
-      containers:
-      - name: $SERVICE_NAME-haproxy
-        image: haproxy:1.9.1-alpine
-        env:
-        - name: STATS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: haproxy-stats-password
-              key: haproxy-stats-password
-        ports:
-        - containerPort: 3306
-        - containerPort: 8080
-        volumeMounts:
-        - mountPath: /usr/local/etc/haproxy
-          name: etc
-          readOnly: true
-      dnsConfig:
-        options:
-        - name: use-vc
-        - name: ndots
-      volumes:
-      - name: etc
-        configMap:
-          name: $SERVICE_NAME-haproxy
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: $SERVICE_NAME-haproxy
-data:
-  haproxy.cfg: |
-    global
-      log 127.0.0.1   local0
-      log 127.0.0.1   local1 notice
-      maxconn         4096
-      user            nobody
-      group           nobody
-      daemon
-    defaults
-      log             global
-      option          dontlognull
-      option          dontlog-normal
-      retries         3
-      option          redispatch
-      maxconn         2000
-      timeout connect 5000
-      timeout client  50000
-      timeout server  50000
-    listen stats
-      bind            *:8080
-      mode            http
-      stats           enable
-      stats           hide-version
-      stats auth      "haproxy:$DOL{STATS_PASSWORD}"
-      stats realm     HAProxy\ Statistics
-      stats uri       /stats
-    listen db
-      bind            *:3306
-      timeout connect 10s
-      timeout client  30m
-      timeout server  30m
-      mode            tcp
-      # OPTIONAL: create a passwordless 'ha_check'@'10.244.*' user
-      # option mysql-check user ha_check
-      server node0 $SERVICE_NAME-0.$SERVICE_NAME.$K8S_NAMESPACE.svc.cluster.local:3306 check inter 10000
-      server node1 $SERVICE_NAME-1.$SERVICE_NAME.$K8S_NAMESPACE.svc.cluster.local:3306 check inter 10000 backup
-      server node2 $SERVICE_NAME-2.$SERVICE_NAME.$K8S_NAMESPACE.svc.cluster.local:3306 check inter 10000 backup

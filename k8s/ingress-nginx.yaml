@@ -12,11 +12,7 @@ spec:
   ports:
     - { port: 80, targetPort: 80, name: http }
     - { port: 443, targetPort: 443, name: https }
-    - { port: $PORT_DOVECOT_SMTP, name: dovecot-smtp }
-    - { port: $PORT_DOVECOT_IMAPD, name: dovecot-imapd }
-    - { port: $PORT_DOVECOT_IMAPS, name: dovecot-imaps }
     - { port: $PORT_GITLAB_SSH, name: git-ssh }
-    - { port: $PORT_POSTFIX_EXTERNAL, name: postfix-ext }
 ---
 apiVersion: v1
 kind: Service
@@ -25,11 +21,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - { port: 80, nodePort: 30080, targetPort: 80, name: http }
-  - { port: 443, nodePort: 30443, targetPort: 443, name: https }
-  - { port: $PORT_DOVECOT_SMTP, nodePort: 30$PORT_DOVECOT_SMTP, name: dovecot-smtp }
-  - { port: $PORT_DOVECOT_IMAPD, nodePort: 30$PORT_DOVECOT_IMAPD, name: dovecot-imapd }
-  - { port: $PORT_POSTFIX_EXTERNAL, nodePort: 30025, name: postfix-ext }
+  - { port: 80, nodePort: $NODEPORT_HTTP, targetPort: 80, name: http }
+  - { port: 443, nodePort: $NODEPORT_HTTPS, targetPort: 443, name: https }
   selector:
     k8s-app: nginx-ingress-controller
 ---

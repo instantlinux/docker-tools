@@ -26,3 +26,19 @@ spec:
     server: $NFS_HOST
     readOnly: true
   storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mp3
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mp3
+  storageClassName: nfs-client

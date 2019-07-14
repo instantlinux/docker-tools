@@ -28,7 +28,6 @@ network_sysctl: {}
 ubuntu_packages:
   - bridge-utils
   - dnsutils
-  - keepalived
   - psmisc
 
 vrrp:
