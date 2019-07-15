@@ -95,8 +95,6 @@ metadata:
     app.kubernetes.io/name: ldap
   name: ldap
 spec:
-  # TODO remove fixed IP address once coredns issues are fixed
-  clusterIP: $LDAP_IP
   ports:
   - port: 389
   selector:

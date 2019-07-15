@@ -33,7 +33,7 @@ spec:
         - { name: SMTP_ADMIN_ADDRESS, value: "Jenkins <jenkins@$DOMAIN>" }
         - { name: SMTP_SMARTHOST, value: smtp.$DOMAIN }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/jenkins-master:latest
+        image: $REGISTRY_URI/jenkins-master:$VERSION_JENKINS_MASTER
         ports:
         - containerPort: 8080
         resources:
@@ -90,7 +90,7 @@ spec:
         - { name: SWARM_JENKINS_USER, value: svc_jenkins }
         - { name: SWARM_MASTER_URL, value: "http://$(JENKINS_SERVICE_HOST)" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/jenkins-slave:latest
+        image: $REGISTRY_URI/jenkins-slave:$VERSION_JENKINS_SLAVE
         volumeMounts:
 #        - mountPath: /var/run/docker.sock
 #          name: docker-socket

@@ -38,7 +38,7 @@ spec:
         - { name: TZ, value: $TZ }
         - { name: TZ_CODE, value: "4" }
         - { name: XTIDE_LOCATION, value: San Francisco }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_WEEWX
         # TODO: better security, see
         # https://github.com/kubernetes/kubernetes/issues/60748
         securityContext:

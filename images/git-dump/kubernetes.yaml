@@ -21,7 +21,7 @@ spec:
         - { name: REPO_PREFIX, value: "git@git.$MYDOMAIN:richb/" }
         - { name: SSH_PORT, value: "$PORT_GITLAB_SSH" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/git-dump:latest
+        image: $REGISTRY_URI/git-dump:$VERSION_GIT_DUMP
         volumeMounts:
         - mountPath: /var/backup
           name: backup

@@ -19,7 +19,7 @@ spec:
         - { name: DBSERVER, value: $DB_HOST }
         - { name: LOCALHOSTNAME, value: $HOSTNAME_MYTHTV }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_MYTHTV_BACKEND
         ports:
         - { containerPort: 1900, protocol: UDP }
         - containerPort: 6543

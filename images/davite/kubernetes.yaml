@@ -32,7 +32,7 @@ spec:
         - { name: SMTP_SMARTHOST, value: smtp.$DOMAIN }
         - { name: TCP_PORT, value: "" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DAVITE
         ports:
         - containerPort: 80
         volumeMounts:

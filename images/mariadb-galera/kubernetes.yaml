@@ -14,6 +14,7 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
+  sessionAffinity: ClientIP
 ---
 # Secondary IP is served directly by k8s service here; splits
 # across cluster. Use for horizontal-scaling read-only db access.
@@ -75,7 +76,7 @@ spec:
         - { name: CLUSTER_NAME, value: $SERVICE_NAME }
         - { name: DISCOVERY_SERVICE, value: "$ETCD_IP:2379" }
         - { name: CLUSTER_SIZE, value: "$DB_CLUSTER_SIZE" }
-        image: $REGISTRY_URI/mariadb-galera:latest
+        image: $REGISTRY_URI/mariadb-galera:$VERSION_MARIADB_GALERA
         ports:
         - containerPort: 3306
         resources:

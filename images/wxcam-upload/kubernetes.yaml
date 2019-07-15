@@ -40,7 +40,7 @@ spec:
         - { name: PASV_ADDRESS, value: $WXCAM_UPLOAD_IP }
         - { name: UPLOAD_USERNAME, value: $WXCAM_UPLOAD_USERNAME }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_WXCAM_UPLOAD
         ports:
         - containerPort: 21
         - containerPort: 30080

@@ -40,7 +40,7 @@ spec:
         - { name: NS_SERVERS, value: $RBLDNS_SERVERS }
         - { name: RBL_DOMAIN, value: $RBL_DOMAIN }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_BLACKLIST
         ports:
         - containerPort: 53
           protocol: UDP

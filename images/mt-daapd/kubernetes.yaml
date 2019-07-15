@@ -16,7 +16,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: SERVER_BANNER, value: '%h Firefly MP3 via Docker' }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_MT_DAAPD
         volumeMounts:
         - name: cache
           mountPath: /var/cache/forked-daapd

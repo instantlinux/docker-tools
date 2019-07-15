@@ -7,9 +7,9 @@ metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
 spec:
-  clusterIP: $DB_IP
+  type: NodePort
   ports:
-  - { port: 3306, targetPort: 3306, name: db }
+  - { port: 3306, nodePort: $DB_NODEPORT, name: db }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
@@ -40,7 +40,7 @@ spec:
         - { name: CLUSTER_NAME, value: $SERVICE_NAME }
         - { name: DISCOVERY_SERVICE, value: "$ETCD_IP:2379" }
         - { name: CLUSTER_SIZE, value: "1" }
-        image: $REGISTRY_URI/mariadb-galera:latest
+        image: $REGISTRY_URI/mariadb-galera:$VERSION_MARIADB_GALERA
         ports:
         - containerPort: 3306
         resources:
@@ -75,6 +75,8 @@ spec:
       - name: sst-auth-password
         secret:
           secretName: sst-auth-password
+      nodeSelector:
+        service.samba: allow
   volumeClaimTemplates:
   - metadata:
       name: data

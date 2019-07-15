@@ -26,7 +26,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: KEEPALIVED_CONFIG_ID, value: $KEEPALIVED_CONFIG_ID }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_HAPROXY_KEEPALIVED
         securityContext:
           capabilities:
             add: [ NET_ADMIN ]

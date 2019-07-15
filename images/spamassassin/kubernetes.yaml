@@ -39,7 +39,7 @@ spec:
         env:
         - { name: EXTRA_OPTIONS, value: --nouser-config --sql-config }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_SPAMASSASSIN
         ports:
         - containerPort: 783
         volumeMounts:

@@ -19,7 +19,7 @@ spec:
         - { name: SERVERS, value: "$DB_SERVERS" }
         - { name: SKEW_SECONDS, value: "30" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_MYSQLDUMP
         ports:
         - containerPort: 80
         volumeMounts:

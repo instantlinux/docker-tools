@@ -16,7 +16,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: HOST, value: $DYNAMIC_HOSTNAME }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_EZ_IPUPDATE
         volumeMounts:
         - name: secret
           mountPath: /run/secrets/ez-ipupdate-user

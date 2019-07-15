@@ -6,7 +6,6 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  clusterIP: $POSTFIX_IP
   ports:
   - { port: $PORT_POSTFIX_INTERNAL, targetPort: 25, name: $SERVICE_NAME }
   - { port: 3525, targetPort: 3525, name: external }
@@ -55,7 +54,7 @@ spec:
           value: by mx-caprica.?\.easydns\.com
         - { name: SPAMC_HOST, value: $SPAMC_HOST }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/postfix-python:latest
+        image: $REGISTRY_URI/postfix-python:$VERSION_POSTFIX_PYTHON
         ports:
         - containerPort: 25
         - containerPort: 3525

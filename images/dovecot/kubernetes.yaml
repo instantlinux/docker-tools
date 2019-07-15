@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
       - name: $SERVICE_NAME
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DOVECOT
         command: [/bin/sh]
         args:
         - -c
@@ -165,7 +165,7 @@ spec:
               key: pubkey2
         - { name: SYNC_INTERVAL, value: "2" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/data-sync:latest
+        image: $REGISTRY_URI/data-sync:$VERSION_DATA_SYNC
         ports:
         - containerPort: 22
         resources:
@@ -210,6 +210,10 @@ spec:
           secretName: $DATA_SYNC_SECRET
       - name: logs
         hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
+      - name: inbox
+        hostPath: { path: $K8S_VOLUMES_PATH/inbox }
+      - name: webmail
+        hostPath: { path: $K8S_VOLUMES_PATH/webmail }
   volumeClaimTemplates:
   - metadata:
       name: archive
@@ -225,26 +229,6 @@ spec:
       resources:
         requests:
           storage: 500Mi
-  - metadata:
-      name: inbox
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: inbox
-  - metadata:
-      name: webmail
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: webmail
 ---
 apiVersion: v1
 kind: ConfigMap

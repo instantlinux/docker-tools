@@ -20,7 +20,7 @@ spec:
         - { name: SERVER_STRING, value: $SAMBA_SERVER_STRING }
         - { name: TZ, value: $TZ }
         - { name: WORKGROUP, value: $SAMBA_WORKGROUP }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_SAMBA
         resources:
           limits:
             memory: 2048Mi

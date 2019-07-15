@@ -27,7 +27,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: SERIAL, value: $UPS_1_SERIAL }
-        image: $REGISTRY_URI/nut-upsd:latest
+        image: $REGISTRY_URI/nut-upsd:$VERSION_NUT_UPSD
         # TODO this does not work with pod security policies yet
         securityContext:
           privileged: true

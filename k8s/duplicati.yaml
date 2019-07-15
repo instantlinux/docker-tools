@@ -30,7 +30,7 @@ spec:
         env:
         - { name: PUID, value: "0" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DUPLICATI
         ports:
         - containerPort: 8200
         resources:
@@ -277,6 +277,8 @@ spec:
       - name: config
         configMap:
           name: data-sync
+      - name: configdata
+        hostPath: { path: $K8S_VOLUMES_PATH/duplicati }
       - name: sshkeys
         secret:
           secretName: $DATA_SYNC_SECRET
@@ -297,13 +299,3 @@ spec:
       resources:
         requests:
           storage: 500Mi
-  - metadata:
-      name: configdata
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: $SERVICE_NAME

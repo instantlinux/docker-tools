@@ -67,7 +67,7 @@ ACTION          ?= apply
 CLUSTER         ?= kubernetes
 ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
 VERSION_HELM    ?= 2.14.1
-VERSION_METRICS ?= v0.3.1
+VERSION_METRICS ?= v0.3.3
 VERSION_SOPS    ?= 3.2.0
 SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
 STACKS = $(basename $(wildcard *.yaml))
