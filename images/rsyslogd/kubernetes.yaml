@@ -30,7 +30,7 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: TZ, value: $TZ }
+        - { name: TZ, value: UTC }
         image: instantlinux/$SERVICE_NAME:$VERSION_RSYSLOGD
         volumeMounts:
         - mountPath: /etc/logrotate.d

@@ -36,7 +36,7 @@ spec:
         - name: SYSLOG_TAG
           value: '{{ index .Container.Config.Labels "io.kubernetes.pod.name" }}'
         - name: TZ
-          value: $TZ
+          value: UTC
         image: gliderlabs/logspout:$VERSION_LOGSPOUT
         resources:
           limits:

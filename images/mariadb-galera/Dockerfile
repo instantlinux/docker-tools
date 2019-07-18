@@ -1,4 +1,4 @@
-FROM python:3.7.2-slim-stretch
+FROM python:3.7.4-slim-stretch
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -18,7 +18,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SST_AUTH_SECRET=sst-auth-password
 
 ARG MARIADB_MAJOR=10.3
-ARG MARIADB_VERSION=10.3.13
+ARG MARIADB_VERSION=10.3.16
 ARG APT_KEY=F1656F24C74CD1D8
 ARG DEB_REL=stretch
 ARG UID=212
@@ -38,11 +38,11 @@ RUN apt-get -yq update && apt-get install -yq gnupg && \
      mariadb-backup=1:$MARIADB_MAJOR_$MARIADB_VERSION+maria~$DEB_REL \
      mariadb-client=1:$MARIADB_MAJOR_$MARIADB_VERSION+maria~$DEB_REL \
      net-tools netcat procps && \
-    pip install -r /root/common.txt && \
-    echo "dash dash/sh boolean false" | debconf-set-selections && \
-    dpkg-reconfigure dash || true && \
     apt-get clean && rm -fr /var/log/* /var/lib/mysql/* && \
     rm -fr /root/.cache /usr/share/zoneinfo/leap-seconds.list
+RUN pip install -r /root/common.txt && \
+    echo "dash dash/sh boolean false" | debconf-set-selections && \
+    dpkg-reconfigure dash || true
 
 EXPOSE 3306 4444 4567/udp 4567 4568
 VOLUME /var/lib/mysql

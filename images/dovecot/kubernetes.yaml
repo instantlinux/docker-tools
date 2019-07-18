@@ -23,6 +23,7 @@ spec:
   ports:
   - { port: 25, nodePort: $NODEPORT_DOVECOT_INT, name: dovecot-smtp }
   - { port: 143, nodePort: $NODEPORT_IMAPD, name: dovecot-imapd }
+  - { port: 993, nodePort: $NODEPORT_IMAPS, name: dovecot-imaps }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
