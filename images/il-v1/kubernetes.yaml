@@ -32,7 +32,7 @@ spec:
         - { name: REMOTES, value: cumbre.ci.net k2.ci.net }
         - { name: SECRET_MYSQL_BACKUP, value: mysql-backup-creds }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_LOCAL/$SERVICE_NAME:latest
         ports:
         - containerPort: 80
         volumeMounts:

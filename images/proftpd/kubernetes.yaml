@@ -40,7 +40,7 @@ spec:
         env:
         - { name: PASV_ADDRESS, value: $PROFTPD_IP }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:$POSTFIX_PYTHON
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_PROFTPD
         ports:
         - containerPort: 21
         - containerPort: 30091

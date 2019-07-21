@@ -236,7 +236,9 @@ spec:
               key: pubkey2
         - { name: SYNC_INTERVAL, value: "180" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/data-sync:latest
+        # TODO
+        # image: $REGISTRY_URI/data-sync:$VERSION_DATA_SYNC
+        image: $REGISTRY_LOCAL/data-sync:latest
         ports:
         - containerPort: 22
         resources:

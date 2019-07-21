@@ -42,7 +42,9 @@ spec:
     spec:
       containers:
       - name: $SERVICE_NAME
-        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DOVECOT
+        # TODO
+        # image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DOVECOT
+        image: $REGISTRY_LOCAL/$SERVICE_NAME:latest
         command: [/bin/sh]
         args:
         - -c
@@ -53,6 +55,11 @@ spec:
           exec /usr/local/bin/entrypoint-dovecot.sh
           # TODO: latest version of postfix changed some things
           # which need to be updated in that image
+        # Force reload of certs at least every 30 days
+        livenessProbe:
+          exec:
+            command: [ 'false' ]
+          initialDelaySeconds: 2592000
         ports:
         - containerPort: 25
         - containerPort: 143
@@ -166,7 +173,9 @@ spec:
               key: pubkey2
         - { name: SYNC_INTERVAL, value: "2" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/data-sync:$VERSION_DATA_SYNC
+        # TODO
+        # image: $REGISTRY_URI/data-sync:$VERSION_DATA_SYNC
+        image: $REGISTRY_LOCAL/data-sync:latest
         ports:
         - containerPort: 22
         resources:

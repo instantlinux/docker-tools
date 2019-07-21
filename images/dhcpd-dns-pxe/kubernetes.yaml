@@ -36,7 +36,7 @@ spec:
         - { name: SUBNET1_GATEWAY, value: $SUBNET1_GATEWAY }
         - { name: SUBNET1_INTERFACE, value: $SUBNET1_INTERFACE }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DHCP_DNS_PXE
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DHCPD_DNS_PXE
         securityContext:
           capabilities:
             add: [ NET_ADMIN ]
