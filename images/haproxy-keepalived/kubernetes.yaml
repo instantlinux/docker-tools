@@ -16,7 +16,7 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -35,10 +35,9 @@ spec:
           mountPath: /etc/haproxy.d
           readOnly: true
           subPath: services/haproxy/etc-k8s
-        - name: admin
+        - name: keepalived-etc
           mountPath: /etc/keepalived/keepalived.conf
-          readOnly: true
-          subPath: services/keepalived/etc-k8s/keepalived.conf
+          subPath: keepalived.conf
         - name: secret
           mountPath: /run/secrets/haproxy-stats-password
           readOnly: true
@@ -51,6 +50,34 @@ spec:
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
+      - name: keepalived-etc
+        configMap:
+          name: $SERVICE_NAME-keepalived
       - name: secret
         secret:
           secretName: haproxy-stats-password
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME-keepalived
+data:
+  keepalived.conf: |
+    vrrp_instance VI_1 {
+      interface $SUBNET1_INTERFACE
+    @main  priority 101
+    @^main priority 100
+      virtual_ipaddress {
+        $K8S_SERVICE_IP
+      }
+      virtual_router_id 50
+    }
+    vrrp_instance VI_2 {
+      interface $SUBNET1_INTERFACE
+    @main  priority 101
+    @^main priority 100
+      virtual_ipaddress {
+        $K8S_SERVICE_IP2
+      }
+      virtual_router_id 51
+    }

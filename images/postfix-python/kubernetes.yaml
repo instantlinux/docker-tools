@@ -54,9 +54,7 @@ spec:
           value: by mx-caprica.?\.easydns\.com
         - { name: SPAMC_HOST, value: $SPAMC_HOST }
         - { name: TZ, value: $TZ }
-        # TODO
-        # image: $REGISTRY_URI/postfix-python:$VERSION_POSTFIX_PYTHON
-        image: $REGISTRY_LOCAL/postfix-python:latest
+        image: $REGISTRY_URI/postfix-python:$VERSION_POSTFIX_PYTHON
         # Force reload of certs at least every 30 days
         livenessProbe:
           exec:

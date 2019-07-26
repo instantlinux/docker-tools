@@ -23,7 +23,8 @@ network_defaults:
 network_override: {}
 network: "{{ network_defaults | combine(network_override) }}"
 
-network_sysctl: {}
+network_sysctl:
+  net.ipv4.ip_nonlocal_bind: 1
 
 ubuntu_packages:
   - bridge-utils

@@ -94,6 +94,8 @@ $(STACKS)::
 .PHONY: envsubst imports install install_metrics namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
+# TODO may want to remove non-working imports/ingress-nginx, switched
+#  to namespace-local version a long time ago
 IMPORTS      = calico calico-etcd dashboard flannel ingress-nginx
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
