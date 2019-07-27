@@ -19,7 +19,7 @@
   roles:
   - { role: users, tags: users }
   - { role: network, tags: network }
-  - { role: volumes, tags: volumes }
+  # - { role: volumes, tags: volumes }
   - { role: docker_node, tags: docker }
   - { role: monitoring_agent, tags: nagios }
   - { role: ntp, tags: ntp }

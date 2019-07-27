@@ -37,7 +37,7 @@ spec:
         - { name: ORGANIZATION, value: Community Internet }
         - { name: SMTP_PORT, value: "25" }
         - { name: SMTP_SMARTHOST, value: smtp.$DOMAIN }
-        image: $REGISTRY_URI/$SERVICE_NAME:latest
+        image: $REGISTRY_LOCAL/$SERVICE_NAME:latest
         ports:
         - containerPort: 80
         volumeMounts:
