@@ -170,7 +170,6 @@ spec:
         - { name: SYNC_INTERVAL, value: "2" }
         - { name: TZ, value: $TZ }
         image: $REGISTRY_URI/data-sync:$VERSION_DATA_SYNC
-        # image: $REGISTRY_LOCAL/data-sync:latest
         ports:
         - containerPort: 22
         resources:

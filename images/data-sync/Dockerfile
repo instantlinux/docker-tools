@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -19,6 +19,7 @@ ARG UNISON_VERSION=2.48.15_p4-r0
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 RUN apk add --update --no-cache openssh-client openssh-server perl rsync \
       unison=$UNISON_VERSION && \
+    passwd -u root && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/instantlinux/docker-tools/master/ansible/roles/docker_node/files/rrsync && \
     echo "$RRSYNC_SHA  rrsync" | sha256sum -c && \

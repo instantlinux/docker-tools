@@ -58,8 +58,7 @@ spec:
               key: pubkey2
         - { name: SYNC_INTERVAL, value: "2" }
         - { name: TZ, value: $TZ }
-        # image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DATA_SYNC
-        image: $REGISTRY_LOCAL/$SERVICE_NAME:latest
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DATA_SYNC
         ports:
         - containerPort: 22
         resources:
