@@ -182,6 +182,7 @@ metadata:
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/client-body-buffer-size: 1280m
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
     nginx.ingress.kubernetes.io/proxy-body-size: 1280m
     nginx.ingress.kubernetes.io/configuration-snippet: |
       fastcgi_buffers 32 32K;

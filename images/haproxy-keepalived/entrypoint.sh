@@ -9,7 +9,6 @@ fi
 if [ ! -e /etc/haproxy.cfg ]; then
   cat <<EOF >/etc/haproxy.cfg
 global
-	log 127.0.0.1	local0
 	log 127.0.0.1	local1 notice
 	maxconn		4096
 	user		haproxy
@@ -47,6 +46,7 @@ fi
 
 sed -i -e 's/^$ModLoad imklog/#\$ModLoad imklog/' \
        -e 's/#$ModLoad imudp/\$ModLoad imudp/' \
+       -e 's/^$ModLoad immark/#\$ModLoad immark/' \
        -e 's/#$UDPServerRun 514/\$UDPServerRun 514/' /etc/rsyslog.conf
 sed -i -e '/$UDPServerRun 514/a $UDPServerAddress 127.0.0.1' /etc/rsyslog.conf
 > /var/log/messages

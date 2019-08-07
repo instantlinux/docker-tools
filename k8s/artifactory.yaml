@@ -63,6 +63,7 @@ metadata:
   annotations:
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
 spec:
   tls:
   - secretName: tls-$SERVICE_NAME
