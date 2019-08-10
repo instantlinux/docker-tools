@@ -171,9 +171,15 @@ rules:
   - configmaps
   - endpoints
   - ingresses
+  - nodes
+  - pods
   - secrets
   - services
   verbs: [list, watch]
+- apiGroups: [""]
+  resources:
+  - nodes
+  verbs: [get]
 - apiGroups: [""]
   resources:
   - events

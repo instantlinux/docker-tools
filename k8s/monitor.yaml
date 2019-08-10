@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  externalName: $MONITOR_IP
+  externalName: monitor.$DOMAIN
   type: ExternalName
 ---
 apiVersion: extensions/v1beta1
@@ -30,10 +30,10 @@ spec:
   - host: $SERVICE_NAME.$DOMAIN
     http:
       paths:
-      - path: /nagios
+      - path: /nagios/
         backend:
           serviceName: $SERVICE_NAME
-          servicePort: 80
+          servicePort: $PORT_MONITOR_HTTP
       - path: /
         backend:
           serviceName: $SERVICE_NAME

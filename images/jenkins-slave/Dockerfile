@@ -47,7 +47,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker==$_DOCKER_VERSION gcc git gzip make \
-      musl=1.1.20-r4 musl-dev openssh-client python3 python3-dev \
+      musl=1.1.20-r3 musl-dev openssh-client python3 python3-dev \
       py3-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py3-pip py3-virtualenv \
       tar tzdata uwsgi-python3 wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \

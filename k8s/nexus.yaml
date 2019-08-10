@@ -62,7 +62,8 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if (${DOL}http_user_agent ~ docker ) {
-        proxy_pass http://$K8S_NAMESPACE-$SERVICE_NAME-$PORT_NEXUS_REGISTRY;
+        # proxy_pass http://$K8S_NAMESPACE-$SERVICE_NAME-$PORT_NEXUS_REGISTRY;
+        proxy_pass http://$SERVICE_NAME.$K8S_NAMESPACE:$PORT_NEXUS_REGISTRY;
       }
 spec:
   tls:
