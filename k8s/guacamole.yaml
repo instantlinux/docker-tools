@@ -85,10 +85,10 @@ spec:
         - containerPort: 4822
         resources:
           limits:
-            memory: 32Mi
+            memory: 1536Mi
           requests:
             cpu: 100m
-            memory: 32Mi
+            memory: 512Mi
       dnsConfig:
         nameservers: [ $DNS_SERVERS ]
         options:
@@ -105,6 +105,9 @@ metadata:
     nginx.ingress.kubernetes.io/app-root: /guacamole
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
     nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Connection ${DOL}http_connection;
+      proxy_set_header Upgrade ${DOL}http_upgrade;
 spec:
   rules:
   - host: desktop.$DOMAIN

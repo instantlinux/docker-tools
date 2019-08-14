@@ -66,6 +66,12 @@ spec:
         - --election-id=ingress-controller-leader-external
         - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
         - --tcp-services-configmap=$K8S_NAMESPACE/ingress-tcp-services
+        resources:
+          limits:
+            memory: 1024Mi
+          requests:
+            cpu: 50m
+            memory: 192Mi
       serviceAccountName: pod-ingress-privileged
 ---
 apiVersion: v1

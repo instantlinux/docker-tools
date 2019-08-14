@@ -25,6 +25,7 @@ ENV SWARM_CLIENT_EXECUTORS=4 \
 ARG _CLIENT_VERSION=3.14
 ARG _COMPOSE_VERSION=1.23.2
 ARG _DOCKER_VERSION=18.09.8-r0
+ARG _MUSL_VERSION=1.1.20-r5
 ARG _PYCRYPTOGRAPHY_VERSION=2.4.2-r2
 ARG _TINI_VERSION=0.18.0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
@@ -47,9 +48,9 @@ RUN addgroup -g $DOCKER_GID docker && \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker==$_DOCKER_VERSION gcc git gzip make \
-      musl=1.1.20-r3 musl-dev openssh-client python3 python3-dev \
-      py3-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py3-pip py3-virtualenv \
-      tar tzdata uwsgi-python3 wget && \
+      musl==$_MUSL_VERSION musl-dev==$_MUSL_VERSION openssh-client python3 \
+      python3-dev py3-cryptography@edge==$_PYCRYPTOGRAPHY_VERSION py3-pip \
+      py3-virtualenv tar tzdata uwsgi-python3 wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo $SWARM_CLIENT_JAR \

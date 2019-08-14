@@ -13,6 +13,7 @@ ENV BUILD_DIR=/build \
 
 ARG COMPOSE_VERSION=1.24.0
 ARG KUBECTL_VERSION=1.14.1
+ARG MUSL_VERSION=1.1.20-r5
 ARG PYTHON_VERSION=3.6.8-r2
 ARG PYCRYPTOGRAPHY_VERSION=2.4.2-r2
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
@@ -32,7 +33,8 @@ RUN addgroup -g $DOCKER_GID docker && \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
-      bash curl gcc gettext git gzip jq make musl-dev openssh-client \
+      bash curl gcc gettext git gzip jq make musl==$MUSL_VERSION \
+      musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev \
       py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION py3-virtualenv tar \
       tzdata uwsgi-python3 wget && \

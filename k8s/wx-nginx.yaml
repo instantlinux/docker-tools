@@ -46,6 +46,12 @@ spec:
         ports:
         - containerPort: 22
         - containerPort: 80
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
         volumeMounts:
         - mountPath: /etc/nginx/conf.d
           name: admin

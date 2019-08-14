@@ -31,7 +31,7 @@ spec:
         - { name: OX_CONFIG_DB_HOST, value: $OX_CONFIG_DB_HOST }
         - { name: OX_SERVER_MEMORY, value: "$OX_SERVER_MEMORY" }
         - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/open-xchange-appsuite:latest
+        image: $REGISTRY_URI/open-xchange-appsuite:$VERSION_OX_APPSUITE
         ports:
         - containerPort: 80
         resources:
