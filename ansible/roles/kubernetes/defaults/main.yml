@@ -25,7 +25,7 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.15.0
+  version: 1.15.2
   cni_version: 0.7.5
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"

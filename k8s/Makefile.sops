@@ -52,12 +52,13 @@ endif
 	echo creation_rules: > $@
 	echo "  - pgp: $(GPG_FINGERPRINT)" >> $@
 
-SECRETS = $(basename $(wildcard secrets/*.yml))
+SECRETS = $(basename $(wildcard secrets/*.yml secrets/*/*.yml))
 secrets: $(SECRETS)
 $(SECRETS):
-	-sops -d $@.yml | envsubst | kubectl create -f -
+	-sops -d $@.yml | envsubst | \
+	 kubectl create -n $(K8S_NAMESPACE) --context=sudo -f -
 
-secrets/%.yml:
+secrets/%.yml secrets/*/%yml:
 	@echo Creating secret $(@F)
 	$(eval TMP := $(shell mktemp /tmp/sops-XXXXX.yml))
 	@KEY=$(basename $(@F)) envsubst < tpl-secret.yml > $(TMP)

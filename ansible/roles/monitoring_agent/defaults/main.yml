@@ -19,6 +19,7 @@ nagios_defaults:
   local_plugins_path: /usr/local/lib/nagios
   plugins_sudo:
   - check_smartmon.py
+  - check_splunk_license.sh
   system_plugins_path: /usr/lib/nagios/plugins
 
 nagios_override: {}
