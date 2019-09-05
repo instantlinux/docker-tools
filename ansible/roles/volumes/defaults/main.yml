@@ -8,7 +8,7 @@ fs_type: ext4
 luks_volumes: {}
 # example-volume:
 #   inodes: 100
-#   path: /var/lib/docker/k8s-volumes/backup
+#   path: {{ local_k8s_root }}/backup
 #   size: 5000
 #   vg: "{{ luks_vg }}"
 
@@ -18,6 +18,8 @@ local_volumes:
     path: /tmp
     options: nodev,nosuid,nodiratime,size=1000M
     type: tmpfs
+
+local_k8s_root: /var/lib/docker/k8s-volumes
 
 # Network volumes
 network_mounts:
