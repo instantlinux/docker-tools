@@ -23,8 +23,8 @@ EOF
       echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
     fi
   fi
-  if [ -e /etc/nut/local/ups.conf ]; then
-    cp /etc/nut/local/ups.conf /etc/nut/ups.conf
+  if [ -e /etc/nut/local/upsd.conf ]; then
+    cp /etc/nut/local/upsd.conf /etc/nut/upsd.conf
   else
     cat <<EOF >>/etc/nut/upsd.conf
 LISTEN 0.0.0.0
