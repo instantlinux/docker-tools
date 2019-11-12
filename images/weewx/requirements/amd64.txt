@@ -1,6 +1,6 @@
 Cheetah==2.4.4
-pillow==4.1.1
-pyephem==3.7.6
-pyserial==3.3
-PyUSB==1.0.0
-six==1.11.0
+pillow==6.2.1
+ephem==3.7.7.0
+pyserial==3.4
+PyUSB==1.0.2
+six==1.13.0

@@ -1,6 +1,6 @@
 # Note: the image is nearly 3x bigger under ubuntu than alpine
 # TODO: switch to alpine whenever nagios4 is available for it
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -23,7 +23,7 @@ ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
 ARG NAGIOSQL_VERSION=3.4.0
 ARG NAGIOSQL_SHA=31366dc7f5e6f2e33b060caf18bba233b276d685156a802a2971be230d582106
-ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION.tar.bz2
+ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION-git2019-04-26.tar.bz2
 
 COPY src /tmp/
 RUN apt-get update && \

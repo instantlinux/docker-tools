@@ -1,4 +1,4 @@
-ARG POSTFIX_VERSION=3.4.5-r0
+ARG POSTFIX_VERSION=3.4.7-r0
 
 # TODO python3 update
 
