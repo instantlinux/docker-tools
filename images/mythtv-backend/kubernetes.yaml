@@ -84,7 +84,7 @@ spec:
       - name: apache-log
         emptyDir: {}
       - name: data
-        hostPath: { path: $K8S_VOLUMES_PATH/mythtv }
+        hostPath: { path: $MYTHTV_VOL_PATH }
       - name: videos
         persistentVolumeClaim:
           claimName: videos
