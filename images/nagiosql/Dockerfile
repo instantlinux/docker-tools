@@ -31,7 +31,7 @@ RUN apt-get update && \
       php-mysql php-ssh2 tzdata && apt-get clean
 RUN \
     sed -i -e 's/;date.timezone =/date.timezone = UTC/' \
-      /etc/php/7.0/apache2/php.ini && \
+      /etc/php/7.2/apache2/php.ini && \
     cd /tmp && \
     curl -sLo $NAGIOSQL_DOWNLOAD \
       https://sourceforge.net/projects/nagiosql/files/nagiosql/NagiosQL%20${NAGIOSQL_VERSION}/${NAGIOSQL_DOWNLOAD} && \
