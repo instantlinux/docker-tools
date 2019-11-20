@@ -201,7 +201,7 @@ include Makefile.sops
 # TODO: make this work without helm, while tracking doc problem:
 #  https://github.com/jetstack/cert-manager/issues/1151
 cert-manager: helm_install
-	kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml --context=sudo
+	kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(VERSION_CERT_MANAGER)/deploy/manifests/00-crds.yaml --context=sudo
 	helm install stable/cert-manager \
 	 --name cert-manager --namespace cert-manager \
 	 --set ingressShim.defaultIssuerName=letsencrypt-prod \

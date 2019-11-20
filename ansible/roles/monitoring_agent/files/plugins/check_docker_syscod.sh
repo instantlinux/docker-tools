@@ -148,8 +148,12 @@ function getstats () {
 	local cid="$2"
 	if [[ "$valid_version" == "1" ]]
         then
-	        currentstats=`docker stats --no-stream --format "{{.Container}}|{{.$typestats}}" | grep $cid`	
-		echo "$currentstats" | awk '{split($0,a,"|"); print a[2]}'
+                [ "$currentstats" == "" ] && currentstats=($(docker stats --no-stream \
+                  $cid --format="{{.Container}} {{.CPUPerc}} {{.MemPerc}}"))
+                case $1 in
+                  CPUPerc) echo ${currentstats[1]} ;;
+                  MemPerc) echo ${currentstats[2]} ;;
+                esac
 	else
 		case "$typestats" in
   		      CPUPerc)

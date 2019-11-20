@@ -4,6 +4,7 @@
     path: "/etc/kubernetes/pki/ca.key"
   register: kubeadm_ca
 
+# TODO: run_once is not supported with strategy: free
 - name: Init cluster if needed
   include_tasks: master_init.yml
   run_once: yes
