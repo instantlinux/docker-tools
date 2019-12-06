@@ -250,8 +250,8 @@ data:
     auto   = true
     batch  = true
     confirmbigdel = true
-    # TODO SYS-385 rsync is STILL not working
-    # copythreshold = 10000
+    copythreshold = 10000
+    copyquoterem = false
     # SYS-400 overall performance is absolutely awful without this
     fastercheckUNSAFE = true
 

@@ -61,6 +61,9 @@ spec:
         - name: mytharch5
           mountPath: /var/mythtv/arch5
           readOnly: true
+        - name: mytharch6
+          mountPath: /var/mythtv/arch6
+          readOnly: true
         - name: mytharch0
           mountPath: /var/mythtv/pvr02myth
           readOnly: true
@@ -106,6 +109,9 @@ spec:
       - name: mytharch5
         persistentVolumeClaim:
           claimName: mytharch5
+      - name: mytharch6
+        persistentVolumeClaim:
+          claimName: mytharch6
       - name: mytharch0
         persistentVolumeClaim:
           claimName: mytharch0

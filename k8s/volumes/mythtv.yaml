@@ -128,6 +128,24 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: mytharch6
+  labels:
+    volume.group: mytharch6
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /var/mythtv/arch6
+    server: $NFS_HOST_2
+    readOnly: true
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: mytharch0
   labels:
     volume.group: mytharch0
@@ -253,6 +271,22 @@ spec:
   selector:
     matchLabels:
       volume.group: mytharch5
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mytharch6
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: mytharch6
   storageClassName: nfs-client
 ---
 apiVersion: v1

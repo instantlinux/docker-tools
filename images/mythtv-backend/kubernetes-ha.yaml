@@ -87,6 +87,8 @@ spec:
       - name: config
         configMap:
           name: data-sync
+      - name: data
+        hostPath: { path: $MYTHTV_VOL_PATH }
       - name: share
         hostPath: { path: $PATH_SHR }
       - name: sshkeys
@@ -102,16 +104,6 @@ spec:
       resources:
         requests:
           storage: 500Mi
-  - metadata:
-      name: data
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 100Gi
-      selector:
-        matchLabels:
-          volume.group: mythtv
   - metadata:
       name: etc
     spec:
