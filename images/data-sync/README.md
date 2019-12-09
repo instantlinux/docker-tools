@@ -48,6 +48,7 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | SECRET | data-sync_sshkey | override name of secret described below |
 | PUBKEY1 |  | public key as stored in configmap |
 | PUBKEY2 |  | public key as stored in configmap |
+| RRSYNCROOT | / | root path allowed by rrsync |
 | SYNC_INTERVAL | 5 | frequency, in minutes |
 
 Interval is slightly inexact, intentionally. An earlier version of this used cron for precision, but that causes more resource contention than necessary.

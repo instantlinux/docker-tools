@@ -11,6 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ENV PEERNAME= \
     PUBKEY1= \
     PUBKEY2= \
+    RRSYNC_ROOT=/ \
     SYNC_INTERVAL=5 \
     SSHKEY1=data-sync-sshkey1 \
     SSHKEY2=data-sync-sshkey2
