@@ -198,10 +198,13 @@ include Makefile.sops
 # cert-manager
 ##########
 
-# TODO: make this work without helm, while tracking doc problem:
-#  https://github.com/jetstack/cert-manager/issues/1151
-cert-manager: helm_install
-	kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(VERSION_CERT_MANAGER)/deploy/manifests/00-crds.yaml --context=sudo
+cert-manager:
+	kubectl apply --validate=false --context=sudo -f \
+	 https://github.com/jetstack/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager-no-webhook.yaml
+
+# TODO: remove this once it's clear the above works without helm
+# When updating, do "helm delete --purge cert-manager" first
+cert-manager-helm: helm_install
 	helm install stable/cert-manager \
 	 --name cert-manager --namespace cert-manager \
 	 --set ingressShim.defaultIssuerName=letsencrypt-prod \

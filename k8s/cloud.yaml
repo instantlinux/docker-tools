@@ -179,7 +179,7 @@ kind: Ingress
 metadata:
   name: $SERVICE_NAME-ingress
   annotations:
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/client-body-buffer-size: 1280m
     nginx.ingress.kubernetes.io/enable-access-log: "true"
@@ -210,7 +210,7 @@ kind: Ingress
 metadata:
   name: $SERVICE_NAME-totp
   annotations:
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/auth-url: http://$AUTHELIA_IP/api/verify
     nginx.ingress.kubernetes.io/auth-signin: https://authtotp.$DOMAIN

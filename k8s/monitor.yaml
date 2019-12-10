@@ -19,7 +19,7 @@ metadata:
   annotations:
     # TODO - letsencrypt (can't deal with these redirects and basic-auth)
     #  Doesn't validate when using type ExternalName
-    # certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
 spec:
   tls:
