@@ -227,7 +227,7 @@ data:
     ignore = Name *socket
     ignore = Name .s.PGSQL.5432
     ignore = Name pgstat.stat
-    ignore = Path data-sync/share/artifactory/data/logs/artifactory.log
+    ignore = Path data-sync/share/artifactory/data/data/derby/log
     ignore = Path data-sync/share/artifactory/data/logs/request.log
     ignore = Path data-sync/duplicati/config
     ignore = Path data-sync/gitlab/data/postgresql/data/pg_stat_tmp

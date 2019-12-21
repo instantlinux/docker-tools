@@ -73,6 +73,7 @@ SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320
 STACKS = $(basename $(wildcard *.yaml))
 
 include Makefile.vars
+include Makefile.versions
 include Makefile.instances
 
 ifeq ($(ACTION), delete)
@@ -94,9 +95,7 @@ $(STACKS)::
 .PHONY: envsubst imports install install_metrics namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-# TODO may want to remove non-working imports/ingress-nginx, switched
-#  to namespace-local version a long time ago
-IMPORTS      = calico calico-etcd dashboard flannel ingress-nginx
+IMPORTS      = calico calico-etcd dashboard flannel
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -241,9 +240,6 @@ imports/metrics-$(VERSION_METRICS):
 install_metrics: imports/metrics-$(VERSION_METRICS)
 	kubectl $(ADMIN_CTX) $(ACTION) -f \
 	  imports/metrics-$(VERSION_METRICS)/deploy/1.8+/
-
-imports/ingress-nginx.yaml:
-	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 
 imports/traefik-prom.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml

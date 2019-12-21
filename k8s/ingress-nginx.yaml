@@ -13,6 +13,7 @@ spec:
     - { port: 80, targetPort: 80, name: http }
     - { port: 443, targetPort: 443, name: https }
     - { port: $PORT_GITLAB_SSH, name: git-ssh }
+  sessionAffinity: ClientIP
 ---
 apiVersion: v1
 kind: Service
@@ -25,6 +26,7 @@ spec:
   - { port: 443, nodePort: $NODEPORT_HTTPS, targetPort: 443, name: https }
   selector:
     k8s-app: nginx-ingress-controller
+  sessionAffinity: ClientIP
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -104,7 +106,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - name: default-http-backend
-        image: gcr.io/google_containers/defaultbackend:1.4
+        image: gcr.io/google_containers/defaultbackend:$VERSION_DEFAULTBACKEND
         ports:
         - containerPort: 8080
 ---

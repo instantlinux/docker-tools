@@ -1,9 +1,13 @@
 ## jenkins-slave
 [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Commit badge")
 
+*Status: DEPRECATED*
+
 An image with basic build tools (python/gcc) for Jenkins
 executors. This will automatically phone-home to the jenkins-master
 image, using the swarm plugin.
+
+_See [python-builder](../python-builder/README.md) image instead_
 
 ### Usage
 Set the variables as defined below, and run the docker-compose stack

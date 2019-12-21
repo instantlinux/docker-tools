@@ -1,6 +1,8 @@
 ## jenkins-master
 [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Commit badge")
 
+*Status: DEPRECATED*
+
 Builds a current (2.x) version of Jenkins, with the list of plugins
 shown in plugins.txt along with configuration settings defined in the ref
 directory.
@@ -8,6 +10,9 @@ directory.
 This is a companion to the jenkins-slave image, which can be auto-
 configured via the (installed) swarm plugin or can be launched on
 demand via the docker-slaves plugin.
+
+_Deprecated due to extreme difficulty keeping this up-to-date over
+the years; switched to gitlab-ci some time ago._
 
 ### Usage
 Set the variables as defined below, and run the docker-compose stack. This repo has complete instructions for
