@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -16,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYZOR_SITE=public.pyzor.org:24441
 
 ARG DCC_VERSION=1.3.163
-ARG SPAMD_VERSION=3.4.2-1~deb9u1
+ARG SPAMD_VERSION=3.4.2-1+deb10u1
 ARG DCC_SHA=195195b79ee15253c4caf48d4ca3bf41b16c66a8cb9a13984a1dc4741d7f6735
 ARG SPAMD_UID=2022
 

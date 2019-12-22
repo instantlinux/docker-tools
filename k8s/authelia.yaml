@@ -45,17 +45,14 @@ spec:
         - containerPort: 80
         resources:
           limits:
-            memory: 1536Mi
+            memory: 512Mi
           requests:
             cpu: 50m
             memory: 256Mi
         volumeMounts:
-        - mountPath: /etc/authelia/config.yml
+        - mountPath: /etc/authelia/configuration.yml
           name: config
           subPath: config.yml
-        - mountPath: /var/lib/authelia/store
-          name: share
-          subPath: $SERVICE_NAME/store
       dnsConfig:
         options:
         - name: use-vc
@@ -64,8 +61,6 @@ spec:
       - name: config
         secret:
           secretName: authelia-config
-      - name: share
-        hostPath: { path: $PATH_SHR }
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
