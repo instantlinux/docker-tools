@@ -53,14 +53,14 @@ spec:
             cpu: 50m
             memory: 128Mi
         volumeMounts:
-        - mountPath: /etc/nginx/conf.d
-          name: admin
+        - mountPath: /etc/nginx/conf.d/wx.conf
+          name: config
           readOnly: true
-          subPath: services/wx/etc/nginx/conf.d
+          subPath: wx.conf
         - mountPath: /run/id_rsa.pub
-          name: admin
-          subPath: services/wx/ssh/id_rsa.pub
+          name: weewx-rsync-sshkey
           readOnly: true
+          subPath: id_rsa.pub
         - mountPath: /etc/ssh
           name: share
           subPath: $SERVICE_NAME/etc/ssh
@@ -69,12 +69,16 @@ spec:
       dnsConfig:
         options: [ name: ndots ]
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
+      - name: config
+        configMap:
+          name: $SERVICE_NAME
       - name: share
         hostPath: { path: $PATH_SHR }
       - name: html
         emptyDir: { medium: Memory, sizeLimit: 50Mi }
+      - name: weewx-rsync-sshkey
+        secret:
+          secretName: weewx-rsync-sshkey
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -91,3 +95,22 @@ spec:
         backend:
           serviceName: $SERVICE_NAME
           servicePort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME
+data:
+  wx.conf: |
+    access_log /dev/stdout;
+    error_log stderr;
+
+    server {
+      listen       80;
+      server_name  wx.$DOMAIN;
+      index        forecast.html;
+
+      location / {
+        root /usr/share/nginx/wx;
+      }
+    }

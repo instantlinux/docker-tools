@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.11
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -24,8 +24,9 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=WORKGROUP
 
-ARG BIND9_VER=9.13.2
-ARG BIND9_SHA=6c044e9ea81add9dbbd2f5dfc224964cc6b6e364e43a8d6d8b574d9282651802
+ARG BIND9_VER=9.15.7
+ARG BIND9_SHA=99ec7779c0a48a381338dde7e778d499ba677ea031823683004abc3c369898e3
+# SYS-425 update on https://bugzilla.samba.org/show_bug.cgi?id=14209
 ARG SAMBA_VERSION=4.8.12-r1
 
 COPY *.conf.j2 /root/
@@ -39,11 +40,11 @@ RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
     apk add --virtual .fetch-deps curl file gcc krb5-dev libcap-dev \
       libgss-dev libxml2-dev linux-headers make musl-dev openssl-dev perl && \
     cd /tmp && \
-    curl -Lo bind.tar.gz \
-      ftp://ftp.isc.org/isc/bind9/$BIND9_VER/bind-$BIND9_VER.tar.gz && \
-    echo "$BIND9_SHA  bind.tar.gz" > checksums && \
+    curl -Lo bind.tar.xz \
+      ftp://ftp.isc.org/isc/bind9/$BIND9_VER/bind-$BIND9_VER.tar.xz && \
+    echo "$BIND9_SHA  bind.tar.xz" > checksums && \
     sha256sum -c checksums && \
-    tar xf bind.tar.gz --strip-components=1 && \
+    tar xf bind.tar.xz --strip-components=1 && \
     CFLAGS=-O2 ./configure --with-gssapi=/usr/include/gssapi --with-dlopen=yes \
       --prefix=/usr --sysconfdir=/etc/bind --localstatedir=/var \
       --with-openssl=/usr --enable-linux-caps --with-libxml2 --enable-threads \
