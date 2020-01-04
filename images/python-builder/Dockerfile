@@ -1,4 +1,4 @@
-FROM docker:19.03.4
+FROM docker:19.03.5
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
@@ -11,18 +11,18 @@ ENV BUILD_DIR=/build \
     BUILD_USER=build \
     TZ=UTC
 
-ARG COMPOSE_VERSION=1.24.0
+ARG COMPOSE_VERSION=1.25.0
 ARG KUBECTL_VERSION=1.15.3
-ARG MUSL_VERSION=1.1.22-r3
-ARG PYTHON_VERSION=3.7.5-r1
-ARG PYCRYPTOGRAPHY_VERSION=2.6.1-r1
+ARG MUSL_VERSION=1.1.24-r0
+ARG PYTHON_VERSION=3.8.1-r0
+ARG PYCRYPTOGRAPHY_VERSION=2.8-r1
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64
 ARG _KUBECTL_URL=${_KUBECTL_DOWNLOADS}/v$KUBECTL_VERSION/bin/linux/amd64/kubectl
 ARG DOCKER_GID=485
 ARG BUILD_UID=1001
-ARG COMPOSE_SHA=bee6460f96339d5d978bb63d17943f773e1a140242dfa6c941d5e020a302c91b
+ARG COMPOSE_SHA=2bdab0bbf42583b4b77ee015cf908933c78f0572a7cb949a7dd8e200e6250221
 ARG KUBECTL_SHA=6e805054a1fb2280abb53f75b57a1b92bf9c66ffe0d2cdcd46e81b079d93c322
 
 COPY requirements.txt /root/
@@ -35,7 +35,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev \
       py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-virtualenv tar \
-      tzdata uwsgi-python3 wget && \
+      tzdata uwsgi-python wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo /usr/local/bin/docker-compose ${_COMPOSE_URL} && \

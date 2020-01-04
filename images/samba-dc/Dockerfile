@@ -26,8 +26,7 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
 
 ARG BIND9_VER=9.15.7
 ARG BIND9_SHA=99ec7779c0a48a381338dde7e778d499ba677ea031823683004abc3c369898e3
-# SYS-425 update on https://bugzilla.samba.org/show_bug.cgi?id=14209
-ARG SAMBA_VERSION=4.8.12-r1
+ARG SAMBA_VERSION=4.11.4-r1
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
@@ -38,7 +37,8 @@ COPY entrypoint.sh /usr/local/bin/
 RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
       bind-libs libcrypto1.1 libxml2 && \
     apk add --virtual .fetch-deps curl file gcc krb5-dev libcap-dev \
-      libgss-dev libxml2-dev linux-headers make musl-dev openssl-dev perl && \
+      libgss-dev libuv-dev libxml2-dev linux-headers make musl-dev \
+      openssl-dev perl && \
     cd /tmp && \
     curl -Lo bind.tar.xz \
       ftp://ftp.isc.org/isc/bind9/$BIND9_VER/bind-$BIND9_VER.tar.xz && \
@@ -47,8 +47,8 @@ RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
     tar xf bind.tar.xz --strip-components=1 && \
     CFLAGS=-O2 ./configure --with-gssapi=/usr/include/gssapi --with-dlopen=yes \
       --prefix=/usr --sysconfdir=/etc/bind --localstatedir=/var \
-      --with-openssl=/usr --enable-linux-caps --with-libxml2 --enable-threads \
-      --enable-filter-aaaa --enable-ipv6 --enable-shared --with-libtool && \
+      --with-openssl=/usr --enable-linux-caps --with-libxml2 \
+      --enable-shared --with-libtool --without-python && \
     make && \
     for TARGET in lib bin/delv bin/dig bin/dnssec bin/nsupdate; do \
       make -C $TARGET install; \

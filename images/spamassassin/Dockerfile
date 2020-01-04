@@ -38,7 +38,7 @@ RUN apt-get -yq update && \
     sed -i 's/^logfile = .*$/logfile = \/dev\/stderr/g' \
      /etc/razor/razor-agent.conf && \
     sed -i 's/DCCIFD_ENABLE=off/DCCIFD_ENABLE=on/' /var/dcc/dcc_conf && \
-    apt-get purge -yq binutils cpp-6 libc6-dev libgcc-6-dev \
+    apt-get purge -yq binutils cpp-8 libc6-dev libgcc-8-dev \
      linux-libc-dev make && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
 
