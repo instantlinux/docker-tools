@@ -16,6 +16,7 @@ ARG KUBECTL_VERSION=1.15.3
 ARG MUSL_VERSION=1.1.24-r0
 ARG PYTHON_VERSION=3.8.1-r0
 ARG PYCRYPTOGRAPHY_VERSION=2.8-r1
+ARG PYPILLOW_VERSION=6.2.1-r0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64
@@ -34,7 +35,8 @@ RUN addgroup -g $DOCKER_GID docker && \
       bash curl gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev \
-      py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-virtualenv tar \
+      py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-pillow=$PYPILLOW_VERSION py3-virtualenv tar \
       tzdata uwsgi-python wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \

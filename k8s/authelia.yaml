@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: $SERVICE_NAME
-        image: clems4ever/authelia:$VERSION_AUTHELIA
+        image: authelia/authelia:$VERSION_AUTHELIA
         ports:
         - containerPort: 80
         resources:
