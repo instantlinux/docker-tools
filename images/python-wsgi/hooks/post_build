@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/python-wsgi/TODO
+curl -X post https://hooks.microbadger.com/images/instantlinux/python-wsgi/https://hooks.microbadger.com/images/instantlinux/python-wsgi/UnFMe96wUcBzPIF8el2ggw5FtV8=
