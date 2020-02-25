@@ -28,3 +28,4 @@ SQLAlchemy==1.3.13
 SQLAlchemy-Utils==0.36.1
 swagger-ui-bundle==0.0.6
 urllib3==1.25.8
+uWSGI==2.0.18

@@ -17,7 +17,8 @@ COPY app/ /opt/app
 RUN chmod -R g-w,o-w /opt/app
 
 EXPOSE 8080
-CMD ["uwsgi", "--ini", "/usr/src/uwsgi.ini"]
 ```
+
+If you use this image, do not try to add alpine system packages (e.g. apk add py3-xxx) to your image. Doing that will trigger installation of certain files from the alpine 3.8 distribution, leading to shared-library filename conflicts in such packages as Pillow and pycryptodome.
 
 [![](https://images.microbadger.com/badges/license/instantlinux/python-wsgi.svg)](https://microbadger.com/images/instantlinux/python-wsgi "License badge")
