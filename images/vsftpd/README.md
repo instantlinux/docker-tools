@@ -6,6 +6,8 @@ A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in A
 
 ### Usage
 
+*Status: DEPRECATED*
+
 The most-common directives can be specified in environment variables as shown below. If you need further customizations, put them in one or more files under a mount point /etc/vsftpd.d.
 
 A single upload user can be specified via the FTPUSER_xxx variables. It is activated by defining ftp-user-password-secret thus:

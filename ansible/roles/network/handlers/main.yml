@@ -7,3 +7,8 @@
 
 - name: Netplan apply
   command: netplan apply
+
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted

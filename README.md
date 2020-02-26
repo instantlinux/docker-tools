@@ -44,10 +44,11 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 | artifactory | ** | binary repo |
 | gitlab | ** | CI server and git repo |
 | admin-git | [![](https://images.microbadger.com/badges/version/instantlinux/git-pull.svg)](https://microbadger.com/images/instantlinux/git-pull "Version badge") | sync git repo across swarm |
-| jenkins | [![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") | CI server |
 | jira | ** | ticket tracking |
 | mariadb-galera | [![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
 | nexus | ** | binary repo with docker registry |
+| python-builder | [![](https://images.microbadger.com/badges/version/instantlinux/python-builder.svg)](https://microbadger.com/images/instantlinux/python-builder "Version badge") | CI testing for python|
+| python-wsgi | [![](https://images.microbadger.com/badges/version/instantlinux/python-wsgi.svg)](https://microbadger.com/images/instantlinux/python-wsgi "Version badge") | WSGI runtime for python flask apps|
 | wordpress | ** | |
 
 **Networking and support**
@@ -71,7 +72,6 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 | samba-dc | [![](https://images.microbadger.com/badges/version/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") | Active-Directory compatible domain controller |
 | [secondshot](https://github.com/instantlinux/secondshot) | [![](https://images.microbadger.com/badges/version/instantlinux/secondshot.svg)](https://microbadger.com/images/instantlinux/secondshot "Version badge") | rsnapshot-based backups |
 | splunk | ** | the free version |
-| vsftpd | [![](https://images.microbadger.com/badges/version/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") | ftp server |
 
 **Email**
 

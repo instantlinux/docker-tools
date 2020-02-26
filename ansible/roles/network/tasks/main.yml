@@ -20,3 +20,4 @@
   when: False
 
 - include: kernel.yml
+- include: sshd.yml

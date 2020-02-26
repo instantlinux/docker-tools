@@ -26,6 +26,19 @@ network: "{{ network_defaults | combine(network_override) }}"
 network_sysctl:
   net.ipv4.ip_nonlocal_bind: 1
 
+sshd_opts:
+  ciphers:
+  - aes128-cbc
+  - aes128-ctr
+  - aes192-ctr
+  - aes256-ctr
+  kexalgorithms:
+  - diffie-hellman-group-exchange-sha256
+  macs: 
+  - hmac-sha2-256
+  - hmac-sha2-512
+  - umac-64@openssh.com
+
 ubuntu_packages:
   - bridge-utils
   - dnsutils

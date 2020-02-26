@@ -3,7 +3,7 @@
 
 MariaDB 10.3 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 
-### Usage
+### Usage - kubernetes
 
 Define the following dependencies before launching the cluster: passwords for root and SST, network load balancer, and a dedicated etcd key-value store. Here's how:
 
@@ -25,7 +25,7 @@ EOT
 sekret enc /dev/shm/new.yaml >secrets/$SECRET
 rm /dev/shm/new.yaml
 ```
-Do the same for an sst-auth-password.
+You can use a tool like [sops](https://github.com/mozilla/sops) or [sekret](https://github.com/nownabe/sekret) to generate the secrets file. Do the same for an sst-auth-password.
 
 Set any local my.cnf values in files under a volume mount for
 /etc/mysql/my.cnf.d (mapped as $ADMIN_PATH/mariadb/etc/). Use
@@ -89,6 +89,10 @@ cd docker-tools/k8s
 # This make target is defined in Makefile.instances
 make db00
 ~~~
+
+### Usage - swarm
+
+This was originally developed under docker Swarm. A [docker-compose](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/docker.compose) file is a legacy of that original work. Before stack-deploying it, invoke _docker secret create_ to generate the two secrets _mysql-root-password_ and _sst-auth-password-, and define an ADMIN_PATH environment variable pointing to your my.cnf (it has to be in the same location on each docker node).
 
 ### Variables
 
