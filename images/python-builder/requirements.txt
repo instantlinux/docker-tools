@@ -1,26 +1,30 @@
-alembic==1.4.0
+alembic==1.4.1
+arrow==0.15.5
+b2sdk==1.0.2
+babel==2.8.0
 boto3==1.12.5
 botocore==1.15.5
 connexion==2.6.0
-coverage==5.0.3
+coverage==5.0.4
 cryptography==2.8
 docopt==0.6.2
 flake8==3.7.9
 Flask==1.1.1
 Flask-Cors==3.0.8
+funcsigs==1.0.2
 jsonschema==3.2.0
-mock==4.0.1
+mock==4.0.2
 passlib==1.7.2
 pycryptodomex==3.9.6
 Pillow==6.2.1
 PyJWT==1.7.1
 PyMySQL==0.9.3
 # pytest has to be installed inside workspace's virtualenv
-# pytest==5.2.1
+# pytest==5.4.1
 pytest-cov==2.8.1
 pytz==2019.3
 setuptools==45.0.0
-SQLAlchemy==1.3.13
-SQLAlchemy-Utils==0.36.1
+SQLAlchemy==1.3.15
+SQLAlchemy-Utils==0.36.2
 swagger-ui-bundle==0.0.6
 urllib3==1.25.8
