@@ -1,9 +1,9 @@
-FROM docker:19.03.8
+FROM node:12.16.2-alpine
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=Apache-2.0 \
-    org.label-schema.name=python-builder \
+    org.label-schema.name=node-builder \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
@@ -14,9 +14,6 @@ ENV BUILD_DIR=/build \
 ARG COMPOSE_VERSION=1.25.0
 ARG KUBECTL_VERSION=1.15.3
 ARG MUSL_VERSION=1.1.24-r2
-ARG PYTHON_VERSION=3.8.2-r0
-ARG PYCRYPTOGRAPHY_VERSION=2.9-r0
-ARG PYPILLOW_VERSION=6.2.2-r1
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${COMPOSE_VERSION}/docker-compose-Linux-x86_64
@@ -26,20 +23,18 @@ ARG BUILD_UID=1001
 ARG COMPOSE_SHA=2bdab0bbf42583b4b77ee015cf908933c78f0572a7cb949a7dd8e200e6250221
 ARG KUBECTL_SHA=6e805054a1fb2280abb53f75b57a1b92bf9c66ffe0d2cdcd46e81b079d93c322
 
-COPY requirements.txt /root/
-
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
-      bash curl gcc gettext git gzip jq make musl==$MUSL_VERSION \
-      musl-dev==$MUSL_VERSION openssh-client \
-      python3==$PYTHON_VERSION python3-dev \
-      py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION \
-      py3-pillow@edge=$PYPILLOW_VERSION py3-virtualenv tar \
-      tzdata uwsgi-python wget && \
+      bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
+      musl-dev==$MUSL_VERSION openssh-client tzdata wget
+
+COPY package.json /usr/local/lib/node_modules/npm/
+RUN cd /usr/local/lib/node_modules/npm && \
+    npm install && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     curl -sLo /usr/local/bin/docker-compose ${_COMPOSE_URL} && \
@@ -47,8 +42,6 @@ RUN addgroup -g $DOCKER_GID docker && \
     echo -e "$COMPOSE_SHA  /usr/local/bin/docker-compose\n$KUBECTL_SHA" \
         " /usr/local/bin/kubectl" | sha256sum -c && \
     chmod +x /usr/local/bin/docker-compose /usr/local/bin/kubectl && \
-    pip3 install --upgrade pip && \
-    pip install -r /root/requirements.txt && \
     chown $BUILD_USER /etc/localtime /etc/timezone && \
     rm -f /var/cache/apk/*
 

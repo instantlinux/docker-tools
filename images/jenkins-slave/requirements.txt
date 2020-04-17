@@ -1,10 +1,10 @@
-coverage==4.5.3
+coverage==5.1
 cryptography==2.4.2
 docopt==0.6.2
-flake8==3.7.7
-Flask==1.0.2
+flake8==3.7.9
+Flask==1.1.2
 jsonschema==3.0.1
-mock==2.0.0
+mock==4.0.2
 setuptools==40.6.2
 unittest2==1.1.0
-urllib3==1.25
+urllib3==1.25.9
