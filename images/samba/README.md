@@ -1,8 +1,8 @@
 ## samba
 
-[![](https://images.microbadger.com/badges/version/instantlinux/samba.svg)](https://microbadger.com/images/instantlinux/samba "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba.svg)](https://microbadger.com/images/instantlinux/samba "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba.svg)](https://microbadger.com/images/instantlinux/samba "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/samba.svg)](https://microbadger.com/images/instantlinux/samba "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/samba.svg)](https://microbadger.com/images/instantlinux/samba "Image badge")  arm64:[![](https://images.microbadger.com/badges/image/instantlinux/samba-arm64.svg)](https://microbadger.com/images/instantlinux/samba-arm64 "Image badge") arm32:[![](https://images.microbadger.com/badges/image/instantlinux/samba-arm32.svg)](https://microbadger.com/images/instantlinux/samba-arm-32 "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba.svg)](https://microbadger.com/images/instantlinux/samba "Commit badge")
 
-Samba as a file server. This is stripped down to the basics to enable greatest flexibility.
+Samba as a file server. This is stripped down to the basics to enable greatest flexibility. Supported on: [amd64](https://hub.docker.com/r/instantlinux/samba/) [arm64](https://hub.docker.com/r/instantlinux/samba-arm64/) [arm32](https://hub.docker.com/r/instantlinux/samba-arm32/).
 
 ### Usage
 
