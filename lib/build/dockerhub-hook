@@ -1,13 +1,16 @@
 #!/bin/bash
 
-DOCKERFILE_OPT=
-if [[ $DOCKER_REPO == *-armhf ]]; then
-  DOCKERFILE_OPT="-f Dockerfile.armhf"
-elif [[ $DOCKER_REPO == *-arm64 ]]; then
-  DOCKERFILE_OPT="-f Dockerfile.arm64"
-elif [[ $DOCKER_REPO == *-arm32 ]]; then
-  DOCKERFILE_OPT="-f Dockerfile.arm32"
-fi
-docker build -t $IMAGE_NAME $DOCKERFILE_OPT . \
+DOCKERFILE_OPT="--platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/riscv64"
+# if [[ $DOCKER_REPO == *-armhf ]]; then
+#   DOCKERFILE_OPT="-f Dockerfile.armhf"
+# elif [[ $DOCKER_REPO == *-arm64 ]]; then
+#   DOCKERFILE_OPT="-f Dockerfile.arm64"
+# elif [[ $DOCKER_REPO == *-arm32 ]]; then
+#   DOCKERFILE_OPT="-f Dockerfile.arm32"
+# fi
+# docker build -t $IMAGE_NAME $DOCKERFILE_OPT . \
+docker buildx create --name multi
+docker buildx use multi
+docker buildx build -t $IMAGE_NAME . \
   --build-arg VCS_REF=$(git rev-parse HEAD) \
   --build-arg BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
