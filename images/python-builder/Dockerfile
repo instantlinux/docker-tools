@@ -38,7 +38,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev \
       py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION \
-      py3-pillow@edge=$PYPILLOW_VERSION py3-virtualenv tar \
+      py3-pillow@edge=$PYPILLOW_VERSION py3-virtualenv sqlite tar \
       tzdata uwsgi-python wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
