@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG SAMBA_VERSION=4.11.5-r0
+ARG SAMBA_VERSION=4.11.8-r0
 ENV DOMAIN_LOGONS=no \
     LOGON_DRIVE=H \
     NETBIOS_NAME=samba \
