@@ -12,13 +12,13 @@
   template:
     dest: /etc/lightdm/lightdm.conf.d/10-autologin.conf
     src: lightdm-autologin.conf.j2
-  when: ansible_distribution_release != 'bionic'
+  when: ansible_distribution_version >= '18.04'
 
 - name: Autologin after boot
   template:
     dest: /etc/sddm.conf
     src: sddm-autologin.conf.j2
-  when: ansible_distribution_release == 'bionic'
+  when: ansible_distribution_version >= '18.04'
 
 - name: KDE config directories
   file:

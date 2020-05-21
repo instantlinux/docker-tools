@@ -42,6 +42,7 @@ sshd_opts:
 ubuntu_packages:
   - bridge-utils
   - dnsutils
+  - net-tools
   - psmisc
 
 vrrp:

@@ -6,7 +6,7 @@
 - name: Adjust TCP keepalive to preserve management sessions
   sysctl:
     name: net.ipv4.tcp_keepalive_time
-    value: 86400
+    value: '86400'
     sysctl_set: yes
 
 - name: Install rrsync for rsnapshot backups

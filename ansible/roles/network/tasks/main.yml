@@ -4,10 +4,10 @@
     name: "{{ ubuntu_packages }}"
 
 - include: network_legacy.yml
-  when: ansible_distribution_release != 'bionic'
+  when: ansible_distribution_version < '18.04'
 
 - include: netplan.yml
-  when: ansible_distribution_release == 'bionic'
+  when: ansible_distribution_version >= '18.04'
 
 - name: Set up keepalived (VRRP) for ingress load-balancer
   template:

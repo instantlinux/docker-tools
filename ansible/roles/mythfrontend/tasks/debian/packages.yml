@@ -38,4 +38,4 @@
   command: dpkg-reconfigure libdvd-pkg
   args:
     creates: /usr/lib/x86_64-linux-gnu/libdvdcss.so
-  when: ansible_distribution_release == 'bionic'
+  when: ansible_distribution_version >= '18.04'

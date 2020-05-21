@@ -3,12 +3,12 @@
 
 - include: "{{ ansible_os_family | lower }}/packages.yml"
 - include: "{{ ansible_os_family | lower }}/lirc.yml"
-  when: ansible_distribution_release != 'bionic'
+  when: ansible_distribution_version < '18.04'
 - include: "{{ ansible_os_family | lower }}/network.yml"
-  when: ansible_distribution_release != 'bionic'
+  when: ansible_distribution_version < '18.04'
 
 - include: "{{ ansible_os_family | lower }}/ir-keytable.yml"
-  when: ansible_distribution_release == 'bionic'
+  when: ansible_distribution_version >= '18.04'
 
 - include: autosuspend.yml
   when: suspend

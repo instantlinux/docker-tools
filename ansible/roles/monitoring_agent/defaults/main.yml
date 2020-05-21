@@ -67,5 +67,5 @@ ubuntu_packages:
   # deprecated
   # - mcelog
 
-ubuntu_packages_bionic:
+ubuntu_packages_extra:
   - etcd-client

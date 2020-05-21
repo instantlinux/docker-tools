@@ -25,6 +25,6 @@ pytest-cov==2.8.1
 pytz==2020.1
 setuptools==45.0.0
 SQLAlchemy==1.3.17
-SQLAlchemy-Utils==0.36.5
+SQLAlchemy-Utils==0.36.4
 swagger-ui-bundle==0.0.6
 urllib3==1.25.9

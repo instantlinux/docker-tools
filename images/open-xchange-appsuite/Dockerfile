@@ -8,8 +8,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OX_VERSION=7.10.3-10
-ARG OX_VERSION_ALT=7.10.3-2
+ARG OX_VERSION=7.10.3-12
+ARG OX_VERSION_ALT=7.10.3-10
 ARG OX_GID=261
 ARG OX_UID=2061
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -41,11 +41,11 @@ RUN sed -i -e "s/{{ VERSION }}/$(echo $OX_VERSION | cut -d- -f 1)/" \
     apt-get install -y \
         hunspell open-xchange=$OX_VERSION \
         open-xchange-admin=$OX_VERSION \
-        open-xchange-appsuite=$OX_VERSION \
+        open-xchange-appsuite=$OX_VERSION_ALT \
         open-xchange-appsuite-backend=$OX_VERSION \
         open-xchange-appsuite-help-en-us \
         open-xchange-appsuite-l10n-* \
-        open-xchange-appsuite-manifest=$OX_VERSION \
+        open-xchange-appsuite-manifest=$OX_VERSION_ALT \
         open-xchange-authentication-database=$OX_VERSION \
         open-xchange-caldav=$OX_VERSION \
         open-xchange-carddav=$OX_VERSION \
