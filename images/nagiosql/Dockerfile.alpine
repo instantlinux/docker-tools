@@ -1,4 +1,4 @@
-FROM php:7.2.10-cli-alpine3.8
+FROM php:7.4.6-cli-alpine3.11
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -18,11 +18,12 @@ ENV DB_HOST=db00 \
 ARG APACHE_UID=33
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG NAGIOSQL_VERSION=3.4.0
-ARG NAGIOSQL_SHA=b03a8ef59785cf52ec9cce152c49198a7ae2ac14c54120740d53df834156d403
-ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION.tar.bz2
+ARG NAGIOSQL_VERSION=3.4.1
+ARG NAGIOSQL_SHA=a2b280b1178f7d26a66068c41faba5a38f8575d5cafe32836d7a2594d7e217ad
+ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION-git2020-01-19.tar.bz2
 
 COPY src /tmp/
+COPY html /var/www/html
 RUN deluser xfs && \
     adduser -u $APACHE_UID -s /sbin/nologin -g Apache -D -H -h /var/www apache && \
     apk add --update --no-cache apache2 php7-apache2 php7-ftp php7-gettext \
@@ -36,7 +37,7 @@ RUN deluser xfs && \
     tar xjf $NAGIOSQL_DOWNLOAD -C /var/www/nagiosql --strip-components=1 && \
     mv /tmp/nagiosql.conf /etc/apache2/conf.d/ && \
     mv /tmp/settings.php.j2 /var/www/nagiosql/config/ && \
-    mv /tmp/html/* /var/www/html/ && \
+    chmod a+rX /var/www/html && \
     rm /tmp/*
 
 EXPOSE 80

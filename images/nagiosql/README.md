@@ -10,7 +10,9 @@ NagiosQL is a UI for managing host, service and related definitions for Nagios. 
 
 Steps:
 * Create a blank database (e.g. nagiosql) or a copy of your existing NagiosQL database on your MySQL server and assign its password in the docker secret identified in your docker-compose.yml (see example as noted above)
-* Bring up the NagiosQL UI at the port number identified in docker-compose.yml, log in as nagiosadmin / nagios, enter the database install or update dialog
+* Copy the [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) from this repo and define any environment-var overrides you might need (as defined below)
+* Bring up Nagios4 and NagiosQL using `docker-compose up`
+* In a browser, connect to NagiosQL UI at the port number identified in docker-compose.yml, log in as nagiosadmin / nagios, enter the database install or update dialog
 * Define hosts, services and other objects
 * Under Tools -> Nagios control, invoke Write monitoring data, Write additional data, Check configuration files
 * Restart nagios server if the configuration check passed
@@ -21,17 +23,23 @@ Tips:
 
 ### Current Status
 
-Alpha--the only known issue is the restart button doesn't work (a workaround is to invoke docker restart of the nagios container).
+Alpha--the only known issue is the restart button doesn't work (a workaround is to invoke docker restart of the nagios container). Not verified under kubernetes (on the theory that fewer dependencies are better for the lowest-level monitoring system during any outage).
 
 ### Variables
 
 Variable | Default | Description |
 -------- | ------- | ----------- |
+ADMIN_PATH | /opt | Path on localhost to store etc files
 DB_HOST | db00 | MySQL database hostname
 DB_NAME | nagiosql | database name
 DB_PORT | 3306 | TCP port number
 DB_USER | nagiosql | database username
 DB_PASSWD_SECRET | nagiosql-db-password | name of secret
+DOMAIN | | used in docker-compose.yml by the nagios server
+NAGIOS_MAIL_RELAY | smtp | DNS name for nagios email sending
+PORT_NAGIOSQL| 8080 | Port to use for NagiosQL UI
+REGISTRY_URI | (docker hub) | Local image registry
+SHARE_PATH | /opt | Path on localhost to store SSL certs
 TZ | UTC | local timezone
 
 ### Secrets

@@ -20,7 +20,12 @@ sed -e "s/{{ DB_HOST }}/$DB_HOST/" \
     -e "s/{{ DB_PORT }}/$DB_PORT/" \
     -e "s/{{ DB_USER }}/$DB_USER/" \
     /var/www/nagiosql/config/settings.php.j2 > /var/www/nagiosql/config/settings.php
-sed -i -e "s:use_timezone=UTC:use_timezone=$TZ:" $NAGIOS_ETC/nagios.cfg
+if [ -s $NAGIOS_ETC/nagios.cfg ]; then
+  sed -i -e "s:use_timezone=UTC:use_timezone=$TZ:" $NAGIOS_ETC/nagios.cfg
+else
+  echo File $NAGIOS_ETC/nagios.cfg not found, have you mounted volume from jasonrivers/nagios?
+  exit 1
+fi
 
 for dir in backup/hosts backup/services hosts services; do
   mkdir -p $NAGIOS_OBJ/$dir

@@ -62,8 +62,8 @@ services:
     - ${PORT_MONITOR_HTTP:-80}:80
     volumes:
     - ${ADMIN_PATH:-/opt}/nagios/etc/nginx/conf.d:/etc/nginx/conf.d:ro
-    - ${SHARE_PATH}/common/pki/ca:/etc/ssl/ca:ro
-    - ${SHARE_PATH}/common/pki/certs:/etc/ssl/certs:ro
+    - ${SHARE_PATH:-/opt}/common/pki/ca:/etc/ssl/ca:ro
+    - ${SHARE_PATH:-/opt}/common/pki/certs:/etc/ssl/certs:ro
     environment:
       TZ: ${TZ:-UTC}
     secrets:
