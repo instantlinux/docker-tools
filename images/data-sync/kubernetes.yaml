@@ -233,6 +233,7 @@ data:
     ignore = Path data-sync/gitlab/data/postgresql/data/pg_stat_tmp
     ignore = Path data-sync/gitlab/data/prometheus/data
     ignore = Path data-sync/gitlab/data/redis/dump.rdb
+    ignore = Path data-sync/gitlab/data/gitaly
     ignore = Path data-sync/gitlab/logs/sshd/current
     ignore = Path data-sync/jira/home/monitor/ConnectionPoolGraph.rrd4j
     ignore = Path data-sync/jira/home/monitor/DatabaseReadWritesGraph.rrd4j

@@ -1,6 +1,6 @@
 ## proftpd
 
-[![](https://images.microbadger.com/badges/version/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge")
 
 An easy-to-use, tiny yet full-featured installation of ProFTPD.
 

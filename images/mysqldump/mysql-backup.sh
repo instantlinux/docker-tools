@@ -41,6 +41,7 @@ DESTDIR=/var/backup/mysql
 COMPRESS="bzip2 -f"
 COMPRESS_EXT="bz2"
 OLD_EXT="gz"
+[ "$SKEW_SECONDS" = "" ] && SKEW_SECONDS=15
 
 if [ "$#" -eq "0" ]; then
     echo "Usage: backup_mysql_all <days to keep> <list: instances>"
@@ -88,7 +89,7 @@ do
 
       # Data
       # Delete any lingering files from a previous run
-      rm -f $DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql.$OLD_EXT
+      rm -f $DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql.$OLD_EXT \
             $DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql
       BACKUP_TARGET=$DESTDIR/$SERVER/$DAY/$DBNAME-backup.sql
 

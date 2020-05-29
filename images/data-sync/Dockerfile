@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.12
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -16,7 +16,7 @@ ENV PEERNAME= \
     SSHKEY1=data-sync-sshkey1 \
     SSHKEY2=data-sync-sshkey2
 
-ARG UNISON_VERSION=2.48.15_p4-r0
+ARG UNISON_VERSION=2.48.15_p4-r1
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 RUN apk add --update --no-cache openssh-client openssh-server perl rsync \
       unison=$UNISON_VERSION && \

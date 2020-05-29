@@ -1,5 +1,5 @@
 ## git-dump
-[![](https://images.microbadger.com/badges/version/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge")
 
 This dockerizes a simple script I wrote years ago to create git bundle
 backups of a private git server.

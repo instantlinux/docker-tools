@@ -1,5 +1,5 @@
 ## dhcpd-dns-pxe
-[![](https://images.microbadger.com/badges/version/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge")
 
 Serve DNS and DHCP from one or more small Alpine Linux container(s). This
 supplies DNS and tftp (for network PXE booting) using dnsmasq, and

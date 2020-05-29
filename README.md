@@ -1,5 +1,7 @@
 ## Practical Docker Tools
 
+[![](https://gitlab.com/instantlinux/docker-tools/badges/master/pipeline.svg)](https://gitlab.com/instantlinux/docker-tools/pipelines "pipelines")
+
 Kubernetes is hard--or is it? This repo is a collection of images and
 container resource definitions for managing a software-dev
 organization using Kubernetes with tools to make it easier. Contents:

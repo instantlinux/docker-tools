@@ -1,56 +1,135 @@
-variables:
-  REGISTRY: nexus.instantlinux.net
-  GIT_SSL_NO_VERIFY: "1"
+# created 30-may-20 by richb@instantlinux.net
 
 stages:
-  - Static Code Analysis
-  - Create Image
-  - Push Image
-  - Functional Tests
-  - Promote Image
-  - Clean
+  - prepare
+  - data-sync
+  - dhcpd-dns-pxe
+  - ez-ipupdate
+  - git-dump
+  - git-pull
+  - postfix
+  - proftpd
+  - python-builder
+  - python-wsgi
+  - rsyslogd
 
-before_script:
-  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHA:0:7}
+image: docker:19.03.8
 
-.registry_template: &registry_login
-  before_script:
-  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHA:0:7}
-  - docker login -u $DOCKER_LOGIN -p $CI_JOB_TOKEN $REGISTRY
-
-analysis:
-  stage: Static Code Analysis
-  image: nexus.instantlinux.net/python-builder:latest
-  script: cd images/$image && make analysis
-
-create_image:
-  stage: Create Image
+prepare:
+  stage: prepare
   script:
-  - docker build -t $image:$TAG -f images/$image/Dockerfile images/$image
-      --build-arg=VCS_REF=$CI_COMMIT_SHA
-      --build-arg=BUILD_DATE=$(date +%Y-%m-%dT%H:%M:%SZ)
+  - IMAGES=$(find images -maxdepth 1 -exec basename {} \;)
+  - for IMG in $IMAGES; do
+      sed -e "s/{{ IMAGE }}/$IMG/" .image-gitlab-ci.yml  > .child-$IMG.yml;
+    done
+  artifacts:
+    paths: [ .child-*.yml ]
 
-push_image:
-  stage: Push Image
-  <<: *registry_login
-  script:
-  - docker tag $image:$TAG $REGISTRY/$image:$TAG
-  - docker push $REGISTRY/$image:$TAG
+# TODO: this is an egregious case of non-DRY code. Each could be
+# reduced to 2 lines by variable interpolation -- for example, the
+# artifact could be specified as .child-$CI_JOB_NAME.yml. But that is
+# not possible until a 2017 feature request is eventually implemented:
+# https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1809
 
-test:
-  stage: Functional Tests
-  image: nexus.instantlinux.net/python-builder:latest
-  script: cd images/$image && make test_functional
+# TODO: figure out why these have to be assigned to separate stages,
+# without waiting for completion (strategy: depend); putting more than
+# one in a stage gives "unknown failure"
 
-promote_image:
-  only: {refs: [master]}
-  stage: Promote Image
-  <<: *registry_login
-  script:
-  - docker tag $image:$TAG $REGISTRY/$image:latest
-  - docker push $REGISTRY/$image:latest
+smoketest:
+  stage: data-sync
+  trigger:
+    include:
+    - artifact: .child-data-sync.yml
+      job: prepare
+    # TODO figure out a way to collect all child pipeline results
+    strategy: depend
 
-clean:
-  stage: Clean
-  script: docker rmi $REGISTRY/$image:$TAG
-  when: always
+ez-ipupdate:
+  stage: ez-ipupdate
+  trigger:
+    include:
+    - artifact: .child-ez-ipupdate.yml
+      job: prepare
+  only:
+    changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+dhcpd-dns-pxe:
+  stage: dhcpd-dns-pxe
+  trigger:
+    include:
+    - artifact: .child-dhcpd-dns-pxe.yml
+      job: prepare
+  only:
+    changes: [ images/dhcpd-dns-pxe/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+git-dump:
+  stage: git-dump
+  trigger:
+    include:
+    - artifact: .child-git-dump.yml
+      job: prepare
+  only:
+    changes: [ images/git-dump/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+git-pull:
+  stage: git-pull
+  trigger:
+    include:
+    - artifact: .child-git-pull.yml
+      job: prepare
+  only:
+    changes: [ images/git-pull/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+postfix:
+  stage: postfix
+  trigger:
+    include:
+    - artifact: .child-postfix.yml
+      job: prepare
+  only:
+    changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+proftpd:
+  stage: proftpd
+  trigger:
+    include:
+    - artifact: .child-proftpd.yml
+      job: prepare
+  only:
+    changes: [ images/proftpd/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+python-builder:
+  stage: python-builder
+  trigger:
+    include:
+    - artifact: .child-python-builder.yml
+      job: prepare
+  only:
+    changes: [ images/python-builder/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+python-wsgi:
+  stage: python-wsgi
+  trigger:
+    include:
+    - artifact: .child-python-wsgi.yml
+      job: prepare
+  only:
+    changes: [ images/python-wsgi/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+rsyslogd:
+  stage: rsyslogd
+  trigger:
+    include:
+    - artifact: .child-rsyslogd.yml
+      job: prepare
+  only:
+    changes: [ images/rsyslogd/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]

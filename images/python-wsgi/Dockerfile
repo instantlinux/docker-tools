@@ -21,8 +21,8 @@ RUN echo '@community http://dl-cdn.alpinelinux.org/alpine/edge/community' \
     apk add --virtual .fetch-deps gcc git jpeg-dev libffi-dev make musl-dev \
       libwebp-dev openssl-dev pcre-dev zlib-dev && \
     pip3 install cffi==$VERSION_CFFI && \
-    apk add --update --no-cache geos jpeg libjpeg-turbo libspatialite@testing \
-      libwebp proj@community uwsgi zlib && \
+    apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
+      proj@community uwsgi zlib && \
     cd /tmp && git clone --depth=1 --branch=$VERSION_UWSGI \
       https://github.com/unbit/uwsgi.git && cd uwsgi && \
     make plugin.python && mkdir -m 755 /usr/lib/uwsgi && \

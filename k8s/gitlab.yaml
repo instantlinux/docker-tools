@@ -137,11 +137,10 @@ data:
     gitlab_rails['smtp_domain'] = '$HOSTNAME_EMAIL'
     gitlab_rails['smtp_enable_starttls_auto'] = true
     gitlab_rails['smtp_openssl_verify_mode'] = 'none'
-    prometheus['flags'] = {
-      #'storage.tsdb.retention.time' => '3d',
-      'storage.tsdb.retention' => '3d',
-      'config.file' => "#{node['gitlab']['prometheus']['home']}/prometheus.yml"
-    }
+    # prometheus['flags'] = {
+    #   'storage.tsdb.retention' => '3d',
+    #   'config.file' => "#{node['gitlab']['prometheus']['home']}/prometheus.yml"
+    # }
     prometheus_monitoring['enable'] = false
   gitback: |
     #!/bin/sh

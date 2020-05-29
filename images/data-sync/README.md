@@ -1,5 +1,5 @@
 ## data-sync
-[![](https://images.microbadger.com/badges/version/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64-blue "Platform badge")
 
 This provides HA storage for a bare-metal cluster. NAS servers are not usually HA and SAN installations are costly. Add this resource definition to your Kubernetes cluster and the volumes you mount under a directory /var/data-sync will be kept in sync using the [unison](https://www.cis.upenn.edu/~bcpierce/unison/) file synchronizer from UPenn.
 
