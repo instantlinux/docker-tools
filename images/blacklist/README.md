@@ -1,5 +1,5 @@
 ## DNS blacklist for spamassassin
-[![](https://images.microbadger.com/badges/version/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/blacklist?sort=date)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Commit badge")
 
 This is based on [Running Your Own RBL DNS Blacklist](http://www.blue-quartz.com/rbl/) using the Debian rbldnsd
 package adapted from scripts published by Herb Rubin some years
@@ -92,4 +92,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | TZ | UTC| time zone |
 | USERNAME | rbldns | username to run as |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "License badge") [![](https://img.shields.io/badge/code-spamhaus%2Frbldnsd-blue.svg)](https://github.com/spamhaus/rbldnsd "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/blacklist)](https://microbadger.com/images/instantlinux/blacklist "License badge") [![](https://img.shields.io/badge/code-spamhaus%2Frbldnsd-blue.svg)](https://github.com/spamhaus/rbldnsd "Code repo")

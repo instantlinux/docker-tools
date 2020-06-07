@@ -1,5 +1,5 @@
 ## wxcam-upload
-[![](https://images.microbadger.com/badges/version/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/wxcam-upload?sort=date)](https://microbadger.com/images/instantlinux/wxcam-upload "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Commit badge")
 
 This wraps an upload script along with proftpd for publishing still images from network-attached webcams to the Weather Underground webcam server.
 
@@ -41,4 +41,4 @@ wunderground-user-password | credential for Weather Underground API
 wxcam-password-hashed | hashed password of 
 wxuser-password-hashed | hashed password of ftp upload user
 
-[![](https://images.microbadger.com/badges/license/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "License badge") [![](https://img.shields.io/badge/code-proftpd%2Fproftpd-blue.svg)](https://github.com/proftpd/proftpd "Code repo") [![](https://img.shields.io/badge/code-nftpd_com%2Fclient-blue.svg)](http://www.ncftpd.com/download "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/wxcam-upload)](https://microbadger.com/images/instantlinux/wxcam-upload "License badge") [![](https://img.shields.io/badge/code-proftpd%2Fproftpd-blue.svg)](https://github.com/proftpd/proftpd "Code repo") [![](https://img.shields.io/badge/code-nftpd_com%2Fclient-blue.svg)](http://www.ncftpd.com/download "Code repo")

@@ -1,6 +1,6 @@
 ## nagiosql
 
-[![](https://images.microbadger.com/badges/version/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://microbadger.com/images/instantlinux/nagiosql "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "Commit badge")
 
 Web GUI for managing Nagios monitoring service.
 
@@ -49,4 +49,4 @@ Secret | Description
 nagiosql-db-password | database credential
 \<hostname>-server-key.pem | SSL cert (if using docker-compose)
 
-[![](https://images.microbadger.com/badges/license/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fnagiosql-blue.svg)](https://sourceforge.net/projects/nagiosql/ "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/nagiosql)](https://microbadger.com/images/instantlinux/nagiosql "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fnagiosql-blue.svg)](https://sourceforge.net/projects/nagiosql/ "Code repo")

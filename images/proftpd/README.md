@@ -1,6 +1,6 @@
 ## proftpd
 
-[![](https://images.microbadger.com/badges/version/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/proftpd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://microbadger.com/images/instantlinux/proftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/proftpd/Dockerfile "dockerfile")
 
 An easy-to-use, tiny yet full-featured installation of ProFTPD.
 

@@ -1,5 +1,5 @@
 ## jenkins-slave
-[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/jenkins-slave?sort=date)](https://microbadger.com/images/instantlinux/jenkins-slave "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "Commit badge")
 
 *Status: DEPRECATED*
 
@@ -38,4 +38,4 @@ Name | Description
 jenkins-agent-password | password for Jenkins user auth
 repo-push | Docker registry credential
 
-[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-slave.svg)](https://microbadger.com/images/instantlinux/jenkins-slave "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-slave)](https://microbadger.com/images/instantlinux/jenkins-slave "License badge")

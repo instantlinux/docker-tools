@@ -1,5 +1,5 @@
 ## weewx
-[![](https://images.microbadger.com/badges/version/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "amd64 image") armhf:[![](https://images.microbadger.com/badges/image/instantlinux/weewx-armhf.svg)](https://microbadger.com/images/instantlinux/weewx-armhf "armhf image") [![](https://images.microbadger.com/badges/commit/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/weewx?sort=date)](https://microbadger.com/images/instantlinux/weewx "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "amd64 image") armhf:[![](https://images.microbadger.com/badges/image/instantlinux/weewx-armhf.svg)](https://microbadger.com/images/instantlinux/weewx-armhf "armhf image") [![](https://images.microbadger.com/badges/commit/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "Commit badge")
 
 Weather station software WeeWX
 
@@ -85,4 +85,4 @@ standard). So the SYSLOG_DEST environment variable provided here
 can provide a way to send proper logging (via the rsyslogd
 process included in this image) to a central syslog service.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/weewx.svg)](https://microbadger.com/images/instantlinux/weewx "License badge") [![](https://img.shields.io/badge/code-weewx%2Fweewx-blue.svg)](https://github.com/weewx/weewx "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/weewx)](https://microbadger.com/images/instantlinux/weewx "License badge") [![](https://img.shields.io/badge/code-weewx%2Fweewx-blue.svg)](https://github.com/weewx/weewx "Code repo")

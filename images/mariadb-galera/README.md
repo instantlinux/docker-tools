@@ -1,5 +1,5 @@
 ## mariadb-galera
-[![](https://images.microbadger.com/badges/version/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
 
 MariaDB 10.3 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 
@@ -133,5 +133,5 @@ be invoked without HA resources using kubernetes-single.yaml.
 
 Thanks to ashraf-s9s of severalnines for the healthcheck script.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "License badge"
-) [![](https://img.shields.io/badge/code-mariadb%2Fserver-blue.svg)](https://github.com/MariaDB/server "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/mariadb-galera)](https://microbadger.com/images/instantlinux/mariadb-galera "License badge"
+) [![](https://img.shields.io/badge/code-mariadb%2Fserver-blue)](https://github.com/MariaDB/server "Code repo")

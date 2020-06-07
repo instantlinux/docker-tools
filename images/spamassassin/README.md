@@ -1,5 +1,5 @@
 ## spamassassin
-[![](https://images.microbadger.com/badges/version/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/spamassassin?sort=date)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Commit badge")
 
 This image includes pyzor, razor2 and dcc (with proper initialization of
 razor2 upon container start). The rules update can be scheduled to run at an
@@ -30,4 +30,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | PYZOR_SITE | public.pyzor.org:24441 | pyzor URI |
 | TZ | UTC | time zone |
 | USERNAME | debian-spamd | user name to run as |
-[![](https://images.microbadger.com/badges/license/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "License badge") [![](https://img.shields.io/badge/code-apache_svn%2Fspamassassin-blue.svg)](https://svn.apache.org/viewvc/spamassassin "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/spamassassin)](https://microbadger.com/images/instantlinux/spamassassin "License badge") [![](https://img.shields.io/badge/code-apache_svn%2Fspamassassin-blue.svg)](https://svn.apache.org/viewvc/spamassassin "Code repo")

@@ -1,5 +1,5 @@
 ## OX App Suite docker image
-[![](https://images.microbadger.com/badges/version/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/open-xchange-appsuite?sort=date)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Commit badge")
 
 Private-cloud online documents portal for spreadsheet, word-processing, presentations,email, calendar, and cloud file storage.
 
@@ -96,4 +96,4 @@ The kubernetes.yaml file supports one additional variable, OX_ETC_READONLY.
 | ox-db-password | configuration database password |
 | ox-master-password |system admin password |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "License badge") [![](https://img.shields.io/badge/code-open_xchange%2Fscm-blue.svg)](https://code.open-xchange.com "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/open-xchange-appsuite)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "License badge") [![](https://img.shields.io/badge/code-open_xchange%2Fscm-blue.svg)](https://code.open-xchange.com "Code repo")

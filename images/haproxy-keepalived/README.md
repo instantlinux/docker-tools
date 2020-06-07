@@ -1,5 +1,5 @@
 ## haproxy-keepalived
-[![](https://images.microbadger.com/badges/version/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Commit badge")
 
 A load balancer with haproxy and keepalived (VRRP) to provide high-availability networking.
 
@@ -51,4 +51,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | ------ | ----------- |
 | haproxy-stats-password | password for haproxy user in stats page |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "License badge") [![](https://img.shields.io/badge/code-haproxy%2Fhaproxy-blue.svg)](https://github.com/haproxy/haproxy "Code repo") [![](https://img.shields.io/badge/code-acassen%2Fkeepalived-blue.svg)](https://github.com/acassen/keepalived "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/haproxy-keepalived)](https://microbadger.com/images/instantlinux/haproxy-keepalived "License badge") [![](https://img.shields.io/badge/code-haproxy%2Fhaproxy-blue.svg)](https://github.com/haproxy/haproxy "Code repo") [![](https://img.shields.io/badge/code-acassen%2Fkeepalived-blue.svg)](https://github.com/acassen/keepalived "Code repo")

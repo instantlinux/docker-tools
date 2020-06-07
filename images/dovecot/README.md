@@ -1,5 +1,5 @@
 ## dovecot
-[![](https://images.microbadger.com/badges/version/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/dovecot/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://microbadger.com/images/instantlinux/dovecot "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/dovecot/Dockerfile "dockerfile")
 
 The dovecot imapd daemon in a small Alpine Linux container, with
 postfix for local delivery and procmail for filtering.

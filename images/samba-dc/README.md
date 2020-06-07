@@ -1,5 +1,5 @@
 ## samba-dc
-[![](https://images.microbadger.com/badges/version/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Commit badge")
 
 Samba domain controller.
 
@@ -110,4 +110,4 @@ done
 samba-tool domain demote --remove-other-dead-server=xxx
 {noformat}
 
-[![](https://images.microbadger.com/badges/license/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "License badge") [![](https://img.shields.io/badge/code-samba_team%2Fsamba-blue.svg)](https://gitlab.com/samba-team/samba "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/samba-dc)](https://microbadger.com/images/instantlinux/samba-dc "License badge") [![](https://img.shields.io/badge/code-samba_team%2Fsamba-blue.svg)](https://gitlab.com/samba-team/samba "Code repo")

@@ -1,5 +1,5 @@
 ## jenkins-master
-[![](https://images.microbadger.com/badges/version/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/jenkins-master?sort=date)](https://microbadger.com/images/instantlinux/jenkins-master "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "Commit badge")
 
 *Status: DEPRECATED*
 
@@ -56,4 +56,4 @@ artifactory-user-password | password for artifactory repo access
 jenkins-admin-password | password for new Jenkins admin user
 jenkins-agent-password | password for agents
 
-[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-master.svg)](https://microbadger.com/images/instantlinux/jenkins-master "License badge") [![](https://img.shields.io/badge/code-jenkinsci%2Fjenkins-blue.svg)](https://github.com/jenkinsci/jenkins "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-master)](https://microbadger.com/images/instantlinux/jenkins-master "License badge") [![](https://img.shields.io/badge/code-jenkinsci%2Fjenkins-blue.svg)](https://github.com/jenkinsci/jenkins "Code repo")

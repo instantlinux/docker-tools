@@ -1,6 +1,6 @@
 ## dropbox
 
-[![](https://images.microbadger.com/badges/version/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/dropbox?sort=date)](https://microbadger.com/images/instantlinux/dropbox "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "Commit badge")
 
 Dropbox client under Debian stretch.
 
@@ -27,4 +27,4 @@ Variable | Default | Description
 -------- | ------- | -----------
 UID | 1000 | Linux user ID
 
-[![](https://images.microbadger.com/badges/license/instantlinux/dropbox.svg)](https://microbadger.com/images/instantlinux/dropbox "License badge") [![](https://img.shields.io/badge/code-dropbox%2Fnautilus_dropbox-blue.svg)](https://github.com/dropbox/nautilus-dropbox "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/dropbox)](https://microbadger.com/images/instantlinux/dropbox "License badge") [![](https://img.shields.io/badge/code-dropbox%2Fnautilus_dropbox-blue.svg)](https://github.com/dropbox/nautilus-dropbox "Code repo")

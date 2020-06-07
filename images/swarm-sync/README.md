@@ -1,5 +1,5 @@
 ## swarm-sync
-[![](https://images.microbadger.com/badges/version/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/swarm-sync?sort=date)](https://microbadger.com/images/instantlinux/swarm-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "Commit badge")
 
 *Status: DEPRECATED*
 
@@ -59,4 +59,4 @@ Secret | Description
 ------ | -----------
 swarm-sync_sshkey | private half of ssh keypair
 
-[![](https://images.microbadger.com/badges/license/instantlinux/swarm-sync.svg)](https://microbadger.com/images/instantlinux/swarm-sync "License badge") [![](https://img.shields.io/badge/code-bcpierce00%2Funison-blue.svg)](https://github.com/bcpierce00/unison "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/swarm-sync)](https://microbadger.com/images/instantlinux/swarm-sync "License badge") [![](https://img.shields.io/badge/code-bcpierce00%2Funison-blue.svg)](https://github.com/bcpierce00/unison "Code repo")

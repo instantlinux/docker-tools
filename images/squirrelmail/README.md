@@ -1,5 +1,5 @@
 ## squirrelmail
-[![](https://images.microbadger.com/badges/version/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/squirrelmail?sort=date)](https://microbadger.com/images/instantlinux/squirrelmail "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "Commit badge")
 
 This is a heavily customized Dockerized version 1.4.21 of
 squirrelmail, vintage 2003, with an address book (inspired by
@@ -47,4 +47,4 @@ TZ | UTC | time zone
 | Name | Description |
 | ---- | ----------- |
 | squirrelmail-db-password | password to the MySQL database|
-[![](https://images.microbadger.com/badges/license/instantlinux/squirrelmail.svg)](https://microbadger.com/images/instantlinux/squirrelmail "License badge")
+[![](https://images.microbadger.com/badges/license/instantlinux/squirrelmail)](https://microbadger.com/images/instantlinux/squirrelmail "License badge")

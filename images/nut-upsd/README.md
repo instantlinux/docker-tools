@@ -1,5 +1,5 @@
 ## nut-upsd
-[![](https://images.microbadger.com/badges/version/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") arm64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm64.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm64 "Image badge") arm32:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm32.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm-32 "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") arm64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm64.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm64 "Image badge") arm32:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm32.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm-32 "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Commit badge")
 
 The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units. Supported on: [amd64](https://hub.docker.com/r/instantlinux/nut-upsd/) [arm64](https://hub.docker.com/r/instantlinux/nut-upsd-arm64/) [arm32](https://hub.docker.com/r/instantlinux/nut-upsd-arm32/).
 
@@ -83,4 +83,4 @@ udevadm control --reload-rules && udevadm trigger
 | ------ | ----------- |
 | nut-upsd-password | Password for API user |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "License badge") [![](https://img.shields.io/badge/code-networkupstools%2Fnut-blue.svg)](https://github.com/networkupstools/nut "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/nut-upsd)](https://microbadger.com/images/instantlinux/nut-upsd "License badge") [![](https://img.shields.io/badge/code-networkupstools%2Fnut-blue.svg)](https://github.com/networkupstools/nut "Code repo")

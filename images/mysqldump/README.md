@@ -1,5 +1,5 @@
 ## mysqldump
-[![](https://images.microbadger.com/badges/version/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Commit badge")
 
 This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. This image is based on
@@ -91,4 +91,4 @@ It's tested on MariaDB, so the LOCK_FOR_BACKUP parameter isn't really
 supported unless someone submits a pull-request to make this work with
 Percona again.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver%2Fclient-blue.svg)](https://github.com/mariadb/server/tree/10.3/client "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/mysqldump)](https://microbadger.com/images/instantlinux/mysqldump "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver%2Fclient-blue.svg)](https://github.com/mariadb/server/tree/10.3/client "Code repo")

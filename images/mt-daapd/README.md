@@ -1,5 +1,5 @@
 ## mt-daapd
-[![](https://images.microbadger.com/badges/version/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mt-daapd?sort=date)](https://microbadger.com/images/instantlinux/mt-daapd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "Commit badge")
 
 This is Ron Pedde's [Firefly Media server](https://en.wikipedia.org/wiki/Firefly_Media_Server) which implements the Digital Audio Access Protocol for serving MP3 and other audio media formats from a directory mounted to this container onto a LAN.
 
@@ -25,4 +25,4 @@ Volume attachments: mount the media as /srv/music; add an index cache mount /var
 | -------- | ------- | ----------- |
 | SERVER_BANNER | Firefly Media on Ubuntu | Name of service |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mt-daapd.svg)](https://microbadger.com/images/instantlinux/mt-daapd "License badge") [![](https://img.shields.io/badge/code-ejurgensen%2Fforked_daapd-blue.svg)](https://github.com/ejurgensen/forked-daapd "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/mt-daapd)](https://microbadger.com/images/instantlinux/mt-daapd "License badge") [![](https://img.shields.io/badge/code-ejurgensen%2Fforked_daapd-blue.svg)](https://github.com/ejurgensen/forked-daapd "Code repo")

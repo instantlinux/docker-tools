@@ -1,5 +1,5 @@
 ## postfix-python
-[![](https://images.microbadger.com/badges/version/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/postfix-python?sort=date)](https://microbadger.com/images/instantlinux/postfix-python "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "Commit badge")
 
 Postfix with python support. (Python needed for blacklist utility.) This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/postfix-python/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
@@ -33,4 +33,4 @@ Messages flagged with a high spam score are diverted to subdirectories under /va
 | ------ | ----------- |
 | mysql-blacklist-user | username and password for MySQL db |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/postfix-python.svg)](https://microbadger.com/images/instantlinux/postfix-python "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")
+[![](https://images.microbadger.com/badges/license/instantlinux/postfix-python)](https://microbadger.com/images/instantlinux/postfix-python "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")
