@@ -1,3 +1,3 @@
 #!/bin/sh
-TAG=$(grep "ARG .*_VERSION" Dockerfile | cut -d= -f 2)
+TAG=$(grep "ARG .*_VERSION" Dockerfile | cut -d= -f 2|xargs -d'\n'|tr ' ' '-')
 echo "--tag $DOCKER_REPO:$TAG"

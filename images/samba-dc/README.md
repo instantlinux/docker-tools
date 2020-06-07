@@ -1,5 +1,5 @@
 ## samba-dc
-[![](https://images.microbadger.com/badges/version/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Commit badge")
 
 Samba domain controller.
 

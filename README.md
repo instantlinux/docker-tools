@@ -105,5 +105,7 @@ Thank you to the following contributors!
 * [Sean Mollet](https://github.com/SeanMollet)
 * [Juan Manuel Carrillo Moreno](https://github.com/inetshell) - [personal site](https://wiki.inetshell.mx/)
 * [nicxvan]( https://github.com/nicxvan)
+* [Frank Riley](https://github.com/fhriley)
+* [Devin Bayer](https://github.com/akvadrako)
 
-Contents created 2017-19 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
+Contents created 2017-20 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
