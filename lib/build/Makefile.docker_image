@@ -4,7 +4,7 @@
 BUILDX      = https://github.com/docker/buildx/releases/download/v0.4.1/buildx-v0.4.1.linux-amd64
 PLATFORMS  ?= linux/amd64
 PUSH       ?= --push
-USER_LOGIN  = $(GITLAB_USER_LOGIN)
+USER_LOGIN ?= instantlinux
 VENV        = python_env
 VDIR        = $(PWD)/$(VENV)
 
@@ -46,8 +46,8 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	# docker tag $(REGISTRY)/$(IMAGE):$(TAG) $(USER_LOGIN)/$(IMAGE):latest
 	# docker push $(USER_LOGIN)/$(IMAGE):$(TAG)
 	# docker push $(USER_LOGIN)/$(IMAGE):latest
-	docker buildx build --tag $(USER_LOGIN)/$(IMAGE):$(TAG) \
-	   $(TAG_OPT) `[ -e hooks/add_tags ] && hooks/add_tags` \
+	docker buildx build $(TAG_OPT) \
+	  `[ -e hooks/add_tags ] && hooks/add_tags` \
 	  --tag $(USER_LOGIN)/$(IMAGE):latest --platform $(PLATFORMS) \
 	  --push --file Dockerfile . \
 	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \

@@ -1,5 +1,5 @@
 ## dovecot
-[![](https://images.microbadger.com/badges/version/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Commit badge")
+[![](https://images.microbadger.com/badges/version/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge")
 
 The dovecot imapd daemon in a small Alpine Linux container, with
 postfix for local delivery and procmail for filtering.

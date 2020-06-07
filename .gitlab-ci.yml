@@ -4,6 +4,7 @@ stages:
   - prepare
   - data-sync
   - dhcpd-dns-pxe
+  - dovecot
   - ez-ipupdate
   - git-dump
   - git-pull
@@ -12,6 +13,9 @@ stages:
   - python-builder
   - python-wsgi
   - rsyslogd
+  - samba
+  - samba-dc
+  - vsftpd
 
 image: docker:19.03.8
 
@@ -132,4 +136,34 @@ rsyslogd:
       job: prepare
   only:
     changes: [ images/rsyslogd/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+samba:
+  stage: samba
+  trigger:
+    include:
+    - artifact: .child-samba.yml
+      job: prepare
+  only:
+    changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+samba-dc:
+  stage: samba-dc
+  trigger:
+    include:
+    - artifact: .child-samba-dc.yml
+      job: prepare
+  only:
+    changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
+    refs: [ master, tags ]
+
+vsftpd:
+  stage: vsftpd
+  trigger:
+    include:
+    - artifact: .child-vsftpd.yml
+      job: prepare
+  only:
+    changes: [ images/vsftpd/**, lib/**, .image-gitlab-ci.yml ]
     refs: [ master, tags ]

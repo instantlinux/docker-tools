@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -26,7 +26,7 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
 
 ARG BIND9_VER=9.15.7
 ARG BIND9_SHA=99ec7779c0a48a381338dde7e778d499ba677ea031823683004abc3c369898e3
-ARG SAMBA_VERSION=4.11.8-r0
+ARG SAMBA_VERSION=4.12.2-r1
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/

@@ -15,7 +15,7 @@ image: docker:19.03.8
 
 .registry_template: &registry_login
   before_script:
-  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHA:0:7}
+  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $REGISTRY
   services: [ "docker:dind" ]
 
@@ -39,12 +39,4 @@ promote_image:
   stage: Promote Image
   <<: *registry_login
   script: apk add curl jq make && cd images/$IMAGE && make promote_image
-
-# TODO remove after fully stabilizing pipeline
-# clean:
-#   stage: Clean
-#   script:
-#   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHA:0:7}
-#   - docker rmi $REGISTRY/$IMAGE:$TAG
-#   when: always
-#   services: [ "docker:dind" ]
+  only: { variables: [ $REGISTRY_URI == "registry.gitlab.com" ] }
