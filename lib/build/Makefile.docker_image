@@ -19,6 +19,9 @@ endif
 ifeq ($(IMAGE),data-sync)
   PLATFORMS = linux/amd64,linux/aarch64
 endif
+ifeq ($(IMAGE),spamassassin)
+  PLATFORMS = linux/amd64,linux/arm64
+endif
 
 analysis: flake8
 	  @echo "Running static analysis"

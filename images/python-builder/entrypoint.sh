@@ -12,3 +12,5 @@ if [ ! -s $BUILD_DIR/.docker/config.json ]; then
   echo -e '{ "auths": {\n  }\n}' > /dev/shm/config.json
   ln -s /dev/shm/config.json $BUILD_DIR/.docker/
 fi
+
+. /usr/local/bin/docker-entrypoint.sh

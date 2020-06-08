@@ -1,5 +1,5 @@
 ## spamassassin
-[![](https://img.shields.io/docker/v/instantlinux/spamassassin?sort=date)](https://microbadger.com/images/instantlinux/spamassassin "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/spamassassin?sort=date)](https://microbadger.com/images/instantlinux/spamassassin "Version") [![](https://images.microbadger.com/badges/image/instantlinux/spamassassin.svg)](https://microbadger.com/images/instantlinux/spamassassin "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/spamassassin/Dockerfile "dockerfile")
 
 This image includes pyzor, razor2 and dcc (with proper initialization of
 razor2 upon container start). The rules update can be scheduled to run at an

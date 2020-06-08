@@ -11,11 +11,12 @@ stages:
   - postfix
   - proftpd
   - python-builder
+  - python-wsgi
   - rsyslogd
   - samba
+  - spamassassin
   - vsftpd
-# These builds take too long under qemu
-# - python-wsgi
+# This build takes too long under qemu
 # - samba-dc
 
 image: docker:19.03.8
@@ -117,7 +118,15 @@ python-builder:
       job: prepare
   only:
     changes: [ images/python-builder/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
+
+python-wsgi:
+  stage: python-wsgi
+  trigger:
+    include:
+    - artifact: .child-python-wsgi.yml
+      job: prepare
+  only:
+    changes: [ images/python-wsgi/**, lib/**, .image-gitlab-ci.yml ]
 
 rsyslogd:
   stage: rsyslogd
@@ -139,6 +148,15 @@ samba:
     changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
     refs: [ master, tags ]
 
+spamassassin:
+  stage: spamassassin
+  trigger:
+    include:
+    - artifact: .child-spamassassin.yml
+      job: prepare
+#  only:
+#    changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
+
 vsftpd:
   stage: vsftpd
   trigger:
@@ -151,16 +169,6 @@ vsftpd:
 
 # Slow builds
 
-# python-wsgi:
-#   stage: python-wsgi
-#   trigger:
-#     include:
-#     - artifact: .child-python-wsgi.yml
-#       job: prepare
-#   only:
-#     changes: [ images/python-wsgi/**, lib/**, .image-gitlab-ci.yml ]
-#     refs: [ master, tags ]
-
 # samba-dc:
 #   stage: samba-dc
 #   trigger:
@@ -169,4 +177,3 @@ vsftpd:
 #       job: prepare
 #   only:
 #     changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
-#     refs: [ master, tags ]

@@ -35,8 +35,9 @@ test:
   script: apk add make && cd images/$IMAGE && make test_functional
 
 promote_image:
-  only: {refs: [master]}
   stage: Promote Image
   <<: *registry_login
   script: apk add curl jq make && cd images/$IMAGE && make promote_image
-  only: { variables: [ $REGISTRY_URI == "registry.gitlab.com" ] }
+  only:
+    refs: [ master, tags ]
+    variables: [ $REGISTRY_URI == "registry.gitlab.com" ]

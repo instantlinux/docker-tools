@@ -1,0 +1,3 @@
+#!/bin/sh
+TAG=$(grep "ARG SPAMD_VERSION" Dockerfile | grep -oP '(?<=ION=).*(?=[+~])')
+echo "--tag $DOCKER_REPO:$TAG"
