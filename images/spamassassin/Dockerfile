@@ -45,5 +45,4 @@ RUN apt-get -yq update && \
 COPY entrypoint.sh /root/
 VOLUME ["/var/lib/spamassassin", "/var/log"]
 EXPOSE 783
-
 ENTRYPOINT ["/root/entrypoint.sh"]

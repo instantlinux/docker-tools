@@ -38,6 +38,13 @@ create_image: $(HOME)/.docker/cli-plugins/docker-buildx
 promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	# Log into dockerhub
 	docker login -u $(USER_LOGIN) -p $(DOCKER_TOKEN)
+	docker buildx build $(TAG_OPT) \
+	  `[ -e hooks/add_tags ] && hooks/add_tags` \
+	  --tag $(USER_LOGIN)/$(IMAGE):latest --platform $(PLATFORMS) \
+	  --push --file Dockerfile . \
+	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
+	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
+	-if [ -x hooks/post_build ]; then sh hooks/post_build; fi
 
 	# TODO - this only pushes amd64 manifest; as of May 2020 it seems
 	#  that only "docker buildx create --push" handles multi-platform
@@ -49,13 +56,6 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	# docker tag $(REGISTRY)/$(IMAGE):$(TAG) $(USER_LOGIN)/$(IMAGE):latest
 	# docker push $(USER_LOGIN)/$(IMAGE):$(TAG)
 	# docker push $(USER_LOGIN)/$(IMAGE):latest
-	docker buildx build $(TAG_OPT) \
-	  `[ -e hooks/add_tags ] && hooks/add_tags` \
-	  --tag $(USER_LOGIN)/$(IMAGE):latest --platform $(PLATFORMS) \
-	  --push --file Dockerfile . \
-	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
-	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
-	-if [ -x hooks/post_build ]; then sh hooks/post_build; fi
 	# TODO update dockerhub README if/when that is supported,
 	# see https://github.com/docker/hub-feedback/issues/1927
 
