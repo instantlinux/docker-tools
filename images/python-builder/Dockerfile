@@ -56,7 +56,8 @@ RUN addgroup -g $DOCKER_GID docker && \
     chmod +x /usr/lib/docker/cli-plugins/docker-buildx \
       /usr/local/bin/docker-compose /usr/local/bin/kubectl && \
     pip install -r /root/requirements.txt && \
-    chown $BUILD_USER /etc/localtime /etc/timezone && \
+    mkdir -p /certs/client &&
+    chown $BUILD_USER /certs/client /etc/localtime /etc/timezone && \
     rm -f /var/cache/apk/*
 
 WORKDIR $BUILD_DIR

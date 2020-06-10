@@ -23,7 +23,7 @@ export VERSION_RSYSLOGD      ?= 8.2004.0-r0
 export VERSION_SAMBA         ?= 4.12.2-r1
 export VERSION_SAMBA_DC      ?= 4.12.2-r1
 export VERSION_SPAMASSASSIN  ?= 3.4.2-1
-export VERSION_WXCAM_UPLOAD  ?= 19.06
+export VERSION_WXCAM_UPLOAD  ?= 1.3.7_rc4-r0
 export VERSION_WEEWX         ?= 3.9.2
 
 # Third-party versions

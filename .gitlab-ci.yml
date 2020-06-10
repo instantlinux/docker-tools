@@ -16,6 +16,7 @@ stages:
   - samba
   - spamassassin
   - vsftpd
+  - wxcam-upload
 # This build takes too long under qemu
 # - samba-dc
 
@@ -58,7 +59,6 @@ ez-ipupdate:
       job: prepare
   only:
     changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 dhcpd-dns-pxe:
   stage: dhcpd-dns-pxe
@@ -68,7 +68,6 @@ dhcpd-dns-pxe:
       job: prepare
   only:
     changes: [ images/dhcpd-dns-pxe/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 git-dump:
   stage: git-dump
@@ -78,7 +77,6 @@ git-dump:
       job: prepare
   only:
     changes: [ images/git-dump/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 git-pull:
   stage: git-pull
@@ -88,7 +86,6 @@ git-pull:
       job: prepare
   only:
     changes: [ images/git-pull/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 postfix:
   stage: postfix
@@ -98,7 +95,6 @@ postfix:
       job: prepare
   only:
     changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 proftpd:
   stage: proftpd
@@ -108,7 +104,6 @@ proftpd:
       job: prepare
   only:
     changes: [ images/proftpd/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 python-builder:
   stage: python-builder
@@ -136,7 +131,6 @@ rsyslogd:
       job: prepare
   only:
     changes: [ images/rsyslogd/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 samba:
   stage: samba
@@ -146,7 +140,6 @@ samba:
       job: prepare
   only:
     changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
 
 spamassassin:
   stage: spamassassin
@@ -154,8 +147,8 @@ spamassassin:
     include:
     - artifact: .child-spamassassin.yml
       job: prepare
-#  only:
-#    changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
+  only:
+    changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
 
 vsftpd:
   stage: vsftpd
@@ -165,7 +158,15 @@ vsftpd:
       job: prepare
   only:
     changes: [ images/vsftpd/**, lib/**, .image-gitlab-ci.yml ]
-    refs: [ master, tags ]
+
+wxcam-upload:
+  stage: wxcam-upload
+  trigger:
+    include:
+    - artifact: .child-wxcam-upload.yml
+      job: prepare
+  only:
+    changes: [ images/wxcam-upload/**, lib/**, .image-gitlab-ci.yml ]
 
 # Slow builds
 

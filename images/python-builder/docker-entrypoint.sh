@@ -2,7 +2,6 @@
 set -eu
 
 export DOCKER_TLS_CERTDIR=/certs
-mkdir -p /certs/client
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
