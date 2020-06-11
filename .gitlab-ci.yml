@@ -51,15 +51,6 @@ smoketest:
     # TODO figure out a way to collect all child pipeline results
     strategy: depend
 
-ez-ipupdate:
-  stage: ez-ipupdate
-  trigger:
-    include:
-    - artifact: .child-ez-ipupdate.yml
-      job: prepare
-  only:
-    changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
-
 dhcpd-dns-pxe:
   stage: dhcpd-dns-pxe
   trigger:
@@ -68,6 +59,24 @@ dhcpd-dns-pxe:
       job: prepare
   only:
     changes: [ images/dhcpd-dns-pxe/**, lib/**, .image-gitlab-ci.yml ]
+
+dovecot:
+  stage: dovecot
+  trigger:
+    include:
+    - artifact: .child-dovecot.yml
+      job: prepare
+  only:
+    changes: [ images/dovecot/**, lib/**, .image-gitlab-ci.yml ]
+
+ez-ipupdate:
+  stage: ez-ipupdate
+  trigger:
+    include:
+    - artifact: .child-ez-ipupdate.yml
+      job: prepare
+  only:
+    changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
 
 git-dump:
   stage: git-dump

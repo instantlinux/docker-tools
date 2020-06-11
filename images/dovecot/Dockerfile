@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:3.4.5-r0
+FROM instantlinux/postfix:3.5.2-r1
 
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
