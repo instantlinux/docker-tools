@@ -8,7 +8,8 @@ mariadb-galera::
 
 db00 db01 db02 db03: etcd
 	@echo --$(NOTICE) $@--
-	$(eval RESOURCE := $(shell case $@ in (db03) echo mariadb-galera-single;; \
+	$(eval RESOURCE := $(shell case $@ in (db00) echo mariadb-galera-single;; \
+	 (db03) echo mariadb-galera-single;;  \
 	 (*) echo mariadb-galera;; esac))
 	$(eval DB_NODEPORT := $(shell case $@ in (db00) echo $(NODEPORT_DB00);; \
 	 (db03) echo $(NODEPORT_DB03);; esac))

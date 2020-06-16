@@ -4,7 +4,7 @@ export VERSION_BLACKLIST     ?= 0.998b
 export VERSION_DATA_SYNC     ?= 2.48.15_p4-r1
 export VERSION_DAVITE        ?= 19.06
 export VERSION_DHCPD_DNS_PXE ?= 4.4.2-r1-2.81-r0
-export VERSION_DOVECOT       ?= 2.3.7.2-r0
+export VERSION_DOVECOT       ?= 2.3.10.1-r0
 export VERSION_DUPLICATI     ?= 2.0.5.0
 export VERSION_EZ_IPUPDATE   ?= 3.0.10-r9
 export VERSION_HAPROXY_KEEPALIVED ?= 2.0.7-alpine-2.0.16-r0
@@ -28,7 +28,7 @@ export VERSION_WEEWX         ?= 3.9.2
 
 # Third-party versions
 export VERSION_ARTIFACTORY   ?= 6.15.1
-export VERSION_AUTHELIA      ?= 4.5.1
+export VERSION_AUTHELIA      ?= 4.19.2
 export VERSION_CALICO        ?= 3.8
 export VERSION_CERT_MANAGER  ?= 0.12.0
 export VERSION_DASHBOARD     ?= 1.10.1

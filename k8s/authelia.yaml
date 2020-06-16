@@ -40,6 +40,19 @@ spec:
     spec:
       containers:
       - name: $SERVICE_NAME
+        env:
+        - name: AUTHELIA_JWT_SECRET_FILE
+          value: /etc/authelia/secrets/jwt_secret
+        - name: AUTHELIA_SESSION_SECRET_FILE
+          value: /etc/authelia/secrets/session_secret
+        - name: AUTHELIA_SESSION_REDIS_PASSWORD_FILE
+          value: /etc/authelia/secrets/redis_password
+        - name: AUTHELIA_STORAGE_MYSQL_PASSWORD_FILE
+          value: /etc/authelia/secrets/mysql_password
+        - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
+          value: /etc/authelia/secrets/smtp_password
+        - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE
+          value: /etc/authelia/secrets/ldap_password
         image: authelia/authelia:$VERSION_AUTHELIA
         ports:
         - containerPort: 80
@@ -52,15 +65,20 @@ spec:
         volumeMounts:
         - mountPath: /etc/authelia/configuration.yml
           name: config
-          subPath: config.yml
+          subPath: configuration.yml
+        - mountPath: /etc/authelia/secrets
+          name: secrets
       dnsConfig:
         options:
         - name: use-vc
         - name: ndots
       volumes:
       - name: config
+        configMap:
+          name: $SERVICE_NAME
+      - name: secrets
         secret:
-          secretName: authelia-config
+          secretName: authelia-secrets
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -116,10 +134,14 @@ spec:
         env:
         - { name: SLAPD_ORGANISATION, value: Community Internet }
         - { name: SLAPD_DOMAIN, value: $DOMAIN }
-        - { name: SLAPD_PASSWORD, value: password }
         - { name: SLAPD_ADDITIONAL_MODULES, value: memberof }
         - { name: SLAPD_ADDITIONAL_SCHEMAS, value: openldap }
         - { name: SLAPD_FORCE_RECONFIGURE, value: "true" }
+        - name: SLAPD_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: authelia-secrets
+              key: ldap_password
         image: dinkel/openldap:latest
         ports:
         - containerPort: 389
@@ -173,3 +195,70 @@ spec:
       - name: redis-config
         secret:
           secretName: redis-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: $SERVICE_NAME
+data:
+  configuration.yml: |
+    port: 80
+    # set to trace for troubleshooting
+    log_level: info
+
+    authentication_backend:
+      ldap:
+        url: ldap://ldap
+        base_dn: $AUTHELIA_BASE_DN
+        additional_users_dn: ou=users
+        users_filter: (&({username_attribute}={input})(objectClass=inetOrgPerson))
+        username_attribute: uid
+        additional_users_dn: ou=users
+        additional_groups_dn: ou=groups
+        groups_filter: (&(member={dn})(objectclass=groupOfNames))
+        group_name_attribute: cn
+        mail_attribute: mail
+        user: cn=admin,$AUTHELIA_BASE_DN
+
+    # Access Control
+    access_control:
+      default_policy: bypass
+      rules:
+      - domain: $AUTHELIA_BYPASS_DOMAIN
+        policy: bypass
+        subject: $AUTHELIA_BYPASS_USER
+      - domain:
+        - "*.$DOMAIN"
+        - "*.$MYDOMAIN"
+        policy: two_factor
+
+    # Configuration of session cookies
+    session:
+      expiration: 1209600000
+      inactivity: 300000
+      domain: $AUTHELIA_SESSION_DOMAIN
+      redis:
+        host: redis
+        port: 6379
+
+    # Configuration of the authentication regulation mechanism.
+    regulation:
+      max_retries: 3
+      find_time: 120
+      ban_time: 300
+
+    # The directory where the DB files will be saved
+    storage:
+      mysql:
+        host: db00
+        port: 3306
+        database: authelia
+        username: authelia
+
+    # Configuration of the notification system.
+    notifier:
+      smtp:
+        username: $AUTHELIA_SMTP_USERNAME
+        host: $AUTHELIA_SMTP_HOST
+        port: $AUTHELIA_SMTP_PORT
+        sender: $AUTHELIA_SMTP_SENDER
