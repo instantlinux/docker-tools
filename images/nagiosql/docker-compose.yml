@@ -36,7 +36,7 @@ services:
     network_mode: host
 
   nagiosql:
-    image: ${REGISTRY_URI:-instantlinux}/nagiosql:latest
+    image: instantlinux/nagiosql:${VERSION_NAGIOSQL:-latest}
     restart: always
     hostname: nagiosql
     environment:

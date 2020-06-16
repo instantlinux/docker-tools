@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF

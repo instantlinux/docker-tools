@@ -1,6 +1,6 @@
 # Note: the image is nearly 3x bigger under ubuntu than alpine
 # TODO: switch to alpine whenever nagios4 is available for it
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -27,11 +27,11 @@ ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION-git2020-01-19.tar.bz2
 
 COPY src /tmp/
 RUN apt-get update && \
-    apt-get install -y apache2 bzip2 curl libapache2-mod-php php php-gettext \
+    apt-get install -y apache2 bzip2 curl libapache2-mod-php php gettext \
       php-mysql php-ssh2 tzdata && apt-get clean
 RUN \
     sed -i -e 's/;date.timezone =/date.timezone = UTC/' \
-      /etc/php/7.2/apache2/php.ini && \
+      /etc/php/7.4/apache2/php.ini && \
     cd /tmp && \
     curl -sLo $NAGIOSQL_DOWNLOAD \
       https://sourceforge.net/projects/nagiosql/files/nagiosql/NagiosQL%20${NAGIOSQL_VERSION}/${NAGIOSQL_DOWNLOAD} && \

@@ -81,8 +81,8 @@ class HoneypotMsg(object):
         self.db_session = DBSession()
         self.verbose = args['--verbose']
         if self.verbose > 1:
-            print 'dsn: %s' % dsn
-            print 'honeypots: %s' % ','.join(self.honeypots)
+            print('dsn: %s' % dsn)
+            print('honeypots: %s' % ','.join(self.honeypots))
 
     def find_received_ip(self, msg, relay):
         if relay:
@@ -90,14 +90,14 @@ class HoneypotMsg(object):
                 received = [header for i, header in enumerate(msg.get_all(
                     'Received')) if re.search(relay, header)][0]
             except IndexError:
-                print 'Relay not found in headers'
+                print('Relay not found in headers')
                 sys.exit(1)
         else:
             received = msg.get_all('Received')[-1]
         if self.verbose > 1:
-            print 'Received: %s' % received
-            print 'To: %s' % msg.get('To')
-        pat = re.compile("\[\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}\]")
+            print('Received: %s' % received)
+            print('To: %s' % msg.get('To'))
+        pat = re.compile(r'\[\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}\]')
         ip = re.findall(pat, received)[0][1:-1]
         try:
             socket.inet_aton(ip)
@@ -112,9 +112,9 @@ class HoneypotMsg(object):
         retval = recipient in self.honeypots
         if self.verbose:
             if retval:
-                print 'Message recipient %s is in honeypot list' % recipient
+                print('Message recipient %s is in honeypot list' % recipient)
             else:
-                print 'Message recipient %s is allowed' % recipient
+                print('Message recipient %s is allowed' % recipient)
         return retval
 
     def insert_ip(self, ip, cidr_size):
@@ -132,7 +132,7 @@ class HoneypotMsg(object):
         else:
             count = 1
         if self.verbose:
-            print 'Inserting %s with count %d' % (ip_val, count)
+            print('Inserting %s with count %d' % (ip_val, count))
         record = IP(ip_val, notes=self.notes, count=count)
         self.db_session.merge(record)
         self.db_session.commit()

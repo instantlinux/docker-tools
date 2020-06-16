@@ -1,7 +1,7 @@
 ## nut-upsd
-[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") amd64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") arm64:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm64.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm64 "Image badge") arm32:[![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd-arm32.svg)](https://microbadger.com/images/instantlinux/nut-upsd-arm-32 "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/nut-upsd/Dockerfile "dockerfile")
 
-The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units. Supported on: [amd64](https://hub.docker.com/r/instantlinux/nut-upsd/) [arm64](https://hub.docker.com/r/instantlinux/nut-upsd-arm64/) [arm32](https://hub.docker.com/r/instantlinux/nut-upsd-arm32/).
+The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units. This multi-architecture image supports Intel/AMD and ARM (Raspberry Pi etc).
 
 ### Usage
 

@@ -3,11 +3,16 @@
 stages:
   - prepare
   - data-sync
+  - blacklist
   - dhcpd-dns-pxe
   - dovecot
   - ez-ipupdate
   - git-dump
   - git-pull
+  - haproxy-keepalived
+  - mt-daapd
+  - nagiosql
+  - nut-upsd
   - postfix
   - proftpd
   - python-builder
@@ -15,6 +20,7 @@ stages:
   - rsyslogd
   - samba
   - spamassassin
+  - udp-nginx-proxy
   - vsftpd
   - wxcam-upload
 # This build takes too long under qemu
@@ -50,6 +56,15 @@ smoketest:
       job: prepare
     # TODO figure out a way to collect all child pipeline results
     strategy: depend
+
+blacklist:
+  stage: blacklist
+  trigger:
+    include:
+    - artifact: .child-blacklist.yml
+      job: prepare
+  only:
+    changes: [ images/blacklist/**, lib/**, .image-gitlab-ci.yml ]
 
 dhcpd-dns-pxe:
   stage: dhcpd-dns-pxe
@@ -95,6 +110,42 @@ git-pull:
       job: prepare
   only:
     changes: [ images/git-pull/**, lib/**, .image-gitlab-ci.yml ]
+
+haproxy-keepalived:
+  stage: haproxy-keepalived
+  trigger:
+    include:
+    - artifact: .child-haproxy-keepalived.yml
+      job: prepare
+  only:
+    changes: [ images/haproxy-keepalived/**, lib/**, .image-gitlab-ci.yml ]
+
+mt-daapd:
+  stage: mt-daapd
+  trigger:
+    include:
+    - artifact: .child-mt-daapd.yml
+      job: prepare
+  only:
+    changes: [ images/mt-daapd/**, lib/**, .image-gitlab-ci.yml ]
+
+nagiosql:
+  stage: nagiosql
+  trigger:
+    include:
+    - artifact: .child-nagiosql.yml
+      job: prepare
+  only:
+    changes: [ images/nagiosql/**, lib/**, .image-gitlab-ci.yml ]
+
+nut-upsd:
+  stage: nut-upsd
+  trigger:
+    include:
+    - artifact: .child-nut-upsd.yml
+      job: prepare
+  only:
+    changes: [ images/nut-upsd/**, lib/**, .image-gitlab-ci.yml ]
 
 postfix:
   stage: postfix
@@ -158,6 +209,15 @@ spamassassin:
       job: prepare
   only:
     changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
+
+udp-nginx-proxy:
+  stage: udp-nginx-proxy
+  trigger:
+    include:
+    - artifact: .child-udp-nginx-proxy.yml
+      job: prepare
+  only:
+    changes: [ images/udp-nginx-proxy/**, lib/**, .image-gitlab-ci.yml ]
 
 vsftpd:
   stage: vsftpd

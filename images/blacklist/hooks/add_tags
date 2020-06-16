@@ -1,0 +1,3 @@
+#!/bin/sh
+TAG=$(grep "ARG RBLDNSD_VERSION" Dockerfile |cut -d '~' -f 1)
+echo "--tag $DOCKER_REPO:$TAG"

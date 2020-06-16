@@ -79,6 +79,7 @@ spec:
       - name: secrets
         secret:
           secretName: authelia-secrets
+          defaultMode: 0400
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress

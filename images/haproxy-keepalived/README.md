@@ -1,5 +1,6 @@
 ## haproxy-keepalived
-[![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/haproxy-keepalived.svg)](https://microbadger.com/images/instantlinux/haproxy-keepalived "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/haproxy-keepalived/Dockerfile "dockerfile")
+
 
 A load balancer with haproxy and keepalived (VRRP) to provide high-availability networking.
 

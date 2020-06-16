@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:buster-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -9,8 +9,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ENV SERVER_BANNER="Firefly Media on Ubuntu"
+ARG DAAPD_VERSION=26.4+dfsg1-1
+
 RUN apt-get -yq update && apt-get install -yq --no-install-recommends \
-    forked-daapd avahi-daemon && \
+    forked-daapd=$DAAPD_VERSION avahi-daemon && \
   apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 VOLUME ["/srv/music", "/var/cache/forked-daapd", "/var/log"]

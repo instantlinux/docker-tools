@@ -1,5 +1,5 @@
 ## udp-nginx-proxy
-[![](https://img.shields.io/docker/v/instantlinux/udp-nginx-proxy?sort=date)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/udp-nginx-proxy.svg)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/udp-nginx-proxy.svg)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/udp-nginx-proxy?sort=date)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/udp-nginx-proxy.svg)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/udp-nginx-proxy/Dockerfile "dockerfile")
 
 The missing feature of haproxy: UDP, provided by nginx. The main
 use-case for this is to make more than one DNS server available at a
