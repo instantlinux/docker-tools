@@ -47,16 +47,26 @@ RUN sed -i -e "s/{{ VERSION }}/$(echo $OX_VERSION | cut -d- -f 1)/" \
         open-xchange-appsuite-l10n-* \
         open-xchange-appsuite-manifest=$OX_VERSION_ALT \
         open-xchange-authentication-database=$OX_VERSION \
+        open-xchange-authorization \
         open-xchange-caldav=$OX_VERSION \
         open-xchange-carddav=$OX_VERSION \
+        open-xchange-core=$OX_VERSION \
+        open-xchange-dav \
         open-xchange-documentconverter-api \
         open-xchange-documents-backend \
         open-xchange-documents-help-en-us \
         open-xchange-documents-ui \
         open-xchange-documents-ui-static \
+	open-xchange-file-distribution=$OX_VERSION \
         open-xchange-grizzly=$OX_VERSION \
+        open-xchange-halo=$OX_VERSION \
+        open-xchange-hazelcast \
         open-xchange-l10n-* \
-        open-xchange-passwordchange-database vim && \
+	open-xchange-mailstore \
+        open-xchange-passwordchange-database \
+        open-xchange-oauth=$OX_VERSION \
+	open-xchange-sessionstorage-hazelcast=$OX_VERSION \
+        open-xchange-smtp vim && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY proxy_http.conf /etc/apache2/conf-available/proxy_http.conf
