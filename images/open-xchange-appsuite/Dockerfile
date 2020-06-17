@@ -33,12 +33,15 @@ RUN sed -i -e "s/{{ VERSION }}/$(echo $OX_VERSION | cut -d- -f 1)/" \
         /etc/apt/sources.list.d/open-xchange.list && \
     wget -q http://software.open-xchange.com/oxbuildkey.pub -O - \
         | apt-key add - && \
+    wget -q https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public -O - \
+        | apt-key add - && \
     mkdir -p /usr/share/man/man1 && \
     groupadd -g $OX_GID open-xchange && \
     useradd -u $OX_UID -g $OX_GID -s /bin/false -d /opt/open-xchange \
         -M open-xchange && \
     apt-get update && \
     apt-get install -y \
+        adoptopenjdk-8-hotspot-jre \
         hunspell open-xchange=$OX_VERSION \
         open-xchange-admin=$OX_VERSION \
         open-xchange-appsuite=$OX_VERSION_ALT \
@@ -61,12 +64,15 @@ RUN sed -i -e "s/{{ VERSION }}/$(echo $OX_VERSION | cut -d- -f 1)/" \
         open-xchange-grizzly=$OX_VERSION \
         open-xchange-halo=$OX_VERSION \
         open-xchange-hazelcast \
+        open-xchange-hazelcast-community \
         open-xchange-l10n-* \
 	open-xchange-mailstore \
-        open-xchange-passwordchange-database \
         open-xchange-oauth=$OX_VERSION \
+        open-xchange-osgi=$OX_VERSION \
+        open-xchange-passwordchange-database \
 	open-xchange-sessionstorage-hazelcast=$OX_VERSION \
-        open-xchange-smtp vim && \
+        open-xchange-smtp \
+        open-xchange-xerces=$OX_VERSION vim && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY proxy_http.conf /etc/apache2/conf-available/proxy_http.conf

@@ -15,7 +15,7 @@ Steps:
 * In a browser, connect to NagiosQL UI at the port number identified in docker-compose.yml, log in as nagiosadmin / nagios, enter the database install or update dialog
 * Define hosts, services and other objects
 * Under Tools -> Nagios control, invoke Write monitoring data, Write additional data, Check configuration files
-* Restart nagios server if the configuration check passed
+* Restart nagios server if the configuration check passed (using docker restart, the button doesn't work)
 
 Tips:
 * (To secure nagios itself) use htpasswd (provided in the jasonrivers image), add your administrative user(s) to htpasswd.users at top level in nagios_etc volume, and update cgi.cfg to include user name(s) in each of the authorized_xxx settings
@@ -23,7 +23,7 @@ Tips:
 
 ### Current Status
 
-Alpha--the only known issue is the restart button doesn't work (a workaround is to invoke docker restart of the nagios container). Not verified under kubernetes (on the theory that fewer dependencies are better for the lowest-level monitoring system during any outage).
+Stable -- with caveat that restart button doesn't work. You'll need to restart the nagios container after writing new configuration files. Not verified under kubernetes (on the theory that fewer dependencies are better for the lowest-level monitoring system during any outage).
 
 ### Variables
 

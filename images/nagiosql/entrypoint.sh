@@ -53,5 +53,5 @@ echo '# Removed to avoid conflict with NagiosQL' > $NAGIOS_OBJ/templates.cfg
 chown -R $APACHE_USER $NAGIOS_OBJ \
   /var/www/nagiosql/config/settings.php
 
-. /etc/apache2/envvars
-exec /usr/sbin/apache2 -D FOREGROUND
+[ -x /etc/apache2/envvars ] && . /etc/apache2/envvars
+exec /usr/sbin/$APACHE_BIN -D FOREGROUND
