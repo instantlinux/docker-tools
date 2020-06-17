@@ -19,6 +19,9 @@ endif
 ifeq ($(IMAGE),data-sync)
   PLATFORMS = linux/amd64,linux/aarch64
 endif
+ifeq ($(IMAGE),nagiosql)
+  PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
+endif
 ifeq ($(IMAGE),spamassassin)
   PLATFORMS = linux/amd64,linux/arm64
 endif
