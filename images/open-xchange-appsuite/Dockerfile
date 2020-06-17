@@ -57,7 +57,6 @@ RUN sed -i -e "s/{{ VERSION }}/$(echo $OX_VERSION | cut -d- -f 1)/" \
         open-xchange-grizzly=$OX_VERSION \
         open-xchange-l10n-* \
         open-xchange-passwordchange-database vim && \
-    apt-get install -y --allow-unauthenticated oxldapsync && \
     apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 COPY proxy_http.conf /etc/apache2/conf-available/proxy_http.conf

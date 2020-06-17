@@ -71,7 +71,7 @@ class HoneypotMsg(object):
             self.relay = re.compile(args['--relay'])
         else:
             self.relay = None
-        dsn = 'mysql://%(user)s:%(pw)s@%(host)s/%(db)s' % {
+        dsn = 'mysql+pymysql://%(user)s:%(pw)s@%(host)s/%(db)s' % {
             'user': self.dsn['user'],
             'pw': urllib.quote_plus(self.dsn['password']),
             'host': self.dsn['host'], 'db': self.dsn['database']}

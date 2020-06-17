@@ -3,4 +3,3 @@ deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/backend/Deb
 deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/office/DebianStretch /
 deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/office-web/DebianStretch /
 deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/documentconverter-api/DebianStretch /
-deb http://software.open-xchange.com/components/unsupported/oxldapsync/DebianWheezy/ /

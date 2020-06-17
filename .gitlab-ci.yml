@@ -14,6 +14,7 @@ stages:
   - nagiosql
   - nut-upsd
   - postfix
+  - postfix-python
   - proftpd
   - python-builder
   - python-wsgi
@@ -155,6 +156,15 @@ postfix:
       job: prepare
   only:
     changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
+
+postfix-python:
+  stage: postfix-python
+  trigger:
+    include:
+    - artifact: .child-postfix-python.yml
+      job: prepare
+  only:
+    changes: [ images/postfix-python/**, lib/**, .image-gitlab-ci.yml ]
 
 proftpd:
   stage: proftpd

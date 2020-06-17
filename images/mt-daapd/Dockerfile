@@ -13,6 +13,7 @@ ARG DAAPD_VERSION=26.4+dfsg1-1
 
 RUN apt-get -yq update && apt-get install -yq --no-install-recommends \
     forked-daapd=$DAAPD_VERSION avahi-daemon && \
+  mkdir /root/.config && chown daapd /root/.config && \
   apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/*
 
 VOLUME ["/srv/music", "/var/cache/forked-daapd", "/var/log"]
