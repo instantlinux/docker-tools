@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 PATH=$PATH:/opt/nagios/bin
 NAGIOS_ETC=/opt/nagios/etc
