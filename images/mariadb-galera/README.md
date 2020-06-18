@@ -1,7 +1,7 @@
 ## mariadb-galera
 [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
 
-MariaDB 10.3 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
+MariaDB 10.4 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 
 ### Usage - kubernetes
 
@@ -33,7 +33,7 @@ a ConfigMap when running under Kubernetes (example is included).
 
 ### Networking
 
-The container exposes ports 3306, 4567 and 4568 on the ingress network. An
+The container exposes ports 3306, 4444, 4567 and 4568 on the ingress network. An
 internal network is needed for cluster-sync traffic and/or backups (use
 mariabackup, or the mysqldump container provided here). In order to enable
 connections directly to each cluster member for write-safe access or

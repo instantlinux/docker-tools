@@ -26,6 +26,7 @@ import etcd
 
 
 class Constants(object):
+    DATA_DIR = '/var/lib/mysql'
     DEFAULT_CLUSTER_SIZE = 3
     ETCD_PREFIX = '/galera'
     LOG_DIR = '/var/log/mysql'
@@ -164,6 +165,7 @@ class MariaDBCluster(object):
             command += ' --wsrep-new-cluster'
         if cmdarg:
             command += ' %s' % cmdarg
+        os.chown(Constants.DATA_DIR, pwd.getpwnam('mysql').pw_uid, -1)
         os.chown(Constants.LOG_DIR, pwd.getpwnam('mysql').pw_uid, -1)
         if cluster_address:
             assert self._peer_reachable(cluster_address.split(',')[0]), (

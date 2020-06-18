@@ -1,4 +1,4 @@
-FROM python:3.7.4-slim-stretch
+FROM python:3.8.3-slim-buster
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -17,10 +17,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC \
     SST_AUTH_SECRET=sst-auth-password
 
-ARG MARIADB_MAJOR=10.3
-ARG MARIADB_VERSION=10.3.23
+ARG MARIADB_MAJOR=10.4
+ARG MARIADB_VERSION=10.4.13
 ARG APT_KEY=F1656F24C74CD1D8
-ARG DEB_REL=stretch
+ARG DEB_REL=buster
 ARG UID=212
 ARG GID=212
 
