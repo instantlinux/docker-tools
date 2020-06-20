@@ -12,8 +12,9 @@ if [ "$OSTYPE" == "opensuse" ]; then
 elif [ "$OSTYPE" == "ubuntu" ]; then
   if [[ $(cat /etc/timezone) != $TZ ]]; then
     echo $TZ > /etc/timezone
-    sed -i -e "s#;date.timezone.*#date.timezone = ${TZ}#g" /etc/php/7.2/apache2/php.ini
-    sed -i -e "s#;date.timezone.*#date.timezone = ${TZ}#g" /etc/php/7.2/cli/php.ini
+    DIR=/etc/php/$(php -v|grep  PHP | grep -oP "\\d+\.\\d+")
+    echo "date.timezone = $TZ" > $DIR/apache2/conf.d/50-tz.ini
+    echo "date.timezone = $TZ" > $DIR/cli/conf.d/50-tz.ini
     dpkg-reconfigure -f noninteractive tzdata
   fi
   CONF_DIR=/etc/apache2/sites-available

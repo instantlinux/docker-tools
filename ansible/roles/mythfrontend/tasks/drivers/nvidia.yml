@@ -30,5 +30,5 @@
 
 - name: Set DPI so fonts are sized properly
   template:
-    dest: /etc/X11/xorg.conf.d/20-{{ display_driver.type }}.conf
+    dest: "{{ x11_config_path }}/20-{{ display_driver.type }}.conf"
     src: 20-{{ display_driver.type }}.conf.j2

@@ -3,10 +3,10 @@
 
 - name: Load intel driver at startup
   template:
-    dest: /etc/X11/xorg.conf.d/20-{{ display_driver.type }}.conf
+    dest: "{{ x11_config_path }}/20-{{ display_driver.type }}.conf"
     src: 20-{{ display_driver.type }}.conf.j2
 
 - name: Limit screen resolution to specified list
   template:
-    dest: /etc/X11/xorg.conf.d/20-screen.conf
+    dest: "{{ x11_config_path }}/20-screen.conf"
     src: 20-screen.conf.j2

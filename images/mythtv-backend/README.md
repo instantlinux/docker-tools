@@ -1,5 +1,6 @@
 ## mythtv-backend
-[![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/mythtv-backend/Dockerfile "dockerfile")
+ [![](https://images.microbadger.com/badges/commit/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Commit badge")
 
 The MythTV backend built under Ubuntu 18.04 LTS.
 
@@ -60,6 +61,22 @@ LANG | en_US.UTF-8 |
 LANGUAGE | en_US.UTF-8 | 
 LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml))
 TZ | UTC | Time zone
+
+### MythTV Frontend
+
+To build your frontends, use any installer you prefer. This repo provides one powered by ansible. To use it, on your frontend do a base install of Ubuntu LTS (20.04 is not yet working, at least not for Intel graphics), choose your frontend host DNS name(s), clone this repo and then invoke the ansible script:
+```
+cd ansible
+cat <<EOT >>hosts
+[mythfrontends]
+frontend.your.hostdomain
+EOT
+make mythfrontend-setup
+```
+
+This ansible script is prone to configuration glitches so you will likely have to make adjustments in order to complete the process.
+
+# edit the hosts file
 
 ### Secrets
 

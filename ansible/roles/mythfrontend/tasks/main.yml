@@ -1,6 +1,13 @@
 ---
 # main.yml
 
+- include_vars: "{{ansible_distribution_release }}.yml"
+
+- name: Set up xorg.conf.d
+  file:
+    path: "{{ x11_config_path }}"
+    state: directory
+
 - include: "{{ ansible_os_family | lower }}/packages.yml"
 - include: "{{ ansible_os_family | lower }}/lirc.yml"
   when: ansible_distribution_version < '18.04'

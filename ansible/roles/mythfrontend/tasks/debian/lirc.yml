@@ -19,14 +19,9 @@
     dest: /etc/lirc/lircrc
     src: lircrc.j2
 
-- name: Set up xorg.conf.d
-  file:
-    path: /etc/X11/xorg.conf.d
-    state: directory
-
 - name: Disable evdev processing for IR device in X11
   template:
-    dest: /etc/X11/xorg.conf.d/10-lirc-disable.conf
+    dest: "{{ x11_config_path }}/10-lirc-disable.conf"
     src: 10-lirc-disable.conf.j2
 
 - name: Enable LIRCD

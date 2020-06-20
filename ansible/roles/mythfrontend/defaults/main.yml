@@ -32,7 +32,7 @@ ir_device:
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"
 
-mythtv_version: 0.29
+mythtv_version: 31
 
 opensuse_packages:
   - ImageMagick-devel
@@ -106,7 +106,7 @@ suspend:
   weekday: 1-5
 
 ubuntu_apt_keys:
-  # google: 1397BC53640DB551
+  chrome: 78BD65473CB3BD13
   graphics: FCAE110B1118213C
   mythbuntu: 13551B881504888C
 
@@ -115,6 +115,7 @@ ubuntu_packages:
   - google-chrome-stable
   - ir-keytable
   - libdvd-pkg
+  - lightdm
   - mariadb-client
   - mythtv-common
   - mythtv-frontend

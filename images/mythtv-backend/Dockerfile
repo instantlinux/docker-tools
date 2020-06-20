@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -21,15 +21,15 @@ ENV APACHE_LOG_DIR=/var/log/apache2 \
 ARG APT_KEY=13551B881504888C
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
-ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/0.29
-ARG MYTHTV_VERSION=2:29.1+fixes.201909121531.4c432df~ubuntu18.04.1
+ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/31
+ARG MYTHTV_VERSION=2:31.0+fixes.202006181245.9442315~ubuntu20.04.1
 ARG SSH_PORT=2022
 ARG MYTHWEB_PORT=6760
 
 RUN \
   apt-get -yq update && apt-get install -yq gnupg locales wget && \
   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
-  echo "deb $MYTHTV_PPA/ubuntu bionic main" \
+  echo "deb $MYTHTV_PPA/ubuntu focal main" \
     > /etc/apt/sources.list.d/mythbuntu.list && \
   apt-get -yq update && \
   locale-gen $LANG && \
