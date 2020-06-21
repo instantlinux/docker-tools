@@ -16,6 +16,11 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
+  if [ -z ${STATION_URL/ /} ]; then
+    REGISTER_OPT=false
+  else
+    REGISTER_OPT=true
+  fi
   # Edit distributed weewx.conf settings after adding driver for STATION_TYPE
   sed -i -e "s+-/var/log/messages+$SYSLOG_DEST+" /etc/rsyslog.conf
   wee_config --reconfigure --driver=weewx.drivers.$(
@@ -29,9 +34,11 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   -e "s:port = /dev/.*:port = $DEVICE_PORT:" \
   -e "s/rain_year_start =.*/rain_year_start = $RAIN_YEAR_START/" \
   -e "s/station_type =.*/station_type = $STATION_TYPE/" \
+  -e "s/register_this_station = .*/register_this_station = $REGISTER_OPT/" \
   -e "s/week_start = 6/week_start = $WEEK_START/" \
   -e "s:HTML_ROOT = public_html:HTML_ROOT = $HTML_ROOT:" \
   -e "s/ station =.*/ station = $STATION_ID/" \
+  -e "s+#station_url =.*+station_url = $STATION_URL+" \
   -e "s/password = replace_me$/password = $WUNDER_PASS  # Und/" \
   -e "s/location = \"INSERT_LOCATION_HERE /location = \"$XTIDE_LOCATION\"  # \"/" \
   -e "s/lid =/#lid =/" \
@@ -40,8 +47,6 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   -e "s/driver = weedb.mysql/driver = $DB_DRIVER/" \
   -e "s/rapidfire = False/rapidfire = $RAPIDFIRE/" \
   -e "s/database = archive_sqlite/database = archive_$DB_BINDING_SUFFIX/" \
-  -e "s/database = forecast_sqlite/database = forecast_$DB_BINDING_SUFFIX/" \
-  -e "s/\[\[forecast_sqlite\]\]/[[forecast_$DB_BINDING_SUFFIX]]\n      host = $DB_HOST\n      user = $DB_USER\n      password = $DB_PASS\n      database_name = $DB_NAME_FORECAST\n      driver = $DB_DRIVER\n\n    [[forecast_sqlite]]/" \
   -e "s/host = localhost/host = $DB_HOST/" \
   -e "s/user = weewx/user = $DB_USER/" \
   -e "s/password = weewx/password = $DB_PASS/" \

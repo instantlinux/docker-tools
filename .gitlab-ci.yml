@@ -23,6 +23,7 @@ stages:
   - spamassassin
   - udp-nginx-proxy
   - vsftpd
+  - weewx
   - wxcam-upload
 # This build takes too long under qemu
 # - samba-dc
@@ -237,6 +238,15 @@ vsftpd:
       job: prepare
   only:
     changes: [ images/vsftpd/**, lib/**, .image-gitlab-ci.yml ]
+
+weewx:
+  stage: weewx
+  trigger:
+    include:
+    - artifact: .child-weewx.yml
+      job: prepare
+  only:
+    changes: [ images/weewx/**, lib/**, .image-gitlab-ci.yml ]
 
 wxcam-upload:
   stage: wxcam-upload

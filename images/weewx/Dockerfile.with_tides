@@ -39,7 +39,12 @@ ENV ALTITUDE="100, foot" \
     WX_USER=weewx \
     XTIDE_LOCATION=unset
 
+ARG HARMONICS_VERSION=20190620
+ARG LIBTCD_VERSION=2.2.7-r2
 ARG WEEWX_VERSION=4.1.1
+ARG XTIDE_VERSION=2.15.1
+ARG HARMONICS_SHA=879546f30761c129610f2bcca50fa1f38c043f67721eefa51cf8c5a1e949f616
+ARG LIBTCD_SHA=aff1f218b84106c572d094912cd11c828e1ea212db5661cdcc0e2e6253020a94
 ARG WEEWX_SHA=f9c30d6e5f491c003dfaac2a71d9e05b5a65146623d42f50837991b6f2093419
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
@@ -50,10 +55,19 @@ RUN apk add --no-cache --update \
       curl freetype libjpeg libstdc++ openssh openssl python3 py3-cheetah \
       py3-configobj py3-mysqlclient py3-pillow py3-six rsync rsyslog && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
-    mkdir build && cd build && \
+    mkdir -p /usr/share/xtide /build/libtcd /build/xtide && cd build && \
+    curl -sLo harmonics.tar.bz2 \
+      ftp://ftp.flaterco.com/xtide/harmonics-dwf-$HARMONICS_VERSION-free.tar.bz2 && \
+    curl -sLo libtcd.tar.bz2 \
+      ftp://ftp.flaterco.com/xtide/libtcd-$LIBTCD_VERSION.tar.bz2 && \
     curl -sLo weewx.tar.gz \
       http://www.weewx.com/downloads/released_versions/weewx-$WEEWX_VERSION.tar.gz && \
+    curl -sLo xtide.tar.bz2 \
+      ftp://ftp.flaterco.com/xtide/xtide-$XTIDE_VERSION.tar.bz2 &&\
+    echo "$HARMONICS_SHA  harmonics.tar.bz2" >> /build/checksums && \
+    echo "$LIBTCD_SHA  libtcd.tar.bz2" >> /build/checksums && \
     echo "$WEEWX_SHA  weewx.tar.gz" >> /build/checksums && \
+    echo "$XTIDE_SHA  xtide.tar.bz2" >> /build/checksums && \
     sha256sum -c /build/checksums && \
     apk add --no-cache --virtual .fetch-deps \
       file freetype-dev g++ gawk gcc git jpeg-dev libpng-dev make musl-dev \
@@ -66,6 +80,15 @@ RUN apk add --no-cache --update \
     git clone -b master --depth 1 \
       https://github.com/instantlinux/weewx-WeeGreen.git \
       /home/$WX_USER/skins/WeeGreen && \
+    cd /build/libtcd && \
+    tar xf /build/libtcd.tar.bz2 --strip-components=1 && \
+    ./configure && make install && \
+    cd /build/xtide && \
+    tar xf /build/xtide.tar.bz2 --strip-components=1 && \
+    ./configure --prefix=/usr && make install && \
+    cd /build && tar xf harmonics.tar.bz2 --strip-components=1 && \
+    mv harmonics*.tcd /usr/share/xtide/harmonics.tcd && \
+    echo /usr/share/xtide > /etc/xtide.conf && \
     apk del .fetch-deps && \
     rm -fr /build /home/$WX_USER/weewx.conf.2* /home/$WX_USER/docs \
       /home/$WX_USER/skins/WeeGreen/.git \

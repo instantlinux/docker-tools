@@ -1,0 +1,7 @@
+Cheetah3==3.2.5
+ephem==3.7.7.1
+mysqlclient==1.4.6
+pillow==7.1.2
+pyserial==3.4
+PyUSB==1.0.2
+six==1.15.0

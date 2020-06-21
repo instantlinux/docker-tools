@@ -17,6 +17,7 @@ services:
       RSYNC_PORT: ${PORT_WX_SSH:-22}
       SKIN: WeeGreen
       STATION_ID: ${WX_STATION_ID}
+      STATION_URL: ${WX_STATION_URL:- }
       SYSLOG_DEST: "@@${RSYSLOGD_HOST:-syslog}:${PORT_RSYSLOGD:-514}"
       TZ: ${TZ:-UTC}
       TZ_CODE: 4

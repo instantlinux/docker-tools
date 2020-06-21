@@ -1,5 +1,0 @@
-Cheetah==2.4.4
-pyephem==3.7.6
-pyserial==3.3
-PyUSB==1.0.0
-six==1.10.0
