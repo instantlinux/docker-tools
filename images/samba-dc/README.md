@@ -1,5 +1,5 @@
 ## samba-dc
-[![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/samba/Dockerfile "dockerfile")
 
 Samba domain controller.
 

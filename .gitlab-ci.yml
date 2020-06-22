@@ -20,13 +20,12 @@ stages:
   - python-wsgi
   - rsyslogd
   - samba
+  - samba-dc
   - spamassassin
   - udp-nginx-proxy
   - vsftpd
   - weewx
   - wxcam-upload
-# This build takes too long under qemu
-# - samba-dc
 
 image: docker:19.03.8
 
@@ -212,6 +211,15 @@ samba:
   only:
     changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
 
+samba-dc:
+  stage: samba-dc
+  trigger:
+    include:
+    - artifact: .child-samba-dc.yml
+      job: prepare
+  only:
+    changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
+
 spamassassin:
   stage: spamassassin
   trigger:
@@ -256,14 +264,3 @@ wxcam-upload:
       job: prepare
   only:
     changes: [ images/wxcam-upload/**, lib/**, .image-gitlab-ci.yml ]
-
-# Slow builds
-
-# samba-dc:
-#   stage: samba-dc
-#   trigger:
-#     include:
-#     - artifact: .child-samba-dc.yml
-#       job: prepare
-#   only:
-#     changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
