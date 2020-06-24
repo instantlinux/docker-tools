@@ -42,12 +42,15 @@ spec:
             memory: ${OX_SERVER_MEMORY}Mi
         volumeMounts:
         - mountPath: /ox/etc
-          name: admin
-          readOnly: $OX_ETC_READONLY
-          subPath: services/ox-appsuite/etc
-        - mountPath: /ox/store
           name: share
-          subPath: ox-appsuite/data
+          readOnly: $OX_ETC_READONLY
+          subPath: test-ox-appsuite/etc
+        - mountPath: /var/opt/filestore
+          name: share
+          subPath: test-ox-appsuite/data
+        - mountPath: /opt/open-xchange/appsuite/apps/themes
+          name: share
+          subPath: test-ox-appsuite/themes
         - mountPath: /var/log/open-xchange
           name: logs
         - mountPath: /var/log/apache2
@@ -67,8 +70,6 @@ spec:
         - name: ndots
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
       - name: share
         hostPath: { path: $PATH_SHR }
       - name: logs

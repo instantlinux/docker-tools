@@ -1,15 +1,17 @@
 ## OX App Suite docker image
-[![](https://img.shields.io/docker/v/instantlinux/open-xchange-appsuite?sort=date)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/open-xchange-appsuite?sort=date)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/open-xchange-appsuite.svg)](https://microbadger.com/images/instantlinux/open-xchange-appsuite "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/open-xchange-appsuite/Dockerfile "dockerfile")
 
-Private-cloud online documents portal for spreadsheet, word-processing, presentations,email, calendar, and cloud file storage.
+STATUS: DEPRECATED. Hasn't worked properly since 7.10.1 tag. Want to crowd-source a solution? See issue #37 and help get a debian buster installation working. Contact the software vendor at open-xchange.com.
 
-This image is based on [Open-Xchange installation for debian 8.0](http://oxpedia.org/wiki/index.php?title=AppSuite:Open-Xchange_Installation_Guide_for_Debian_8.0).
+Private-cloud online documents portal for spreadsheet, word-processing, presentations, email, calendar, and cloud file storage.
+
+This image is based on [Open-Xchange installation for debian 9.0](http://oxpedia.org/wiki/index.php?title=AppSuite:Open-Xchange_Installation_Guide_for_Debian_9.0).
 
 For more details, see the vendor's site [OX App Suite](http://open-xchange.com/en/home).
 
 ### Usage
 
-See the kubernetes or docker-compose.yml here; make sure you have a compatible database running first (the [mariadb-galera](https://cloud.docker.com/repository/docker/instantlinux/mariadb-galera) service is one option), set up the variables and secrets as defined below, and invoke the resource.
+See the kubernetes or docker-compose.yml here; make sure you have a compatible database running first (the [mariadb-galera](https://cloud.docker.com/repository/docker/instantlinux/mariadb-galera) service is one option), and an imap server (like [dovecot](https://cloud.docker.com/repository/docker/instantlinux/dovecot)). Set up the variables and secrets as defined below, and invoke the resource.
 
 kubernetes:
 ```
@@ -40,12 +42,14 @@ Verify database can be reached at the DNS name you've defined for
 OX_CONFIG_DB_HOST.
 
 Change the mounted volume /ox/etc to allow read/write; it is populated
-with default settings at first launch. Afterward, you can set it to
-ro/read-only as in the example docker-compose.yml (and manage its
-contents with your favorite source-code tool such as git; subsequent restarts
+with default settings at first launch:
+```
+    export OX_ETC_READONLY=false
+```
+Afterward, you can remove this setting (and manage contents with your favorite source-code tool such as git; subsequent restarts
 copy these files into /opt/open-xchange/etc).
 
-There are at least three settings you will probably want to change under /ox/etc after default values are populated:
+The entrypoint.sh script adjusts these three settings under /ox/etc after default values are populated:
 
 | Setting | File | Value | Why |
 | ------- | ---- | ----- | --- |

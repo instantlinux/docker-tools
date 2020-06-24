@@ -67,6 +67,7 @@ data:
     :msg, contains, "Error: Request packet type/version was invalid" stop
     :msg, contains, "Client request was invalid, bailing out..." stop
     :msg, contains, "required revision has been compacted" stop
+    :msg, contains, "connect from unknown[10.244" stop
 
     *.*;local1.!=info;cron.!=info;local2.!=notice @@splunk:$PORT_SPLUNK_SYSLOG
 ---

@@ -8,8 +8,9 @@ services:
     environment:
       TZ: ${TZ:-UTC}
     volumes:
-    - ${SHARE_PATH:-/opt}/ox-appsuite/data:/ox/store
-    - ${ADMIN_PATH:-/opt}/ox-appsuite/etc:/ox/etc:ro
+    - ${SHARE_PATH:-/opt}/ox-appsuite/data:/var/opt/filestore
+    - ${SHARE_PATH:-/opt}/ox-appsuite/themes:/opt/open-xchange/appsuite/apps/themes
+    - ${ADMIN_PATH:-/opt}/ox-appsuite/etc:/ox/etc
     - logs:/var/logs/open-xchange
     - apache:/var/logs/apache2
     ports:

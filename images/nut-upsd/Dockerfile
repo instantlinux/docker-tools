@@ -21,6 +21,7 @@ ENV API_USER=upsmon \
     SERVER=master \
     USER=nut \
     VENDORID=
+HEALTHCHECK CMD upsc ups@localhost:3493 2>&1|grep -q stale && exit 1 || true
 
 RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \

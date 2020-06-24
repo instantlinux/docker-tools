@@ -13,7 +13,7 @@ elif ! nc -z $OX_CONFIG_DB_HOST 3306; then
   exit 1
 fi
 OX_ADMIN_PASSWORD=`cat /run/secrets/ox-admin-password`
-OX_DATADIR=/ox/store
+OX_DATADIR=/var/opt/filestore
 OX_ETCBACKUP=/ox/etc
 OX_DB_PASSWORD=`cat /run/secrets/ox-db-password`
 OX_MASTER_PASSWORD=`cat /run/secrets/ox-master-password`
@@ -25,6 +25,12 @@ if [ -d ${OX_ETCBACKUP}/settings ]; then
   cp -a ${OX_ETCBACKUP}/. /opt/open-xchange/etc/
 else
   FIRST_TIME=1
+  if ! touch ${OX_ETCBACKUP}/.checkwrite; then
+    echo "** Directory ${OX_ETCBACKUP} must be writeable on first run **"
+    echo "** In kubernetes: export OX_ETC_READONLY=false **"
+    sleep 10
+    exit 1
+  fi
   /opt/open-xchange/sbin/initconfigdb \
     --configdb-dbname=${OX_CONFIG_DB_NAME} \
     --configdb-host=${OX_CONFIG_DB_HOST} \
@@ -44,7 +50,12 @@ else
     --no-license \
     --servermemory ${OX_SERVER_MEMORY} \
     --servername=${OX_SERVER_NAME}
-  sed -i \
+  sed -i -e 's/^com.openexchange.IPCheck=.*/com.openexchange.IPCheck=false/' \
+    /opt/open-xchange/etc/server.properties
+  sed -i -e "s/^com.openexchange.hazelcast.group.password=.*/com.openexchange.hazelcast.group.password=`head -c${1:-15} /dev/urandom|base64`/" \
+    /opt/open-xchange/etc/hazelcast.properties
+  [ -e /opt/open-xchange/etc/documents.properties ] && sed -i \
+    -e 's/com.openexchange.capability.presentation=.*/com.openexchange.capability.presentation=true/' \
     -e 's/# com.openexchange.capability.text/com.openexchange.capability.text/1' \
     -e 's/# com.openexchange.capability.spreadsheet/com.openexchange.capability.spreadsheet/1' \
     /opt/open-xchange/etc/documents.properties
