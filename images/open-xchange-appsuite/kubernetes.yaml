@@ -44,13 +44,13 @@ spec:
         - mountPath: /ox/etc
           name: share
           readOnly: $OX_ETC_READONLY
-          subPath: test-ox-appsuite/etc
+          subPath: ox-appsuite/etc
         - mountPath: /var/opt/filestore
           name: share
-          subPath: test-ox-appsuite/data
+          subPath: ox-appsuite/data
         - mountPath: /opt/open-xchange/appsuite/apps/themes
           name: share
-          subPath: test-ox-appsuite/themes
+          subPath: ox-appsuite/themes
         - mountPath: /var/log/open-xchange
           name: logs
         - mountPath: /var/log/apache2

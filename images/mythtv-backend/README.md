@@ -86,3 +86,22 @@ mythtv-user-password | Hashed password of MythTV ssh user
 mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 [![](https://images.microbadger.com/badges/license/instantlinux/mythtv-backend)](https://microbadger.com/images/instantlinux/mythtv-backend "License badge") [![](https://img.shields.io/badge/code-mythtv%2Fmythtv-blue.svg)](https://github.com/mythtv/mythtv "Code repo")
+
+### Upgrade Notes
+
+Version 31:
+
+You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from Schedules Direct. See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
+
+* Go into mythtv-setup, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using
+* Invoke a channel-scan
+* Have your Schedules Direct username and password ready and invoke from a command shell inside the container:
+```
+su - mythtv
+tv_find_grabbers
+  (note which one corresponds to the video source)
+tv_grab_na_dd --configure --config-file ~mythtv/.mythtv/Antenna-HD.xmltv
+ (enter username/password)
+ (select all channels)
+```
+* As user mythtv, invoke mythfilldatabase; you'll probably encounter a number of warnings about unknown xmltv channel identifier -- suppress those by changing the text _channel:_ to _not channel:_ for each line in your xmltv config file for which you don't have a valid channel entry (view the channel list in any of these places - mythweb UI, mythtfrontend listings screen, or SELECT from database's channel table).

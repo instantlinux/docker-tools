@@ -22,7 +22,7 @@ ARG APT_KEY=13551B881504888C
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
 ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/31
-ARG MYTHTV_VERSION=2:31.0+fixes.202006181245.9442315~ubuntu20.04.1
+ARG MYTHTV_VERSION=2:31.0+fixes.202006291615.8a0c4f9~ubuntu20.04.1
 ARG SSH_PORT=2022
 ARG MYTHWEB_PORT=6760
 
@@ -37,8 +37,8 @@ RUN \
     apache2 curl iputils-ping less lsb-release mariadb-client net-tools \
     openssh-client openssh-server mythtv-backend=$MYTHTV_VERSION \
     mythtv-common=$MYTHTV_VERSION mythtv-transcode-utils=$MYTHTV_VERSION \
-    mythweb=$MYTHTV_VERSION php-mythtv psmisc tzdata v4l-utils vim \
-    w3m x11-utils xauth xterm
+    mythweb=$MYTHTV_VERSION php-mythtv psmisc sudo tzdata v4l-utils vim \
+    w3m x11-utils xauth xmltv xterm
 
 COPY src/ /root/
 
