@@ -56,4 +56,4 @@ artifactory-user-password | password for artifactory repo access
 jenkins-admin-password | password for new Jenkins admin user
 jenkins-agent-password | password for agents
 
-[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-jenkinsci%2Fjenkins-blue.svg)](https://github.com/jenkinsci/jenkins "Code repo")
+[![](https://img.shields.io/badge/license-MIT-red.svg)](https://choosealicense.com/licenses/mit/ "License badge") [![](https://img.shields.io/badge/code-jenkinsci%2Fjenkins-blue.svg)](https://github.com/jenkinsci/jenkins "Code repo")

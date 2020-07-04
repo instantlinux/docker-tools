@@ -26,10 +26,11 @@ ENV ALLOW_OVERWRITE=on \
     TZ=UTC \
     WRITE_ENABLE=AllowAll
 
+COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \
+    chmod 644 /etc/proftpd/proftpd.conf && \
     apk add --update libcrypto1.1 proftpd@testing=$PROFTPD_VERSION tzdata
-COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 
 VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp
 EXPOSE 21 $PASV_MIN_PORT-$PASV_MAX_PORT

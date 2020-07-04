@@ -1,5 +1,5 @@
 ## mysqldump
-[![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Commit badge")
 
 This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. This image is based on
