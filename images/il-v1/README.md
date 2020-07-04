@@ -41,4 +41,4 @@ mysql-backup | mysql db backup user
 ### Notes
 This is the first time I've crafted a release-packaging script for this application; it illustrates an (almost) worst-case scenario of Dockerizing a chaotic mess of scripts and source-code repos that was never properly organized. My approach to software deployment has fundamentally changed over the 6 years since I developed this application. Abandoning both puppet and chef, and embracing docker/jenkins in their place, has led to a far more straighforward methodology for all my other images.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/il-v1.svg)](https://microbadger.com/images/instantlinux/il-v1 "License badge")
+[![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge")

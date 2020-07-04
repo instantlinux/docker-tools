@@ -29,7 +29,7 @@ ARG SAMBA_VERSION=4.12.2-r1
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
 RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
-      bind bind-libs bind-tools libcrypto1.1 libxml2 && \
+      bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 
 VOLUME /etc/samba /var/lib/samba

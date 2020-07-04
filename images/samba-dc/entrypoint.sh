@@ -8,7 +8,6 @@ fi
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo 'Set timezone'
-  apk add --update tzdata
   cp /usr/share/zoneinfo/$TZ /etc/localtime
   echo $TZ >/etc/timezone
 fi

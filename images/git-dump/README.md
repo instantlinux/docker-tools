@@ -60,4 +60,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | ------ | ----------- |
 | git-dump_sshkey | read-only key for git repos (override name above) |
 | xxx-api-token | API token for fetching project list from gitlab |
-[![](https://images.microbadger.com/badges/license/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "License badge") [![](https://img.shields.io/badge/code-git%2Fgit.git-blue.svg)](https://git.kernel.org/pub/scm/git/git.git/ "Code repo")
+[![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-git%2Fgit.git-blue.svg)](https://git.kernel.org/pub/scm/git/git.git/ "Code repo")

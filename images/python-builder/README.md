@@ -17,4 +17,4 @@ Variable | Default | Description
 -------- | ------- | -----------
 TZ | UTC | time zone
 
-[![](https://images.microbadger.com/badges/license/instantlinux/python-builder.svg)](https://microbadger.com/images/instantlinux/python-builder "License badge")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge")

@@ -133,5 +133,4 @@ be invoked without HA resources using kubernetes-single.yaml.
 
 Thanks to ashraf-s9s of severalnines for the healthcheck script.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mariadb-galera)](https://microbadger.com/images/instantlinux/mariadb-galera "License badge"
-) [![](https://img.shields.io/badge/code-mariadb%2Fserver-blue)](https://github.com/MariaDB/server "Code repo")
+[![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver-blue)](https://github.com/MariaDB/server "Code repo")

@@ -20,4 +20,4 @@ RUN chmod -R g-w,o-w /opt/app
 
 If your pypi packages need gcc and dev packages to build, look at the Dockerfile for this image to see how you can add them in your own Dockerfile without substantially increasing image size.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/python-wsgi)](https://microbadger.com/images/instantlinux/python-wsgi "License badge")
+[![](https://img.shields.io/badge/license-GPL--3.0-red.svg)](https://choosealicense.com/licenses/gpl-3.0/ "License badge")

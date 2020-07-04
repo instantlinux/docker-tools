@@ -38,4 +38,4 @@ Look for sasl_passwd in [SASL_README.html](http://www.postfix.org/SASL_README.ht
 Also, if you're using TLS, create a secret containing the SSL private key and
 reference it in your smtpd_tls_key_file directive as shown in the example.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")
+[![](https://img.shields.io/badge/license-IPL--1.0-red.svg)](https://opensource.org/licenses/IPL-1.0 "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")

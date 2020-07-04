@@ -38,4 +38,4 @@ Name | Description
 jenkins-agent-password | password for Jenkins user auth
 repo-push | Docker registry credential
 
-[![](https://images.microbadger.com/badges/license/instantlinux/jenkins-slave)](https://microbadger.com/images/instantlinux/jenkins-slave "License badge")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge")

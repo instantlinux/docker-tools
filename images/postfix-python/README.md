@@ -33,4 +33,4 @@ Messages flagged with a high spam score are diverted to subdirectories under /va
 | ------ | ----------- |
 | mysql-blacklist-user | username and password for MySQL db |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/postfix-python)](https://microbadger.com/images/instantlinux/postfix-python "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")
+[![](https://img.shields.io/badge/license-IPL--1.0-red.svg)](https://opensource.org/licenses/IPL-1.0 "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")

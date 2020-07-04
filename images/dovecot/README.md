@@ -56,4 +56,4 @@ Need more configurability? Edit the ConfigMap defined in kubernetes.yaml.
 | ldap-ro-passwd | password for looking up LDAP users |
 | *key.pem | keyfile specified for ssl_dh certificate |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")

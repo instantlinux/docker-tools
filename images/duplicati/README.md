@@ -24,4 +24,4 @@ PGID | 34 | Group ID for backup user
 PUID | 34 | User ID
 TZ | UTC | time zone
 
-[![](https://images.microbadger.com/badges/license/instantlinux/duplicati)](https://microbadger.com/images/instantlinux/duplicati "License badge") [![](https://img.shields.io/badge/code-duplicati%2Fduplicati-blue.svg)](https://github.com/duplicati/duplicati "Code repo")
+[![](https://img.shields.io/badge/license-LGPL--2.1-red.svg)](https://choosealicense.com/licenses/lgpl-2.1/ "License badge") [![](https://img.shields.io/badge/code-duplicati%2Fduplicati-blue.svg)](https://github.com/duplicati/duplicati "Code repo")

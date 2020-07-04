@@ -11,6 +11,7 @@ stages:
   - git-pull
   - haproxy-keepalived
   - mt-daapd
+  - mysqldump
   - nagiosql
   - nut-upsd
   - postfix
@@ -129,6 +130,15 @@ mt-daapd:
       job: prepare
   only:
     changes: [ images/mt-daapd/**, lib/**, .image-gitlab-ci.yml ]
+
+mysqldump:
+  stage: mysqldump
+  trigger:
+    include:
+    - artifact: .child-mysqldump.yml
+      job: prepare
+  only:
+    changes: [ images/mysqldump/**, lib/**, .image-gitlab-ci.yml ]
 
 nagiosql:
   stage: nagiosql

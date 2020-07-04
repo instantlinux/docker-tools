@@ -48,7 +48,7 @@ ARG XTIDE_SHA=e5c4afbb17269fdde296e853f2cb84845ed1c1bb1932f780047ad71d623bc681
 COPY install-input.txt requirements.txt /root/
 RUN apk add --no-cache --update \
       curl freetype libjpeg libstdc++ openssh openssl python3 py3-cheetah \
-      py3-configobj py3-mysqlclient py3-pillow py3-six rsync rsyslog && \
+      py3-configobj py3-mysqlclient py3-pillow py3-six rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mkdir build && cd build && \
     curl -sLo weewx.tar.gz \

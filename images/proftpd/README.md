@@ -52,4 +52,4 @@ Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
 
-[![](https://images.microbadger.com/badges/license/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "License badge") [![](https://img.shields.io/badge/code-proftpd%2Fproftpd-blue.svg)](https://github.com/proftpd/proftpd "Code repo")
+[![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-proftpd%2Fproftpd-blue.svg)](https://github.com/proftpd/proftpd "Code repo")

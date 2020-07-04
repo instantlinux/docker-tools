@@ -52,4 +52,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | ------ | ----------- |
 | haproxy-stats-password | password for haproxy user in stats page |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/haproxy-keepalived)](https://microbadger.com/images/instantlinux/haproxy-keepalived "License badge") [![](https://img.shields.io/badge/code-haproxy%2Fhaproxy-blue.svg)](https://github.com/haproxy/haproxy "Code repo") [![](https://img.shields.io/badge/code-acassen%2Fkeepalived-blue.svg)](https://github.com/acassen/keepalived "Code repo")
+[![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-haproxy%2Fhaproxy-blue.svg)](https://github.com/haproxy/haproxy "Code repo") [![](https://img.shields.io/badge/code-acassen%2Fkeepalived-blue.svg)](https://github.com/acassen/keepalived "Code repo")

@@ -16,7 +16,7 @@ ENV TZ=UTC \
     TCP_PORT=:8080 \
     URL_PATH=/davite
 
-RUN apk add --no-cache --update perl && \
+RUN apk add --no-cache --update perl tzdata && \
     mkdir /usr/local/apache2/htdocs/davite
 
 COPY src/ /usr/local/apache2/htdocs/davite/

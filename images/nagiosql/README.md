@@ -49,4 +49,4 @@ Secret | Description
 nagiosql-db-password | database credential
 \<hostname>-server-key.pem | SSL cert (if using docker-compose)
 
-[![](https://images.microbadger.com/badges/license/instantlinux/nagiosql)](https://microbadger.com/images/instantlinux/nagiosql "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fnagiosql-blue.svg)](https://sourceforge.net/projects/nagiosql/ "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fnagiosql-blue.svg)](https://sourceforge.net/projects/nagiosql/ "Code repo")

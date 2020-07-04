@@ -91,4 +91,4 @@ It's tested on MariaDB, so the LOCK_FOR_BACKUP parameter isn't really
 supported unless someone submits a pull-request to make this work with
 Percona again.
 
-[![](https://images.microbadger.com/badges/license/instantlinux/mysqldump)](https://microbadger.com/images/instantlinux/mysqldump "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver%2Fclient-blue.svg)](https://github.com/mariadb/server/tree/10.3/client "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver%2Fclient-blue.svg)](https://github.com/mariadb/server/tree/10.3/client "Code repo")

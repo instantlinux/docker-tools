@@ -1,7 +1,6 @@
 #! /bin/sh
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   # At first startup, set timezone
-  apk add --update tzdata
   cp /usr/share/zoneinfo/$TZ /etc/localtime
   echo $TZ >/etc/timezone
 fi

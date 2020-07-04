@@ -92,4 +92,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | TZ | UTC| time zone |
 | USERNAME | rbldns | username to run as |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/blacklist)](https://microbadger.com/images/instantlinux/blacklist "License badge") [![](https://img.shields.io/badge/code-spamhaus%2Frbldnsd-blue.svg)](https://github.com/spamhaus/rbldnsd "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/" License badge") [![](https://img.shields.io/badge/code-spamhaus%2Frbldnsd-blue.svg)](https://github.com/spamhaus/rbldnsd "Code repo")

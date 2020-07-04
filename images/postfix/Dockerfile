@@ -13,7 +13,8 @@ ENV SASL_PASSWD_SECRET=postfix-sasl-passwd \
     TZ=UTC
 
 RUN apk add --no-cache --update \
-      postfix=$POSTFIX_VERSION cyrus-sasl-login rsyslog spamassassin-client
+      postfix=$POSTFIX_VERSION cyrus-sasl-login rsyslog \
+      spamassassin-client tzdata
 
 EXPOSE 25 3525
 

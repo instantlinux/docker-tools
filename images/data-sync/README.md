@@ -59,4 +59,4 @@ Interval is slightly inexact, intentionally. An earlier version of this used cro
 | data-sync-sshkey1 | private half of ssh keypair |
 | data-sync-sshkey2 | private half of ssh keypair |
 
-[![](https://images.microbadger.com/badges/license/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "License badge") [![](https://img.shields.io/badge/code-bcpierce00%2Funison-blue.svg)](https://github.com/bcpierce00/unison "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-bcpierce00%2Funison-blue.svg)](https://github.com/bcpierce00/unison "Code repo")

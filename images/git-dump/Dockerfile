@@ -25,7 +25,8 @@ ARG GID=505
 ARG UID=212
 
 COPY *.sh /usr/local/bin/
-RUN apk add --no-cache --update curl dcron git=$GIT_VERSION jq openssh-client && \
+RUN apk add --no-cache --update curl dcron git=$GIT_VERSION jq \
+      openssh-client tzdata && \
     addgroup -g $GID $GROUP && \
     adduser -u $UID -s /bin/sh -G $GROUP -g "git backup" -D $USERNAME && \
     chmod o+rx,g+rx /usr/local/bin/*.sh

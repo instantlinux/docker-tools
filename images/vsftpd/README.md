@@ -55,4 +55,4 @@ Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
 
-[![](https://images.microbadger.com/badges/license/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "License badge") [![](https://img.shields.io/badge/code-ubuntu%2Fvsftpd-blue.svg)](https://launchpad.net/ubuntu/+source/vsftpd "Code")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-ubuntu%2Fvsftpd-blue.svg)](https://launchpad.net/ubuntu/+source/vsftpd "Code")

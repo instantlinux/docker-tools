@@ -37,4 +37,4 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 DaVite is authored by David Madison who maintains links to the
 original (long-deprecated) code at [marginalhacks](http://marginalhacks.com/Hacks/DaVite).
 
-[![](https://images.microbadger.com/badges/license/instantlinux/davite)](https://microbadger.com/images/instantlinux/davite "License badge") [![](https://img.shields.io/badge/code-instantlinux%2Fdocker_tools-blue.svg)](https://github.com/instantlinux/docker-tools/tree/master/images/davite/src "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-instantlinux%2Fdocker_tools-blue.svg)](https://github.com/instantlinux/docker-tools/tree/master/images/davite/src "Code repo")

@@ -23,4 +23,4 @@ IP_LISTEN | self | IP address to bind to
 PORT_BACKEND | 53 | UDP port number of backend servers
 PORT_LISTEN | 53 | port to listen on
 
-[![](https://images.microbadger.com/badges/license/instantlinux/udp-nginx-proxy)](https://microbadger.com/images/instantlinux/udp-nginx-proxy "License badge") [![](https://img.shields.io/badge/code-nginx_org%2Fnginx-blue.svg)](http://hg.nginx.org/nginx "Code repo")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-nginx_org%2Fnginx-blue.svg)](http://hg.nginx.org/nginx "Code repo")
