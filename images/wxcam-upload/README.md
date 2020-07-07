@@ -37,7 +37,8 @@ TZ | UTC | timezone
 
 Secret | Description
 ------ | -----------
-wunderground-user-password | credential for Weather Underground API
+wunderground-user-password | password for Weather Underground ftp server
+wunderground-pw-cam | if you have more than one, use multiple entries
 wxcam-password-hashed | hashed password of 
 wxuser-password-hashed | hashed password of ftp upload user
 

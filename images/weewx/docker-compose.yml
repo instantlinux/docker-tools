@@ -8,18 +8,21 @@ services:
       ALTITUDE: 100, foot
       DB_HOST: ${DB_HOST:-db00}
       DB_USER: wx
-      LATITUDE: 37.75
-      LONGITUDE: -122.4
-      LOCATION: The Castro, San Francisco, CA
+      LATITUDE: ${WX_LATITUDE:-38.898}
+      LONGITUDE: ${WX_LONGITUDE:--77.037}
+      LOCATION: ${WX_LOCATION:-Local Weather Station}
+      RAIN_YEAR_START: ${WX_RAIN_YEAR_START:-7}
       RSYNC_DEST: ${WX_RSYNC_DEST:-/usr/share/nginx/html}
       RSYNC_HOST: ${WX_RSYNC_HOST:-web01}
       RSYNC_PORT: ${PORT_WX_SSH:-22}
       SKIN: WeeGreen
       STATION_ID: ${WX_STATION_ID}
+      STATION_URL: ${WX_STATION_URL:- }
       SYSLOG_DEST: "@@${RSYSLOGD_HOST:-syslog}:${PORT_RSYSLOGD:-514}"
       TZ: ${TZ:-UTC}
       TZ_CODE: 4
       XTIDE_LOCATION: San Francisco
+      WEBCAM_URL: ${WX_WEBCAM_URL:-https://www.wunderground.com/wundermap?lat=37.761&lon=-122.435&zoom=5&radar=1&cam=1}
     tmpfs:
     - /var/www/weewx
     devices:
@@ -33,10 +36,10 @@ services:
 
 secrets:
   weewx-db-password:
-    file: /var/adm/admin/secrets/weewx-db-password
+    file: /var/adm/secrets/weewx-db-password
   weewx-rsync-sshkey:
-    file: /var/adm/admin/secrets/weewx-rsync-sshkey
+    file: /var/adm/secrets/weewx-rsync-sshkey
   weewx-wunderground-apikey:
-    file: /var/adm/admin/secrets/weewx-wunderground-apikey
+    file: /var/adm/secrets/weewx-wunderground-apikey
   weewx-wunderground-password:
-    file: /var/adm/admin/secrets/weewx-wunderground-password
+    file: /var/adm/secrets/weewx-wunderground-password

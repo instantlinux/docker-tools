@@ -52,6 +52,7 @@ definition, or (even easier) under Kubernetes deploy the
 | SYSLOG_DEST | /var/log/messages | Syslog file or TCP dest (@@host:port) |
 | TZ | US/Eastern | Local timezone |
 | TZ_CODE | 10 | Davis VantagePro timezone code see [index](https://www.manualslib.com/manual/586601/Davis-Vantage-Pro.html?page=39) |
+| WEBCAM_URL | (generic) | Suggest http://www.wunderground.com/webcams/<yourID>/1/show.html |
 | WEEK_START | 6 | day of week to start weekly data (0 = Mon) |
 | WX_USER | weewx | run-as username |
 | XTIDE_LOCATION | unset | xtide setting, see [index](http://tides.mobilegeographics.com/) |

@@ -35,6 +35,7 @@ ENV ALTITUDE="100, foot" \
     SYSLOG_DEST=/var/log/messages \
     TZ=US/Eastern \
     TZ_CODE=10 \
+    WEBCAM_URL=https://www.wunderground.com/wundermap?lat=37.761&lon=-122.435&zoom=5&radar=1&cam=1 \
     WEEK_START=6 \
     WX_USER=weewx \
     XTIDE_LOCATION=unset

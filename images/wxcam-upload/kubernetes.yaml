@@ -57,9 +57,8 @@ spec:
         volumeMounts:
         - mountPath: /home/wx/upload
           name: synced
-        - name: wunderground-user-password
-          mountPath: /run/secrets/wunderground-user-password
-          subPath: wunderground-user-password
+        - name: wunderground-pw-cam
+          mountPath: /run/secrets/wunderground-pw-cam
         - name: wxcam-password-hashed
           mountPath: /run/secrets/wxcam-password-hashed
           subPath: wxcam-password-hashed
@@ -74,9 +73,9 @@ spec:
       volumes:
       - name: synced
         hostPath: { path: $K8S_VOLUMES_PATH/wx }
-      - name: wunderground-user-password
+      - name: wunderground-pw-cam
         secret:
-          secretName: wunderground-user-password
+          secretName: wunderground-pw-cam
       - name: wxcam-password-hashed
         secret:
           secretName: wxcam-password-hashed

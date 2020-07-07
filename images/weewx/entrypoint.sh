@@ -54,6 +54,11 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   -e "s/user = replace_me/user = $RSYNC_USER/" \
   -e "s:path = replace_me:path = $RSYNC_DEST:" \
   $HOMEDIR/weewx.conf
+  if [ -e $HOMEDIR/skins/WeeGreen/skin.conf ]; then
+    sed -i -e "s/ID=[A-Z0-9]$/ID=$STATION_ID/" \
+      -e "s+webcamLink = .*+webcamLink = $WEBCAM_URL+" \
+      $HOMEDIR/skins/WeeGreen/skin.conf
+  fi
   if [ $SKIN != Season ]; then
     sed -i \
       "/skin = Season/,/enable = true/c skin = Seasons\n enable = false" $HOMEDIR/weewx.conf

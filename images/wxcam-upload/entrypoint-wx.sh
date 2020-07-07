@@ -17,6 +17,11 @@ ITEM=0
 IFS=', ' read -r -a USERNAMES <<< "$UPLOAD_USERNAME"
 for CAM in $CAMS; do
   MINUTE=$(seq -s, $ITEM $INTERVAL 60)
+  if [ -e /run/secrets/wunderground-pw-cam/wunderground-pw-$CAM ]; then
+    PW=$(cat /run/secrets/wunderground-pw-cam/wunderground-pw-$CAM)
+  else
+    PW=$UPLOAD_PASSWORD
+  fi
   cat <<EOF >>/etc/crontabs/$WXUSER_NAME
 $MINUTE * * * *  /usr/local/bin/wx_upload.sh $CAM $UPLOAD_HOSTNAME $UPLOAD_PATH
 EOF
@@ -24,7 +29,7 @@ EOF
   cat <<EOF >$ncftpini
 host $UPLOAD_HOSTNAME
 user ${USERNAMES[$ITEM]}
-pass $UPLOAD_PASSWORD
+pass $PW
 EOF
   chown $WXUSER_NAME $ncftpini && chmod 600 $ncftpini
   ln -s $ncftpini /home/$WXUSER_NAME/.ncftp-$CAM
@@ -33,9 +38,18 @@ EOF
   ITEM=$((ITEM + 1))
 done
 
-touch /var/log/cron.log
+touch /var/log/cron.log /var/log/docker.log
+chown $WXUSER_NAME /var/log/docker.log
 crond -L /var/log/cron.log
-tail -f -n0 /var/log/cron.log &
+tail -f -n0 /var/log/cron.log /var/log/docker.log &
 
-# Invoke base vsftpd image's entrypoint
+# Not using mod_delay: suppress warning messages in logs
+cat >/etc/proftpd/conf.d/mod_delay.conf <<EOF
+<IfModule mod_delay.c>
+    DelayEngine off
+</IfModule>
+EOF
+echo 'TransferLog /var/log/docker.log' > /etc/proftpd/conf.d/logging.conf
+
+# Invoke base proftpd image's entrypoint
 exec /usr/local/bin/entrypoint.sh
