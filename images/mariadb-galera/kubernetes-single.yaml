@@ -75,8 +75,6 @@ spec:
       - name: sst-auth-password
         secret:
           secretName: sst-auth-password
-      nodeSelector:
-        service.samba: allow
   volumeClaimTemplates:
   - metadata:
       name: data
