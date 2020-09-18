@@ -183,7 +183,7 @@ rules:
 - apiGroups: [""]
   resources:
   - events
-  verbs: [patch]
+  verbs: [create, patch]
 - apiGroups: ["networking.k8s.io"]
   resources:
   - ingresses

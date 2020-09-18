@@ -42,17 +42,17 @@ spec:
       - name: $SERVICE_NAME
         env:
         - name: AUTHELIA_JWT_SECRET_FILE
-          value: /etc/authelia/secrets/jwt_secret
+          value: /config/secrets/jwt_secret
         - name: AUTHELIA_SESSION_SECRET_FILE
-          value: /etc/authelia/secrets/session_secret
+          value: /config/secrets/session_secret
         - name: AUTHELIA_SESSION_REDIS_PASSWORD_FILE
-          value: /etc/authelia/secrets/redis_password
+          value: /config/secrets/redis_password
         - name: AUTHELIA_STORAGE_MYSQL_PASSWORD_FILE
-          value: /etc/authelia/secrets/mysql_password
+          value: /config/secrets/mysql_password
         - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
-          value: /etc/authelia/secrets/smtp_password
+          value: /config/secrets/smtp_password
         - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE
-          value: /etc/authelia/secrets/ldap_password
+          value: /config/secrets/ldap_password
         image: authelia/authelia:$VERSION_AUTHELIA
         ports:
         - containerPort: 80
@@ -63,10 +63,10 @@ spec:
             cpu: 50m
             memory: 256Mi
         volumeMounts:
-        - mountPath: /etc/authelia/configuration.yml
+        - mountPath: /config/configuration.yml
           name: config
           subPath: configuration.yml
-        - mountPath: /etc/authelia/secrets
+        - mountPath: /config/secrets
           name: secrets
       dnsConfig:
         options:
@@ -216,6 +216,7 @@ data:
         username_attribute: uid
         additional_users_dn: ou=users
         additional_groups_dn: ou=groups
+        display_name_attribute: sn
         groups_filter: (&(member={dn})(objectclass=groupOfNames))
         group_name_attribute: cn
         mail_attribute: mail

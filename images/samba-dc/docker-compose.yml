@@ -11,7 +11,7 @@ services:
       INTERFACES: ${SAMBADC_INTERFACES:-lo eth0}
       REALM: ${SAMBA_REALM:-ad.example.com}
       TZ: ${TZ:-UTC}
-      WORKGROUP: ${SAMBA_WORKGROUP:-WORKGROUP}
+      WORKGROUP: ${SAMBA_WORKGROUP:-AD}
     volumes:
       - etc:/etc/samba
       - lib:/var/lib/samba

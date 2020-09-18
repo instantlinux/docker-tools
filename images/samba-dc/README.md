@@ -50,7 +50,7 @@ REALM | ad.example.com | active-directory DNS realm
 SERVER_STRING | Samba Domain Controller | server identity
 TZ | UTC | local timezone
 WINBIND_USE_DEFAULT_DOMAIN | yes | allow username without domain component
-WORKGROUP | WORKGROUP | NT workgroup
+WORKGROUP | AD | workgroup (realm prefix - poorly documented)
 
 ### Secrets
 This is only needed at first run, for samba domain provision or join. Do NOT leave your domain-controller administrator secret activated at any other time.
@@ -59,6 +59,8 @@ For clarity, this is a docker-secret with the initial Samba admin password, not 
 Secret | Description
 ------ | -----------
 samba-admin-password | domain-administrator pw
+
+Secrets can be specified as kubernetes secrets, files (see the _secrets_ section of the example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/samba-dc/docker-compose.yml) provided in this repo), or as swarm secrets.
 
 ### Notes
 Getting a domain-controller cluster up and running properly requires a lot of correctly-configured trust relationships established between domain controllers, and Samba's documentation of error messages and problem-resolutions is pretty thin. If you're only running this version of samba, it's likely there will be few problems. But in a mixed environment with Microsoft Active Directory servers and/or older versions of samba4, you're bound to run into problems that require tweaking. A few diagnostic commands are available within this container; here are notes that might help you get up and running more quickly:

@@ -22,9 +22,9 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     SERVER_STRING="Samba Domain Controller" \
     TZ=UTC \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
-    WORKGROUP=WORKGROUP
+    WORKGROUP=AD
 
-ARG SAMBA_VERSION=4.12.2-r1
+ARG SAMBA_VERSION=4.12.6-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/

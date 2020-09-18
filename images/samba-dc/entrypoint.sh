@@ -5,6 +5,7 @@ if [ -z "$NETBIOS_NAME" ]; then
 else
   NETBIOS_NAME=$(echo $NETBIOS_NAME | tr [a-z] [A-Z])
 fi
+REALM=$(echo "$REALM" | tr [A-Z] [a-z])
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo 'Set timezone'
