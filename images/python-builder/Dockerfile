@@ -17,7 +17,7 @@ ARG BUILDX_VERSION=0.4.1
 ARG COMPOSE_VERSION=1.25.0
 ARG KUBECTL_VERSION=1.15.3
 ARG MUSL_VERSION=1.1.24-r9
-ARG PYTHON_VERSION=3.8.3-r0
+ARG PYTHON_VERSION=3.8.5-r0
 ARG PYCRYPTOGRAPHY_VERSION=2.9.2-r0
 ARG PYPILLOW_VERSION=7.1.2-r0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
@@ -36,12 +36,14 @@ COPY requirements.txt /root/
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
+    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev py3-boto3 py3-botocore \
-      py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-flask \
-      py3-itsdangerous py3-jsonschema py3-jwt \
+      py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-pycryptodomex@edge py3-flask py3-itsdangerous py3-jwt \
       py3-pillow==$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \

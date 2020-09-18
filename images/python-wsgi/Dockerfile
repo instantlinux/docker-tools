@@ -1,4 +1,4 @@
-FROM python:3.8.3-alpine3.12
+FROM python:3.8.5-alpine3.12
 
 MAINTAINER Rich Braun "richb@instantlinux.net"
 ARG BUILD_DATE
@@ -18,14 +18,16 @@ ARG UWSGI_VERSION=2.0.18-r8
 COPY requirements.txt uwsgi.ini /usr/src/
 RUN echo '@community http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       >>/etc/apk/repositories && \
+    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
     apk add --virtual .fetch-deps gcc git jpeg-dev libffi-dev make musl-dev \
       libwebp-dev openssl-dev pcre-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
       proj@community py3-boto3 py3-botocore py3-cffi==$CFFI_VERSION \
-      py3-coverage py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-flask \
-      py3-itsdangerous py3-jsonschema py3-jwt \
+      py3-coverage py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-pycryptodomex@edge py3-flask py3-itsdangerous py3-jwt \
       py3-pillow==$PYPILLOW_VERSION py3-requests py3-setuptools \
-      py3-sqlalchemy py3-urllib3 py3-virtualenv uwsgi==$UWSGI_VERSION \
+      py3-urllib3 py3-virtualenv uwsgi==$UWSGI_VERSION \
       uwsgi-python3 zlib && \
     pip3 install -r /usr/src/requirements.txt && pip freeze && \
     apk del .fetch-deps && rm -r /var/cache/apk/* /root/.cache

@@ -5,9 +5,11 @@ cryptography==2.9.2
 Flask==1.1.2
 itsdangerous==1.1.0
 Pillow==7.1.2
+pycryptodomex==3.9.8
 PyJWT==1.7.1
 requests==2.23.0
 setuptools==47.0.0
+urllib3==1.25.9
 
 alembic==1.4.3
 arrow==0.16.0
@@ -22,7 +24,6 @@ funcsigs==1.0.2
 jsonschema==3.2.0
 mock==4.0.2
 passlib==1.7.2
-pycryptodomex==3.9.8
 PyMySQL==0.10.1
 # pytest has to be installed inside workspace's virtualenv
 # pytest==5.4.1
@@ -31,29 +32,19 @@ pytz==2020.1
 SQLAlchemy==1.3.19
 SQLAlchemy-Utils==0.36.8
 swagger-ui-bundle==0.0.8
-urllib3==1.25.10
 
 # transitive dependencies
 appdirs==1.4.4
-asn1crypto==1.4.0
-attrs==20.2.0
+attrs==19.3.0
 CacheControl==0.12.6
-certifi==2020.6.20
-cffi==1.14.3
 chardet==3.0.4
 click==7.1.2
 clickclick==1.2.2
 colorama==0.4.3
-contextlib2==0.6.0.post1
-distlib==0.3.1
 distro==1.5.0
-docutils==0.16
 filelock==3.0.12
-html5lib==1.1
-idna==2.10
 inflection==0.5.0
 Jinja2==2.11.2
-jmespath==0.10.0
 lockfile==0.12.2
 logfury==0.1.2
 Mako==1.1.3
@@ -73,7 +64,7 @@ pycodestyle==2.6.0
 pycparser==2.20
 pyflakes==2.2.0
 pyparsing==2.4.7
-pyrsistent==0.17.2
+pyrsistent==0.17.3
 python-dateutil==2.8.1
 python-editor==1.0.4
 pytoml==0.1.21
@@ -83,7 +74,18 @@ s3transfer==0.3.3
 six==1.15.0
 toml==0.10.1
 tqdm==4.49.0
-virtualenv==20.0.31
 wcwidth==0.2.5
 webencodings==0.5.1
 Werkzeug==1.0.1
+
+# transitive pre-built alpine wheels pinned to pkgs.alpinelinux.org
+asn1crypto==1.3.0
+certifi==2020.4.5.1
+cffi==1.14.0
+contextlib2==0.6.0
+distlib==0.3.0
+docutils==0.15.2
+html5lib==1.0.1
+idna==2.9
+jmespath==0.9.5
+virtualenv==20.0.21
