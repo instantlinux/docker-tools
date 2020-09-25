@@ -1,0 +1,14 @@
+# Postgres Operator
+#  Imports and installs the CrunchyData postgresql-as-a-service operator
+#
+# Usage:
+#  make imports imports/postgres-operator
+
+.PHONY: pgo_namespace postgres-operator
+
+imports/postgres-operator.yaml: pgo_namespace
+	@mkdir -p imports
+	curl -sLo $@ https://raw.githubusercontent.com/CrunchyData/postgres-operator/v$(VERSION_PGO)/installers/kubectl/postgres-operator.yml
+
+pgo_namespace:
+	K8S_NAMESPACE=pgo make namespace_config

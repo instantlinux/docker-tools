@@ -75,6 +75,7 @@ STACKS = $(basename $(wildcard *.yaml))
 include Makefile.vars
 include Makefile.versions
 include Makefile.instances
+include Makefile.pgo
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -95,7 +96,7 @@ $(STACKS)::
 .PHONY: envsubst imports install install_metrics namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = calico calico-etcd dashboard flannel
+IMPORTS      = calico calico-etcd dashboard flannel postgres-operator
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))

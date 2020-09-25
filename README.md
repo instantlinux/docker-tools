@@ -37,6 +37,7 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 * ingress-nginx
 * Local-volume sync
 * Automatic certificate issuing/renewal with Letsencrypt
+* PostgreSQL-operator from CrunchyData
 
 ### Resource definitions
 
@@ -60,7 +61,6 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 | --- | --- | --- |
 | authelia | ** | single-signon multi-factor auth |
 | cloud | ** | nextcloud, private sync like Apple iCloud |
-| docs | [![](https://img.shields.io/docker/v/instantlinux/open-xchange-appsuite?sort=date)](https://hub.docker.com/r/instantlinux/open-xchange-appsuite "Version badge") | OX Appsuite, private cloud like Google Docs |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | duplicati | [![](https://img.shields.io/docker/v/instantlinux/duplicati?sort=date)](https://hub.docker.com/r/instantlinux/duplicati "Version badge") | backups |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |

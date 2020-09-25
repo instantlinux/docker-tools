@@ -50,6 +50,13 @@ spec:
           sh -c 'sh /usr/local/bin/gitback &' &&
           exec /assets/wrapper
         env:
+        - name: GITLAB_OMNIBUS_CONFIG
+          valueFrom:
+            secretKeyRef:
+              # Secret should contain base64-encoded string in form
+              # "gitlab_rails['db_password']='xxxx';"
+              key: omnibus-config
+              name: gitlab-db-password
         - { name: TZ, value: $TZ }
         image: gitlab/gitlab-ce:$VERSION_GITLAB
         ports:
@@ -130,13 +137,19 @@ data:
   gitlab.rb: |
     external_url 'http://git.$MYDOMAIN'
     gitaly['logging_level'] = 'warn'
-    gitlab_rails['time_zone'] = '$TZ'
+    gitlab_rails['db_adapter'] = 'postgresql'
+    gitlab_rails['db_encoding'] = 'utf8'
+    gitlab_rails['db_host'] = 'dbgitlab.pgo'
+    gitlab_rails['db_port'] = 5432
+    gitlab_rails['db_username'] = 'gitlab-psql'
     gitlab_rails['smtp_enable'] = true
     gitlab_rails['smtp_address'] = 'smtp.$DOMAIN'
-    gitlab_rails['smtp_port'] = 25
     gitlab_rails['smtp_domain'] = '$HOSTNAME_EMAIL'
     gitlab_rails['smtp_enable_starttls_auto'] = true
     gitlab_rails['smtp_openssl_verify_mode'] = 'none'
+    gitlab_rails['smtp_port'] = 25
+    gitlab_rails['time_zone'] = '$TZ'
+    postgresql['enable'] = false
     # prometheus['flags'] = {
     #   'storage.tsdb.retention' => '3d',
     #   'config.file' => "#{node['gitlab']['prometheus']['home']}/prometheus.yml"

@@ -50,7 +50,7 @@ logfury==0.1.2
 Mako==1.1.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
-more-itertools==8.3.0
+more-itertools==8.5.0
 msgpack==1.0.0
 olefile==0.46
 openapi-spec-validator==0.2.9
