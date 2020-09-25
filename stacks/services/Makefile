@@ -14,7 +14,7 @@ endif
 
 default: $(HOST)
 
-mckinley: nut-upsd weewx
+mckinley: nut-upsd
 denali: nut-upsd
 k2: nagios haproxy-keepalived
 

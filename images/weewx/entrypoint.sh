@@ -56,6 +56,11 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
   $HOMEDIR/weewx.conf
   if [ -e $HOMEDIR/skins/WeeGreen/skin.conf ]; then
     sed -i -e "s/ID=[A-Z0-9]$/ID=$STATION_ID/" \
+      -e "s/computerType =.*/computerType = $COMPUTER_TYPE/" \
+      -e "s/modelNumber =.*/modelNumber = $STATION_MODEL/" \
+      -e "s/modelFeatures =.*/modelFeatures = $STATION_FEATURES/" \
+      -e "s/[#]*optionalAccessories = .*/optionalAccessories = $OPTIONAL_ACCESSORIES/" \
+      -e "s/siteOperator =.*/siteOperator = $OPERATOR/" \
       -e "s+webcamLink = .*+webcamLink = $WEBCAM_URL+" \
       $HOMEDIR/skins/WeeGreen/skin.conf
   fi

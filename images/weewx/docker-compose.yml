@@ -6,17 +6,23 @@ services:
     restart: always
     environment:
       ALTITUDE: 100, foot
+      COMPUTER_TYPE: ${WX_COMPUTER:-Unbranded}
       DB_HOST: ${DB_HOST:-db00}
       DB_USER: wx
       LATITUDE: ${WX_LATITUDE:-38.898}
       LONGITUDE: ${WX_LONGITUDE:--77.037}
       LOCATION: ${WX_LOCATION:-Local Weather Station}
+      OPERATOR: ${WX_OPERATOR:-Al Roker}
+      OPTIONAL_ACCESSORIES: ${WX_OPTIONAL_ACC:-False}
       RAIN_YEAR_START: ${WX_RAIN_YEAR_START:-7}
       RSYNC_DEST: ${WX_RSYNC_DEST:-/usr/share/nginx/html}
       RSYNC_HOST: ${WX_RSYNC_HOST:-web01}
       RSYNC_PORT: ${PORT_WX_SSH:-22}
       SKIN: WeeGreen
       STATION_ID: ${WX_STATION_ID}
+      STATION_FEATURES: ${WX_STATION_FEATURES:- }
+      STATION_MODEL: ${WX_STATION_MODEL:-6152}
+      STATION_TYPE: ${WX_STATION_TYPE:-Vantage}
       STATION_URL: ${WX_STATION_URL:- }
       SYSLOG_DEST: "@@${RSYSLOGD_HOST:-syslog}:${PORT_RSYSLOGD:-514}"
       TZ: ${TZ:-UTC}

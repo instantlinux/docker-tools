@@ -1,43 +1,43 @@
 ---
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
-    release: "0.1"
   name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: $SERVICE_NAME
-      release: "0.1"
-  serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
         app.kubernetes.io/name: $SERVICE_NAME
-        release: "0.1"
     spec:
       containers:
       - name: $SERVICE_NAME
         env:
         - { name: ALTITUDE, value: "100, foot" }
+        - { name: COMPUTER_TYPE, value: $WX_COMPUTER }
         - { name: DB_HOST, value: $DB_HOST }
         - { name: DB_USER, value: wx }
         - { name: LATITUDE, value: "37.75" }
         - { name: LONGITUDE, value: "-122.4" }
         - { name: LOCATION, value: "The Castro, San Francisco, CA" }
+        - { name: OPERATOR, value: "$WX_OPERATOR" }
+        - { name: OPTIONAL_ACCESSORIES, value: "$WX_OPTIONAL_ACC" }
+        - { name: RAIN_YEAR_START, value: "$WX_RAIN_YEAR_START" }
         - { name: RSYNC_DEST, value: $WX_RSYNC_DEST }
         - { name: RSYNC_HOST, value: $WX_RSYNC_HOST }
         - { name: RSYNC_PORT, value: "$PORT_WX_SSH" }
         - { name: SKIN, value: WeeGreen }
         - { name: STATION_ID, value: $WX_STATION_ID }
+        - { name: STATION_FEATURES, value: "$WX_STATION_FEATURES" }
+        - { name: STATION_MODEL, value: "$WX_STATION_MODEL" }
+        - { name: STATION_TYPE, value: $WX_STATION_TYPE }
         - { name: STATION_URL, value: "$WX_STATION_URL" }
         - { name: SYSLOG_DEST, value: "@@$RSYSLOGD_IP:$PORT_RSYSLOGD" }
         - { name: TZ, value: $TZ }
         - { name: TZ_CODE, value: "4" }
+        - { name: WEBCAM_URL, value: "$WX_WEBCAM_URL" }
         - { name: XTIDE_LOCATION, value: San Francisco }
         image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_WEEWX
         # TODO: better security, see
