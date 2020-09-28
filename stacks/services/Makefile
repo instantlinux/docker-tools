@@ -7,7 +7,7 @@
 
 HOST = $(shell hostname -s)
 REGISTRY_URI ?= nexus.instantlinux.net
-SERVICES = haproxy-keepalived nut-upsd weewx
+SERVICES = haproxy-keepalived nut-upsd restic-server
 ifeq ($(shell test -d /var/adm/admin/services && echo 1),1)
   export ADMIN_PATH=/var/adm/admin/services
 endif
@@ -16,7 +16,7 @@ default: $(HOST)
 
 mckinley: nut-upsd
 denali: nut-upsd
-k2: nagios haproxy-keepalived
+k2: nagios haproxy-keepalived restic-server
 
 $(SERVICES)::
 	@echo Starting $@

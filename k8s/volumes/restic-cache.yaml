@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: restic-cache
+  labels:
+    volume.group: restic-cache
+spec:
+  capacity:
+    storage: 1Mi 
+  accessModes:
+    - ReadWriteMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /var/backup/restic/cache
+    server: $NFS_HOST_2
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: restic-cache
+  namespace: $K8S_NAMESPACE
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+     requests:
+       storage: 1Mi
+  selector:
+    matchLabels:
+      volume.group: restic-cache
+  storageClassName: nfs-client

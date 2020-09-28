@@ -32,6 +32,12 @@ spec:
         env:
         - { name: TZ, value: UTC }
         image: instantlinux/$SERVICE_NAME:$VERSION_RSYSLOGD
+        # Force reload every week; TODO better way to manage
+        # storage both inside the container and in host's docker log
+        livenessProbe:
+          exec:
+            command: [ 'false' ]
+          initialDelaySeconds: 604800
         volumeMounts:
         - mountPath: /etc/logrotate.d
           name: logrotate
