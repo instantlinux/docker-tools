@@ -2,8 +2,9 @@ version: "3.1"
 
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/weewx:latest
-    restart: always
+    # image: ${REGISTRY_URI:-instantlinux}/weewx:latest
+    # restart: always
+    image: weewx:testing
     environment:
       ALTITUDE: 100, foot
       COMPUTER_TYPE: ${WX_COMPUTER:-Unbranded}
@@ -31,8 +32,8 @@ services:
       WEBCAM_URL: ${WX_WEBCAM_URL:-https://www.wunderground.com/wundermap?lat=37.761&lon=-122.435&zoom=5&radar=1&cam=1}
     tmpfs:
     - /var/www/weewx
-    devices:
-    - /dev/ttyUSB0:/dev/ttyUSB0
+    # devices:
+    # - /dev/ttyUSB0:/dev/ttyUSB0
     network_mode: bridge
     secrets:
     - weewx-db-password

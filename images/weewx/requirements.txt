@@ -4,4 +4,5 @@ mysqlclient==1.4.6
 pillow==7.1.2
 pyserial==3.4
 PyUSB==1.0.2
+requests==2.23.0
 six==1.15.0

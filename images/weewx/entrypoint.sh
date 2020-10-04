@@ -64,6 +64,12 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
       -e "s+webcamLink = .*+webcamLink = $WEBCAM_URL+" \
       $HOMEDIR/skins/WeeGreen/skin.conf
   fi
+  if [ "$AIRLINK_HOST" != "" ]; then
+    sed -i -e "s/hostname = airlink$/hostname = $AIRLINK_HOST/" \
+      $HOMEDIR/weewx.conf
+  else
+    sed -i "/[[Sensor1]]/{n;s/.*/        enable = false/}" $HOMEDIR/weewx.conf
+  fi
   if [ $SKIN != Season ]; then
     sed -i \
       "/skin = Season/,/enable = true/c skin = Seasons\n enable = false" $HOMEDIR/weewx.conf

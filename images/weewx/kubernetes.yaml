@@ -15,6 +15,7 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
+        - { name: AIRLINK_HOST, value: $WX_AIRLINK_HOST }
         - { name: ALTITUDE, value: "100, foot" }
         - { name: COMPUTER_TYPE, value: $WX_COMPUTER }
         - { name: DB_HOST, value: $DB_HOST }
@@ -40,6 +41,12 @@ spec:
         - { name: WEBCAM_URL, value: "$WX_WEBCAM_URL" }
         - { name: XTIDE_LOCATION, value: San Francisco }
         image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_WEEWX
+        resources:
+          limits:
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
         # TODO: better security, see
         # https://github.com/kubernetes/kubernetes/issues/60748
         securityContext:
