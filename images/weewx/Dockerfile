@@ -48,7 +48,7 @@ ENV AIRLINK_HOST= \
 
 ARG WEEWX_VERSION=4.1.1
 ARG WEEWX_SHA=f9c30d6e5f491c003dfaac2a71d9e05b5a65146623d42f50837991b6f2093419
-ARG WEEGREEN_VERSION=v0.10
+ARG WEEGREEN_VERSION=v0.11
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
 ARG XTIDE_SHA=e5c4afbb17269fdde296e853f2cb84845ed1c1bb1932f780047ad71d623bc681
@@ -76,8 +76,7 @@ RUN apk add --no-cache --update \
       https://github.com/instantlinux/weewx-WeeGreen.git \
       /home/$WX_USER/skins/WeeGreen && \
     curl -sLo /tmp/weewx-airlink.zip \
-#     https://github.com/chaunceygardiner/weewx-airlink/archive/master.zip && \
-      https://github.com/instantlinux/weewx-airlink/archive/rb_contrib.zip && \
+      https://github.com/chaunceygardiner/weewx-airlink/archive/master.zip && \
     /home/$WX_USER/bin/wee_extension --install /tmp/weewx-airlink.zip && \
     apk del .fetch-deps && \
     rm -fr /build /home/$WX_USER/weewx.conf.2* /home/$WX_USER/docs \

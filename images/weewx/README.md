@@ -26,6 +26,7 @@ definition, or (even easier) under Kubernetes deploy the
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
+| AIRLINK_HOST | | local hostname or IP of AirLink AQI sensor|
 | ALTITUDE | "100, foot" | elevation of station |
 | LATITUDE | 50.00 | coordinates |
 | LONGITUDE | -80.00 | coordinates  |
@@ -40,7 +41,7 @@ definition, or (even easier) under Kubernetes deploy the
 | LOCATION | "Anytown, USA" | location to display in banner |
 | LOGGING_INTERVAL | 300 | sampling interval |
 | OPERATOR | "Al Roker" | your name |
-| OPTIONAL_ACCESSORIES | False | whether additional sensors installed |
+| OPTIONAL_ACCESSORIES | False | whether solar, UV or AQI sensors installed |
 | RAIN_YEAR_START | 7 | month to start collecting annual rain data |
 | RAPIDFIRE | True | enable Weather Underground realtime updates |
 | RSYNC_DEST | /usr/share/nginx/html | rsync destination path |
@@ -63,6 +64,8 @@ definition, or (even easier) under Kubernetes deploy the
 
 You can volume-mount a different skin to a subdirectory of /home/weewx/skins if you prefer one that isn't already included.
 
+If `OPTIONAL_ACCESSORIES` is specified, you must upgrade database (see below).
+
 ### Secrets
 
 Secret | Description
@@ -71,6 +74,22 @@ weewx-db-password | database password for MySQL
 weewx-rsync-sshkey | private ssh key for rsync upload
 weewx-wunderground-apikey | API key for Wunderground.com
 weewx-wunderground-password | password for Wunderground.com
+
+### Upgrading
+
+#### To 4.x
+
+Version 4 supports an optional new database schema called `wview_extended`. The official [WeeWX Upgrade Guide](http://www.weewx.com/docs/upgrading.htm) inexplicably omits any information about how to migrate your database; here's a rough outline of what you need to do if you have existing 3.x data and want to migrate (in order to  gain new features such as AQI):
+
+* Backup your current database
+* Create a blank database `weewx_a_new` with same access grants
+* Launch the docker container with 4.x and invoke `~weewx/bin/wee_database --reconfigure`
+* After the above operation completes (takes many minutes, could be over an hour for several years' worth data), stop any running copy of weewx
+* Replace database `weewx_a` with contents of `weewx_a_new` (for mariadb/mysql, you have to dump/import the data)
+* Make sure only one table `archive` exists in the database: `reconfigure` only generates that table, not the 50+ daily summary tables; if present they are likely to trigger a ViolatedPrecondition exception
+* Restart weewx and wait another lengthy period for it to automatically rebuild the daily summary tables (you can track progress using `SELECT COUNT(*) FROM archive_day_outTemp;`)
+
+Because the new schema contains almost twice as many columns, future backups will require almost twice as much storage.
 
 ### Notes
 
