@@ -234,7 +234,7 @@ The solutions I present here in this repo are based on those years of experience
 
 I've tried several different approaches to keeping volumes in sync; the most popular alternative is GlusterFS but my own experience with that included poor performance on volumes with more than about 10,000 files, difficult recovery in split-brain network failures, and sporadic undetected loss of sync. All those tools (drbd included) are hugely complex to understand/administer. The [unison](https://www.cis.upenn.edu/~bcpierce/unison/) tool is as easy to understand as _rsync_ and has never had any failures in my years of use. The main catch with unison is that you need to identify and exclude files that are constantly being written to by your application, and/or create a script to quiesce the application during sync operations.
 
-Explore this repo for several different approaches to data backups. Duplicati is the main off-the-shelf tool that I've found as an alternative to CrashPlan for Home, though it's got one major achille's heel (metadata indexing) it's better than any other no-cost Linux tool. My [secondshot](https://github.com/instantlinux/secondshot)_ tool adds metadata-indexing and monitoring to the _rsnapshot_ method.
+Explore this repo for several different approaches to data backups. Restic is the main off-the-shelf tool that I've found as an alternative to CrashPlan for Home. Another tool called Duplicati works well for small savesets (it chokes on larger ones and doesn't generate log output for monitoring). My [secondshot](https://github.com/instantlinux/secondshot)_ tool adds metadata-indexing and monitoring to the _rsnapshot_ method.
 
 ### Additional notes
 

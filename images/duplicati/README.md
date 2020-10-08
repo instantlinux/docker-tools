@@ -2,6 +2,14 @@
 
 [![](https://img.shields.io/docker/v/instantlinux/duplicati?sort=date)](https://microbadger.com/images/instantlinux/duplicati "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/duplicati.svg)](https://microbadger.com/images/instantlinux/duplicati "Commit badge")
 
+Status: *Deprecated*
+
+Abandoned duplicati in favor of [restic](https://restic.net/). See the [k8s resource file here](https://github.com/instantlinux/docker-tools/blob/master/k8s/restic.yaml) for a straightforward way to deploy without any special tools, just the generic alpine image, k8s secrets and built-in busybox cron.
+
+Duplicati proved impossible to monitor, fragile and incapable of handling backup savesets much bigger than a third of a terabyte. Restic (a more mature OSS package with more contributors and far more annual release updates) just works, providing all the same features (minus a UI) and none of the maintenance headaches. This image will be kept available for the many who use it, but with encouragement to try restic.
+
+Old description:
+
 Duplicati 2.0 software for secure online/local backups. After CrashPlan discontinued its individual-user subscription service in 2018, this along with the BackBlaze B2 or Amazon S3 service is the most-active open-source project and is the best alternative for Linux users. Project organizers tag releases "beta", "experimental", and "canary"; to take advantage of the rapid pace of development, this container image provides the experimental release which has the most-current reasonably-stable feature set. Use the linuxserver/duplicati:latest image if you wish to run the older beta version. This one includes timezone support.
 
 ### Usage

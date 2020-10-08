@@ -52,6 +52,9 @@ spec:
         volumeMounts:
         - mountPath: /etc/mysql/my.cnf.d
           name: etc
+        - mountPath: /etc/wsrep.cnf
+          name: etc
+          subPath: wsrep.cnf
         - mountPath: /var/log/mysql
           name: logs
         - mountPath: /var/lib/mysql
@@ -149,10 +152,13 @@ data:
     #
     innodb_data_file_path        = ibdata1:10M:autoextend
     innodb_buffer_pool_instances = 1
-    innodb_buffer_pool_size      = 1024M
-    innodb_log_file_size         = 32M
+    innodb_buffer_pool_size      = 2048M
+    innodb_log_file_size         = 128M
 
     [mysqldump]
     quick
     quote-names
     max_allowed_packet	    = 16M
+
+  wsrep.cnf: |
+    # Single-instance does not use wsrep
