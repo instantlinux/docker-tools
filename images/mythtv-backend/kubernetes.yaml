@@ -45,7 +45,6 @@ spec:
           readOnly: true
         - name: mythposters
           mountPath: /var/mythtv/posters
-          readOnly: true
         - name: mytharch1
           mountPath: /var/mythtv/arch1
           readOnly: true

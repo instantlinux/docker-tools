@@ -9,12 +9,12 @@ spec:
   capacity:
     storage: 1Mi 
   accessModes:
-    - ReadOnlyMany 
+    - ReadWriteMany
+    - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain 
   nfs: 
     path: /var/mythtv/posters
     server: $NFS_HOST_2
-    readOnly: true
   storageClassName: nfs-client
 ---
 apiVersion: v1
@@ -184,6 +184,7 @@ metadata:
   namespace: $K8S_NAMESPACE
 spec:
   accessModes:
+  - ReadWriteMany
   - ReadOnlyMany
   resources:
      requests:

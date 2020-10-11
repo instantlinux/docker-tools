@@ -134,7 +134,7 @@ spec:
               fieldPath: metadata.name
         - name: KEEPALIVED_COMMAND_LINE_ARGUMENTS
           value: --dump-conf
-        image: osixia/keepalived:2.0.10
+        image: osixia/keepalived:$VERSION_KEEPALIVED
         securityContext:
           capabilities:
             add: [ NET_ADMIN ]
