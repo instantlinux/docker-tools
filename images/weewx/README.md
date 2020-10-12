@@ -53,7 +53,7 @@ definition, or (even easier) under Kubernetes deploy the
 | STATION_ID | unset | Weather Underground station ID |
 | STATION_MODEL | 6152 | model number of station |
 | STATION_TYPE | Vantage | station type (see [usersguide](http://www.weewx.com/docs/usersguide.htm) |
-| STATION_URL | | URL for public registration, if desired |
+| STATION_URL | | URL for public registration at weewx.com, if desired |
 | SYSLOG_DEST | /var/log/messages | Syslog file or TCP dest (@@host:port) |
 | TZ | US/Eastern | Local timezone |
 | TZ_CODE | 10 | Davis VantagePro timezone code see [index](https://www.manualslib.com/manual/586601/Davis-Vantage-Pro.html?page=39) |
