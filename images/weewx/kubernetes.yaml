@@ -16,13 +16,13 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: AIRLINK_HOST, value: $WX_AIRLINK_HOST }
-        - { name: ALTITUDE, value: "100, foot" }
+        - { name: ALTITUDE, value: "$WX_ALTITUDE, foot" }
         - { name: COMPUTER_TYPE, value: $WX_COMPUTER }
         - { name: DB_HOST, value: $DB_HOST }
         - { name: DB_USER, value: wx }
-        - { name: LATITUDE, value: "37.75" }
-        - { name: LONGITUDE, value: "-122.4" }
-        - { name: LOCATION, value: "The Castro, San Francisco, CA" }
+        - { name: LATITUDE, value: "$WX_LATITUDE" }
+        - { name: LONGITUDE, value: "$WX_LONGITUDE" }
+        - { name: LOCATION, value: "$WX_LOCATION" }
         - { name: OPERATOR, value: "$WX_OPERATOR" }
         - { name: OPTIONAL_ACCESSORIES, value: "$WX_OPTIONAL_ACC" }
         - { name: RAIN_YEAR_START, value: "$WX_RAIN_YEAR_START" }

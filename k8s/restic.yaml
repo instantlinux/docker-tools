@@ -19,7 +19,8 @@ spec:
         - -c
         - >
           apk add --update restic==$VERSION_RESTIC tzdata &&
-          cp /usr/share/zoneinfo/${DOL}TZ /etc/localtime &&
+          ln -s /usr/share/zoneinfo/${DOL}TZ /etc/localtime &&
+          echo $TZ > /etc/timezone &&
           echo "if [ -r ${DOL}HOME/.resticrc ]; then . ${DOL}HOME/.resticrc; fi" \
             >>/etc/profile.d/restic.sh &&
           touch /var/log/restic.log && /usr/sbin/crond &&
@@ -60,6 +61,8 @@ spec:
         - mountPath: /root/.restic/repo-password
           name: restic-repo-password
 
+        - mountPath: /var/log
+          name: logs
         - mountPath: /restore
           name: restore
         - mountPath: /b/share
@@ -134,6 +137,8 @@ spec:
       - name: cache
         persistentVolumeClaim:
           claimName: restic-cache
+      - name: logs
+        hostPath: { path: $PATH_SHR/$SERVICE_NAME/logs }
       - name: restore
         persistentVolumeClaim:
           claimName: duplicati-restore
@@ -198,52 +203,52 @@ data:
   cron: |
     # Customize as desired
     # Here's a minimal example that does backups, retention, check and prune:
-    #  0 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:b backup ${DOL}BACKUP_OPTS -x /b/home  | grep -v percent_done >>/var/log/restic.log
+    #  0 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:b backup ${DOL}BACKUP_OPTS -x /b/home  | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-home-status.txt
     #  0 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:b ${DOL}RETAIN_SCHED >>/var/log/restic.log
     #  0 5 * * 0 . /etc/profile && restic -r ${DOL}REPO_B2:b check --verbose >>/var/log/restic.log
     #  0 5 2 * * . /etc/profile && restic -r ${DOL}REPO_B2:b prune >>/var/log/restic.log
 
     # This is a full-length example used by the author
     # Lower-frequency backups - twice a week
-    45 1 * * 2,6 . /etc/profile && restic -r ${DOL}REPO_B2:misc backup ${DOL}BACKUP_OPTS -x /b/samba_dos /b/ftp /b/ftp/depot/Microsoft/ISO /b/ftp/depot/TechNet /b/jira/home/data /b/jira/home/plugins /b/pc/MP3 /b/services/gitlab /b/share/rainloop | grep -v percent_done >>/var/log/restic.log
-    30 1 * * 1,5 . /etc/profile && restic -r ${DOL}REPO_LOCAL/misc backup ${DOL}BACKUP_OPTS -x /b/samba_dos /b/ftp /b/ftp/depot/Microsoft/ISO /b/ftp/depot/TechNet /b/jira /b/pc/MP3 /b/services/gitlab /b/share/rainloop | grep -v percent_done >>/var/log/restic.log
+    45 1 * * 2,6 . /etc/profile && restic -r ${DOL}REPO_B2:misc backup ${DOL}BACKUP_OPTS -x /b/samba_dos /b/ftp /b/ftp/depot/Microsoft/ISO /b/ftp/depot/TechNet /b/jira/home/data /b/jira/home/plugins /b/pc/MP3 /b/services/gitlab /b/share/rainloop | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-misc-status.txt
+    30 1 * * 1,5 . /etc/profile && restic -r ${DOL}REPO_LOCAL/misc backup ${DOL}BACKUP_OPTS -x /b/samba_dos /b/ftp /b/ftp/depot/Microsoft/ISO /b/ftp/depot/TechNet /b/jira /b/pc/MP3 /b/services/gitlab /b/share/rainloop | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-misc-status.txt
     # Before doing the next backup, apply the defined retention schedule
     0 1 * * 2,6 . /etc/profile && restic -r ${DOL}REPO_B2:misc ${DOL}RETAIN_SCHED >>/var/log/restic.log
     0 1 * * 1,5 . /etc/profile && restic -r ${DOL}REPO_LOCAL/misc ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
     # Daily savesets
-    0 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:cloud backup ${DOL}BACKUP_OPTS -x /b/cloud | grep -v percent_done >>/var/log/restic.log
-    0 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/cloud backup ${DOL}BACKUP_OPTS -x /b/cloud | grep -v percent_done >>/var/log/restic.log
+    0 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:cloud backup ${DOL}BACKUP_OPTS -x /b/cloud | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-cloud-status.txt
+    0 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/cloud backup ${DOL}BACKUP_OPTS -x /b/cloud | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-cloud-status.txt
     5 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:cloud ${DOL}RETAIN_SCHED >>/var/log/restic.log
     5 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/cloud ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
-    20 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:household backup ${DOL}BACKUP_OPTS -x /b/household | grep -v percent_done >>/var/log/restic.log
-    20 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/household backup ${DOL}BACKUP_OPTS -x /b/household | grep -v percent_done >>/var/log/restic.log
+    20 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:household backup ${DOL}BACKUP_OPTS -x /b/household | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-household-status.txt
+    20 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/household backup ${DOL}BACKUP_OPTS -x /b/household | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-household-status.txt
     10 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:household ${DOL}RETAIN_SCHED >>/var/log/restic.log
     10 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/household ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
-    30 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:nexus backup ${DOL}BACKUP_OPTS -x /b/nexus | grep -v percent_done >>/var/log/restic.log
-    30 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/nexus backup ${DOL}BACKUP_OPTS -x /b/nexus | grep -v percent_done >>/var/log/restic.log
+    30 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:nexus backup ${DOL}BACKUP_OPTS -x /b/nexus | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-nexus-status.txt
+    30 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/nexus backup ${DOL}BACKUP_OPTS -x /b/nexus | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-nexus-status.txt
     15 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:nexus ${DOL}RETAIN_SCHED >>/var/log/restic.log
     15 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/nexus ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
-    40 2 * * * . /etc/profile && . /bin/set-key.sh pictures && restic -r ${DOL}REPO_B2_PIC:pictures backup ${DOL}BACKUP_OPTS /b/pc/Pictures | grep -v percent_done >>/var/log/restic.log
-    40 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/pictures backup ${DOL}BACKUP_OPTS /b/pc/Pictures | grep -v percent_done >>/var/log/restic.log
+    40 2 * * * . /etc/profile && . /bin/set-key.sh pictures && restic -r ${DOL}REPO_B2_PIC:pictures backup ${DOL}BACKUP_OPTS /b/pc/Pictures | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-pictures-status.txt
+    40 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/pictures backup ${DOL}BACKUP_OPTS /b/pc/Pictures | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-pictures-status.txt
     20 1 * * * . /etc/profile && . /bin/set-key.sh pictures && restic -r ${DOL}REPO_B2_PIC:pictures ${DOL}RETAIN_SCHED >>/var/log/restic.log
     20 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/pictures ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
-    0 3 * * * . /etc/profile && restic -r ${DOL}REPO_B2:share backup ${DOL}BACKUP_OPTS -x /b/share | grep -v percent_done >>/var/log/restic.log
-    0 5 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/share backup ${DOL}BACKUP_OPTS -x /b/share | grep -v percent_done >>/var/log/restic.log
+    0 3 * * * . /etc/profile && restic -r ${DOL}REPO_B2:share backup ${DOL}BACKUP_OPTS -x /b/share | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-share-status.txt
+    0 5 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/share backup ${DOL}BACKUP_OPTS -x /b/share | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-share-status.txt
     25 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:share ${DOL}RETAIN_SCHED >>/var/log/restic.log
     25 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/share ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
-    10 3 * * * . /etc/profile && . /bin/set-key.sh user && restic -r ${DOL}REPO_B2_USER:u backup ${DOL}BACKUP_OPTS -x /b/u | grep -v percent_done >>/var/log/restic.log
-    10 5 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/u backup ${DOL}BACKUP_OPTS -x /b/u | grep -v percent_done >>/var/log/restic.log
+    10 3 * * * . /etc/profile && . /bin/set-key.sh user && restic -r ${DOL}REPO_B2_USER:u backup ${DOL}BACKUP_OPTS -x /b/u | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-u-status.txt
+    10 5 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/u backup ${DOL}BACKUP_OPTS -x /b/u | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-u-status.txt
     30 1 * * * . /etc/profile && . /bin/set-key.sh user && restic -r ${DOL}REPO_B2_USER:u ${DOL}RETAIN_SCHED >>/var/log/restic.log
     30 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/u ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
-    30 3 * * * . /etc/profile && . /bin/set-key.sh mail && restic -r ${DOL}REPO_B2_MAIL:webmail backup ${DOL}BACKUP_OPTS -x /b/inbox /b/webmail | grep -v percent_done >>/var/log/restic.log
-    30 5,13,21 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/webmail backup ${DOL}BACKUP_OPTS -x /b/inbox /b/webmail | grep -v percent_done >>/var/log/restic.log
+    30 3 * * * . /etc/profile && . /bin/set-key.sh mail && restic -r ${DOL}REPO_B2_MAIL:webmail backup ${DOL}BACKUP_OPTS -x /b/inbox /b/webmail | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-webmail-status.txt
+    30 5,13,21 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/webmail backup ${DOL}BACKUP_OPTS -x /b/inbox /b/webmail | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-webmail-status.txt
     35 1 * * * . /etc/profile && . /bin/set-key.sh mail && restic -r ${DOL}REPO_B2_MAIL:webmail ${DOL}RETAIN_SCHED >>/var/log/restic.log
     35 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/webmail ${DOL}RETAIN_SCHED --keep-hourly=3 >>/var/log/restic.log
 
