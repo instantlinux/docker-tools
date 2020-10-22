@@ -11,7 +11,7 @@ services:
     command: >
       bash -c "pip install mysql-python &&
       apt-get update &&
-      apt-get install -y mariadb-client &&
+      apt-get install -y mariadb-client python3-pymysql &&
       chmod u+s /opt/nagios/libexec/check_dhcp &&
       [ -e /usr/local/nagios ] || ln -s /opt/nagios /usr/local/nagios &&
       sed -i -e 's/^smtp      inet/2525 inet/' /etc/postfix/master.cf &&
