@@ -298,3 +298,4 @@ data:
     lost+found
     MP3/dup
     nextcloud.log
+    Snapshots/*.sav

@@ -22,3 +22,27 @@
   zypper:
     name: "{{ opensuse_packages }}"
   when: ansible_os_family == 'Suse'
+
+- name: Minimum version 7.x smartmontools
+  shell: |
+    set -e
+    wget -O /tmp/smart.tar.gz https://downloads.sourceforge.net/project/smartmontools/smartmontools/{{
+      smartmon_download.version}}/smartmontools-{{smartmon_download.version}}.tar.gz
+    echo "{{ smartmon_download.checksum }}  /tmp/smart.tar.gz" | shasum -c
+    tar xf /tmp/smart.tar.gz -C /tmp
+    chdir /tmp/smartmontools-{{ smartmon_download.version }}
+    ./configure && make install
+    rm -r /tmp/smart.tar.gz /tmp/smartmontools-{{ smartmon_download.version }}
+  args:
+    creates: /usr/local/sbin/smartctl
+  when: ansible_distribution_version < '20.04'
+
+- name: Python packages
+  pip:
+    executable: /usr/bin/pip3
+    name: "{{ pip_packages }}"
+  when: ansible_distribution_version < '20.04'
+
+- name: Python packages workaround for mixed python2/3 on 20.04
+  command: pip3 install {{ pip_packages|join(' ') }}
+  when: ansible_distribution_version >= '20.04'

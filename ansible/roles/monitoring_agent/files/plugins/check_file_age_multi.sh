@@ -41,7 +41,7 @@ if [ -s $output ]; then
   echo "WARN: count=$(cat $output | wc -l)"
   cat $output
   rm $output
-  exit $STATE_WARN
+  exit $STATE_WARNING
 fi
 echo "OK: count=$(echo $files | wc -w)"
 exit $STATE_OK

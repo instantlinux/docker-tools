@@ -63,3 +63,8 @@
     dest: /etc/systemd/journald.conf
     src: journald.conf.j2
   notify: Restart journald
+
+- name: Define tolerated drive errors
+  template:
+    dest: "{{ nagios.local_plugins_path }}/tolerations.yaml"
+    src: tolerations.j2
