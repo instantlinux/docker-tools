@@ -29,21 +29,21 @@ export VERSION_WXCAM_UPLOAD  ?= 1.3.7a-r0
 export VERSION_WEEWX         ?= 4.1.1
 
 # Third-party versions
-export VERSION_AUTHELIA      ?= 4.21.0
+export VERSION_AUTHELIA      ?= 4.22.0
 export VERSION_DASHBOARD     ?= 1.10.1
 export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_ETCD          ?= v3.3.13
-export VERSION_GITLAB        ?= 13.3.6-ce.0
-export VERSION_GITLAB_RUNNER ?= 13.2.3
+export VERSION_GITLAB        ?= 13.5.0-ce.0
+export VERSION_GITLAB_RUNNER ?= 13.5.0
 export VERSION_GUACAMOLE     ?= 1.2.0
 export VERSION_INGRESS_NGINX ?= 0.31.1
 export VERSION_KEEPALIVED    ?= 2.0.20
-export VERSION_LOGSPOUT      ?= v3.2.11
+export VERSION_LOGSPOUT      ?= v3.2.12
 export VERSION_NEXTCLOUD     ?= 18.0.9
-export VERSION_NEXUS         ?= 3.27.0
-export VERSION_NGINX         ?= 1.19.2-alpine
+export VERSION_NEXUS         ?= 3.28.1
+export VERSION_NGINX         ?= 1.19.3-alpine
 export VERSION_RAINLOOP      ?= 1.13.0
-export VERSION_SPLUNK        ?= 8.0.6
+export VERSION_SPLUNK        ?= 8.1.0
 export VERSION_WORDPRESS     ?= 5.5.1-php7.4-apache
 
 # Held back versions - more effort to upgrade

@@ -135,7 +135,7 @@ data:
     tmp_table_size          = 16M
 
     interactive_timeout     = 28800
-    net_read_timeout        = 30
+    net_read_timeout        = $DB_NET_READ_TIMEOUT
     net_write_timeout       = 60
     wait_timeout            = 3600
 
@@ -152,8 +152,8 @@ data:
     #
     innodb_data_file_path        = ibdata1:10M:autoextend
     innodb_buffer_pool_instances = 1
-    innodb_buffer_pool_size      = 2048M
-    innodb_log_file_size         = 128M
+    innodb_buffer_pool_size      = $DB_INNODB_POOL_SIZE
+    innodb_log_file_size         = $DB_INNODB_LOG_SIZE
 
     [mysqldump]
     quick

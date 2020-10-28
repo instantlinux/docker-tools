@@ -49,7 +49,7 @@ import os
 import sys
 import yaml
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 STATUS_OK = 0
 STATUS_WARN = 1
@@ -84,32 +84,32 @@ SMART_ATTR_CHECKS = {
               help='Spare-percentage warning threshold for nvme [50]')
 def main(device, error_list, raid, warn_temp, crit_temp, warn_spare):
     if 'all' in device:
+        # Get all block storage devices except loopback (major=7)
         device = [item['name'] for item in
                   json.load(os.popen('lsblk -dJ -e 7'))['blockdevices']]
     error_items = yaml.safe_load(error_list) if error_list else {}
-    retval = STATUS_OK
-    messages = []
+    retval, messages = STATUS_OK, ([], [], [], [])
     for drive in device:
         status, message = check_smart(drive, error_items, warn_temp,
                                       crit_temp, warn_spare)
+        messages[status].append(message)
         retval = max(retval, status)
-        messages.append(message)
     if raid and 'active' in open('/proc/mdstat', 'r').read():
         status, message = check_raid()
+        messages[status].append(message)
         retval = max(retval, status)
-        messages.append(message)
-    print('\n'.join(messages))
+    print('\n'.join([msg for sts in reversed(messages) for msg in sts]))
     exit(retval)
 
 
 def check_smart(drive, error_items, warn_temp, crit_temp, warn_spare):
     """Read SMART attributes for a drive, looking for values above
-    0 or as defined in error_items
+    0 or as defined in error_items; also check nvme available-spare blocks
 
     Returns:
       tuple(int, str) - status and message
     """
-    if drive[:5] != '/dev/':
+    if not drive.startswith('/dev/'):
         drive = '/dev/%s' % drive
     try:
         smart = json.load(os.popen('smartctl -AHij %s' % drive))
@@ -153,7 +153,7 @@ def check_smart(drive, error_items, warn_temp, crit_temp, warn_spare):
                     level=SMART_ATTR_CHECKS[item['id']]['level'])
         for key, item in values.items():
             if item['val'] > tolerated.get(key, 0):
-                status = item['level']
+                status = max(item['level'], status)
                 message = '%s: %s serial=%s %s: %d' % (
                     'CRIT' if status == STATUS_CRIT else 'WARN',
                     drive, serial_num, key, item['val'])
