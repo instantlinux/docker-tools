@@ -50,6 +50,9 @@ spec:
             secretKeyRef:
               name: nextcloud-secret
               key: nextcloud-secret
+        # NOTE - when updating, set this to 1 and set version in
+        # ConfigMap below to the old version to be upgraded
+        - { name: NEXTCLOUD_UPDATE, value: "0" }
         - { name: REDIS_HOST, value: $SERVICE_NAME-redis }
         - { name: TZ, value: $TZ }
         image: nextcloud:$VERSION_NEXTCLOUD
@@ -63,7 +66,7 @@ spec:
           cp /var/www/html/config/config.php.k8s \
             /var/www/html/config/config.php &&
           chown www-data /var/www/html/config/config.php &&
-          exec apache2-foreground
+          exec /entrypoint.sh apache2-foreground
         resources:
           limits:
             memory: 4096Mi
@@ -142,7 +145,7 @@ data:
       'instanceid' => '$NC_INSTANCEID',
       'passwordsalt' => '$NC_PASSWORDSALT',
       'secret' => getenv('SECRET'),
-      'version' => '$NC_DB_SCHEMA',
+      'version' => '$VERSION_NEXTCLOUD_PREV',
       'trusted_domains' => array ('$SERVICE_NAME.$DOMAIN'),
       'datadirectory' => '/var/www/html/data',
       'overwrite.cli.url' => 'https://$SERVICE_NAME.$DOMAIN',
