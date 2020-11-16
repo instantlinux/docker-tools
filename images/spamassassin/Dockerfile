@@ -23,7 +23,7 @@ ARG SPAMD_UID=2022
 RUN apt-get -yq update && \
     apt-get -y --no-install-recommends install \
      ca-certificates cron curl gcc libc6-dev libdbd-mysql-perl \
-     libmail-dkim-perl libnet-ident-perl make pyzor razor \
+     libmail-dkim-perl libnet-ident-perl make pyzor razor gpg \
      spamassassin=$SPAMD_VERSION && \
      usermod --uid $SPAMD_UID $USERNAME && \
      mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
