@@ -25,8 +25,10 @@ HEALTHCHECK CMD upsc ups@localhost:3493 2>&1|grep -q stale && exit 1 || true
 
 RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \
+    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
     apk add --update nut@testing=$NUT_VERSION \
-      libcrypto1.1 libssl1.1 net-snmp-libs
+      libcrypto1.1 libssl1.1 net-snmp-libs@edge
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/
