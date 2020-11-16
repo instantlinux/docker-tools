@@ -18,7 +18,7 @@ ARG COMPOSE_VERSION=1.25.0
 ARG KUBECTL_VERSION=1.15.3
 ARG MUSL_VERSION=1.1.24-r9
 ARG PYTHON_VERSION=3.8.5-r0
-ARG PYCRYPTOGRAPHY_VERSION=2.9.2-r0
+ARG PYCRYPTOGRAPHY_VERSION=3.2.1-r0
 ARG PYPILLOW_VERSION=7.1.2-r0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
@@ -42,7 +42,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev py3-boto3 py3-botocore \
-      py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex@edge py3-flask py3-itsdangerous py3-jwt \
       py3-pillow==$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       sqlite tar tzdata wget && \

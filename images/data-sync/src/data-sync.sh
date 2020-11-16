@@ -3,7 +3,7 @@
 PEERNAME=$1
 
 # Reconfirm peer IP address in case it was restarted
-PEER_IP=$(nslookup $PEERNAME 2&>1 |grep Address|cut -d ' ' -f 3)
+PEER_IP=$(nslookup $PEERNAME 2&>1 |tail -3|grep -oE "([0-9]{1,3}[\.]){3}[0-9]{1,3}")
 if ! grep -q "$PEER_IP" /root/.ssh/known_hosts; then
   ssh-keyscan $PEER_IP >> /root/.ssh/known_hosts
 fi

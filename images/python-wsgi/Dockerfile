@@ -11,7 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/python-wsgi
 ENV PYTHONPATH=/usr/lib/python3.8/site-packages
 ARG CFFI_VERSION=1.14.0-r2
-ARG PYCRYPTOGRAPHY_VERSION=2.9.2-r0
+ARG PYCRYPTOGRAPHY_VERSION=3.2.1-r0
 ARG PYPILLOW_VERSION=7.1.2-r0
 ARG UWSGI_VERSION=2.0.18-r8
 
@@ -24,7 +24,7 @@ RUN echo '@community http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       libwebp-dev openssl-dev pcre-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
       proj@community py3-boto3 py3-botocore py3-cffi==$CFFI_VERSION \
-      py3-coverage py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-coverage py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex@edge py3-flask py3-itsdangerous py3-jwt \
       py3-pillow==$PYPILLOW_VERSION py3-requests py3-setuptools \
       py3-urllib3 py3-virtualenv uwsgi==$UWSGI_VERSION \

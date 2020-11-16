@@ -18,7 +18,10 @@ ENV PEERNAME= \
 
 ARG UNISON_VERSION=2.48.15_p4-r1
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
-RUN apk add --update --no-cache openssh-client openssh-server perl rsync \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
+    # TODO get rid of edge repo once openssh 8.4 appears in alpine
+    apk add --update --no-cache openssh-client@edge openssh-server@edge perl rsync \
       unison=$UNISON_VERSION && \
     passwd -u root && \
     cd /usr/local/bin && \
