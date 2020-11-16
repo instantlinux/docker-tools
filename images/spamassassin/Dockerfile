@@ -40,7 +40,10 @@ RUN apt-get -yq update && \
     sed -i 's/DCCIFD_ENABLE=off/DCCIFD_ENABLE=on/' /var/dcc/dcc_conf && \
     apt-get purge -yq binutils cpp-8 libc6-dev libgcc-8-dev \
      linux-libc-dev make && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/* && \
+\
+# Uncomment DCC loading to enable it
+    sed -i '/^#\s*loadplugin .\+::DCC/s/^#\s*//g' /etc/spamassassin/v310.pre
 
 COPY entrypoint.sh /root/
 VOLUME ["/var/lib/spamassassin", "/var/log"]
