@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: duplicati-restore
+  name: backup-restore
   labels:
-    volume.group: duplicati-restore
+    volume.group: backup-restore
 spec:
   capacity:
     storage: 1Mi 
@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: duplicati-restore
+  name: backup-restore
   namespace: $K8S_NAMESPACE
 spec:
   accessModes:
@@ -29,5 +29,5 @@ spec:
        storage: 1Mi
   selector:
     matchLabels:
-      volume.group: duplicati-restore
+      volume.group: backup-restore
   storageClassName: nfs-client

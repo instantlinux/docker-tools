@@ -22,7 +22,7 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -30,6 +30,9 @@ metadata:
   name: $SERVICE_NAME
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME
   template:
     metadata:
       labels:

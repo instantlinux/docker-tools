@@ -34,6 +34,6 @@
 #MaxLevelConsole=info
 #MaxLevelWall=emerg
 #LineMax=48K
-{% for key, val in journald_conf.iteritems()|sort %}
+{% for key, val in journald_conf.items()|sort %}
 {{ key }}={{ val }}
 {% endfor %}

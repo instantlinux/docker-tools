@@ -11,7 +11,7 @@ metadata:
   name: $K8S_NAMESPACE-privileged
   namespace: $K8S_NAMESPACE
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: $K8S_NAMESPACE:full-access-user
@@ -57,12 +57,16 @@ rules:
   - jobs
   - cronjobs
   verbs: ["*"]
+- apiGroups: [networking.k8s.io]
+  resources:
+  - ingresses
+  verbs: ["*"]
 - apiGroups: [rbac.authorization.k8s.io]
   resources:
   - rolebindings
   - roles
   verbs: ["*"]
-- apiGroups: [certmanager.k8s.io]
+- apiGroups: [certmanager.io]
   resources: [certificates]
   verbs: ["*"]
 ---
@@ -102,8 +106,7 @@ rules:
   - list
   - view
   - create
-- apiGroups:
-  - rbac.authorization.k8s.io
+- apiGroups: [rbac.authorization.k8s.io]
   resources:
   - clusterroles
   - roles
@@ -111,8 +114,7 @@ rules:
   - get
   - list
   - watch
-- apiGroups:
-  - storage.k8s.io
+- apiGroups: [storage.k8s.io]
   resources:
   - storageclasses
   verbs:
@@ -120,7 +122,7 @@ rules:
   - list
   - watch
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: $K8S_NAMESPACE-user-binding
@@ -134,7 +136,7 @@ subjects:
   name: $K8S_NAMESPACE-user
   namespace: $K8S_NAMESPACE
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: $K8S_NAMESPACE:system-user-binding

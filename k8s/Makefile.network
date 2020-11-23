@@ -23,7 +23,9 @@ imports/calico-etcd.yaml:
 
 imports/calico::
 
-imports/flannel.yaml:
+imports/flannel.yaml: imports/flannel-$(VERSION_FLANNEL).yaml
+	ln -s $(notdir $<) $@
+imports/flannel-$(VERSION_FLANNEL).yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/coreos/flannel/v$(VERSION_FLANNEL)/Documentation/kube-flannel.yml
 	sed -i -e 's/"Type": "vxlan"/"Type": "host-gw"/' $@
 

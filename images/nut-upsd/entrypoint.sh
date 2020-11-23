@@ -50,7 +50,7 @@ EOF
   touch /etc/nut/.setup
 fi
 
-mkdir -m 2750 /dev/shm/nut
+mkdir -p -m 2750 /dev/shm/nut
 chown $USER.$GROUP /dev/shm/nut
 [ -e /var/run/nut ] || ln -s /dev/shm/nut /var/run
 # Issue #15 - change pid warning message from "No such file" to "Ignoring"

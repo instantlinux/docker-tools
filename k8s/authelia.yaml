@@ -22,7 +22,7 @@ spec:
   ports:
   - port: 80
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: $SERVICE_NAME
@@ -81,7 +81,7 @@ spec:
           secretName: authelia-secrets
           defaultMode: 0400
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: authelia-ingress
@@ -99,8 +99,11 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: $SERVICE_NAME
-          servicePort: 80
+          service:
+            name: $SERVICE_NAME
+            port:
+              number: 80
+        pathType: Prefix
 ---
 apiVersion: v1
 kind: Service
@@ -114,7 +117,7 @@ spec:
   selector:
     app.kubernetes.io/name: ldap
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -165,7 +168,7 @@ spec:
   ports:
   - port: 6379
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis

@@ -2,7 +2,7 @@
 {{ ansible_managed | comment }}
 KEYDIR={{ masterkey.path }}/keys/`hostname -s`
 [ -d $KEYDIR ] || mount {{ masterkey.path }}
-{% for vol, opts in luks_volumes.iteritems()|sort %}
+{% for vol, opts in luks_volumes.items()|sort %}
 cryptsetup luksOpen /dev/{{ opts.vg }}/{{ vol }} luks-{{ vol
       }} --key-file $KEYDIR/{{ vol }}
 {% endfor %}

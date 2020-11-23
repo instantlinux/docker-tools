@@ -28,7 +28,7 @@ spec:
     k8s-app: nginx-ingress-controller
   sessionAffinity: ClientIP
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-ingress-controller
@@ -37,6 +37,9 @@ metadata:
 spec:
   replicas: 2
   revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      k8s-app: nginx-ingress-controller
   template:
     metadata:
       labels:
@@ -90,7 +93,7 @@ spec:
     app.kubernetes.io/name: default-http-backend
 ---
 # default backend for requests with unknown routes
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: default-http-backend
@@ -98,6 +101,9 @@ metadata:
     app.kubernetes.io/name: default-http-backend
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: default-http-backend
   template:
     metadata:
       labels:
@@ -110,7 +116,7 @@ spec:
         ports:
         - containerPort: 8080
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: ingress-pod-user
@@ -126,7 +132,7 @@ rules:
   - events
   verbs: [create, get, list, update]
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: pod-user-binding

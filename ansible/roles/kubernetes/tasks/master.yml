@@ -28,6 +28,8 @@
     flat: yes
     mode: 0400
 
+# TODO - sed s/kubernetes/{{hostname -s}}/g
+
 - name: Symlink .kube/admin.conf
   local_action:
     module: file
@@ -41,6 +43,14 @@
     src:  "{{ admin_conf_dest }}"
     dest: /home/{{ username.stdout }}/.kube/config
     state: link
+
+- name: Enable CPU/memory accounting in kubelet
+  copy:
+    dest: /etc/systemd/system/kubelet.service.d/11-cgroups.conf
+    content: |
+      [Service]
+      CPUAccounting=true
+      MemoryAccounting=true
 
 - name: Set up encryption config in path available to kube-apiserver
   template:

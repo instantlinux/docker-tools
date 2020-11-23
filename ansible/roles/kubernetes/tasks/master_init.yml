@@ -19,16 +19,16 @@
     dest: /etc/kubernetes/kubeadm-config.yaml
     content: |
       ---
-      apiVersion: kubeadm.k8s.io/v1beta1
+      apiVersion: kubeadm.k8s.io/v1beta2
       kind: InitConfiguration
       bootstrapTokens:
-      - groups:
-        - system:bootstrappers:kubeadm:default-node-token
-        token: {{ vault_k8s.join_token }}
+      - token: {{ vault_k8s.join_token }}
         ttl: 1h0m0s
         usages:
         - signing
         - authentication
+        groups:
+        - system:bootstrappers:kubeadm:default-node-token
       localAPIEndpoint:
         advertiseAddress: {{ k8s.master_ip }}
       nodeRegistration:
@@ -38,7 +38,7 @@
         - effect: NoSchedule
           key: node-role.kubernetes.io/master
       ---
-      apiVersion: kubeadm.k8s.io/v1beta1
+      apiVersion: kubeadm.k8s.io/v1beta2
       kind: ClusterConfiguration
       # TODO cluster will not bootstrap, has to be added after
       # apiServerExtraArgs:

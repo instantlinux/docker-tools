@@ -1,5 +1,5 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -7,6 +7,9 @@ metadata:
   name: $SERVICE_NAME
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME
   template:
     metadata:
       labels:
@@ -141,7 +144,7 @@ spec:
         hostPath: { path: $PATH_SHR/$SERVICE_NAME/logs }
       - name: restore
         persistentVolumeClaim:
-          claimName: duplicati-restore
+          claimName: backup-restore
 
       # Volumes to be backed up
       - name: cloud

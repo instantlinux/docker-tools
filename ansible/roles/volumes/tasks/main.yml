@@ -13,6 +13,13 @@
   with_dict: "{{ luks_volumes | combine(network_mounts) |
                  combine(local_volumes) }}"
 
+- name: Make mount points immutable
+  shell: >
+    /usr/bin/mountpoint {{ item.value.path }} ||
+    /usr/bin/chattr +i {{ item.value.path }}
+  with_dict: "{{ luks_volumes | combine(network_mounts) |
+                 combine(local_volumes) }}"
+  
 - name: Create volumes
   lvol:
     lv: "{{ item.key }}"

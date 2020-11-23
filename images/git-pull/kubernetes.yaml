@@ -1,18 +1,16 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   labels:
     app.kubernetes.io/name: $SERVICE_NAME
     release: "0.1"
   name: $SERVICE_NAME
 spec:
-  replicas: $K8S_WORKER_COUNT
   selector:
     matchLabels:
       app.kubernetes.io/name: $SERVICE_NAME
       release: "0.1"
-  serviceName: $SERVICE_NAME
   template:
     metadata:
       labels:
@@ -44,17 +42,9 @@ spec:
         options: [ name: ndots ]
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
       volumes:
+      - name: admin
+        hostPath:
+          path: $PATH_ADM
       - name: sshkey
         secret:
           secretName: git-deploy-sshkey
-  volumeClaimTemplates:
-  - metadata:
-      name: admin
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: admin

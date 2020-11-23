@@ -12,7 +12,7 @@ spec:
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -20,6 +20,9 @@ metadata:
   name: $SERVICE_NAME
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME
   template:
     metadata:
       labels:
@@ -64,7 +67,7 @@ spec:
         secret:
           secretName: squirrelmail-db-password
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: $SERVICE_NAME-ingress
@@ -82,10 +85,13 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: $SERVICE_NAME
-          servicePort: 80
+          service:
+            name: $SERVICE_NAME
+            port:
+              number: 80
+        pathType: Prefix
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: $SERVICE_NAME-totp
@@ -105,5 +111,8 @@ spec:
       paths:
       - path: /src/login.php
         backend:
-          serviceName: $SERVICE_NAME
-          servicePort: 80
+          service:
+            name: $SERVICE_NAME
+            port:
+              number: 80
+        pathType: Prefix

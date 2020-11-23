@@ -62,12 +62,13 @@
 #   make node_labels
 #   NODES=$node make persistent
 #   NODE=$node make persistent_dirs
+#
+# Always use fqdn for NODE names.
 
 ACTION          ?= apply
 CLUSTER         ?= kubernetes
 ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
 VERSION_HELM    ?= 2.14.1
-VERSION_METRICS ?= v0.3.3
 VERSION_SOPS    ?= 3.2.0
 SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
 STACKS = $(basename $(wildcard *.yaml))
@@ -93,10 +94,11 @@ $(STACKS)::
 ##########
 # Installation
 ##########
-.PHONY: envsubst imports install install_metrics namespace_config node_labels \
+.PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = calico calico-etcd dashboard flannel postgres-operator
+IMPORTS      = dashboard cert-manager flannel metrics postgres-operator
+#IMPORTS     = calico calico-etcd
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -104,9 +106,10 @@ VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 install: install/admin-user cluster_network \
 	install/podsecurity install/local-storage storage_localdefault imports \
 	install_imports install/gitlab-rbac install/k8s-backup \
-	install/logspout install_metrics extend_dashboard_ttl remote_volumes \
+	install/logspout remote_volumes \
 	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config \
 	secrets
+ # extend_dashboard_ttl
  # TODO install/cert-manager
 
 namespace_config: install/namespace install/limits install/namespace-user \
@@ -198,9 +201,10 @@ include Makefile.sops
 # cert-manager
 ##########
 
-cert-manager:
-	kubectl apply --validate=false --context=sudo -f \
-	 https://github.com/jetstack/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager-no-webhook.yaml
+imports/cert-manager.yaml: imports/cert-manager-$(VERSION_CERT_MANAGER).yaml
+	ln -s $(notdir $<) $@
+imports/cert-manager-$(VERSION_CERT_MANAGER).yaml:
+	curl -sLo $@ https://github.com/jetstack/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
 
 # TODO: remove this once it's clear the above works without helm
 # When updating, do "helm delete --purge cert-manager" first
@@ -229,18 +233,16 @@ extend_dashboard_ttl:
 	kubectl $(ADMIN_CTX) patch deployment kubernetes-dashboard --namespace kube-system \
 	  --patch='$(shell cat install/dashboard-patch.json)'
 
-imports/dashboard.yaml:
+imports/dashboard.yaml: imports/dashboard-$(VERSION_DASHBOARD).yaml
+	ln -s $(notdir $<) $@
+imports/dashboard-$(VERSION_DASHBOARD).yaml:
 	mkdir -p imports
-	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/dashboard/v$(VERSION_DASHBOARD)/src/deploy/recommended/kubernetes-dashboard.yaml
+	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/dashboard/v$(VERSION_DASHBOARD)/aio/deploy/recommended.yaml
 
-imports/metrics-$(VERSION_METRICS):
-	mkdir -p imports
-	git clone --depth=1 --branch=$(VERSION_METRICS) \
-	 https://github.com/kubernetes-incubator/metrics-server.git $@
-
-install_metrics: imports/metrics-$(VERSION_METRICS)
-	kubectl $(ADMIN_CTX) $(ACTION) -f \
-	  imports/metrics-$(VERSION_METRICS)/deploy/1.8+/
+imports/metrics.yaml: imports/metrics-$(VERSION_METRICS).yaml
+	ln -s $(notdir $<) $@
+imports/metrics-$(VERSION_METRICS).yaml:
+	curl -sLo $@ https://github.com/kubernetes-sigs/metrics-server/releases/download/v$(VERSION_METRICS)/components.yaml
 
 imports/traefik-prom.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml

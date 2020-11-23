@@ -14,8 +14,7 @@ endif
 
 default: $(HOST)
 
-mckinley: nut-upsd
-denali: nut-upsd
+cumbre: haproxy-keepalived nut-upsd
 k2: nagios haproxy-keepalived restic-server
 
 $(SERVICES)::

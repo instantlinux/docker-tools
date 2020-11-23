@@ -5,12 +5,12 @@ metadata:
   name: $SERVICE_NAME
 spec:
   ports:
-  - { port: $PORT_UPSD_1, nodePort: 30493, targetPort: 3493 }
+  - { port: $PORT_UPSD_1, nodePort: $NODEPORT_UPSD, targetPort: 3493 }
   selector:
     app.kubernetes.io/name: $SERVICE_NAME
   type: NodePort
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -18,6 +18,9 @@ metadata:
   name: $SERVICE_NAME
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME
   template:
     metadata:
       labels:
@@ -29,6 +32,7 @@ spec:
         - { name: SERIAL, value: $UPS_1_SERIAL }
         image: $REGISTRY_URI/nut-upsd:$VERSION_NUT_UPSD
         # TODO this does not work with pod security policies yet
+        # uncomment the usb volume mount when it does
         securityContext:
           privileged: true
         volumeMounts:

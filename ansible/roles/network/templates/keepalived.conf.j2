@@ -6,7 +6,7 @@ vrrp_script chk_docker {
     rise 2
 }
 
-{% for key, instance in vrrp.iteritems() %}
+{% for key, instance in vrrp.items() %}
 vrrp_instance {{ key }} {
     interface {{ instance.interface }}
     priority {{ instance.priority }}
