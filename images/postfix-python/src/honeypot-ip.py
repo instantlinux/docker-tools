@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 honeypot-ip.py
 
@@ -34,7 +34,7 @@ Options:
   --verbose -v         Verbosity
 """
 
-import ConfigParser
+import configparser
 import docopt
 import email
 import os
@@ -73,7 +73,7 @@ class HoneypotMsg(object):
             self.relay = None
         dsn = 'mysql+pymysql://%(user)s:%(pw)s@%(host)s/%(db)s' % {
             'user': self.dsn['user'],
-            'pw': urllib.quote_plus(self.dsn['password']),
+            'pw': urllib.parse.quote_plus(self.dsn['password']),
             'host': self.dsn['host'], 'db': self.dsn['database']}
         self.sql_engine = create_engine(dsn)
         SQLBase.metadata.bind = self.sql_engine
@@ -139,7 +139,7 @@ class HoneypotMsg(object):
 
     def _read_config(self, file):
         """TODO: default values shouldn't override those specified in file"""
-        cfg = ConfigParser.ConfigParser()
+        cfg = configparser.ConfigParser()
         cfg.read(os.path.expanduser(file))
         for item in ['database', 'host', 'password', 'user']:
             if self.dsn[item]:

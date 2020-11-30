@@ -22,7 +22,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
 
 ARG GETPIP_SHA=564fabc2fbabd9085a71f4a5e43dbf06d5ccea9ab833e260f30ee38e8ce63a69
 ARG GETPIP_URI=https://bootstrap.pypa.io/3.4/get-pip.py
-ARG PYTHON_PIP_VERSION=20.1.1
+ARG PYTHON_PIP_VERSION=20.2.4
 
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/
@@ -34,7 +34,6 @@ RUN apk add --no-cache --update \
     echo "$GETPIP_SHA  get-pip.py" | sha256sum -c && \
     python3 get-pip.py --disable-pip-version-check --no-cache-dir \
       pip==$PYTHON_PIP_VERSION && \
-    pip --version && \
     apk add --no-cache --virtual .fetch-deps \
       gcc git freetype-dev jpeg-dev musl-dev zlib-dev && \
     pip install -r /root/requirements.txt && \
