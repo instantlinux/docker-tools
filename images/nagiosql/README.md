@@ -6,19 +6,21 @@ Web GUI for managing Nagios monitoring service.
 
 ### Usage
 
-NagiosQL is a UI for managing host, service and related definitions for Nagios. In May 2018 it was finally updated to work with Nagios Core v4.x. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) which will launch 3 services: the jasonrivers/nagios image, this NagiosQL image and an nginx server which provides SSL termination.
+NagiosQL is a UI for managing host, service and related definitions for Nagios. In May 2018 it was finally updated to work with Nagios Core v4.x. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) which will launch 3 services: the instantlinux/nagios image, this NagiosQL image and an nginx server which provides SSL termination.
 
 Steps:
 * Create a blank database (e.g. nagiosql) or a copy of your existing NagiosQL database on your MySQL server and assign its password in the docker secret identified in your docker-compose.yml (see example as noted above)
 * Copy the [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) from this repo and define any environment-var overrides you might need (as defined below)
+* Specifically, check the environment variable NAGIOS_ETC to confirm it matches your nagios installation. The jasonrivers/nagios image used the Ubuntu location /opt/nagios/etc. The instantlinux/nagios alpine image needs NAGIOS_ETC=/etc/nagios.
 * Bring up Nagios4 and NagiosQL using `docker-compose up`
 * In a browser, connect to NagiosQL UI at the port number identified in docker-compose.yml, log in as nagiosadmin / nagios, enter the database install or update dialog
 * Define hosts, services and other objects
 * Under Tools -> Nagios control, invoke Write monitoring data, Write additional data, Check configuration files
+* If the config check didn't find binary, set it under Administration -> Config targets -> Local installation -> edit. Look for Nagios binary file and set the value to `/usr/sbin/nagios`; fill in any other missing values, then Save
 * Restart nagios server if the configuration check passed (using docker restart, the button doesn't work)
 
 Tips:
-* (To secure nagios itself) use htpasswd (provided in the jasonrivers image), add your administrative user(s) to htpasswd.users at top level in nagios_etc volume, and update cgi.cfg to include user name(s) in each of the authorized_xxx settings
+* (To secure nagios itself) use htpasswd, add your administrative user(s) to htpasswd.users at top level in /etc/nagios volume, and update cgi.cfg to include user name(s) in each of the authorized_xxx settings (see the AUTHORIZED_USERS setting if using instantlinux/nagios image)
 * Nagios v4 requires that each service be attached to at least one host or hostgroups. If you're migrating from an old installation, deactivate any service definitions that are no longer in use
 
 ### Current Status
@@ -36,6 +38,7 @@ DB_PORT | 3306 | TCP port number
 DB_USER | nagiosql | database username
 DB_PASSWD_SECRET | nagiosql-db-password | name of secret
 DOMAIN | | used in docker-compose.yml by the nagios server
+NAGIOS_ETC | /opt/nagios/etc | volume mountpoint for nagios.cfg
 NAGIOS_MAIL_RELAY | smtp | DNS name for nagios email sending
 PORT_NAGIOSQL| 8080 | Port to use for NagiosQL UI
 REGISTRY_URI | (docker hub) | Local image registry

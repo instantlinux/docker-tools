@@ -1,0 +1,28 @@
+version: "3.1"
+
+services:
+  app:
+    image: nagios
+    restart: always
+    hostname: ${NAGIOS_FQDN:-nagios.docker}
+    environment:
+      AUTHORIZED_USERS: ${NAGIOS_USERS:-nagiosadmin}
+      MAIL_RELAY_HOST: ${NAGIOS_MAIL_RELAY:-smtp}
+      TZ: ${TZ:-UTC}
+    volumes:
+    - etc:/etc/nagios
+    - var:/var/nagios
+    - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
+    ports:
+    - 80:80
+    secrets:
+    - nagios-htpasswd
+    - nagios-mail-secret
+volumes:
+  etc:
+  var:
+secrets:
+  nagios-htpasswd:
+    file: /var/adm/secrets/nagios-htpasswd
+  nagios-mail-secret:
+    file: /var/adm/secrets/nagios-mail-secret

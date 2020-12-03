@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-PATH=$PATH:/opt/nagios/bin
-NAGIOS_ETC=/opt/nagios/etc
 NAGIOS_OBJ=$NAGIOS_ETC/objects
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
@@ -23,7 +21,7 @@ sed -e "s/{{ DB_HOST }}/$DB_HOST/" \
 if [ -s $NAGIOS_ETC/nagios.cfg ]; then
   sed -i -e "s:use_timezone=UTC:use_timezone=$TZ:" $NAGIOS_ETC/nagios.cfg
 else
-  echo File $NAGIOS_ETC/nagios.cfg not found, have you mounted volume from jasonrivers/nagios?
+  echo File $NAGIOS_ETC/nagios.cfg not found, have you mounted same volume as nagios?
   exit 1
 fi
 
@@ -49,6 +47,12 @@ if ! grep -q '^$USER2' $NAGIOS_ETC/resource.cfg; then
 fi
 echo '# Removed to avoid conflict with NagiosQL' > $NAGIOS_OBJ/localhost.cfg
 echo '# Removed to avoid conflict with NagiosQL' > $NAGIOS_OBJ/templates.cfg
+
+# symlinks to make config target defaults work
+[ -L /usr/local/nagios ] && [ ! -e /usr/local/nagios ] && rm /usr/local/nagios
+mkdir -p /usr/local/nagios
+[ -e /usr/local/nagios/etc ] || ln -s $NAGIOS_ETC /usr/local/nagios/etc
+[ -e /usr/local/nagios/var ] || ln -s /var/nagios /usr/local/nagios/var
 
 chown -R $APACHE_USER $NAGIOS_OBJ \
   /var/www/nagiosql/config/settings.php

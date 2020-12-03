@@ -57,7 +57,10 @@ spec:
               fieldPath: spec.nodeName
         - { name: ETCD_ADVERTISE_CLIENT_URLS,
             value: "http://$(NODENAME):2379" }
+        # TODO eventually mariadb-galera will need to support V3
+        - { name: ETCDCTL_API, value: "2" }
         - { name: ETCD_DATA_DIR, value: /var/lib/etcd }
+        - { name: ETCD_ENABLE_V2, value: "true" }
         - { name: ETCD_INITIAL_ADVERTISE_PEER_URLS,
             value: "http://$(NODENAME):2380" }
         - { name: ETCD_LISTEN_CLIENT_URLS, value: "http://0.0.0.0:2379" }
@@ -68,7 +71,6 @@ spec:
         - -c
         - >
           echo "$DISCOVERY_IP discovery.etcd.io" >> /etc/hosts &&
-          apk add --update ca-certificates &&
           /usr/local/bin/etcd \
             -discovery https://discovery.etcd.io/$(DISCOVERY_TOKEN)
         ports:

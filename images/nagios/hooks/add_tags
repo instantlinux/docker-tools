@@ -1,0 +1,4 @@
+#!/bin/sh
+VER1=$(grep "ARG NAGIOS_VERSION" Dockerfile | grep -Eo '[0-9\.]{3,20}')
+VER2=$(grep "ARG PLUGINS_VERSION" Dockerfile | grep -Eo '[0-9\.]{3,20}')
+echo "--tag $DOCKER_REPO:$VER1-$VER2"

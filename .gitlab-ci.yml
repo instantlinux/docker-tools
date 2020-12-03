@@ -12,6 +12,7 @@ stages:
   - haproxy-keepalived
   - mt-daapd
   - mysqldump
+  - nagios
   - nagiosql
   - nut-upsd
   - postfix
@@ -139,6 +140,15 @@ mysqldump:
       job: prepare
   only:
     changes: [ images/mysqldump/**, lib/**, .image-gitlab-ci.yml ]
+
+nagios:
+  stage: nagios
+  trigger:
+    include:
+    - artifact: .child-nagios.yml
+      job: prepare
+  only:
+    changes: [ images/nagios/**, lib/**, .image-gitlab-ci.yml ]
 
 nagiosql:
   stage: nagiosql

@@ -1,3 +1,4 @@
 #!/bin/sh
-TAG=$(grep "^ARG NAGIOSQL_VERSION" Dockerfile | cut -d= -f 2)
-echo "--tag $DOCKER_REPO:$TAG"
+VER1=$(grep "^ARG NAGIOSQL_VERSION" Dockerfile | cut -d= -f 2)
+VER2=$(grep "ARG NAGIOS_VERSION" Dockerfile | grep -Eo '[0-9\.]{3,20}')
+echo "--tag $DOCKER_REPO:$VER1-$VER2"

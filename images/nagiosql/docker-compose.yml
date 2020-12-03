@@ -2,37 +2,31 @@ version: "3.1"
 
 services:
   app:
-    image: jasonrivers/nagios:${VERSION_NAGIOS:-latest}
+    image: instantlinux/nagios:${VERSION_NAGIOS:-latest}
     restart: always
-    hostname: nagios.${DOMAIN}
+    hostname: ${NAGIOS_FQDN:-nagios.docker}
     # If your local plugins require additional packages, this is
     # where to add them (if it's a large number, create a new image).
     # Can also change image's postfix port if network_mode:host.
-    command: >
-      bash -c "pip install mysql-python &&
-      apt-get update &&
-      apt-get install -y mariadb-client python3-pymysql &&
-      chmod u+s /opt/nagios/libexec/check_dhcp &&
-      [ -e /usr/local/nagios ] || ln -s /opt/nagios /usr/local/nagios &&
-      sed -i -e 's/^smtp      inet/2525 inet/' /etc/postfix/master.cf &&
-      sed -i -e 's:find /opt/nagios :#find /opt/nagios :' /etc/service/nagios/run &&
-      sed -i -e 's/nagiosadmin/$USER,iphone7/' /opt/nagios/etc/cgi.cfg &&
-      cp /run/secrets/nagios-htpasswd /opt/nagios/etc/htpasswd.users &&
-      /usr/local/bin/start_nagios"
+
+    # command: >
+    #   bash -c "pip install foo &&
+    #   apk add --update some-package &&
+    #   ...
+    #   exec /usr/local/bin/entrypoint.sh"
     environment:
+      AUTHORIZED_USERS: ${NAGIOS_AUTH_USERS:-nagiosadmin}
       MAIL_RELAY_HOST: ${NAGIOS_MAIL_RELAY:-smtp}
-      NAGIOS_TIMEZONE: ${TZ:-UTC}
       TZ: ${TZ:-UTC}
     volumes:
-    - bin:/opt/nagios/bin
-    - etc:/opt/nagios/etc
-    - graph:/opt/nagiosgraph
-    - var:/opt/nagios/var
+    - etc:/etc/nagios
+    - var:/var/nagios
     - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
     ports:
     - 80:80
     secrets:
     - nagios-htpasswd
+    # Use bridge mode unless at least one plugin (check_dhcp) requires host net
     network_mode: host
 
   nagiosql:
@@ -41,12 +35,12 @@ services:
     hostname: nagiosql
     environment:
       DB_HOST: ${DB_HOST:-db00}
+      NAGIOS_ETC: /etc/nagios
       TZ: ${TZ:-UTC}
     volumes:
-    - bin:/opt/nagios/bin
     - config:/var/www/nagiosql/config
-    - etc:/opt/nagios/etc
-    - var:/opt/nagios/var
+    - etc:/etc/nagios
+    - var:/var/nagios
     ports:
     - ${PORT_NAGIOSQL:-8080}:80
     secrets:
@@ -74,10 +68,8 @@ services:
     network_mode: bridge
   
 volumes:
-  bin:
   config:
   etc:
-  graph:
   var:
 
 secrets:
