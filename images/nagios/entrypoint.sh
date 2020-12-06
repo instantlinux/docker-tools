@@ -17,7 +17,7 @@ sed -i -e "s/server_name .*/server_name $NAGIOS_FQDN;/" \
        -e "s/listen .*/listen $NGINX_PORT;/" \
   /etc/nginx/conf.d/nagios.conf
 
-if [ -s nagios.cfg.proto ]; then
+if [ -s /etc/nagios/nagios.cfg.proto ]; then
   # Generate a nagios.cfg
   NAGIOS_CONF=$(mktemp -d)
   mkdir -p $NAGIOS_CONF

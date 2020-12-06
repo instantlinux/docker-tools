@@ -18,6 +18,7 @@ Steps:
 * Under Tools -> Nagios control, invoke Write monitoring data, Write additional data, Check configuration files
 * If the config check didn't find binary, set it under Administration -> Config targets -> Local installation -> edit. Look for Nagios binary file and set the value to `/usr/sbin/nagios`; fill in any other missing values, then Save
 * Restart nagios server if the configuration check passed (using docker restart, the button doesn't work)
+* If nagios server won't start due to configuration-check failures, manually lean up extraneous files and cfg_file entries from nagios.cfg. Known problems include localhost.cfg and windows.cfg.
 
 Tips:
 * (To secure nagios itself) use htpasswd, add your administrative user(s) to htpasswd.users at top level in /etc/nagios volume, and update cgi.cfg to include user name(s) in each of the authorized_xxx settings (see the AUTHORIZED_USERS setting if using instantlinux/nagios image)
@@ -25,7 +26,7 @@ Tips:
 
 ### Current Status
 
-Stable -- with caveat that restart button doesn't work. You'll need to restart the nagios container after writing new configuration files. Not verified under kubernetes (on the theory that fewer dependencies are better for the lowest-level monitoring system during any outage).
+Stable -- with caveat that restart button doesn't work. You'll need to invoke restart from nagios itself, or from kubernetes/docker, after writing new configuration files.
 
 ### Variables
 

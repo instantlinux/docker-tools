@@ -29,12 +29,17 @@ for dir in backup/hosts backup/services hosts services; do
   mkdir -p $NAGIOS_OBJ/$dir
 done
 [ -e /etc/nagiosql ] || ln -s $NAGIOS_OBJ /etc/nagiosql
-[ -e /usr/local/nagios ] || ln -s /opt/nagios /usr/local
+# symlinks to make config target defaults work
+mkdir -p /usr/local/nagios
+[ -e /usr/local/nagios/etc ] || ln -s $NAGIOS_ETC /usr/local/nagios/etc
+[ -e /usr/local/nagios/var ] || ln -s /var/nagios /usr/local/nagios/var
+
 for file in contactgroups contacttemplates hostdependencies hostescalations \
       hostextinfo hostgroups hosttemplates servicedependencies \
       serviceescalations serviceextinfo servicetemplates timeperiods; do
   if ! grep -q $file.cfg $NAGIOS_ETC/nagios.cfg; then
     echo cfg_file=$NAGIOS_OBJ/$file.cfg >> $NAGIOS_ETC/nagios.cfg
+    touch $NAGIOS_OBJ/$file.cfg
   fi
 done
 for dir in hosts services; do
@@ -47,12 +52,6 @@ if ! grep -q '^$USER2' $NAGIOS_ETC/resource.cfg; then
 fi
 echo '# Removed to avoid conflict with NagiosQL' > $NAGIOS_OBJ/localhost.cfg
 echo '# Removed to avoid conflict with NagiosQL' > $NAGIOS_OBJ/templates.cfg
-
-# symlinks to make config target defaults work
-[ -L /usr/local/nagios ] && [ ! -e /usr/local/nagios ] && rm /usr/local/nagios
-mkdir -p /usr/local/nagios
-[ -e /usr/local/nagios/etc ] || ln -s $NAGIOS_ETC /usr/local/nagios/etc
-[ -e /usr/local/nagios/var ] || ln -s /var/nagios /usr/local/nagios/var
 
 chown -R $APACHE_USER $NAGIOS_OBJ \
   /var/www/nagiosql/config/settings.php

@@ -17,13 +17,14 @@ services:
     environment:
       AUTHORIZED_USERS: ${NAGIOS_AUTH_USERS:-nagiosadmin}
       MAIL_RELAY_HOST: ${NAGIOS_MAIL_RELAY:-smtp}
+      NGINX_PORT: ${NAGIOS_NGINX_PORT:-80}
       TZ: ${TZ:-UTC}
     volumes:
     - etc:/etc/nagios
     - var:/var/nagios
     - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
     ports:
-    - 80:80
+    - ${PORT_NAGIOS:-80}:80
     secrets:
     - nagios-htpasswd
     # Use bridge mode unless at least one plugin (check_dhcp) requires host net

@@ -34,7 +34,7 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: AUTHORIZED_USERS, value: $NAGIOS_USERS }
+        - { name: AUTHORIZED_USERS, value: $NAGIOS_AUTH_USERS }
         - { name: MAIL_AUTH_USER, value: "$MAIL_AUTH_USER" }
         - { name: MAIL_RELAY_HOST, value: "$NAGIOS_MAIL_RELAY" }
         - { name: NAGIOS_FQDN, value: $NAGIOS_FQDN }
@@ -68,7 +68,7 @@ spec:
           subPath: nagios-mail-secret
       - name: nagiosql
         env:
-        - { name: DB_HOST, value: $DBHOST }
+        - { name: DB_HOST, value: $DB_HOST }
         - { name: NAGIOS_ETC, value: /etc/nagios }
         - { name: TZ, value: $TZ }
         image: instantlinux/nagiosql:$VERSION_NAGIOSQL
@@ -93,7 +93,35 @@ spec:
         - mountPath: /run/secrets/nagiosql-db-password
           name: nagiosql-db-password
           subPath: nagiosql-db-password
+      hostNetwork: $NAGIOS_HOSTNETWORK
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
+      initContainers:
+      - name: init-nagios
+        image: instantlinux/nagios:$VERSION_NAGIOS
+        command: [/bin/sh]
+        args:
+        - -xec
+        - >
+          [ -e /tmp/etc/nagios.cfg ] || cp -a /etc/nagios/. /tmp/etc;
+          [ -e /tmp/var/rw ] || cp -a /var/nagios/. /tmp/var
+        volumeMounts:
+        - mountPath: /tmp/etc
+          name: share
+          subPath: $SERVICE_NAME/etc
+        - mountPath: /tmp/var
+          name: share
+          subPath: $SERVICE_NAME/var
+      - name: init-nagiosql
+        image: instantlinux/nagiosql:$VERSION_NAGIOSQL
+        command: [/bin/sh]
+        args:
+        - -xec
+        - >
+          [ -e /tmp/main.css ] || cp -a /var/www/nagiosql/config/. /tmp
+        volumeMounts:
+        - mountPath: /tmp
+          name: share
+          subPath: $SERVICE_NAME/nagiosql_config
       volumes:
       - name: admin
         hostPath: { path: $PATH_ADM }
