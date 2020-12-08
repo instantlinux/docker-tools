@@ -23,10 +23,10 @@ if [ -s /etc/nagios/nagios.cfg.proto ]; then
   mkdir -p $NAGIOS_CONF
 
   > $NAGIOS_CONF/cfg_files.cfg
-  for file in /etc/nagios/objects/*.cfg; do
+  for file in $(find /etc/nagios/objects -maxdepth 1 -name '*.cfg'); do
     echo cfg_file=$file >> $NAGIOS_CONF/cfg_files.cfg
   done  
-  for file in $(find /etc/nagios/objects  -mindepth 1 -type d -not -name backup); do
+  for file in $(find /etc/nagios/objects -mindepth 1 -type d -not -name backup); do
     echo cfg_dir=$file >> $NAGIOS_CONF/cfg_files.cfg
   done
   echo "use_timezone=$TZ" > $NAGIOS_CONF/timezone.cfg

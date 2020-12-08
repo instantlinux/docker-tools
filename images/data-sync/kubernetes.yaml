@@ -229,6 +229,7 @@ data:
     ignore = Name pgstat.stat
     ignore = Path data-sync/share/artifactory/data/data/derby/log
     ignore = Path data-sync/share/artifactory/data/logs/request.log
+    ignore = Path data-sync/share/nagios/var/rw
     ignore = Path data-sync/dos
     ignore = Path data-sync/duplicati/config
     ignore = Path data-sync/gitlab/data/postgresql/data/pg_stat_tmp

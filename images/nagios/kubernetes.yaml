@@ -102,7 +102,7 @@ spec:
         args:
         - -xec
         - >
-          [ -e /tmp/etc/nagios.cfg ] || cp -a /etc/nagios/. /tmp/etc;
+          [ -e /tmp/etc/nagios.cfg ] || cp -a /etc/nagios/*.cfg* /tmp/etc;
           [ -e /tmp/var/rw ] || cp -a /var/nagios/. /tmp/var
         volumeMounts:
         - mountPath: /tmp/etc
@@ -117,7 +117,10 @@ spec:
         args:
         - -xec
         - >
-          [ -e /tmp/main.css ] || cp -a /var/www/nagiosql/config/. /tmp
+          [ -e /tmp/main.css ] || cp -a /var/www/nagiosql/config/. /tmp;
+          if [ ! -d /etc/nagios/objects ]; then
+            mkdir /etc/nagios/objects && chown www-data /etc/nagios/objects
+          fi
         volumeMounts:
         - mountPath: /tmp
           name: share
