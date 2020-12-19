@@ -18,7 +18,7 @@ db00 db01 db02: etcd
 db03: etcd
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$@ DB_NODEPORT=$(NODEPORT_DB03) \
-	  DB_NET_READ_TIMEOUT=900 DB_INNODB_POOL_SIZE=2048M \
+	  DB_NET_READ_TIMEOUT=1800 DB_INNODB_POOL_SIZE=2048M \
 	  DB_INNODB_LOG_SIZE=128M \
 	  DB_IP_RO=$(shell dig +short $@-ro.$(DOMAIN)) \
 	  envsubst < mariadb-galera-single.yaml | kubectl $(ACTION) -f -

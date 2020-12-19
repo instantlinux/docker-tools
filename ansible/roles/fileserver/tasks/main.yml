@@ -4,6 +4,16 @@
     name: "{{ ubuntu_packages }}"
   when: ansible_os_family == 'Debian'
 
+- name: Python pip package
+  apt:
+    name: python3-pip
+  when: ansible_distribution_version >= '20.04'
+
+- name: Python pip package
+  apt:
+    name: python-pip
+  when: ansible_distribution_version < '20.04'
+
 - include: nfs.yml
 - include: instantlinux.yml
 - include: samba.yml

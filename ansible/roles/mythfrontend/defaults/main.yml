@@ -27,7 +27,202 @@ ir_device:
   device: /dev/lirc0
   module: lirc_mceusb2
   product_name: Media Center Ed. eHome Infrared Remote Transceiver (1784:0008)
+  protocol: rc6
   service_name: lirc
+  variant: rc6_mce
+  scancodes:
+    0x800f0400:
+      name: KEY_0
+      keycode: 0x200
+    0x800f0401:
+      name: KEY_1
+      keycode: 0x201
+    0x800f0402:
+      name: KEY_2
+      keycode: 0x202
+    0x800f0403:
+      name: KEY_3
+      keycode: 0x203
+    0x800f0404:
+      name: KEY_4
+      keycode: 0x204
+    0x800f0405:
+      name: KEY_5
+      keycode: 0x205
+    0x800f0406:
+      name: KEY_6
+      keycode: 0x206
+    0x800f0407:
+      name: KEY_7
+      keycode: 0x207
+    0x800f0408:
+      name: KEY_8
+      keycode: 0x208
+    0x800f0409:
+      name: KEY_9
+      keycode: 0x209
+    0x800f040a:
+      name: KEY_DELETE
+      keycode: 0x6f
+    0x800f040b:
+      name: KEY_RESERVED
+      keycode: 0x1c
+    0x800f040c:
+      name: KEY_SLEEP
+      keycode: 0x8e
+    0x800f040d:
+      name: KEY_M
+      keycode: 0xe2
+    0x800f040e:
+      name: KEY_MUTE
+      keycode: 0x71
+    0x800f040f:
+      name: KEY_I
+      keycode: 0x166
+    0x800f0410:
+      name: KEY_VOLUMEUP
+      keycode: 0x73
+    0x800f0411:
+      name: KEY_VOLUMEDOWN
+      keycode: 0x72
+    0x800f0412:
+      name: KEY_PAGEUP
+      keycode: 0x192
+    0x800f0413:
+      name: KEY_PAGEDOWN
+      keycode: 0x193
+    0x800f0414:
+      name: KEY_DOT
+      keycode: 0xd0
+    0x800f0415:
+      name: KEY_COMMA
+      keycode: 0xa8
+    0x800f0416:
+      name: KEY_P
+      keycode: 0xcf
+    0x800f0417:
+      name: KEY_RECORD
+      keycode: 0xa7
+    0x800f0418:
+      name: KEY_P
+      keycode: 0x77
+    0x800f0419:
+      name: KEY_ESC
+      keycode: 0x80
+    0x800f041a:
+      name: KEY_F13
+      keycode: 0x197
+    0x800f041b:
+      name: KEY_F14
+      keycode: 0x19c
+    0x800f041c:
+      name: KEY_W
+      keycode: 0x20b
+    0x800f041d:
+      name: KEY_KPASTERISK
+      keycode: 0x20a
+    0x800f041e:
+      name: KEY_UP
+      keycode: 0x67
+    0x800f041f:
+      name: KEY_DOWN
+      keycode: 0x6c
+    0x800f0420:
+      name: KEY_LEFT
+      keycode: 0x69
+    0x800f0421:
+      name: KEY_RIGHT
+      keycode: 0x6a
+    0x800f0422:
+      name: KEY_ENTER
+      keycode: 0x160
+    0x800f0423:
+      name: KEY_ESC
+      keycode: 0xae
+    0x800f0424:
+      name: KEY_DVD
+      keycode: 0x185
+    0x800f0425:
+      name: KEY_TUNER
+      keycode: 0x182
+    0x800f0426:
+      name: KEY_EPG
+      keycode: 0x16d
+    0x800f0427:
+      name: KEY_ZOOM
+      keycode: 0x174
+    0x800f0432:
+      name: KEY_MODE
+      keycode: 0x175
+    0x800f0433:
+      name: KEY_PRESENTATION
+      keycode: 0x1a9
+    0x800f0434:
+      name: KEY_EJECTCD
+      keycode: 0xa1
+    0x800f043a:
+      name: KEY_BRIGHTNESSUP
+      keycode: 0xe1
+    0x800f0446:
+      name: KEY_TV
+      keycode: 0x179
+    0x800f0447:
+      name: KEY_AUDIO
+      keycode: 0x188
+    0x800f0448:
+      name: KEY_PVR
+      keycode: 0x16e
+    0x800f0449:
+      name: KEY_CAMERA
+      keycode: 0xd4
+    0x800f044a:
+      name: KEY_VIDEO
+      keycode: 0x189
+    0x800f044c:
+      name: KEY_LANGUAGE
+      keycode: 0x170
+    0x800f044d:
+      name: KEY_TITLE
+      keycode: 0x171
+    0x800f044e:
+      name: KEY_PRINT
+      keycode: 0xd2
+    0x800f0450:
+      name: KEY_RADIO
+      keycode: 0x181
+    0x800f045a:
+      name: KEY_SUBTITLE
+      keycode: 0x172
+    0x800f045b:
+      name: KEY_RED
+      keycode: 0x18e
+    0x800f045c:
+      name: KEY_GREEN
+      keycode: 0x18f
+    0x800f045d:
+      name: KEY_YELLOW
+      keycode: 0x190
+    0x800f045e:
+      name: KEY_BLUE
+      keycode: 0x191
+    0x800f0465:
+      name: KEY_POWER2
+      keycode: 0x164
+    0x800f0469:
+      name: KEY_MESSENGER
+      keycode: 0x1ae
+    0x800f046e:
+      name: KEY_PLAYPAUSE
+      keycode: 0xa4
+    0x800f046f:
+      name: KEY_PLAYER
+      keycode: 0x183
+    0x800f0480:
+      name: KEY_BRIGHTNESSDOWN
+      keycode: 0xe0
+    0x800f0481:
+      name: KEY_PLAYPAUSE
+      keycode: 0xa4
 
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"

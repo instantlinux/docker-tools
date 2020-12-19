@@ -5,13 +5,13 @@ nfs_exports:
 samba_defaults:
   conf: "{{ lookup('fileglob', 'roles/fileserver/files/etc/*.conf'
     ).split(',') | sort }}"
-  hosts_allow:
-  - 192.168.1.0/255.255.255.0
+  hosts_allow: []
   interfaces:
   - lo
   - "{{ ansible_default_ipv4.address }}"
   log_level: 1
   logon_drive: H
+  server_min_protocol: ""
   server_string: Authorized use only!
   workgroup: WORKGROUP
 
@@ -22,7 +22,6 @@ ubuntu_packages:
   - lm-sensors
   - mdadm
   - nfs-server
-  - python-pip
   - rsnapshot
   - samba
   - unison

@@ -3,3 +3,21 @@
   template:
     src: ir_rc6_mce.j2
     dest: /etc/rc_keymaps/rc6_mce
+  when: ansible_distribution_version < '20.04'
+
+- name: IR codes for rc-6 remote (new toml format)
+  template:
+    src: ir_rc6_mce.toml.j2
+    dest: /etc/rc_keymaps/rc6_mce.toml
+  when: ansible_distribution_version >= '20.04'
+
+# See https://bugs.launchpad.net/ubuntu/+source/v4l-utils/+bug/1903966
+#  and https://bugs.launchpad.net/ubuntu/+source/v4l-utils/+bug/1906986
+- name: Workaround for keytable udev defect in 20.04
+  copy:
+    dest: /lib/udev/rules.d/70-infrared-workaround.rules
+    content: |
+      # Created by ansible
+      # See https://bugs.launchpad.net/ubuntu/+source/v4l-utils/+bug/1903966
+      ACTION=="add", SUBSYSTEM=="input", SUBSYSTEMS=="rc", KERNEL=="event*", ENV{.rc_sysdev}="$id", RUN+="/usr/bin/ir-keytable -a /etc/rc_maps.cfg -s $env{.rc_sysdev}
+  when: ansible_distribution_version >= '20.04'

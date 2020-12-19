@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+# For use with the USB MCE ir receiver
+[[protocols]]
+name = "myremotes"
+protocol = "{{ ir_device.protocol }}"
+variant  = "{{ ir_device.variant }}"
+[protocols.scancodes]  
+{% for code, item in ir_device.scancodes.items() %}
+{{ '%#x' % code }} = "{{ item.name }}"
+{% endfor %}
