@@ -238,6 +238,7 @@ data:
     ignore = Path data-sync/gitlab/data/gitaly
     ignore = Path data-sync/gitlab/logs/sshd/current
     ignore = Path data-sync/jira/home/analytics-logs
+    ignore = Path data-sync/jira/home/log/atlassian-jira-perf.log
     ignore = Path data-sync/jira/home/monitor/ConnectionPoolGraph.rrd4j
     ignore = Path data-sync/jira/home/monitor/DatabaseReadWritesGraph.rrd4j
     ignore = Path data-sync/jira/home/plugins/.osgi-plugins/felix/felix-cache

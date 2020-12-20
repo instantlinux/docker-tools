@@ -32,7 +32,7 @@ spec:
       - name: $SERVICE_NAME
         env:
         - name: INSTALL4J_ADD_VM_PARAMS
-          value: -Xms1536m -Xmx2048m -XX:MaxDirectMemorySize=3g
+          value: -Xms2048m -Xmx2560m -XX:MaxDirectMemorySize=3g
         - { name: TZ, value: $TZ }
         image: sonatype/nexus3:$VERSION_NEXUS
         ports:
@@ -50,6 +50,7 @@ spec:
           name: $SERVICE_NAME
       nodeSelector:
         service.$SERVICE_NAME: allow
+      terminationGracePeriodSeconds: 120
       volumes:
       - name: $SERVICE_NAME
         hostPath: { path: $K8S_VOLUMES_PATH/$SERVICE_NAME }

@@ -29,15 +29,30 @@ spec:
       containers:
       - name: $SERVICE_NAME
         env:
-        - { name: CATALINA_OPTS,
-            value: -Xms1536m -Xmx2048m -Datlassian.plugins.enable.wait=2400 }
-        - { name: X_PROXY_NAME, value: jira.$DOMAIN }
-        - { name: X_PROXY_PORT, value: "443" }
-        - { name: X_PROXY_SCHEME, value: https }
+        - { name: ATL_DB_DRIVER, value: com.mysql.jdbc.Driver }
+        - { name: ATL_DB_SCHEMA_NAME, value: $JIRA_DB_SCHEMA }
+        # Note - vendor doesn't support mariadb 10.4+ but it works fine
+        - { name: ATL_DB_TYPE, value: mysql }
+        - { name: ATL_JDBC_URL,
+            value: "jdbc:mysql://$DB_HOST:3306/$JIRA_DB_SCHEMA?useUnicode=true&amp;characterEncoding=UTF8&amp;sessionVariables=default_storage_engine=InnoDB" }
+        - { name: ATL_JDBC_USER, value: $JIRA_DB_USER }
+        - { name: ATL_PROXY_NAME, value: jira.$DOMAIN }
+        - { name: ATL_PROXY_PORT, value: "443" }
+        - { name: ATL_TOMCAT_SCHEME, value: https }
+        - { name: ATL_TOMCAT_SECURE, value: "true" }
+        - { name: JVM_MINIMUM_MEMORY, value: 1536m }
+        - { name: JVM_MAXIMUM_MEMORY, value: 2048m }
+        - { name: JVM_SUPPORT_RECOMMENDED_ARGS,
+            value: -Datlassian.plugins.enable.wait=600 }
         - { name: TZ, value: $TZ }
-        image: cptactionhank/atlassian-jira:$VERSION_JIRA
+        - name: ATL_JDBC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: jira-db-password
+              name: jira-db-password
+        image: atlassian/jira-core:$VERSION_JIRA
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         resources:
           limits:
             memory: 6144Mi
@@ -45,17 +60,19 @@ spec:
             cpu: 300m
             memory: 2048Mi
         volumeMounts:
-        - mountPath: /var/atlassian/jira
+        - mountPath: /var/atlassian/application-data/jira
           name: $SERVICE_NAME
           subPath: home
+        - mountPath: /opt/atlassian/jira/lib/mysql-connector-java-8.0.22.jar
+          name: $SERVICE_NAME
+          readOnly: true
+          subPath: mysql-connector/mysql-connector-java-8.0.22.jar
+        - mountPath: /opt/atlassian/jira/conf/Catalina/localhost
+          name: $SERVICE_NAME
+          subPath: catalina
         - mountPath: /opt/atlassian/jira/logs
           name: $SERVICE_NAME
           subPath: logs
-      dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: use-vc
-        - name: ndots
       nodeSelector:
         service.$SERVICE_NAME: allow
       volumes:
