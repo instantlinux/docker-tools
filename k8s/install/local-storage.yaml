@@ -5,5 +5,6 @@ metadata:
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
   name: local-storage
+allowVolumeExpansion: false
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer

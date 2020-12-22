@@ -63,6 +63,7 @@ else
   fi
   echo -n "no-pty,no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command=\"/usr/bin/unison -server\" $PUBKEY1" > /root/.ssh/authorized_keys
   echo -n "no-pty,no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command=\"/usr/local/bin/rrsync $RRSYNC_ROOT\" $PUBKEY2" >> /root/.ssh/authorized_keys
+  unison -version
   echo sshd listening
   ip addr | grep inet | grep -v 127.0.0.1
   exec /usr/sbin/sshd -D

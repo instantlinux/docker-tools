@@ -1,7 +1,7 @@
 # Versions (images within this repo published to docker hub)
 
 export VERSION_BLACKLIST     ?= 0.998b
-export VERSION_DATA_SYNC     ?= 2.48.15_p4-r1
+export VERSION_DATA_SYNC     ?= 2.51.3-4.08.1-r2
 export VERSION_DAVITE        ?= 19.06
 export VERSION_DHCPD_DNS_PXE ?= 4.4.2-r1-2.81-r0
 export VERSION_DOVECOT       ?= 2.3.11.3-r1
@@ -13,7 +13,7 @@ export VERSION_GIT_PULL      ?= 2.24.3-r0
 export VERSION_MARIADB_GALERA ?= 10.4.17
 export VERSION_MT_DAAPD      ?= 26.4-dfsg1-1
 export VERSION_MYSQLDUMP     ?= 10.4.15-r0
-export VERSION_MYTHTV_BACKEND ?= 2:31.0-fixes.202012121023.e9b795a1e4
+export VERSION_MYTHTV_BACKEND ?= 31.0-fixes.202012121023.e9b795a1e4
 export VERSION_NAGIOS        ?= 4.4.6-2.3.2
 export VERSION_NAGIOSQL      ?= 3.4.1-4.4.6
 export VERSION_NUT_UPSD      ?= 2.7.4-r7

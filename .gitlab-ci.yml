@@ -52,10 +52,10 @@ prepare:
 # one in a stage gives "unknown failure"
 
 smoketest:
-  stage: data-sync
+  stage: git-dump
   trigger:
     include:
-    - artifact: .child-data-sync.yml
+    - artifact: .child-git-dump.yml
       job: prepare
     # TODO figure out a way to collect all child pipeline results
     strategy: depend
@@ -68,6 +68,15 @@ blacklist:
       job: prepare
   only:
     changes: [ images/blacklist/**, lib/**, .image-gitlab-ci.yml ]
+
+data-sync:
+  stage: data-sync
+  trigger:
+    include:
+    - artifact: .child-data-sync.yml
+      job: prepare
+  only:
+    changes: [ images/data-sync/**, lib/**, .image-gitlab-ci.yml ]
 
 dhcpd-dns-pxe:
   stage: dhcpd-dns-pxe
@@ -95,15 +104,6 @@ ez-ipupdate:
       job: prepare
   only:
     changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
-
-git-dump:
-  stage: git-dump
-  trigger:
-    include:
-    - artifact: .child-git-dump.yml
-      job: prepare
-  only:
-    changes: [ images/git-dump/**, lib/**, .image-gitlab-ci.yml ]
 
 git-pull:
   stage: git-pull

@@ -75,8 +75,6 @@ spec:
         - mountPath: /run/secrets/data-sync-sshkey2
           name: sshkeys
           subPath: sshkey2
-      dnsConfig:
-        options: [ name: ndots ]
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
         service.data-sync: allow
