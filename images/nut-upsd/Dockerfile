@@ -28,7 +28,7 @@ RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     apk add --update nut@testing=$NUT_VERSION \
-      libcrypto1.1 libssl1.1 net-snmp-libs@edge
+      libcrypto1.1 libssl1.1 musl@edge net-snmp-libs@edge
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/

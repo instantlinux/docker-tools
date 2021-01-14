@@ -2,12 +2,12 @@
 
 stages:
   - prepare
-  - data-sync
+  - git-dump
   - blacklist
+  - data-sync
   - dhcpd-dns-pxe
   - dovecot
   - ez-ipupdate
-  - git-dump
   - git-pull
   - haproxy-keepalived
   - mt-daapd

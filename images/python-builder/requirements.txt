@@ -13,23 +13,24 @@ urllib3==1.25.9
 
 alembic==1.4.3
 arrow==0.16.0
-b2sdk==1.1.4
+b2sdk==1.2.0
 babel==2.8.0
 connexion==2.7.0
 coverage==5.3
 docopt==0.6.2
+dollar-ref==0.1.3
 flake8==3.8.3
 Flask-Cors==3.0.9
 funcsigs==1.0.2
 jsonschema==3.2.0
 mock==4.0.2
-passlib==1.7.2
+passlib==1.7.4
 PyMySQL==0.10.1
 # pytest has to be installed inside workspace's virtualenv
 # pytest==5.4.1
 # pytest-cov==2.9.0
-pytz==2020.1
-SQLAlchemy==1.3.19
+pytz==2020.5
+SQLAlchemy==1.3.22
 SQLAlchemy-Utils==0.36.8
 swagger-ui-bundle==0.0.8
 

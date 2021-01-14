@@ -40,7 +40,7 @@ export VERSION_LOGSPOUT      ?= v3.2.13
 export VERSION_NEXUS         ?= 3.29.0
 export VERSION_NGINX         ?= 1.19.6-alpine
 export VERSION_RAINLOOP      ?= 1.13.0
-export VERSION_SPLUNK        ?= 8.1.0
+export VERSION_SPLUNK        ?= 8.1.1
 export VERSION_WORDPRESS     ?= 5.6.0-php7.4-apache
 
 # Third-party versions - other (quay.io, k8s.gcr.io, crunchydata.com)

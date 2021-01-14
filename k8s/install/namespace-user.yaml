@@ -57,6 +57,10 @@ rules:
   - jobs
   - cronjobs
   verbs: ["*"]
+- apiGroups: [cert-manager.io]
+  resources:
+  - certificates
+  verbs: [get, list]
 - apiGroups: [networking.k8s.io]
   resources:
   - ingresses
