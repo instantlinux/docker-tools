@@ -1,7 +1,7 @@
 #! /bin/bash -x
 
 for node in $@; do
-  For each node, create a pool of small and medium volumes
+  # For each node, create a pool of small and medium volumes
   vols=$(seq -f pv-$POOL_SIZE_SMALL-%04g 1 $POOL_NUM_SMALL)
   for vol in $vols; do
     NAME=$(echo $node | cut -d . -f 1)-${vol,,} \

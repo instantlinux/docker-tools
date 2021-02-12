@@ -85,6 +85,8 @@ spec:
           name: dos
         - mountPath: /var/data-sync/gitlab
           name: gitlab
+        - mountPath: /var/data-sync/home
+          name: home
         - mountPath: /var/data-sync/household
           name: household
         - mountPath: /var/data-sync/jira
@@ -166,6 +168,16 @@ spec:
       selector:
         matchLabels:
           volume.group: gitlab
+  - metadata:
+      name: home
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: home
   - metadata:
       name: household
     spec:
