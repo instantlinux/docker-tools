@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.13
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG GIT_VERSION=2.24.3-r0
+ARG GIT_VERSION=2.30.1-r0
 ENV DEST=. \
     GIT_COMMIT=master \
     GIT_HOST=github.com \

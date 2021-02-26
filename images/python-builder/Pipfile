@@ -1,0 +1,40 @@
+# To generate Pipfile.lock:
+#  - start with alpine:3.13
+#  - install py3 packages from Dockerfile
+#  - pipenv --site-packages lock
+
+[packages]
+# alpine provides pre-built wheels for these
+alembic = "==1.4.3"
+boto3 = "==1.16.47"
+botocore = "==1.19.47"
+pycryptodomex = "==3.9.9"
+#cryptography = "==3.3.2"
+Flask = "==1.1.2"
+Flask-Babel = "==2.0.0"
+itsdangerous = "==1.1.0"
+PyJWT = "==1.7.1"
+requests = "==2.25.1"
+urllib3 = "==1.26.2"
+
+arrow = "*"
+b2sdk = "*"
+babel = "*"
+connexion = "*"
+"connexion[swagger-ui]" = "*"
+coverage = "*"
+docopt = "*"
+dollar-ref = "*"
+flake8 = "*"
+Flask-Cors = "*"
+funcsigs = "*"
+jsonschema = "*"
+mock = "*"
+passlib = "*"
+PyMySQL = "*"
+python-dateutil = "*"
+pytz = "*"
+redis = "*"
+SQLAlchemy = "*"
+SQLAlchemy-Utils = "*"
+swagger-ui-bundle = "*"

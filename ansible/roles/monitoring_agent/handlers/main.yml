@@ -11,7 +11,8 @@
     state: restarted
 
 - name: Restart rsyslogd
-  service:
+  systemd:
+    daemon_reload: yes
     name: rsyslog
     state: restarted
 

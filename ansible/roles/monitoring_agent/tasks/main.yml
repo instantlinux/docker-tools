@@ -58,6 +58,12 @@
     src: rsyslog-custom.conf.j2
   notify: Restart rsyslogd
 
+- name: Ensure logs are in UTC
+  template:
+    dest: /etc/systemd/system/rsyslog.service
+    src: rsyslog.service.j2
+  notify: Restart rsyslogd
+
 - name: Put a leash on journald (default log files are huge)
   template:
     dest: /etc/systemd/journald.conf

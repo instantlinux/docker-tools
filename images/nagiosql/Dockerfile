@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -21,19 +21,17 @@ ENV APACHE_BIN=httpd \
 ARG APACHE_UID=33
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG NAGIOS_VERSION=4.4.6-r0
+ARG NAGIOS_VERSION=4.4.6-r1
 ARG NAGIOSQL_VERSION=3.4.1
 ARG NAGIOSQL_SHA=a2b280b1178f7d26a66068c41faba5a38f8575d5cafe32836d7a2594d7e217ad
 ARG NAGIOSQL_DOWNLOAD=nagiosql-$NAGIOSQL_VERSION-git2020-01-19.tar.bz2
 
 COPY src /tmp/
 COPY html /var/www/html
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    deluser xfs && addgroup -g $NAGIOS_GID nagios && \
+RUN deluser xfs && addgroup -g $NAGIOS_GID nagios && \
     adduser -u $APACHE_UID -g Apache -DSH -h /var/www apache && \
     adduser -u $NAGIOS_UID -g "Nagios Server" -DSH -h /var/nagios nagios && \
-    apk add --update --no-cache apache2 curl nagios@edge=$NAGIOS_VERSION php7 \
+    apk add --update --no-cache apache2 curl nagios=$NAGIOS_VERSION php7 \
       php7-apache2 php7-ftp php7-gettext php7-mysqli php7-pear php7-session \
       php7-ssh2 tzdata && \
     addgroup apache nagios && \

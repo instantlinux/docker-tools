@@ -20,9 +20,9 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
     SPAMLIMIT=12 \
     SPAMC_HOST=spamassassin
 
-ARG GETPIP_SHA=564fabc2fbabd9085a71f4a5e43dbf06d5ccea9ab833e260f30ee38e8ce63a69
-ARG GETPIP_URI=https://bootstrap.pypa.io/3.4/get-pip.py
-ARG PYTHON_PIP_VERSION=20.2.4
+ARG GETPIP_SHA=311afebb7cdd310eb3a3a6bb6fffef53d84493db98c7cebf4008a18d3418c8be
+ARG GETPIP_URI=https://bootstrap.pypa.io/3.5/get-pip.py
+ARG PYTHON_PIP_VERSION=21.0.1
 
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/

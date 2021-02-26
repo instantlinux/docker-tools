@@ -53,8 +53,9 @@ spec:
             secretKeyRef:
               name: nextcloud-secret
               key: nextcloud-secret
-        # NOTE - when updating, set this to 1 and set version in
-        # ConfigMap below to the old version to be upgraded
+        # NOTE - when updating, set this to 1 and set prev version
+        # (makefile var VERSION_NEXTCLOUD_PREV) to the old version
+        # to be upgraded
         - { name: NEXTCLOUD_UPDATE, value: "0" }
         - { name: REDIS_HOST, value: $SERVICE_NAME-redis }
         - { name: TZ, value: $TZ }

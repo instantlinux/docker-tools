@@ -157,7 +157,7 @@ spec:
       - name: gitlab
         hostPath: { path: $K8S_VOLUMES_PATH/gitlab }
       - name: home
-        hostPath: { path: /home }
+        hostPath: { path: $K8S_VOLUMES_PATH/home }
       - name: household
         hostPath: { path: $K8S_VOLUMES_PATH/household }
       - name: inbox
@@ -230,6 +230,11 @@ data:
     10 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:household ${DOL}RETAIN_SCHED >>/var/log/restic.log
     10 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/household ${DOL}RETAIN_SCHED >>/var/log/restic.log
 
+    25 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:home backup ${DOL}BACKUP_OPTS -x /b/home | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-home-status.txt
+    25 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/home backup ${DOL}BACKUP_OPTS -x /b/home | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-home-status.txt
+    12 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:home ${DOL}RETAIN_SCHED >>/var/log/restic.log
+    12 1 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/home ${DOL}RETAIN_SCHED >>/var/log/restic.log
+
     30 2 * * * . /etc/profile && restic -r ${DOL}REPO_B2:nexus backup ${DOL}BACKUP_OPTS -x /b/nexus | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-nexus-status.txt
     30 4 * * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/nexus backup ${DOL}BACKUP_OPTS -x /b/nexus | grep -v percent_done >>/var/log/restic.log && touch /var/log/local-nexus-status.txt
     15 1 * * * . /etc/profile && restic -r ${DOL}REPO_B2:nexus ${DOL}RETAIN_SCHED >>/var/log/restic.log
@@ -264,6 +269,7 @@ data:
     25 5 * * 0 . /etc/profile && restic -r ${DOL}REPO_B2:share check --verbose >>/var/log/restic.log
     30 5 * * 0 . /etc/profile && . /bin/set-key.sh user && restic -r ${DOL}REPO_B2_USER:u check --verbose >>/var/log/restic.log
     35 5 * * 0 . /etc/profile && . /bin/set-key.sh mail && restic -r ${DOL}REPO_B2_MAIL:webmail check --verbose >>/var/log/restic.log
+    40 5 * * 0 . /etc/profile && restic -r ${DOL}REPO_B2:home check --verbose >>/var/log/restic.log
     0 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/misc check --verbose >>/var/log/restic.log
     5 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/cloud check --verbose >>/var/log/restic.log
     10 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/household check --verbose >>/var/log/restic.log
@@ -272,6 +278,7 @@ data:
     25 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/share check --verbose >>/var/log/restic.log
     30 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/u check --verbose >>/var/log/restic.log
     35 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/webmail check --verbose >>/var/log/restic.log
+    40 5 * * 1 . /etc/profile && restic -r ${DOL}REPO_LOCAL/home check --verbose >>/var/log/restic.log
 
     # Prune monthly, on the 2nd/3rd
     0 5 2 * * . /etc/profile && restic -r ${DOL}REPO_B2:misc prune >>/var/log/restic.log
@@ -282,6 +289,7 @@ data:
     25 5 2 * * . /etc/profile && restic -r ${DOL}REPO_B2:share prune >>/var/log/restic.log
     30 5 2 * * . /etc/profile && . /bin/set-key.sh user && restic -r ${DOL}REPO_B2_USER:u prune >>/var/log/restic.log
     35 5 2 * * . /etc/profile && . /bin/set-key.sh mail && restic -r ${DOL}REPO_B2_MAIL:webmail prune >>/var/log/restic.log
+    35 5 2 * * . /etc/profile && . /bin/set-key.sh mail && restic -r ${DOL}REPO_B2_MAIL:home prune >>/var/log/restic.log
     0 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/misc prune >>/var/log/restic.log
     5 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/cloud prune >>/var/log/restic.log
     10 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/household prune >>/var/log/restic.log
@@ -290,6 +298,7 @@ data:
     25 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/share prune >>/var/log/restic.log
     30 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/u prune >>/var/log/restic.log
     35 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/webmail prune >>/var/log/restic.log
+    40 5 3 * * . /etc/profile && restic -r ${DOL}REPO_LOCAL/home prune >>/var/log/restic.log
 
   set-key.sh: |
     # Use this script to apply per-bucket B2 API keys

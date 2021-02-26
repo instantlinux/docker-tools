@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -17,15 +17,12 @@ ENV PEERNAME= \
     SSHKEY2=data-sync-sshkey2
 
 ARG UNISON_VERSION=2.51.3
-ARG OCAML_VERSION=4.08.1-r2
+ARG OCAML_VERSION=4.08.1-r5
 ARG UNISON_SHA=0c287d17f52729440b2bdc28edf4d19b2d5ea5869983d78e780d501c5866914b
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 
 COPY src/ /root/src/
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    # TODO get rid of edge repo once openssh 8.4 appears in alpine
-    apk add --update openssh-client@edge openssh-server@edge perl rsync && \
+RUN apk add --update openssh-client openssh-server perl rsync && \
     passwd -u root && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/instantlinux/docker-tools/master/ansible/roles/docker_node/files/rrsync && \

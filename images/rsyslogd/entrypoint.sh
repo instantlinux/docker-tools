@@ -1,6 +1,8 @@
 #!/bin/sh
 
-sed -i -e 's/^$ModLoad imklog/#\$ModLoad imklog/' /etc/rsyslog.conf
+sed -i -e 's/^module[(]load="imklog"/# module(load="imklog"/' \
+    -e 's/^module[(]load="immark"/# module(load="immark"/' \
+    /etc/rsyslog.conf
 
 crond
 rsyslogd
