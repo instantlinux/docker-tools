@@ -2,7 +2,7 @@
 boto3==1.13.15
 botocore==1.16.16
 coverage==5.1
-cryptography==3.2.1
+cryptography==3.3.2
 Flask==1.1.2
 itsdangerous==1.1.0
 jsonschema==3.2.0
