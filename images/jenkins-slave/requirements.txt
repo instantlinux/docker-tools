@@ -1,5 +1,5 @@
 coverage==5.1
-cryptography==3.2.1
+cryptography==3.3.2
 docopt==0.6.2
 flake8==3.7.9
 Flask==1.1.2
