@@ -1,7 +1,7 @@
 # alpine provides pre-built wheels for these
 boto3==1.13.15
 botocore==1.16.16
-cryptography==3.2.1
+cryptography==3.3.2
 Flask==1.1.2
 itsdangerous==1.1.0
 Pillow==7.1.2
