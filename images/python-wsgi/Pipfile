@@ -1,7 +1,6 @@
 # To generate Pipfile.lock:
-#  - start with alpine:3.13
-#  - install py3 packages from Dockerfile
-#  - pipenv --site-packages lock
+#  - docker run --rm -it -v `pwd`:/build python:3.8.7-alpine3.13 sh
+#  - pip install pipenv && pipenv lock
 
 [packages]
 # alpine provides pre-built wheels for these
@@ -36,3 +35,6 @@ redis = "*"
 SQLAlchemy = "*"
 SQLAlchemy-Utils = "*"
 swagger-ui-bundle = "*"
+
+# Holding back for now, see https://github.com/p1c2u/openapi-spec-validator/issues/114
+openapi-spec-validator = "==0.2.9"
