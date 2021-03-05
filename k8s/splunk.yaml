@@ -57,6 +57,20 @@ spec:
     spec:
       containers:
       - name: $SERVICE_NAME
+        command: [/bin/sh]
+        args:
+        # The image lacks tzdata, this looks up and installs rpm
+        - -c
+        - >
+          source /etc/os-release && cd /tmp &&
+          PKG=`rpm -q tzdata`.rpm &&
+          DIST=`wget -qO- http://mirror.centos.org/centos|
+            egrep -o "href=\"${DOL}{VERSION_ID}\.[0-9]+"|cut -d\" -f 2` &&
+          curl -Lo ${DOL}PKG \
+            http://mirror.centos.org/centos/${DOL}{DIST}/BaseOS/x86_64/os/Packages/${DOL}PKG &&
+          sudo rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official &&
+          sudo rpm -ivh --reinstall ${DOL}PKG &&
+          exec /sbin/entrypoint.sh start-service
         env:
         - { name: SPLUNK_ADD, value: tcp 1514 }
         - { name: SPLUNK_ENABLE_LISTEN, value: "9997" }
