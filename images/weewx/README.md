@@ -3,8 +3,7 @@
 
 Weather station software WeeWX
 
-This includes WeeGreen skin; see the [live site](http://wx.ci.net) for an example. 
-This is a multi-architecture image for AMD, ARM, Intel, Raspberry Pi: see the platform badge above for supported platforms.
+This is a multi-architecture image for AMD, ARM, Intel, Raspberry Pi: see the platform badge above for supported platforms. This includes WeeGreen skin; see the [live site](http://wx.ci.net) for an example.
 
 ### Usage
 
