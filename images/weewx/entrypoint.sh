@@ -90,7 +90,7 @@ if [ ! -e $HOMEDIR/weewx.conf.bak ]; then
 fi
 
 sed -i -e 's/^.*imklog/# disabled ("imklog/' /etc/rsyslog.conf
-rsyslogd
+TZ=UTC rsyslogd
 
 cp /run/secrets/$SSHKEY /run/$SSHKEY && chmod 400 /run/$SSHKEY
 if [ ! -d $HOMEDIR/.ssh ]; then
