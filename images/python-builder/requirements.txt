@@ -4,7 +4,7 @@ botocore==1.16.16
 cryptography==3.2.1
 Flask==1.1.2
 itsdangerous==1.1.0
-Pillow==7.1.2
+Pillow==8.1.1
 pycryptodomex==3.9.8
 PyJWT==1.7.1
 requests==2.23.0
