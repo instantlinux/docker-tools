@@ -14,7 +14,7 @@ Flask-Babel = "==2.0.0"
 itsdangerous = "==1.1.0"
 PyJWT = "==1.7.1"
 requests = "==2.25.1"
-urllib3 = "==1.26.2"
+urllib3 = "==1.26.3"
 
 arrow = "*"
 b2sdk = "*"
