@@ -7,7 +7,7 @@ Flask==1.1.2
 itsdangerous==1.1.0
 jsonschema==3.2.0
 PyJWT==1.7.1
-Pillow==7.1.2
+Pillow==8.1.1
 pycryptodomex==3.9.8
 requests==2.23.0
 setuptools==47.0.0
