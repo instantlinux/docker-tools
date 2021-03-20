@@ -10,8 +10,8 @@ FROM instantlinux/python-wsgi:latest
 
 EXPOSE 8080
 WORKDIR /opt/app
-COPY requirements.txt uwsgi.ini /usr/src/
-RUN pip install -r /usr/src/requirements.txt
+COPY Pipfile* uwsgi.ini /usr/src/
+RUN cd /usr/src && pipenv install --system --deploy && \
     mkdir /var/opt/app && chown uwsgi /var/opt/app
 
 COPY app/ /opt/app

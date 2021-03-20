@@ -15,12 +15,13 @@ ENV BUILD_DIR=/build \
     TZ=UTC
 
 ARG BUILDX_VERSION=0.4.1
+ARG CFFI_VERSION=1.14.4-r0
 ARG COMPOSE_VERSION=1.25.0
 ARG KUBECTL_VERSION=1.20.4
 ARG MUSL_VERSION=1.2.2-r0
-ARG PYTHON_VERSION=3.8.7-r1
+ARG PYTHON_VERSION=3.8.8-r0
 ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r0
-ARG PYPILLOW_VERSION=7.2.0-r1
+ARG PYPILLOW_VERSION=8.1.2-r0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _BUILDX_URL=https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64
@@ -37,13 +38,18 @@ COPY Pipfile* /root/
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
+    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
+    echo '@edgecomm http://dl-cdn.alpinelinux.org/alpine/edge/community' \
+      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev py3-boto3 py3-botocore \
-      py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
-      py3-pycryptodomex py3-flask py3-flask-babel py3-itsdangerous py3-jwt \
-      py3-pillow==$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
+      py3-cffi=$CFFI_VERSION py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-pycryptodomex py3-flask py3-flask-babel \
+      py3-greenlet@edgecomm py3-itsdangerous py3-jwt \
+      py3-pillow@edge=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
