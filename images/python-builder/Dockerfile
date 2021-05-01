@@ -14,14 +14,14 @@ ENV BUILD_DIR=/build \
     PYTHONPATH=/usr/lib/python3.8/site-packages \
     TZ=UTC
 
-ARG BUILDX_VERSION=0.4.1
+ARG BUILDX_VERSION=0.5.1
 ARG CFFI_VERSION=1.14.4-r0
-ARG COMPOSE_VERSION=1.25.0
+ARG COMPOSE_VERSION=1.29.1
 ARG KUBECTL_VERSION=1.20.4
 ARG MUSL_VERSION=1.2.2-r0
 ARG PYTHON_VERSION=3.8.8-r0
 ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r0
-ARG PYPILLOW_VERSION=8.1.2-r0
+ARG PYPILLOW_VERSION=8.1.2-r1
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _BUILDX_URL=https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64
@@ -29,8 +29,8 @@ ARG _COMPOSE_URL=${_DOCKER_DOWNLOADS}/${COMPOSE_VERSION}/docker-compose-Linux-x8
 ARG _KUBECTL_URL=${_KUBECTL_DOWNLOADS}/v$KUBECTL_VERSION/bin/linux/amd64/kubectl
 ARG DOCKER_GID=485
 ARG BUILD_UID=1001
-ARG BUILDX_SHA=3f4e77686659766a0726b5a47a87e2cc14c86ebf15abf7f19c45d23b0daff222
-ARG COMPOSE_SHA=2bdab0bbf42583b4b77ee015cf908933c78f0572a7cb949a7dd8e200e6250221
+ARG BUILDX_SHA=5f1dda3ae598e82c3186c2766506921e6f9f51c93b5ba43f7b42b659db4aa48d
+ARG COMPOSE_SHA=8097769d32e34314125847333593c8edb0dfc4a5b350e4839bef8c2fe8d09de7
 ARG KUBECTL_SHA=98e8aea149b00f653beeb53d4bd27edda9e73b48fed156c4a0aa1dabe4b1794c
 
 COPY Pipfile* /root/
@@ -44,11 +44,11 @@ RUN addgroup -g $DOCKER_GID docker && \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
-      musl-dev==$MUSL_VERSION openssh-client \
-      python3==$PYTHON_VERSION python3-dev py3-boto3 py3-botocore \
+      musl-dev==$MUSL_VERSION openssh-client python3==$PYTHON_VERSION \
+      python3-dev py3-authlib py3-boto3 py3-botocore py3-cachetools \
       py3-cffi=$CFFI_VERSION py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex py3-flask py3-flask-babel \
-      py3-greenlet@edgecomm py3-itsdangerous py3-jwt \
+      py3-greenlet@edgecomm py3-itsdangerous \
       py3-pillow@edge=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
