@@ -11,7 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ENV BUILD_DIR=/build \
     BUILD_USER=build \
     LANG=en_US \
-    PYTHONPATH=/usr/lib/python3.8/site-packages \
+    PYTHONPATH=/usr/lib/python3.8/site-packages:/usr/lib/python3.9/site-packages \
     TZ=UTC
 
 ARG BUILDX_VERSION=0.5.1
@@ -40,15 +40,12 @@ RUN addgroup -g $DOCKER_GID docker && \
       -s /bin/bash $BUILD_USER && \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
-    echo '@edgecomm http://dl-cdn.alpinelinux.org/alpine/edge/community' \
-      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client python3==$PYTHON_VERSION \
       python3-dev py3-authlib py3-boto3 py3-botocore py3-cachetools \
       py3-cffi=$CFFI_VERSION py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
-      py3-pycryptodomex py3-flask py3-flask-babel \
-      py3-greenlet@edgecomm py3-itsdangerous \
+      py3-pycryptodomex py3-flask py3-flask-babel py3-itsdangerous \
       py3-pillow@edge=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
@@ -62,7 +59,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       " /usr/local/bin/kubectl" | sha256sum -c && \
     chmod +x /usr/lib/docker/cli-plugins/docker-buildx \
       /usr/local/bin/docker-compose /usr/local/bin/kubectl && \
-    pip install pipenv && \
+    pip install --upgrade pipenv pip && \
     cd /root && pipenv install --system --deploy && pip freeze && \
     mkdir -p /certs/client && \
     chown $BUILD_USER /certs/client /etc/localtime /etc/timezone && \
