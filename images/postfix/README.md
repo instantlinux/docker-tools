@@ -38,4 +38,19 @@ Look for sasl_passwd in [SASL_README.html](http://www.postfix.org/SASL_README.ht
 Also, if you're using TLS, create a secret containing the SSL private key and
 reference it in your smtpd_tls_key_file directive as shown in the example.
 
+## Upgrade Notes
+
+In versions 3.5.9 or later, there is a breaking change affecting the `postalias` command used to generate binary db files at startup.  If you have an entry in any of your `.cf` files under /etc/postfix that look like:
+```
+alias_database = hash:/etc/postfix/aliases
+```
+change them to:
+```
+alias_database = lmdb:/etc/postfix/aliases
+```
+You will no longer see the error message:
+```
+postalias: fatal: unsupported dictionary type: hash. Is the postfix-hash package installed?
+```
+
 [![](https://img.shields.io/badge/license-IPL--1.0-red.svg)](https://opensource.org/licenses/IPL-1.0 "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")

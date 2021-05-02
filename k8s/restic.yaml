@@ -31,7 +31,7 @@ spec:
         env:
         - { name: ENV, value: /etc/profile }
         - { name: TZ, value: $TZ }
-        image: alpine:3.12
+        image: alpine:3.13
         resources:
           limits:
             memory: 2048Mi
