@@ -52,6 +52,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:$VERSION_INGRESS_NGINX
+        # image: k8s.gcr.io/ingress-nginx/controller:v$VERSION_INGRESS_NGINX
         name: nginx-ingress-controller
         ports:
         - containerPort: 80
@@ -143,6 +144,92 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: pod-ingress-privileged
+  namespace: $K8S_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: nginx-ingress-controller
+    name: nginx-ingress-controller
+  name: nginx-ingress-controller
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - endpoints
+      - nodes
+      - pods
+      - secrets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+      - "networking.k8s.io"
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  - apiGroups:
+      - extensions
+      - "networking.k8s.io"
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - "networking.k8s.io"
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: nginx-ingress-controller
+    name: nginx-ingress-controller
+  name: nginx-ingress-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nginx-ingress-controller
+subjects:
+  - kind: ServiceAccount
+    name: pod-ingress-privileged
 ---
 apiVersion: v1
 kind: ServiceAccount

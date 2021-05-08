@@ -5,7 +5,6 @@
 
 [packages]
 # alpine provides pre-built wheels for these
-alembic = "==1.4.3"
 Authlib = "==0.15.3"
 boto3 = "==1.16.47"
 botocore = "==1.19.47"
@@ -20,9 +19,10 @@ Pillow = "==8.1.2"
 requests = "==2.25.1"
 uwsgi = "==2.0.19"
 
+alembic = "*"
 b2sdk = "*"
 babel = "*"
-celery = "==4.4.7"
+celery = ">=4.4.7,<5.0.0"
 connexion = "*"
 "connexion[swagger-ui]" = "*"
 docopt = "*"
@@ -30,6 +30,7 @@ dollar-ref = "*"
 flake8 = "*"
 Flask-Cors = "*"
 flower = "*"
+ldap3 = "*"
 passlib = "*"
 PyJWT = "*"
 PyMySQL = "*"
@@ -38,10 +39,7 @@ python-dateutil = "*"
 pytz = "*"
 redis = "*"
 # held back, alpine lacks greenlet >1.0
-SQLAlchemy = "==1.3.24"
+SQLAlchemy = ">=1.3.24,<1.4.0"
 SQLAlchemy-Utils = "*"
 swagger-ui-bundle = "*"
 urllib3 = "*"
-
-# Holding back for now, see https://github.com/p1c2u/openapi-spec-validator/issues/114
-openapi-spec-validator = "==0.2.9"

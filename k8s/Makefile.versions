@@ -50,7 +50,6 @@ export VERSION_CERT_MANAGER   ?= 1.1.0
 export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_ETCD           ?= v3.4.14
 export VERSION_FLANNEL        ?= 0.13.0
-export VERSION_INGRESS_NGINX  ?= 0.33.0
 export VERSION_METRICS        ?= 0.4.1
 export VERSION_PGO            ?= 4.5.1
 export VERSION_RESTIC         ?= 0.11.0-r0
@@ -59,6 +58,8 @@ export VERSION_RESTIC         ?= 0.11.0-r0
 # newer artifactory 7.x has major breaking changes
 export VERSION_ARTIFACTORY   ?= 6.15.1
 export VERSION_CALICO        ?= 3.16.5
+# upstream moved from quay to gcr, needs new pod privileges
+export VERSION_INGRESS_NGINX  ?= 0.33.0
 # requires manual update in admin UI after restarting image
 export VERSION_NEXTCLOUD     ?= 20.0.7
 export VERSION_NEXTCLOUD_PREV ?= 20.0.7.1
