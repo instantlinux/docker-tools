@@ -1,5 +1,5 @@
 # To generate Pipfile.lock:
-#  - docker run --rm -it -v `pwd`:/build python:3.8.8-alpine3.13 sh
+#  - docker run --rm -it -v `pwd`:/build python:3.8.10-alpine3.13 sh
 #  - apk add gcc musl-dev libffi-dev
 #  - pip install pipenv && pipenv lock
 
@@ -17,6 +17,8 @@ Flask-Babel = "==2.0.0"
 itsdangerous = "==1.1.0"
 Pillow = "==8.1.2"
 requests = "==2.25.1"
+# 2021-05-08
+six = "==1.15.0"
 uwsgi = "==2.0.19"
 
 alembic = "*"
@@ -27,7 +29,6 @@ connexion = "*"
 "connexion[swagger-ui]" = "*"
 docopt = "*"
 dollar-ref = "*"
-flake8 = "*"
 Flask-Cors = "*"
 flower = "*"
 ldap3 = "*"
