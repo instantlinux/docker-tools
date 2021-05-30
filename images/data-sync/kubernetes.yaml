@@ -93,8 +93,6 @@ spec:
           name: jira
         - mountPath: /var/data-sync/nexus
           name: nexus
-        - mountPath: /var/data-sync/wx
-          name: wx
         - mountPath: /run/secrets/data-sync-sshkey1
           name: sshkeys
           subPath: sshkey1
@@ -208,16 +206,6 @@ spec:
       selector:
         matchLabels:
           volume.group: nexus
-  - metadata:
-      name: wx
-    spec:
-      accessModes: [ ReadWriteMany ]
-      resources:
-        requests:
-          storage: 8Gi
-      selector:
-        matchLabels:
-          volume.group: wx
 ---
 apiVersion: v1
 kind: ConfigMap

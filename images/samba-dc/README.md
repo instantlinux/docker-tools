@@ -107,6 +107,12 @@ for DC in dc1 dc2 dc3 etc; do
   samba-tool dns delete $DC _msdcs.<domain> abcdef-abc-xxx CNAME <host> -Uadministrator
 done
 ```
+* To fully clean out replication state for a secondary domain controller, shut it down, clear its /var/lib/samba/private volume contents, and while it's shut down do these on the primary:
+```
+samba-tool domain demote --remove-other-dead-server=<badhost>
+samba-tool dbcheck --cross-ncs --fix
+```
+Then restart the secondary with `DOMAIN_ACTION=join`.
 * With docker it's real easy to get a bunch of stale entries in your domain controller list. The latest version of samba4 provides a way to prune them:
 {noformat}
 samba-tool domain demote --remove-other-dead-server=xxx
