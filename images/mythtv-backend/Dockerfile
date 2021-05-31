@@ -37,8 +37,8 @@ RUN \
     apache2 curl iputils-ping less lsb-release mariadb-client net-tools \
     openssh-client openssh-server mythtv-backend=$MYTHTV_VERSION \
     mythtv-common=$MYTHTV_VERSION mythtv-transcode-utils=$MYTHTV_VERSION \
-    mythweb=$MYTHTV_VERSION libmyth-python php-mythtv psmisc sudo tzdata \
-    v4l-utils vim w3m x11-utils xauth xmltv xterm
+    mythweb=$MYTHTV_VERSION libmyth-python libmythtv-perl php-mythtv psmisc \
+    sudo tzdata v4l-utils vim w3m x11-utils xauth xmltv xterm
 
 COPY src/ /root/
 
