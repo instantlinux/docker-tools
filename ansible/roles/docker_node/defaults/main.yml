@@ -28,6 +28,9 @@ docker_defaults:
     hosts:
     - tcp://0.0.0.0:2376
     - unix:///var/run/docker.sock
+    log-opts:
+      max-size: 50m
+      max-file: "3"
     storage-driver: devicemapper
     storage-opts:
     - dm.thinpooldev=/dev/mapper/{{ thinpool_vg_alt }}-thinpool
