@@ -19,10 +19,9 @@ k2: nagios haproxy-keepalived restic-server
 
 $(SERVICES)::
 	@echo Starting $@
-	@if [ $@ != "etcd" ] && [ $@ != 'ntpd' ] && \
-            [ $@ != haproxy-keepalived ]; then \
-           docker pull $(REGISTRY_URI)/$@:latest; \
-        fi
+	# @if [ $@ == "nut-upsd" ] || [ $@ == 'nagios' ]; then \
+	#   docker pull $(REGISTRY_URI)/$@:latest; \
+	# fi
 	cd $@ ; docker-compose up -d
 
 nagios::

@@ -11,7 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ARG NAGIOS_VERSION=4.4.6-r2
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG PLUGINS_VERSION=2.3.2-r1
+ARG PLUGINS_VERSION=2.3.2-r2
 ARG WWW_UID=33
 ENV AUTHORIZED_USERS=nagiosadmin \
     CONFIG_CHECK=yes \
@@ -25,17 +25,19 @@ ENV AUTHORIZED_USERS=nagiosadmin \
     PERF_ENABLE=yes \
     TZ=UTC
 
-RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     deluser xfs && addgroup -g $NAGIOS_GID nagios && \
     adduser -g www-data -u $WWW_UID -DSH -h /var/www www-data && \
     adduser -G nagios -g "Nagios Server" -DSH -h /var/nagios -u $NAGIOS_UID \
       nagios && \
-    apk add --update --no-cache nagios=$NAGIOS_VERSION \
-      nagios-plugins-all=$PLUGINS_VERSION nagios-web \
+    apk add --update --no-cache nagios=$NAGIOS_VERSION nagios-web \
+      nagios-plugins-all@edge=$PLUGINS_VERSION \
+      nagios-plugins-mysql@edge=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \
       perl-crypt-x509 perl-libwww perl-text-glob perl-timedate \
-      php7 php7-fpm py3-pip py3-pymysql@testing python3 ssmtp tzdata && \
+      php7 php7-fpm py3-pip python3 ssmtp tzdata && \
+    pip3 install pymysql==1.0.2 && \
     addgroup nginx nagios && \
     chmod u+s /usr/lib/nagios/plugins/check_ping && \
     sed -i -e s/use_syslog=.*/use_syslog=0/ \
