@@ -58,6 +58,13 @@
     src: rsyslog-custom.conf.j2
   notify: Restart rsyslogd
 
+- name: Move imuxsock load out of stock /etc/rsyslog.conf
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    line: "# module(load=\"imuxsock\")"
+    regexp: "^module.load=\"imuxsock\".*"
+  notify: Restart rsyslogd
+
 - name: Ensure logs are in UTC
   template:
     dest: /etc/systemd/system/rsyslog.service

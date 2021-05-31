@@ -59,10 +59,6 @@ sysctl:
   fs.inotify.max_user_instances: 256
   fs.inotify.max_user_watches: 131072
 
-syslog:
-  host: syslog
-  port: 514
-
 system_paths:
   ca_certs: /usr/local/share/ca-certificates
 
