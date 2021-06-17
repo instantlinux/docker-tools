@@ -1,0 +1,47 @@
+# Default values for mt-daapd.
+replicaCount: 2
+
+image:
+  repository: instantlinux/mt-daapd
+  pullPolicy: IfNotPresent
+  tag: "26.4-dfsg1-1"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  # TODO parameterize namespace, dealing with helm learning-curve
+  name: MUSTOVERRIDE-privileged
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  enabled: false
+
+ingress:
+  enabled: false
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+nodeSelector:
+  service.mt-daapd: allow
+
+tolerations: []
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app.kubernetes.io/name
+          operator: In
+          values:
+          - mt-daapd
+      topologyKey: "kubernetes.io/hostname"

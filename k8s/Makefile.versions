@@ -50,6 +50,7 @@ export VERSION_CERT_MANAGER   ?= 1.1.0
 export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_ETCD           ?= v3.4.14
 export VERSION_FLANNEL        ?= 0.13.0
+export VERSION_HELM           ?= 3.6.0
 export VERSION_METRICS        ?= 0.4.1
 export VERSION_PGO            ?= 4.5.1
 export VERSION_RESTIC         ?= 0.11.0-r0

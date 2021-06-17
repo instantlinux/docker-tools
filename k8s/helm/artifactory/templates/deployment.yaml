@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  {{- if or .Values.strategy (not (hasKey .Values "strategy")) }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "local.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "local.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "local.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+          - { name: DB_HOST, value: {{ .Values.dbHost }} }
+          - { name: EXTRA_JAVA_OPTIONS, value: {{ .Values.extraJavaOptions }} }
+          - { name: TZ, value: {{ .Values.tz }} }
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /artifactory/webapp/#/login
+              port: http
+            initialDelaySeconds: 600
+          readinessProbe:
+            httpGet:
+              path: /artifactory/webapp/#/login
+              port: http
+            initialDelaySeconds: 600
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: data
+            mountPath: /var/opt/jfrog/artifactory
+            subPath: {{ .Chart.Name }}/data
+          - name: data
+            mountPath: /opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-{{ .Values.mysqlConnectorVersion }}-bin.jar
+            readOnly: true
+            subPath: {{ .Chart.Name }}/mysql-connector-java-{{ .Values.mysqlConnectorVersion }}.jar
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: data
+        hostPath: { path: {{ .Values.k8s.sharePath }} }

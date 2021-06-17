@@ -1,0 +1,33 @@
+# Default values for ez-ipupdate.
+replicaCount: 1
+
+image:
+  repository: instantlinux/ez-ipupdate
+  pullPolicy: IfNotPresent
+  tag: "3.0.10-r9"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  enabled: false
+
+ingress:
+  enabled: false
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

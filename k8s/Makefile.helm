@@ -1,49 +1,23 @@
 ##########
 # Helm
 ##########
-.PHONY: helm_install tiller_install tiller_protect tiller_disable tiller_enable
-helm_install: /usr/local/bin/helm tiller_install \
+TARBALL = helm-v$(VERSION_HELM)-linux-amd64.tar.gz
+.PHONY: helm_install
+
+helm_install: /usr/local/bin/helm \
 	~/.helm/repository/cache/bitnami-index.yaml
 
-# TODO do I still need tiller_protect? Does not seem to work with k8s 1.15.0
-
-tiller_install: install/tiller-rbac
-	helm init --kube-context=kubernetes-admin@$(CLUSTER) \
-	  --service-account=tiller
-	kubectl $(ADMIN_CTX) patch deploy --namespace kube-system tiller-deploy \
-	  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-
-# plug ghastly security hole, https://github.com/anguslees/helm-security-post
-tiller_protect:
-	-kubectl $(ADMIN_CTX) create serviceaccount --namespace kube-system tiller
-	-kubectl $(ADMIN_CTX) create clusterrolebinding tiller-cluster-rule \
-	  --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-	kubectl $(ADMIN_CTX) patch deploy --namespace kube-system tiller-deploy \
-	  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-	-kubectl $(ADMIN_CTX) delete service tiller-deploy --namespace kube-system
-	kubectl $(ADMIN_CTX) patch deployment tiller-deploy --namespace kube-system \
-	  --patch='$(shell cat install/tiller-patch.json)'
-
-# Only run tiller when needed (until its security is tighter, someday)
-tiller_disable: imports/tiller_deploy.yaml
-	kubectl $(ADMIN_CTX) delete deployment.apps/tiller-deploy --namespace kube-system
-
-tiller_enable:
-	kubectl $(ADMIN_CTX) $(ACTION) -f imports/tiller_deploy.yaml
-
-imports/tiller_deploy.yaml:
-	kubectl $(ADMIN_CTX) get deployment.apps/tiller-deploy --namespace kube-system \
-	  -o yaml > $@
-
 /usr/local/bin/helm:
-	wget -O /tmp/helm-amd64.tar.gz \
-	  https://storage.googleapis.com/kubernetes-helm/helm-v$(VERSION_HELM)-linux-amd64.tar.gz
-	wget -O /tmp/helm-amd64.sha256 \
-	  https://storage.googleapis.com/kubernetes-helm/helm-v$(VERSION_HELM)-linux-amd64.tar.gz.sha256
-	echo "$(shell cat /tmp/helm-amd64.sha256)  /tmp/helm-amd64.tar.gz" | sha256sum -c
+	wget -O /tmp/$(TARBALL) https://get.helm.sh/$(TARBALL)
+	wget -O /tmp/$(TARBALL).sha256 https://get.helm.sh/$(TARBALL).sha256sum
+	cd /tmp && echo "$(shell cat /tmp/"$(TARBALL)".sha256)" | sha256sum -c
 	tar xf /tmp/helm-amd64.tar.gz -C /tmp
-	sudo mv /tmp/linux-amd64/helm /tmp/linux-amd64/tiller /usr/local/bin
-	rm -r /tmp/helm-amd64.* /tmp/linux-amd64
+	sudo mv /tmp/linux-amd64/helm /usr/local/bin
+	rm -r /tmp/$(TARBALL)* /tmp/linux-amd64
 
 ~/.helm/repository/cache/bitnami-index.yaml:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
+
+CHARTLOCK = $(addsuffix /Chart.lock, $(addprefix helm/, $(CHARTS)))
+$(CHARTLOCK): helm/liblocal/Chart.yaml
+	helm dependency update $(dir $@)

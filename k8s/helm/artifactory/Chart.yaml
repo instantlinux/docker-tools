@@ -1,0 +1,10 @@
+apiVersion: v2
+name: artifactory
+description: JFrog Artifactory service
+type: application
+version: 0.1.0
+appVersion: "6.15.1"
+dependencies:
+- name: liblocal
+  version: 0.1.0
+  repository: file://../liblocal
