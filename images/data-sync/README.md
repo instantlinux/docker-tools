@@ -18,7 +18,7 @@ make data-sync
 Define any custom directives in the data-sync ConfigMap, and set environment variable $SERVICE_NAME to data-sync (you can run more than one copy of this by setting different SERVICE_NAME and ConfigMap names).
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with [helm](https://github.com/instantlinux/docker-tools/blob/master/images/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -40,7 +40,7 @@ Not running under Kubernetes? Omit PEERNAME value on the primary node, and set P
 
 ### Variables
 
-These variables can be passed to the image from kubernetes.yaml or docker-compose.yml as needed:
+These variables can be passed to the image from helm's values.yaml, kubernetes.yaml or docker-compose.yml as needed:
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |

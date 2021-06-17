@@ -1,0 +1,86 @@
+# Default values for nexus.
+
+autheliaIP: 10.0.10.10
+domain: example.com
+deployment:
+  containerPorts:
+  - containerPort: 5000
+  - containerPort: 8081
+  env:
+    install4j_add_vm_params: -Xms2048m -Xmx2560m -XX:MaxDirectMemorySize=3g
+    tz: UTC
+  nodeSelector:
+    service.nexus: allow
+  resources:
+    limits:
+      cpu: 4
+      memory: 6144Mi
+    requests:
+      cpu: 200m
+      memory: 1280Mi
+  strategy:
+    type: Recreate
+  terminationGracePeriodSeconds: 120
+
+volumeMounts:
+- mountPath: /nexus-data
+  name: nexus
+volumes:
+- name: nexus
+  hostPath: { path: /var/lib/docker/k8s-volumes/nexus }
+
+image:
+  repository: sonatype/nexus3
+  pullPolicy: IfNotPresent
+  tag: "3.31.1"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+service:
+  type: ClusterIP
+  ports:
+  - { port: 80, targetPort: 8081, name: nexus }
+  - { port: 5001, targetPort: 5000, name: registry }
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($http_user_agent ~ docker ) {
+        proxy_pass http://nexus.instantlinux:5001;
+      }
+  rules:
+  - host: nexus.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: nexus
+            port:
+              number: 80
+        pathType: Prefix
+      - path: /
+        backend:
+          service:
+            name: nexus
+            port:
+              number: 5001
+        pathType: Prefix
+  tls:
+  - hosts:
+    - nexus.example.com
+    secretName: nexus.example.com
+
+autoscaling:
+  enabled: false

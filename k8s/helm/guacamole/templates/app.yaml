@@ -1,0 +1,9 @@
+{{- include "liblocal.hpa" . }}
+---
+{{- include "liblocal.ingress" . }}
+---
+{{- include "liblocal.ingresstotp" . }}
+---
+{{- include "liblocal.service" . }}
+---
+{{- include "liblocal.serviceaccount" . }}

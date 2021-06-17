@@ -31,7 +31,7 @@ make samba
 
 ### Variables
 
-These variables can be passed to the image from kubernetes.yaml or docker-compose.yml as needed:
+These variables can be passed to the image from helm values.yaml, kubernetes.yaml or docker-compose.yml as needed:
 
 Variable | Default | Description |
 -------- | ------- | ----------- |

@@ -22,9 +22,8 @@ Find a lot more details about the Kubernetes bare-metal installer in [k8s/README
 
 ### Kubernetes capabilities
 
-The cluster-deployment tools here include ansible playbooks to spin up bare-metal or VM master/worker nodes, and a Makefile to add several additional features.
+The cluster-deployment tools here include helm charts and ansible playbooks to spin up bare-metal or VM master/worker nodes, and a Makefile to add several additional features.
 
-* Pod security policies
 * Direct-attached SSD local storage pools
 * Dashboard
 * Non-default namespace with its own service account (full permissions
@@ -36,6 +35,7 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 * Calico or flannel networking
 * ingress-nginx
 * Local-volume sync
+* Pod security policies
 * Automatic certificate issuing/renewal with Letsencrypt
 * PostgreSQL-operator from CrunchyData
 

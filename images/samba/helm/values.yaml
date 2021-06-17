@@ -1,0 +1,56 @@
+# Default values for samba.
+deployment:
+  env:
+    log_level: "3"
+    netbios_name: samba
+    server_string: Authorized use only
+    tz: UTC
+    workgroup: WORKGROUP
+  hostNetwork: true
+  nodeSelector:
+    service.samba: allow
+  resources:
+    limits:
+      memory: 2048Mi
+    requests:
+      cpu: 100m
+      memory: 384Mi
+
+# override volume list as required
+volumeMounts:
+- mountPath: /etc/samba/conf.d
+  name: admin
+  readOnly: true
+  subPath: services/samba/etc
+- mountPath: /var/lib/samba
+  name: share
+  subPath: samba/var/lib
+- mountPath: /var/log/samba
+  name: log
+- mountPath: /var/ftp
+  name: ftp
+  readOnly: true
+- mountPath: /run/secrets/samba-admin-password
+  name: samba-admin-password
+  readOnly: true
+  subPath: samba-admin-password
+volumes:
+- name: samba-admin-password
+  secret:
+    secretName: samba-admin-password
+- name: admin
+  hostPath: { path: /var/lib/docker/k8s-volumes/admin }
+- name: log
+  emptyDir: {}
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: instantlinux/samba
+  pullPolicy: IfNotPresent
+  tag: "4.13.7-r0"
+
+nameOverride: ""
+fullnameOverride: ""
+autoscaling:
+  enabled: false

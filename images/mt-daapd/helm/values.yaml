@@ -1,0 +1,43 @@
+# Default values for mt-daapd.
+deployment:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - mt-daapd
+        topologyKey: "kubernetes.io/hostname"
+  env:
+    server_banner: "%h Firefly MP3 via Docker"
+  hostNetwork: true
+  nodeSelector:
+    service.mt-daapd: allow
+  replicas: 2
+
+volumeMounts:
+- name: cache
+  mountPath: /var/cache/forked-daapd
+- name: music
+  mountPath: /srv/music
+  readOnly: true
+volumes:
+- name: cache
+  emptyDir: {}
+- name: music
+  persistentVolumeClaim:
+    claimName: mp3
+
+image:
+  repository: instantlinux/mt-daapd
+  pullPolicy: IfNotPresent
+  tag: "26.4-dfsg1-1"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+autoscaling:
+  enabled: false

@@ -1,0 +1,13 @@
+apiVersion: v2
+name: data-sync
+description: git backup
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+type: application
+version: 0.1.0
+appVersion: "2.51.3-4.08.1-r5"
+dependencies:
+- name: liblocal
+  version: 0.1.0
+  repository: file://../liblocal
