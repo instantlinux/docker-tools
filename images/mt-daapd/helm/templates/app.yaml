@@ -1,3 +1,5 @@
+{{- include "liblocal.deployment" . }}
+---
 {{- include "liblocal.hpa" . }}
 ---
 {{- include "liblocal.ingress" . }}

@@ -37,15 +37,6 @@ gitlab-agent:
 nut-upsd::
 	@echo Invoke 'make nut-xx' (e.g. nut-01) instead
 	@exit 1
-nut-01:
-	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$@ SERIAL=$(UPS_SERIAL_1) envsubst < nut-upsd.yaml | \
-	 kubectl $(ACTION) $(ADMIN_CTX) --namespace $(K8S_NAMESPACE) -f -
-nut-02:
-	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$@ SERIAL=$(UPS_SERIAL_2) NODEPORT_UPSD=30494 \
-	 envsubst < nut-upsd.yaml | \
-	 kubectl $(ACTION) $(ADMIN_CTX) --namespace $(K8S_NAMESPACE) -f -
 
 samba-dc::
 	@echo Invoke 'make dcxx' target for domain controllers

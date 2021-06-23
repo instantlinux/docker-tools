@@ -1,5 +1,6 @@
 {{- define "liblocal.deployment" -}}
-{{- if or .Values.deployment.enabled (not (hasKey .Values.deployment "enabled")) }}
+{{- if hasKey .Values "deployment" }}
+{{- if or .Values.deployment.enabled (not (hasKey .Values "deployment.enabled")) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,7 +9,11 @@ metadata:
     {{- include "local.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
+  {{- if hasKey .Values "replicaCount" }}
   replicas: {{ .Values.replicaCount }}
+  {{- else }}
+  replicas: 1
+  {{- end }}
   {{- end }}
   {{- if or .Values.strategy (not (hasKey .Values "strategy")) }}
   {{- with .Values.strategy }}
@@ -32,7 +37,9 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.serviceAccount.enabled }}
       serviceAccountName: {{ include "local.serviceAccountName" . }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -40,41 +47,40 @@ spec:
           {{- if (hasKey .Values "env") }}
           env:
           {{- range $name, $value := .Values.env }}
-	  - { name: {{ $name | upper -}}, value: "{{ $value }}" }
-	  {{ end }}
-	  {{- end }}
+          - { name: {{ $name | upper -}}, value: "{{ $value }}" }
+          {{ end }}
+          {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if (hasKey .Values "containerPorts") }}
+          {{- if hasKey .Values "containerPorts" }}
           ports:
-	  {{- range .Values.containerPorts }}
+          {{- range .Values.containerPorts }}
           - name: http
             containerPort: {{ . -}}
             protocol: TCP
-	  {{ end }}
-	  {{- end }}
+          {{ end }}
+          {{- end }}
+          {{- if hasKey .Values "livenessProbe" }}
           livenessProbe:
-            httpGet:
-              path: /artifactory/webapp/#/login
-              port: http
-            initialDelaySeconds: 600
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if hasKey .Values "readinessProbe" }}
           readinessProbe:
-            httpGet:
-              path: /artifactory/webapp/#/login
-              port: http
-            initialDelaySeconds: 600
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if hasKey .Values "volumeMounts" }}
           volumeMounts:
-          - name: data
-            mountPath: /var/opt/jfrog/artifactory
-            subPath: {{ .Chart.Name }}/data
-          - name: data
-            mountPath: /opt/jfrog/artifactory/tomcat/lib/mysql-connector-java-{{ .Values.mysqlConnectorVersion }}-bin.jar
-            readOnly: true
-            subPath: {{ .Chart.Name }}/mysql-connector-java-{{ .Values.mysqlConnectorVersion }}.jar
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
+      {{- if hasKey .Values "hostNetwork" }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -87,8 +93,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if hasKey .Values "volumes" }}
       volumes:
-      - name: data
-        hostPath: { path: {{ .Values.k8s.sharePath }} }
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

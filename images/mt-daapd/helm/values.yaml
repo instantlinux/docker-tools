@@ -1,6 +1,22 @@
 # Default values for mt-daapd.
 replicaCount: 2
 
+env:
+  server_banner: "%h Firefly MP3 via Docker"
+hostNetwork: true
+volumeMounts:
+- name: cache
+  mountPath: /var/cache/forked-daapd
+- name: music
+  mountPath: /srv/music
+  readOnly: true
+volumes:
+- name: cache
+  emptyDir: {}
+- name: music
+  persistentVolumeClaim:
+    claimName: mp3
+
 image:
   repository: instantlinux/mt-daapd
   pullPolicy: IfNotPresent
@@ -10,12 +26,8 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: false
-  annotations: {}
-  # TODO parameterize namespace, dealing with helm learning-curve
-  name: MUSTOVERRIDE-privileged
-
+serviceAccount: {}
+deployment: {}
 podAnnotations: {}
 podSecurityContext: {}
 securityContext: {}

@@ -10,7 +10,7 @@ First create a secret:
     # or #
     docker secret create ez-ipupdate-user ez-ipupdate-user
 
-Then deploy this service, see the example kubernetes.yaml / docker-compose.yml files. Available environment variables are:
+Then deploy this service, see the example helm / docker-compose.yml files. Available environment variables are:
 
 | Variable | Default | Description |
 | -------- |-------- | ----------- |
@@ -21,7 +21,7 @@ Then deploy this service, see the example kubernetes.yaml / docker-compose.yml f
 | USER_SECRET | ez-ipupdate-user |Name of the Docker secret to deploy |
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/ez-ipupdate/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with helm or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/ez-ipupdate/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s

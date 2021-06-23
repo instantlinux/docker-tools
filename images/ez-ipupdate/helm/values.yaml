@@ -1,5 +1,14 @@
 # Default values for ez-ipupdate.
-replicaCount: 1
+env:
+  host: www.example.com
+volumeMounts:
+- name: secret
+  mountPath: /run/secrets/ez-ipupdate-user
+  subPath: ez-ipupdate-user
+volumes:
+- name: secret
+  secret:
+    secretName: ez-ipupdate-user
 
 image:
   repository: instantlinux/ez-ipupdate
@@ -10,9 +19,8 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: false
-
+deployment: {}
+serviceAccount: {}
 podAnnotations: {}
 podSecurityContext: {}
 securityContext: {}

@@ -4,7 +4,7 @@
 This dockerizes a simple script I wrote years ago to create git bundle
 backups of a private git server.
 
-The example kubernetes / docker-compose service definition will cause
+The example helm / docker-compose service definition will cause
 a dump of all accessible projects to happen at the default hour
 (0:45am in $TZ) from a GitLab server named git.instantlinux.net onto a
 subdirectory git in volume "backup".
@@ -30,7 +30,7 @@ key. This script supports the GitLab v3 API to read the list of
 projects at runtime, so you don't have to specify the REPOS parameter.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/git-dump/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with helm or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/git-dump/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
