@@ -28,7 +28,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Dashboard
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
-* Helm with tiller
+* Helm3
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator

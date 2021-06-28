@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 MAINTAINER Rich Braun "richb@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -11,17 +11,17 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ENV BUILD_DIR=/build \
     BUILD_USER=build \
     LANG=en_US \
-    PYTHONPATH=/usr/lib/python3.8/site-packages:/usr/lib/python3.9/site-packages \
+    PYTHONPATH=/usr/lib/python3.9/site-packages \
     TZ=UTC
 
 ARG BUILDX_VERSION=0.5.1
-ARG CFFI_VERSION=1.14.4-r0
+ARG CFFI_VERSION=1.14.5-r1
 ARG COMPOSE_VERSION=1.29.1
 ARG KUBECTL_VERSION=1.20.4
-ARG MUSL_VERSION=1.2.2-r0
-ARG PYTHON_VERSION=3.8.10-r0
-ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r0
-ARG PYPILLOW_VERSION=8.1.2-r1
+ARG MUSL_VERSION=1.2.2-r3
+ARG PYTHON_VERSION=3.9.5-r1
+ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r1
+ARG PYPILLOW_VERSION=8.2.0-r0
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _BUILDX_URL=https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64
@@ -38,15 +38,13 @@ COPY Pipfile* /root/
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
-    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client python3==$PYTHON_VERSION \
       python3-dev py3-authlib py3-boto3 py3-botocore py3-cachetools \
       py3-cffi=$CFFI_VERSION py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
-      py3-pycryptodomex py3-flask py3-flask-babel py3-itsdangerous \
-      py3-pillow@edge=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
+      py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet py3-itsdangerous \
+      py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
