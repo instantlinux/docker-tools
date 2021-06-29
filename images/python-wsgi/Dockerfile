@@ -1,4 +1,4 @@
-FROM python:3.9.5-alpine3.13
+FROM python:3.9.5-alpine3.14
 
 MAINTAINER Rich Braun "richb@instantlinux.net"
 ARG BUILD_DATE

@@ -1,7 +1,7 @@
 # To generate Pipfile.lock:
-#  - docker run --rm -it -v `pwd`:/build python:3.9.5-alpine3.13 sh
-#  - apk add gcc musl-dev libffi-dev
-#  - pip install pipenv && cd /build && pipenv lock
+#  docker run --rm -it -v `pwd`:/build python:3.9.5-alpine3.14 sh
+#  apk add gcc musl-dev libffi-dev
+#  pip install pipenv && cd /build && pipenv lock
 
 [packages]
 # alpine provides pre-built wheels for these
@@ -14,6 +14,7 @@ pycryptodomex = "==3.10.1"
 cryptography = "==3.3.2"
 Flask = "==2.0.1"
 Flask-Babel = "==2.0.0"
+greenlet = "==1.0.0"
 itsdangerous = "==2.0.1"
 Pillow = "==8.2.0"
 requests = "==2.25.1"
