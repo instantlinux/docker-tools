@@ -80,7 +80,7 @@ volumeClaimTemplates:
 image:
   repository: instantlinux/data-sync
   pullPolicy: IfNotPresent
-  tag: "2.51.3-4.08.1-r5"
+  tag: "2.51.4-4.12.0-r0"
 
 nameOverride: ""
 fullnameOverride: ""

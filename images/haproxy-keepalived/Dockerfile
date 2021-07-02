@@ -24,9 +24,8 @@ RUN apk add --no-cache --update \
     adduser -D -s /bin/sh keepalived_script && \
     mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.dist
 
-USER haproxy
 EXPOSE 8080
-VOLUME /etc/haproxy.d
+VOLUME /usr/local/etc/haproxy.d /etc/keepalived
 
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

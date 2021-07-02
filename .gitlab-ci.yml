@@ -5,6 +5,7 @@ stages:
   - git-dump
   - blacklist
   - data-sync
+  - ddclient
   - dhcpd-dns-pxe
   - dovecot
   - ez-ipupdate
@@ -77,6 +78,15 @@ data-sync:
       job: prepare
   only:
     changes: [ images/data-sync/**, lib/**, .image-gitlab-ci.yml ]
+
+ddclient:
+  stage: ddclient
+  trigger:
+    include:
+    - artifact: .child-ddclient.yml
+      job: prepare
+  only:
+    changes: [ images/ddclient/**, lib/**, .image-gitlab-ci.yml ]
 
 dhcpd-dns-pxe:
   stage: dhcpd-dns-pxe

@@ -7,7 +7,7 @@ A load balancer with haproxy and keepalived (VRRP) to provide high-availability 
 ### Usage
 
 Configuration is defined as files in volumes mounted as
-/etc/haproxy.d and /etc/keepalived/keepalived.conf.
+/usr/local/etc/haproxy.d and /etc/keepalived/keepalived.conf.
 
 * Define your local settings for haproxy under /etc/haproxy.d; see [man page](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html); the entrypoint script here will concatenate multiple files.
 
@@ -17,7 +17,7 @@ Configuration is defined as files in volumes mounted as
 
 See the [haproxy-keepalived/examples/](https://github.com/instantlinux/docker-tools/blob/master/images/haproxy-keepalived/examples) directory under this git repository to get started.
 
-This requires NET_ADMIN privileges. Also, you will need the ip_vs kernel module and ip_nonlocal set on the host running docker engine:
+This requires NET_ADMIN privileges: keepalived will run as root (but you can specify user `haproxy` or `keepalived_script` for the `vrrp_script` directive); haproxy will downgrade itself to user `haproxy` after startup. Also, you will need the ip_vs kernel module and ip_nonlocal set on the host running docker engine:
 ```
 echo ip_vs >>/etc/modules.conf
 echo net.ipv4.ip_nonlocal_bind=1 >/etc/sysctl.d/99-haproxy.conf

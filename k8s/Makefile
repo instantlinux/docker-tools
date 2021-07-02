@@ -91,7 +91,7 @@ $(STACKS)::
 	@SERVICE_NAME=$(@F) \
 	  envsubst < $@.yaml | kubectl $(ACTION) --namespace $(K8S_NAMESPACE) -f -
 
-$(CHARTS):: ../admin/services/values.yaml $(CHARTLOCK)
+$(CHARTS):: %: ../admin/services/values.yaml helm/%/Chart.lock
 	@echo --$(NOTICE) $@--
 ifeq ($(ACTION), delete)
 	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@

@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME
+    spec:
+      containers:
+      - name: $SERVICE_NAME
+        env:
+        - { name: HOST, value: $DYNAMIC_HOSTNAME }
+        - { name: USER_LOGIN, value: $USER_LOGIN }
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_DDCLIENT
+        volumeMounts:
+        - name: secret
+          mountPath: /run/secrets/ddclient-user
+          subPath: ddclient-user
+      imagePullSecrets: [ $IMAGEPULL_SPEC ]
+      volumes:
+      - name: secret
+        secret:
+          secretName: ddclient-user

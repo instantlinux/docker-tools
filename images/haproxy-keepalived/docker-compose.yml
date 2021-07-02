@@ -9,7 +9,7 @@ services:
       KEEPALIVE_CONFIG_ID: ${KEEPALIVED_CONFIG_ID:-main}
       TZ: ${TZ:-UTC}
     volumes:
-    - ${ADMIN_PATH:-/opt}/haproxy/etc:/etc/haproxy.d:ro
+    - ${ADMIN_PATH:-/opt}/haproxy/etc:/usr/local/etc/haproxy.d:ro
     - ${ADMIN_PATH:-/opt}/keepalived/etc/keepalived.conf:/etc/keepalived/keepalived.conf:ro
     ports:
     - ${PORT_HAPROXY_STATS:-8080}:8080

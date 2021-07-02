@@ -57,3 +57,7 @@ Need more configurability? Edit the ConfigMap defined in kubernetes.yaml.
 | *key.pem | keyfile specified for ssl_dh certificate |
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")
+
+### Upgrade Notes
+
+* When upgrading to 2.3.14+, replace any references to `hash:` with `lmdb:` in your config files.

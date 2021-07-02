@@ -35,7 +35,7 @@ spec:
             add: [ NET_ADMIN ]
         volumeMounts:
         - name: admin
-          mountPath: /etc/haproxy.d
+          mountPath: /usr/local/etc/haproxy.d
           readOnly: true
           subPath: services/haproxy/etc-k8s
         - name: keepalived-etc

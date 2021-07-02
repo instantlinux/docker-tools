@@ -5,9 +5,9 @@ if [ -s /run/secrets/$STATS_SECRET ]; then
 else
   STATS_PASSWORD=changeme
 fi
-
-if [ ! -e /etc/haproxy.cfg ]; then
-  cat <<EOF >/etc/haproxy.cfg
+HAPROXY_PATH=/usr/local/etc/haproxy
+if [ ! -e $$HAPROXY_PATH/haproxy.cfg ]; then
+  cat <<EOF >$HAPROXY_PATH/haproxy.cfg
 global
 	log 127.0.0.1	local1 notice
 	maxconn		4096
@@ -27,7 +27,7 @@ defaults
 	timeout server	$TIMEOUT
 EOF
   if [ $STATS_ENABLE == yes ]; then
-    cat <<EOF >>/etc/haproxy.cfg
+    cat <<EOF >>$HAPROXY_PATH/haproxy.cfg
 listen stats
        bind		*:$PORT_HAPROXY_STATS
        mode		http
@@ -40,8 +40,8 @@ EOF
   fi
 fi
 
-if [ -d /etc/haproxy.d ] && [ "$(ls -A /etc/haproxy.d)" ]; then
-  CMD_OPTS="-- /etc/haproxy.d/*"
+if [ -d /usr/local/etc/haproxy.d ] && [ "$(ls -A /usr/local/etc/haproxy.d)" ]; then
+  CMD_OPTS="-- /usr/local/etc/haproxy.d/*"
 fi
 
 sed -i -e 's/^module[(]load="imklog"/# module(load="imklog"/' \
@@ -61,5 +61,5 @@ if ! keepalived -i $KEEPALIVE_CONFIG_ID; then
   echo keepalived did not start, needs working /etc/keepalived/keepalived.conf
 fi
 sleep 10
-haproxy -f /etc/haproxy.cfg $CMD_OPTS || true
+haproxy -f $HAPROXY_PATH/haproxy.cfg $CMD_OPTS || true
 tail +1 -f /var/log/messages
