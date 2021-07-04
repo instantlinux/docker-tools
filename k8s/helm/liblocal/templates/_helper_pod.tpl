@@ -47,7 +47,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- if or (hasKey .pod "env") (hasKey .pod "xenv") }}
+          {{- if or (hasKey .Values "env") (hasKey .Values "xenv") }}
           env:
           {{- end }}
           {{- if (hasKey .pod "env") }}

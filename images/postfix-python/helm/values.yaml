@@ -1,0 +1,89 @@
+# Default values for postfix.
+dhcpSubnet1: 192.168.2.0/24
+domain: example.com
+hostnameEmail: example.com
+# Force reload of certs at least every 30 days
+livenessProbe:
+  exec:
+    command: [ 'false' ]
+  initialDelaySeconds: 2592000
+nodeportInt: 30425
+nodeportExt: 30025
+relayDomains: example.com email.example.com
+relayHost: smtp.gmail.com:587
+
+statefulset:
+  env:
+    cidr_min_size: "27"
+    db_host: db00
+    honeypot_addrs: honeypot@example.com
+    inbound_relay: 'by mx-caprica.?\\.easydns\\.com'
+    spamc_host: 10.101.1.50
+    tz: UTC
+  containerPorts:
+  - containerPort: 25
+  - containerPort: 3525
+  replicas: 2
+volumeMounts:
+- mountPath: /etc/postfix/postfix.d
+  name: admin
+  readOnly: true
+  subPath: services/postfix/etc
+- mountPath: /var/spool/postfix
+  name: spool
+- mountPath: /run/secrets/mysql-blacklist-user
+  name: mysql-blacklist-user
+  subPath: mysql-blacklist-user
+- mountPath: /run/secrets/postfix-sasl-passwd
+  name: postfix-sasl-passwd
+  subPath: postfix-sasl-passwd
+- mountPath: /etc/ssl/certs/smtpd-cert.pem
+  name: ssl-cert
+  subPath: tls.crt
+- mountPath: /run/secrets/smtpd-key.pem
+  name: ssl-cert
+  subPath: tls.key
+volumes:
+- name: admin
+  hostPath: { path: /var/lib/docker/k8s-volumes/admin }
+- name: mysql-blacklist-user
+  secret:
+    secretName: mysql-blacklist-user
+- name: postfix-sasl-passwd
+  secret:
+    secretName: postfix-sasl-passwd
+- name: ssl-cert
+  secret:
+    secretName: tls-rainloop
+volumeClaimTemplates:
+- metadata:
+    name: spool
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 8Gi
+
+image:
+  repository: instantlinux/postfix-python
+  pullPolicy: IfNotPresent
+  tag: "3.6.1-r0"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  ports:
+  - { port: 3425, targetPort: 25, name: postfix }
+  - { port: 3525, targetPort: 3525, name: external }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+# to replace with your own config map, add an override with data
+# and set enabled
+configmap:
+  enabled: false
+  name: postfix
+  data: {}

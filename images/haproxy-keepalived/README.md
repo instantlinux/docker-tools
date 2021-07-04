@@ -24,7 +24,7 @@ echo net.ipv4.ip_nonlocal_bind=1 >/etc/sysctl.d/99-haproxy.conf
 sysctl -p /etc/sysctl.d/99-haproxy.conf
 ```
 
-After starting this service using _kubectl apply_ or _docker-compose_, you can connect to http://<host>:<port>/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below. This repo has complete instructions for
+After starting this service using [helm](https://github.com/instantlinux/docker-tools/tree/master/images/haproxy-keepalived/helm), _kubectl apply_ or _docker-compose_, you can connect to http://<host>:<port>/stats to view the haproxy stats page, with basic-auth username _haproxy_ and the password set in the secret defined below. This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/haproxy-keepalived/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git

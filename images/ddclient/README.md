@@ -10,7 +10,7 @@ First create a secret:
     # or #
     docker secret create ddclient-user ddclient-user
 
-Then deploy this service, see the example helm / docker-compose.yml files. Available environment variables are:
+Then deploy this service, see the example [helm](https://github.com/instantlinux/docker-tools/tree/master/images/ddclient/helm) / docker-compose.yml files. Available environment variables are:
 
 | Variable | Default | Description |
 | -------- |-------- | ----------- |
@@ -23,6 +23,8 @@ Then deploy this service, see the example helm / docker-compose.yml files. Avail
 | USER_SECRET | ddclient-user |Name of the Docker secret containing password |
 
 Instead of supplying these variables, if your provider requires more parameters than shown above, you can volume-mount the configuration as `/etc/ddclient/ddclient.conf`.
+
+Logging is set to `verbose` in order to have any logging at all; it's not possible to reduce verbosity to a lower level than about 18 lines of output per interval without modifying source code.
 
 This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with [helm](https://github.com/instantlinux/docker-tools/tree/master/images/ddclient/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/ddclient/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:

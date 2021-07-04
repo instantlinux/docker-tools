@@ -3,6 +3,8 @@
 
 Dynamic-DNS client - automatically updates a public DNS name with your dynamic IP address. Set this up under Kubernetes or Docker Swarm to ensure it's always running.
 
+*Status:* This is sunsetted, use the [instantlinux/ddclient](https://hub.docker.com/repository/docker/instantlinux/ddclient) image if you can.
+
 First create a secret:
 
     echo -n user:pw ez-ipupdate-user
@@ -10,7 +12,7 @@ First create a secret:
     # or #
     docker secret create ez-ipupdate-user ez-ipupdate-user
 
-Then deploy this service, see the example helm / docker-compose.yml files. Available environment variables are:
+Then deploy this service, see the example [helm](https://github.com/instantlinux/docker-tools/tree/master/images/ez-ipupdate/helm) / docker-compose.yml files. Available environment variables are:
 
 | Variable | Default | Description |
 | -------- |-------- | ----------- |

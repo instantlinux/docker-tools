@@ -1,118 +1,10 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/name: $SERVICE_NAME
-  name: $SERVICE_NAME
-spec:
-  ports:
-  - { port: $PORT_POSTFIX_INTERNAL, targetPort: 25, name: $SERVICE_NAME }
-  - { port: 3525, targetPort: 3525, name: external }
-  selector:
-    app.kubernetes.io/name: $SERVICE_NAME
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: $SERVICE_NAME-external
-spec:
-  type: NodePort
-  ports:
-  - { port: 25, nodePort: $NODEPORT_POSTFIX_INT, name: postfix-int }
-  - { port: 3525, nodePort: $NODEPORT_POSTFIX_EXT, name: postfix-ext }
-  selector:
-    app.kubernetes.io/name: $SERVICE_NAME
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  labels:
-    app.kubernetes.io/name: $SERVICE_NAME
-    release: "0.1"
-  name: $SERVICE_NAME
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: $SERVICE_NAME
-      release: "0.1"
-  serviceName: $SERVICE_NAME
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: $SERVICE_NAME
-        release: "0.1"
-    spec:
-      containers:
-      - name: $SERVICE_NAME
-        env:
-        - { name: DB_HOST, value: $DB_HOST }
-        - { name: CIDR_MIN_SIZE, value: "$CIDR_MIN_SIZE" }
-        - { name: HONEYPOT_ADDRS, value: $HONEYPOT_ADDRS }
-        - name: INBOUND_RELAY
-          value: by mx-caprica.?\.easydns\.com
-        - { name: SPAMC_HOST, value: $SPAMC_HOST }
-        - { name: TZ, value: $TZ }
-        image: $REGISTRY_URI/postfix-python:$VERSION_POSTFIX_PYTHON
-        # Force reload of certs at least every 30 days
-        livenessProbe:
-          exec:
-            command: [ 'false' ]
-          initialDelaySeconds: 2592000
-        ports:
-        - containerPort: 25
-        - containerPort: 3525
-        volumeMounts:
-        - mountPath: /etc/postfix/postfix.d
-          name: admin
-          readOnly: true
-          subPath: services/$SERVICE_NAME/etc
-        - mountPath: /var/spool/postfix
-          name: spool
-        - mountPath: /run/secrets/mysql-blacklist-user
-          name: mysql-blacklist-user
-          subPath: mysql-blacklist-user
-        - mountPath: /run/secrets/postfix-sasl-passwd
-          name: postfix-sasl-passwd
-          subPath: postfix-sasl-passwd
-        - mountPath: /etc/ssl/certs/smtpd-cert.pem
-          name: ssl-cert
-          subPath: tls.crt
-        - mountPath: /run/secrets/smtpd-key.pem
-          name: ssl-cert
-          subPath: tls.key
-      dnsConfig:
-        nameservers: [ $DNS_SERVERS ]
-        options:
-        - name: use-vc
-        - name: ndots
-      imagePullSecrets: [ $IMAGEPULL_SPEC ]
-      volumes:
-      - name: admin
-        hostPath: { path: $PATH_ADM }
-      - name: mysql-blacklist-user
-        secret:
-          secretName: mysql-blacklist-user
-      - name: postfix-sasl-passwd
-        secret:
-          secretName: postfix-sasl-passwd
-      - name: ssl-cert
-        secret:
-          secretName: $POSTFIX_TLS_SECRET
-  volumeClaimTemplates:
-  - metadata:
-      name: spool
-    spec:
-      accessModes: [ ReadWriteOnce ]
-      resources:
-        requests:
-          storage: 8Gi
----
+{{- if not .Values.configmap.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: $SERVICE_NAME
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
 data:
   master.cf: |
     # Postfix master process configuration file.  For details on the format
@@ -123,7 +15,7 @@ data:
     #               (yes)   (yes)   (yes)   (never) (100)
     # ==========================================================================
     smtp      inet  n       -       n       -       -       smtpd
-    $PORT_POSTFIX_EXTERNAL      inet  n       -       n       -       -       smtpd
+    {{ (index .Values.service.ports 1).port }}      inet  n       -       n       -       -       smtpd
      -o content_filter=spamfilter:dummy
      -o mynetworks=127.0.0.0/24
 
@@ -157,7 +49,7 @@ data:
     # pages of the non-Postfix software to find out what options it wants.
     #
     # Many of the following services use the Postfix pipe(8) delivery
-    # agent.  See the pipe(8) man page for information about $DOL{recipient}
+    # agent.  See the pipe(8) man page for information about ${recipient}
     # and other message envelope options.
     # ====================================================================
     #
@@ -165,18 +57,18 @@ data:
     # Also specify in main.cf: maildrop_destination_recipient_limit=1
     #
     maildrop  unix  -       n       n       -       -       pipe
-      flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d $DOL{recipient}
+      flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d ${recipient}
     #
     # See the Postfix UUCP_README file for configuration details.
     #
     uucp      unix  -       n       n       -       -       pipe
-      flags=Fqhu user=uucp argv=uux -r -n -z -a${DOL}sender - ${DOL}nexthop!rmail (${DOL}recipient)
+      flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
 
     #
     # local additions
     bigdest   unix  -       -       n       -       25       smtp
     spamfilter unix - n n - - pipe
-      flags=Rq user=spamfilter argv=/usr/local/bin/spamfilter.sh -f ${DOL}{sender} -- ${DOL}{recipient}
+      flags=Rq user=spamfilter argv=/usr/local/bin/spamfilter.sh -f ${sender} -- ${recipient}
   postfix.cf: |
     # Local modifications
     #  See postfix documentation at http://www.postfix.org/postconf.5.html
@@ -193,13 +85,13 @@ data:
     mailbox_size_limit = 0
     maximal_queue_lifetime = 8h
     message_size_limit = 30720000
-    mydestination = ${DOL}myhostname, localhost.${DOL}mydomain, localhost
-    mydomain = $DOMAIN
-    myorigin = $HOSTNAME_EMAIL
-    mynetworks = $DHCP_SUBNET1/24, 10.255.0.0/16, 10.244.0.0/16, 127.0.0.0/24
+    mydestination = $myhostname, localhost.$mydomain, localhost
+    mydomain = {{ .Values.domain }}
+    myorigin = {{ .Values.hostnameEmail }}
+    mynetworks = {{ .Values.dhcpSubnet1 }}, 10.255.0.0/16, 10.244.0.0/16, 127.0.0.0/24
     mynetworks_style = subnet
-    relay_domains = $POSTFIX_RELAY_DOMAINS
-    relayhost = $POSTFIX_RELAYHOST
+    relay_domains = {{ .Values.relayDomains }}
+    relayhost = {{ .Values.relayHost }}
     smtp_sasl_auth_enable = yes
     smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd
     smtp_sasl_security_options = noanonymous
@@ -207,7 +99,7 @@ data:
     smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
     smtp_tls_note_starttls_offer = yes
     smtp_tls_protocols =!SSLv2,!SSLv3
-    smtp_tls_session_cache_database = lmdb:${DOL}data_directory/smtp_tls_session_cache
+    smtp_tls_session_cache_database = btree:$data_directory/smtp_tls_session_cache
     smtpd_tls_cert_file = /etc/ssl/certs/smtpd-cert.pem
     smtpd_tls_ciphers = high
     smtpd_tls_key_file = /run/secrets/smtpd-key.pem
@@ -223,4 +115,4 @@ data:
     tls_random_source = dev:/dev/urandom
     transport_maps = lmdb:/etc/postfix/transport
     virtual_alias_maps = lmdb:/etc/postfix/virtusertable
-    
+{{- end }}

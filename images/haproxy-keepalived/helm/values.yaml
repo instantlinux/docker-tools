@@ -1,0 +1,88 @@
+# Default values for haproxy-keepalived.
+deployment:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - haproxy-keepalived
+        topologyKey: "kubernetes.io/hostname"
+  env:
+    keepalived_config_id: main
+  hostNetwork: true
+  nodeSelector:
+    service.haproxy-keepalived: allow
+  replicas: 2
+  securityContext:
+    capabilities:
+      add: [ NET_ADMIN ]
+volumeMounts:
+- name: admin
+  mountPath: /usr/local/etc/haproxy.d
+  readOnly: true
+  subPath: services/haproxy/etc-k8s
+- name: keepalived-etc
+  mountPath: /etc/keepalived/keepalived.conf
+  subPath: keepalived.conf
+- name: secret
+  mountPath: /run/secrets/haproxy-stats-password
+  readOnly: true
+  subPath: haproxy-stats-password
+volumes:
+- name: admin
+  hostPath: { path: /var/lib/docker/k8s-volumes/admin }
+- name: keepalived-etc
+  configMap:
+    name: haproxy-keepalived-etc
+- name: secret
+  secret:
+    secretName: haproxy-stats-password
+
+image:
+  repository: instantlinux/haproxy-keepalived
+  pullPolicy: IfNotPresent
+  tag: "2.4.1-alpine-2.2.1-r0"
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: example-privileged
+
+service:
+  clusterIP: None
+  ports:
+  - { port: 8080, targetPort: 8080 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  name: haproxy-keepalived-etc
+  data:
+    keepalived.conf: |
+      global_defs {
+        max_auto_priority 10
+      }
+      vrrp_instance VI_1 {
+        interface br0
+      @main  priority 101
+      @^main priority 100
+        virtual_ipaddress {
+          192.168.100.1
+        }
+        virtual_router_id 50
+      }
+      vrrp_instance VI_2 {
+        interface br0
+      @main  priority 101
+      @^main priority 100
+        virtual_ipaddress {
+          192.168.100.2
+        }
+        virtual_router_id 51
+      }

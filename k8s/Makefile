@@ -98,7 +98,7 @@ ifeq ($(ACTION), delete)
 else
 	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
 	  && echo "-f ../admin/services/values/$@.yaml"))
-	helm upgrade --install -f global.yaml -f $< $@ $(OVERRIDE) $(XARGS) ./helm/$@
+	helm upgrade --install -f global.yaml -f $< $(OVERRIDE) $(XARGS) $@ ./helm/$@
 endif
 	@helm list --time-format="Mon Jan 2 15:04" --selector name=$@
 

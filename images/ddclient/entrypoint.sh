@@ -1,6 +1,11 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 USER_PASSWORD=$(cat /run/secrets/$USER_SECRET)
+
+if [ -z "$HOST" ]; then
+    echo "** HOST must be specified **"
+    exit 1
+fi
 
 if [ ! -e /etc/ddclient/ddclient.conf ]; then
     cat <<EOF > /etc/ddclient/ddclient.conf
@@ -13,6 +18,8 @@ ssl=yes
 server=members.easydns.com, protocol=$SERVICE_TYPE, login=$USER_LOGIN, password=$USER_PASSWORD $HOST
 EOF
 fi
+chown ddclient.ddclient /etc/ddclient/ddclient.conf
+chmod 400 /etc/ddclient/ddclient.conf
 mkdir -p /run/ddclient && chown ddclient /run/ddclient
 
-exec su-exec ddclient /usr/bin/ddclient -foreground
+exec su-exec ddclient /usr/bin/ddclient -foreground -verbose

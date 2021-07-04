@@ -1,10 +1,12 @@
 # Default values for ddclient.
-env:
-  host: www.example.com
-  iplookup_uri: http://ipinfo.io/ip
-  server: members.easydns.com
-  service_type: easydns
-  user_login: ""
+deployment:
+  env:
+    # host: required
+    interval: 3600
+    iplookup_uri: http://ipinfo.io/ip
+    server: members.easydns.com
+    service_type: easydns
+    user_login: ""
 volumeMounts:
 - name: secret
   mountPath: /run/secrets/ddclient-user
@@ -15,11 +17,13 @@ volumes:
     secretName: ddclient-user
 
 image:
-  repository: instantlinux/ddclient
+  # repository: instantlinux/ddclient
   pullPolicy: IfNotPresent
-  tag: "3.9.1-r0"
+  # tag: "3.9.1-r0"
+  repository: nexus.instantlinux.net/ddclient
+  tag: latest
 
-imagePullSecrets: []
+imagePullSecrets: [ name: regcred ]
 nameOverride: ""
 fullnameOverride: ""
 
