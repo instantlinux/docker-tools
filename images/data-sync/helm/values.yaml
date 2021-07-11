@@ -96,7 +96,6 @@ autoscaling:
   enabled: false
 
 configmap:
-  name: data-sync
   data:
     common.prf: |
       # Directives for unison

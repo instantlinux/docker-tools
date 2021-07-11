@@ -4,7 +4,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.configmap.name }}
+  {{- if hasKey .Values.configmap "name" }}
+  name:  {{ .Values.configmap.name }}
+  {{- else }}
+  name: {{ include "local.fullname" . }}
+  {{- end }}
   labels:
     {{- include "local.labels" . | nindent 4 }}
   {{- with .Values.configmap.data }}

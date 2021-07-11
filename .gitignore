@@ -13,4 +13,4 @@ k8s/imports
 python_env
 results.xml
 OBS
-lib*.tgz
+*.tgz

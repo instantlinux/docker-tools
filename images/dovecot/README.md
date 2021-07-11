@@ -25,12 +25,12 @@ Configuration is defined as files in a volume mounted as
   ./mkcert.sh
   ```
 
-For settings, see etc-example directory and kubernetes.yaml / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) file defines default values.
+For settings, see etc-example directory and [helm]((https://github.com/instantlinux/docker-tools/tree/master/images/dovecot/helm) / kubernetes.yaml / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) file defines default values.
 
 Also configure postfix as described in the postfix image.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dovecot/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with [helm]((https://github.com/instantlinux/docker-tools/tree/master/images/dovecot/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dovecot/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s

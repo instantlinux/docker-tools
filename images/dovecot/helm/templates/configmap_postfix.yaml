@@ -1,15 +1,15 @@
-{{- if not .Values.configmap.enabled }}
+{{- if not .Values.configmapPostfix.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "local.fullname" . }}
-  labels:
-    {{- include "local.labels" . | nindent 4 }}
+  name: {{ include "local.fullname" . }}-postfix
 data:
-  aliases: |
-    {{- .Values.aliases | nindent 4 }}
+  {{- with .Values.aliases }}
+  aliases:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   master.cf: |
-    # Postfix master process configuration file.  For details on the format
+    # Postfix master process configuration file.
     # of the file, see the master(5) manual page (command: "man 5 master").
     #
     # ==========================================================================
@@ -17,22 +17,12 @@ data:
     #               (yes)   (yes)   (yes)   (never) (100)
     # ==========================================================================
     smtp      inet  n       -       n       -       -       smtpd
-    {{ (index .Values.service.ports 1).port }}      inet  n       -       n       -       -       smtpd
-     {{- .Values.contentFlags | nindent 5 }}
+    {{ (index .Values.service.ports 0).port }}      inet  n       -       n       -       -       smtpd
 
-    #submission inet n       -       n       -       -       smtpd
-    #  -o smtpd_enforce_tls=yes
-    #  -o smtpd_sasl_auth_enable=yes
-    #  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
-    #smtps     inet  n       -       n       -       -       smtpd
-    #  -o smtpd_tls_wrappermode=yes
-    #  -o smtpd_sasl_auth_enable=yes
-    #  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
     #628      inet  n       -       n       -       -       qmqpd
     pickup    fifo  n       -       n       60      1       pickup
     cleanup   unix  n       -       n       -       0       cleanup
     qmgr      fifo  n       -       n       300     1       qmgr
-    #qmgr     fifo  n       -       n       300     1       oqmgr
     tlsmgr    unix  -       -       n       1000?   1       tlsmgr
     rewrite   unix  -       -       n       -       -       trivial-rewrite
     bounce    unix  -       -       n       -       0       bounce
@@ -93,9 +83,8 @@ data:
 
     #
     # local additions
-    {{ .Values.localServiceAdditions | nindent 4}}
+    bigdest   unix  -       -       n       -       25       smtp
   postfix.cf: |
-    # Local modifications
     #  See postfix documentation at http://www.postfix.org/postconf.5.html
     #  Any values placed here will be inserted to the container's /etc/postfix/main.cf
     alias_database = lmdb:/etc/postfix/aliases
@@ -107,16 +96,17 @@ data:
     default_destination_concurrency_limit = 4
     delay_warning_time = 4h
     in_flow_delay = 0
+    mail_spool_directory = /var/spool/mail
     mailbox_size_limit = 0
     maximal_queue_lifetime = 8h
-    message_size_limit = {{ .Values.messageSizeLimit }}
-    mydestination = $myhostname, localhost.$mydomain, localhost
+    message_size_limit = 30720000
+    mydestination = {{ .Values.myDestination }}
     mydomain = {{ .Values.domain }}
     myorigin = {{ .Values.hostnameEmail }}
-    mynetworks = {{ .Values.dhcpSubnet1 }}, 10.255.0.0/16, 10.244.0.0/16, 127.0.0.0/24
+    mynetworks = 127.0.0.0/24
     mynetworks_style = subnet
     relay_domains = {{ .Values.relayDomains }}
-    relayhost = {{ .Values.relayHost }}
+    relayhost = [{{ .Values.postfixIp }}]:{{ .Values.postfixPort }}
     smtp_sasl_auth_enable = yes
     smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd
     smtp_sasl_security_options = noanonymous
@@ -125,6 +115,11 @@ data:
     smtp_tls_note_starttls_offer = yes
     smtp_tls_protocols =!SSLv2,!SSLv3
     smtp_tls_session_cache_database = lmdb:$data_directory/smtp_tls_session_cache
+    smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+    smtpd_sasl_auth_enable = yes
+    smtpd_sasl_type = dovecot
+    smtpd_sasl_path = private/auth
+    smtpd_sasl_security_options = noanonymous
     smtpd_tls_cert_file = /etc/ssl/certs/smtpd-cert.pem
     smtpd_tls_ciphers = high
     smtpd_tls_key_file = /run/secrets/smtpd-key.pem
@@ -139,9 +134,15 @@ data:
     tls_preempt_cipherlist = yes
     tls_random_source = dev:/dev/urandom
     transport_maps = lmdb:/etc/postfix/transport
-    virtual_alias_maps = lmdb:/etc/postfix/virtusertable
   transport.map: |
-    {{ .Values.transport | nindent 4 }}
-  virtusertable.map: |
-    {{ .Values.virtusertable | nindent 4 }}
+    # Empty file
+  users.sh: |-
+    #! /bin/sh
+    {{- if .Values.users }}
+    if ! grep -q ^{{ (index .Values.users 0).username }} /etc/passwd; then
+      {{- range $value := .Values.users }}
+      adduser -u {{ $value.uid }} -G users -D -s /bin/sh -g "{{ $value.name }}" {{ $value.username }}
+      {{- end }}
+    fi
+    {{- end }}
 {{- end }}

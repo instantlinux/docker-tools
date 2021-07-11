@@ -69,7 +69,7 @@ the --pipe-stdout command option for that use case.
 
 Launch this docker image in kubernetes or docker-compose using one of the
 files provided here. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can launch [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/blacklist/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/master/images/blacklist/helm), [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/blacklist/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s

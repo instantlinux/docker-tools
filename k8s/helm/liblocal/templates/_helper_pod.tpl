@@ -47,7 +47,15 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- if or (hasKey .Values "env") (hasKey .Values "xenv") }}
+          {{- if hasKey .pod "command" }}
+          command:
+            {{- toYaml .pod.command | nindent 12 }}
+          {{- end }}
+          {{- if hasKey .pod "args" }}
+          args:
+            {{- toYaml .pod.args | nindent 12 }}
+          {{- end }}
+          {{- if or (hasKey .pod "env") (hasKey .pod "xenv") }}
           env:
           {{- end }}
           {{- if (hasKey .pod "env") }}
