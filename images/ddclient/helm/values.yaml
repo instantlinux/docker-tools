@@ -17,11 +17,9 @@ volumes:
     secretName: ddclient-user
 
 image:
-  # repository: instantlinux/ddclient
+  repository: instantlinux/ddclient
   pullPolicy: IfNotPresent
-  # tag: "3.9.1-r0"
-  repository: nexus.instantlinux.net/ddclient
-  tag: latest
+  # tag: default
 
 imagePullSecrets: [ name: regcred ]
 nameOverride: ""

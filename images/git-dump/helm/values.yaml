@@ -33,7 +33,7 @@ volumes:
 image:
   repository: instantlinux/git-dump
   pullPolicy: IfNotPresent
-  tag: "2.32.0-r0"
+  # tag: default
 
 nameOverride: ""
 fullnameOverride: ""

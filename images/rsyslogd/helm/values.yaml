@@ -1,0 +1,61 @@
+# Default values for rsyslogd.
+# Force reload every week; TODO better way to manage
+# storage both inside the container and in host's docker log
+livenessProbe:
+  exec:
+    command: [ 'false' ]
+  initialDelaySeconds: 604800
+
+deployment:
+  env:
+    tz: UTC
+  containerPorts:
+  - containerPort: 514
+  
+volumeMounts:
+- name: config
+  mountPath: /etc/rsyslog.d
+- name: logrotate
+  mountPath: /etc/logrotate.d
+volumes:
+- name: config
+  configMap:
+    name: rsyslogd
+- name: logrotate
+  configMap:
+    name: rsyslogd-logrotate
+
+image:
+  repository: instantlinux/rsyslogd
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: 10.101.1.40
+  ports:
+  - { port: 514, targetPort: 514, name: rsyslogd }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  name: rsyslogd
+  data:
+    custom.conf: |
+      # This file created from k8s configmap
+      module(load="imtcp")
+      $InputTCPServerRun 514
+      $RepeatedMsgReduction on
+
+      :msg, regex, "Connection closed by 192.168.2.[0-9]\\{1,3\\} \\[preauth\\]" stop
+      :msg, contains, "Error: Request packet type/version was invalid" stop
+      :msg, contains, "Client request was invalid, bailing out..." stop
+      :msg, contains, "required revision has been compacted" stop
+      :msg, contains, "connect from unknown[10.244" stop
+
+      *.*;local1.!=info;cron.!=info;local2.!=notice @@splunk:1514
+  

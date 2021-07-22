@@ -33,7 +33,7 @@ volumes:
 image:
   repository: instantlinux/mt-daapd
   pullPolicy: IfNotPresent
-  tag: "26.4-dfsg1-1"
+  # tag: default
 
 nameOverride: ""
 fullnameOverride: ""

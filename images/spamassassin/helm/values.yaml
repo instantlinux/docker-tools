@@ -8,6 +8,12 @@ statefulset:
     pyzor_site: "public.pyzor.org:24441"
     tz: UTC
   replicas: 3
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 volumeMounts:
 - mountPath: /etc/mail/spamassassin/local.cf
   name: etc
@@ -34,7 +40,7 @@ volumeClaimTemplates:
 image:
   repository: instantlinux/spamassassin
   pullPolicy: IfNotPresent
-  tag: "3.4.2-1"
+  # tag: default
 
 nameOverride: ""
 fullnameOverride: ""

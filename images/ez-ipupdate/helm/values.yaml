@@ -1,6 +1,7 @@
 # Default values for ez-ipupdate.
-env:
-  host: www.example.com
+deployment:
+  env:
+    host: www.example.com
 volumeMounts:
 - name: secret
   mountPath: /run/secrets/ez-ipupdate-user
@@ -13,29 +14,14 @@ volumes:
 image:
   repository: instantlinux/ez-ipupdate
   pullPolicy: IfNotPresent
-  tag: "3.0.10-r9"
+  # tag: default
 
-imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-deployment: {}
 serviceAccount: {}
-podAnnotations: {}
-podSecurityContext: {}
-securityContext: {}
-
 service:
   enabled: false
 
-ingress:
-  enabled: false
-
-resources: {}
-
 autoscaling:
   enabled: false
-
-nodeSelector: {}
-tolerations: []
-affinity: {}

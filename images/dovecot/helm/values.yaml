@@ -155,7 +155,7 @@ volumes:
 image:
   repository: instantlinux/dovecot
   pullPolicy: IfNotPresent
-  tag: "2.3.14-r0"
+  # tag: default
 
 nameOverride: ""
 fullnameOverride: ""

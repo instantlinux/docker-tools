@@ -44,7 +44,7 @@ volumes:
 image:
   repository: instantlinux/haproxy-keepalived
   pullPolicy: IfNotPresent
-  tag: "2.4.1-alpine-2.2.1-r0"
+  # tag: default
 
 nameOverride: ""
 fullnameOverride: ""

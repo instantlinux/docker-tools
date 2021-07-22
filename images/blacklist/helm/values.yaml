@@ -30,7 +30,7 @@ volumeClaimTemplates:
 image:
   repository: instantlinux/blacklist
   pullPolicy: IfNotPresent
-  tag: "0.998b"
+  # tag: default
 
 nameOverride: ""
 fullnameOverride: ""
