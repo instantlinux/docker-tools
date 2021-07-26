@@ -1,7 +1,0 @@
-# Transport - internal destination hosts
-mydomain.com	relay:[webmail.mydomain.com]
-demo.mydomain.com	relay:[webmail.mydomain.com]
-
-# External override examples
-blu.org	  relay:[relay.dnsexit.com]:2525
-gmail.com	  relay:in.mailjet.com:587

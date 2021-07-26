@@ -1,4 +1,0 @@
-#!/bin/sh
-VER1=$(grep "ARG UNISON_VERSION" Dockerfile | cut -d= -f 2)
-VER2=$(grep "ARG OCAML_VERSION" Dockerfile | cut -d= -f 2)
-echo "--tag $DOCKER_REPO:$VER1-$VER2"

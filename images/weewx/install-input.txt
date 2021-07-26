@@ -1,9 +1,0 @@
-DESC
-0, foot
-90.0
-90.0
-n
-us
-5
-serial
-/dev/ttyUSB0

@@ -1,5 +1,0 @@
-Deprecated - now using the kubernetes cert-manager
-
-Keeping this for now to support certs for local Docker registry and
-(possibly) alternative to /var/run/docker.sock.
-

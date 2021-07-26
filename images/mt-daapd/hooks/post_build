@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/mt-daapd/Ro-SsuIDsH3xnbRij3znw6e0ELY=

@@ -1,3 +1,0 @@
-#!/bin/sh
-TAG=$(grep "ARG SPAMD_VERSION" Dockerfile | cut -d= -f 2 | cut -d+ -f 1)
-echo "--tag $DOCKER_REPO:$TAG"

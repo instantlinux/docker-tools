@@ -1,4 +1,0 @@
-{{ ansible_managed | comment }}
-{% for item in nagios.plugins_sudo %}
-{{ nagios.nrpe_user }} ALL=NOPASSWD:	{{ nagios.local_plugins_path }}/{{ item }}
-{% endfor %}

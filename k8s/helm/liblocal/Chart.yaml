@@ -1,5 +1,0 @@
-apiVersion: v2
-name: liblocal
-description: Standard templates library
-type: library
-version: 0.1.0

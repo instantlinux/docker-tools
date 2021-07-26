@@ -1,6 +1,0 @@
-deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/appsuiteui/Debian{{ DISTRO }}/ /
-deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/backend/Debian{{ DISTRO }}/ /
-deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/office/Debian{{ DISTRO }} /
-deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/office-web/Debian{{ DISTRO }} /
-deb http://software.open-xchange.com/products/appsuite/{{ VERSION }}/documentconverter-api/Debian{{ DISTRO }} /
-deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ buster main

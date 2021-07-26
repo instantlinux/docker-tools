@@ -1,3 +1,0 @@
-#!/bin/bash
-# Set up QEMU for multi-arch build
-docker run --rm --privileged multiarch/qemu-user-static:register --reset
