@@ -1,17 +1,15 @@
 apiVersion: v2
-name: dovecot
-description: Dovecot imapd server
+name: gitlab
+description: Gitlab CI/CD
 home: https://github.com/instantlinux/docker-tools
 sources:
+- https://hub.docker.com/r/gitlab/gitlab-ce
 - https://github.com/instantlinux/docker-tools
-- https://github.com/vdukhovni/dovecot
+- https://gitlab.com/gitlab-org/gitlab
 type: application
 version: 0.1.0
-appVersion: "2.3.14-r0"
+appVersion: "13.11.3-ce.0"
 dependencies:
 - name: liblocal
   version: 0.1.0
   repository: file://../liblocal
-- name: data-sync
-  version: 0.1.0
-  repository: file://../data-sync

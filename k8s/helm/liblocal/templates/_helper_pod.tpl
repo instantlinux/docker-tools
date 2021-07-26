@@ -92,10 +92,21 @@ spec:
           volumeMounts:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           {{- end }}
+      {{- if hasKey .pod "dnsConfig" }}
+      dnsConfig:
+        {{- toYaml .pod.dnsConfig | nindent 8 }}
+      {{- end }}
       {{- if hasKey .pod "hostNetwork" }}
       {{- if .pod.hostNetwork }}
       hostNetwork: true
       {{- end }}
+      {{- end }}
+      {{- if hasKey .pod "hostAliases" }}
+      hostAliases:
+        {{- toYaml .pod.hostAliases | nindent 8 }}
+      {{- end }}
+      {{- if hasKey .pod "hostname" }}
+      hostname: {{ .pod.hostname }}
       {{- end }}
       {{- if hasKey .pod "nodeSelector" }}
       nodeSelector:

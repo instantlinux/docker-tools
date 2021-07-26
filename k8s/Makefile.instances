@@ -41,12 +41,12 @@ nut-upsd::
 samba-dc::
 	@echo Invoke 'make dcxx' target for domain controllers
 	@exit 1
-dc0%:
-	@echo --$(NOTICE) $@--
-	$(eval BIND_IP := $(shell case $@ in (dc03) echo $(DC03_IP);; \
-	 (dc05) echo $(DC05_IP);; esac))
-	@SERVICE_NAME=$@ BIND_IP=$(BIND_IP) SAMBADC_INTERFACES="lo $(BIND_IP)" \
-	 envsubst < samba-dc.yaml | kubectl $(ACTION) -f -
+#dc0%:
+	# @echo --$(NOTICE) $@--
+	# $(eval BIND_IP := $(shell case $@ in (dc03) echo $(DC03_IP);; \
+	#  (dc05) echo $(DC05_IP);; esac))
+	# @SERVICE_NAME=$@ BIND_IP=$(BIND_IP) SAMBADC_INTERFACES="lo $(BIND_IP)" \
+	#  envsubst < samba-dc.yaml | kubectl $(ACTION) -f -
 
 wordpress::
 	@echo Please specify a specific instance e.g. wordpress-ci && exit 1

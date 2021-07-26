@@ -1,0 +1,86 @@
+# Default values for weewx.
+deployment:
+  env:
+    airlink_host: airlink
+    altitude: 100, foot
+    computer_type: Linux x86_64 with Kubernetes
+    db_host: db00
+    db_user: wx
+    latitude: 37.6365
+    longitude: 122.1261
+    location: Davis Instruments HQ
+    operator: Independent Hobbyist
+    optional_accessories: "True"
+    rain_year_start: 7
+    rsync_dest: /usr/share/nginx/wx
+    rsync_host: wx-nginx
+    rsync_port: "3022"
+    skin: WeeGreen
+    station_features: ""
+    station_id: required
+    station_model: "6152"
+    station_type: Vantage
+    station_url: ""
+    syslog_dest: "@@10.101.1.40:514"
+    tz: UTC
+    tz_code: "0"
+    webcam_url: ""
+    xtide_location: San Francisco
+  nodeSelector:
+    service.weewx: allow
+  resources:
+    limits:
+      memory: 1024Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  securityContext:
+    privileged: true
+volumeMounts:
+- name: usb
+  mountPath: /dev/ttyUSB0
+- name: var
+  mountPath: /var/www/weewx
+- name: weewx-db-password
+  mountPath: /run/secrets/weewx-db-password
+  subPath: weewx-db-password
+- name: weewx-rsync-sshkey
+  mountPath: /run/secrets/weewx-rsync-sshkey
+  subPath: weewx-rsync-sshkey
+- name: weewx-wunderground-apikey
+  mountPath: /run/secrets/weewx-wunderground-apikey
+  subPath: weewx-wunderground-apikey
+- name: weewx-wunderground-password
+  mountPath: /run/secrets/weewx-wunderground-password
+  subPath: weewx-wunderground-password
+volumes:
+- name: usb
+  hostPath: { path: /dev/ttyUSB0 }
+- name: var
+  emptyDir: { medium: Memory }
+- name: weewx-db-password
+  secret:
+    secretName: weewx-db-password
+- name: weewx-rsync-sshkey
+  secret:
+    secretName: weewx-rsync-sshkey
+- name: weewx-wunderground-apikey
+  secret:
+    secretName: weewx-wunderground-apikey
+- name: weewx-wunderground-password
+  secret:
+    secretName: weewx-wunderground-password
+
+image:
+  repository: instantlinux/weewx
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  enabled: false
+autoscaling:
+  enabled: false

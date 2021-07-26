@@ -1,0 +1,99 @@
+# Default values for gitlab.
+nodeportSSH: 30999
+smtp:
+  domain: example.com
+  relayHost: smtp.example.com
+tlsHostname: git.example.com
+deployment:
+  command: [/bin/bash]
+  args:
+  # The image lacks tzdata, this looks up and installs rpm
+  - -c
+  - >
+    mkdir -p /var/backups/gitlab &&
+    rm -fr /var/opt/gitlab/backups &&
+    ln -fnsT /var/backups/gitlab /var/opt/gitlab/backups &&
+    sh -c 'sh /usr/local/bin/gitback &' &&
+    exec /assets/wrapper
+  env:
+    tz: UTC
+  xenv:
+  - name: GITLAB_OMNIBUS_CONFIG
+    valueFrom:
+      secretKeyRef:
+        # Secret should contain base64-encoded string in form
+        # "gitlab_rails['db_password']='xxxx';"
+        key: omnibus-config
+        name: gitlab-db-password
+  containerPorts:
+  - containerPort: 22
+  - containerPort: 80
+  - containerPort: 443
+  hostname: git
+  nodeSelector:
+    service.gitlab: allow
+  resources:
+    limits:
+      memory: 6144Mi
+    requests:
+      cpu: 400m
+      memory: 3172Mi
+volumeMounts:
+- mountPath: /etc/gitlab
+  name: gitlab
+  subPath: config
+- mountPath: /etc/gitlab/gitlab.rb
+  name: config
+  subPath: gitlab.rb
+- mountPath: /usr/local/bin/gitback
+  name: config
+  subPath: gitback
+- mountPath: /var/opt/gitlab
+  name: gitlab
+  subPath: data
+- mountPath: /var/backups
+  name: backup
+  subPath: gitlab
+- mountPath: /var/log/gitlab
+  name: logs
+volumes:
+- name: backup
+  hostPath: { path: /var/lib/docker/k8s-volumes/backup }
+- name: config
+  configMap:
+    name: gitlab
+- name: logs
+  emptyDir: {}
+- name: gitlab
+  hostPath: { path: /var/lib/docker/k8s-volumes/gitlab }
+
+image:
+  repository: gitlab/gitlab-ce
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: gitlab-pod-privileged
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, name: gitlab }
+  - { port: 8999, targetPort: 22, name: ssh }
+  - { port: 443, name: https }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /en-US/account/login
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"

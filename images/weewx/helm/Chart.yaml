@@ -1,17 +1,14 @@
 apiVersion: v2
-name: dovecot
-description: Dovecot imapd server
+name: weewx
+description: Weather Station software
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
-- https://github.com/vdukhovni/dovecot
+- https://github.com/weewx/weewx/
 type: application
 version: 0.1.0
-appVersion: "2.3.14-r0"
+appVersion: "4.5.1"
 dependencies:
 - name: liblocal
   version: 0.1.0
   repository: file://../liblocal
-- name: data-sync
-  version: 0.1.0
-  repository: file://../data-sync

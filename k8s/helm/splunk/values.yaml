@@ -1,0 +1,88 @@
+# Default values for splunk.
+tlsHostname: splunk.example.com
+statefulset:
+  command: [/bin/sh]
+  args:
+  # The image lacks tzdata, this looks up and installs rpm
+  - -c
+  - >
+    source /etc/os-release && cd /tmp &&
+    PKG=`rpm -q tzdata`.rpm &&
+    DIST=`wget -qO- http://mirror.centos.org/centos|
+      egrep -o "href=\"${VERSION_ID}\.[0-9]+"|cut -d\" -f 2` &&
+    curl -Lo $PKG \
+      http://mirror.centos.org/centos/${DIST}/BaseOS/x86_64/os/Packages/$PKG &&
+    sudo rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official &&
+    sudo rpm -ivh --reinstall $PKG &&
+    exec /sbin/entrypoint.sh start-service
+  env:
+    splunk_add: tcp 1514
+    splunk_enable_listen: "9997"
+    splunk_password: changeme
+    splunk_start_args: --accept-license --answer-yes
+  containerPorts:
+  - containerPort: 8000
+  - containerPort: 1514
+  - containerPort: 8088
+  - containerPort: 8089
+  - containerPort: 9997
+  nodeSelector:
+    service.splunk: allow
+  resources:
+    limits:
+      memory: 4096Mi
+    requests:
+      cpu: 200m
+      memory: 384Mi
+volumeMounts:
+- mountPath: /opt/splunk/etc
+  name: splunk
+  subPath: etc
+- mountPath: /opt/splunk/var
+  name: splunk
+  subPath: var
+volumeClaimTemplates:
+- metadata:
+    name: splunk
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 50Mi
+    selector:
+      matchLabels:
+        volume.group: $SERVICE_NAME
+
+image:
+  repository: splunk/splunk
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 8000, name: splunk }
+  - { port: 1514, targetPort: 1514, name: syslog }
+  - { port: 8088, targetPort: 8088, name: hec }
+  - { port: 8089, targetPort: 8089, name: api }
+  - { port: 9997, targetPort: 9997, name: forwarder }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /en-US/account/login
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: splunk-auth
+ingressTOTP:
+  enabled: true

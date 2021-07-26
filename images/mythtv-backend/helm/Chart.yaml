@@ -1,17 +1,14 @@
 apiVersion: v2
-name: dovecot
-description: Dovecot imapd server
+name: mythtv-backend
+description: MythTV DVR backend
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
-- https://github.com/vdukhovni/dovecot
+- https://github.com/mythtv/mythtv
 type: application
 version: 0.1.0
-appVersion: "2.3.14-r0"
+appVersion: "31.0-fixes.202106102123.0680b37c68"
 dependencies:
 - name: liblocal
   version: 0.1.0
   repository: file://../liblocal
-- name: data-sync
-  version: 0.1.0
-  repository: file://../data-sync

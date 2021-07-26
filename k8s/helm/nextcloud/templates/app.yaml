@@ -1,4 +1,3 @@
----
 {{- include "liblocal.deployment" . }}
 ---
 {{- include "liblocal.hpa" . }}
@@ -10,5 +9,3 @@
 {{- include "liblocal.service" . }}
 ---
 {{- include "liblocal.serviceaccount" . }}
----
-{{- include "liblocal.statefulset" . }}

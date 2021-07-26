@@ -1,3 +1,4 @@
+{{- include "liblocal.configmap" . }}
 ---
 {{- include "liblocal.deployment" . }}
 ---

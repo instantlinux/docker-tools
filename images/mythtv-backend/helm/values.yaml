@@ -1,0 +1,121 @@
+# Default values for mythtv-backend.
+deployment:
+  env:
+    dbname: mythtv
+    dbserver: db00
+    localhostname: pvr01
+    tz: UTC
+  containerPorts:
+  - { containerPort: 1900, protocol: UDP }
+  - containerPort: 6543
+  - containerPort: 6544
+  - containerPort: 6549
+  - containerPort: 6760
+  hostAliases:
+  - ip: 127.0.1.1
+    hostnames: [ pvr01 ]
+  hostNetwork: true
+  nodeSelector:
+    service.mythtv-backend: allow
+  resources:
+    limits:
+      memory: 2048Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+volumeMounts:
+- name: apache-log
+  mountPath: /var/log/apache2
+- name: data
+  mountPath: /var/mythdata
+- name: share
+  mountPath: /home/mythtv
+  subPath: mythtv-backend/home
+- name: videos
+  mountPath: /var/mythtv/videos
+  readOnly: true
+- name: mythposters
+  mountPath: /var/mythtv/posters
+- name: mytharch1
+  mountPath: /var/mythtv/arch1
+  readOnly: true
+- name: mythtv-db-password
+  mountPath: /run/secrets/mythtv-db-password
+  readOnly: true
+  subPath: mythtv-db-password
+- name: mythtv-user-password
+  mountPath: /run/secrets/mythtv-user-password
+  readOnly: true
+  subPath: mythtv-user-password
+volumes:
+- name: apache-log
+  emptyDir: {}
+- name: data
+  hostPath: { path: $MYTHTV_VOL_PATH }
+- name: videos
+  persistentVolumeClaim:
+    claimName: videos
+- name: mythposters
+  persistentVolumeClaim:
+    claimName: mythposters
+- name: mytharch1
+  persistentVolumeClaim:
+    claimName: mytharch1
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+- name: mythtv-db-password
+  secret:
+    secretName: mythtv-db-password
+- name: mythtv-user-password
+  secret:
+    secretName: mythtv-user-password
+
+image:
+  repository: instantlinux/mythtv-backend
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: example-privileged
+service:
+  clusterIP: None
+  ports:
+  - { port: 6760, targetPort: 6760, name: mythweb }
+  - { port: 6544, targetPort: 6544, name: status }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+ingress:
+  enabled: true
+  # className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: mythweb-auth
+  hosts:
+  - host: mythweb.example.com
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+  - secretName: tls-mythtv-backend
+    hosts:
+    - mythweb.example.com
+ingressTOTP:
+  hosts:
+  - host: mythweb.example.com
+    paths:
+    - path: /settings
+      pathType: Prefix
+  tls:
+  - secretName: tls-mythtv-backend
+    hosts: [ mythweb.example.com ]
