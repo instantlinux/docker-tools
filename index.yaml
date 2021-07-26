@@ -1,0 +1,369 @@
+apiVersion: v1
+entries:
+  artifactory:
+  - apiVersion: v2
+    appVersion: 6.15.1
+    created: "2021-07-26T23:05:09.542316968Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: JFrog Artifactory service
+    digest: 5d77507aa7469444bd2680ef109cd374f1f51296813f9d06c564ee975f3ef519
+    name: artifactory
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/artifactory-0.1.0/artifactory-0.1.0.tgz
+    version: 0.1.0
+  blacklist:
+  - apiVersion: v2
+    appVersion: 0.998b
+    created: "2021-07-26T23:05:09.718784896Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: DNS blacklist for spamassassin
+    digest: d9fafb16a7e77189208389ce8336efb3fbb840f2c8358eeffebb7452a58664b1
+    home: https://github.com/instantlinux/docker-tools
+    name: blacklist
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/spamhaus/rbldnsd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/blacklist-0.1.0/blacklist-0.1.0.tgz
+    version: 0.1.0
+  data-sync:
+  - apiVersion: v2
+    appVersion: 2.51.4-4.12.0-r0
+    created: "2021-07-26T23:05:09.914637517Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: git backup
+    digest: 451a9f7f62b59cb3654db7ff831adb962159b73ed21efc43832df5f46f529e53
+    home: https://github.com/instantlinux/docker-tools
+    name: data-sync
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/data-sync-0.1.0/data-sync-0.1.0.tgz
+    version: 0.1.0
+  ddclient:
+  - apiVersion: v2
+    appVersion: 3.9.1-r0
+    created: "2021-07-26T23:05:10.11555101Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Dynamic-DNS client
+    digest: 549a836172bfc0cf44e350b766ca78547a034d2092a88fc2a4c16021a9b9447b
+    home: https://github.com/instantlinux/docker-tools
+    name: ddclient
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/ddclient/ddclient/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/ddclient-0.1.0/ddclient-0.1.0.tgz
+    version: 0.1.0
+  dhcpd-dns-pxe:
+  - apiVersion: v2
+    appVersion: 4.4.2_p1-r0-2.85-r2
+    created: "2021-07-26T23:05:10.350437915Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: DHCP server with dnsmasq
+    digest: dbaf1a0bd6b2b50b9f032a23cfb301b0fc787c3d8886a5ffe70322623ccc63e3
+    home: https://github.com/instantlinux/docker-tools
+    name: dhcpd-dns-pxe
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://source.isc.org/git/dhcp.git
+    - http://thekelleys.org.uk/gitweb/?p=dnsmasq.git
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/dhcpd-dns-pxe-0.1.0/dhcpd-dns-pxe-0.1.0.tgz
+    version: 0.1.0
+  dovecot:
+  - apiVersion: v2
+    appVersion: 3.6.1-r0
+    created: "2021-07-26T23:05:10.544666045Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    - name: data-sync
+      repository: file://../data-sync
+      version: 0.1.0
+    description: Postfix with python
+    digest: e281940e1f6b5990ed9e8e1bbbae627adcd1b967ddde10b85cca8f7a49ec34b7
+    home: https://github.com/instantlinux/docker-tools
+    name: dovecot
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/vdukhovni/dovecot
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/dovecot-0.1.0/dovecot-0.1.0.tgz
+    version: 0.1.0
+  ez-ipupdate:
+  - apiVersion: v2
+    appVersion: 3.0.10-r9
+    created: "2021-07-26T23:05:10.730510321Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Dynamic-DNS client
+    digest: 56fd78c9ae3c05c0b458fedf9ba8f9d016ea9daba1130f6fab77db4259018157
+    home: https://github.com/instantlinux/docker-tools
+    name: ez-ipupdate
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://sourceforge.net/projects/ez-ipupdate/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/ez-ipupdate-0.1.0/ez-ipupdate-0.1.0.tgz
+    version: 0.1.0
+  git-dump:
+  - apiVersion: v2
+    appVersion: 2.32.0-r0
+    created: "2021-07-26T23:05:10.934840795Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: git backup
+    digest: 43bb70fb38ade5f3a26f63af09b7610f2e067c9a80120fb6ad7278ba92db4683
+    home: https://github.com/instantlinux/docker-tools
+    name: git-dump
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/git-dump-0.1.0/git-dump-0.1.0.tgz
+    version: 0.1.0
+  guacamole:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-07-26T23:05:11.210081978Z"
+    description: Apache Guacamole remote desktop service
+    digest: 465857b0e57c0b3abd56b1e3396c0f6ad334a90901e1fe205212fafc78674cd1
+    home: https://github.com/instantlinux/docker-tools
+    name: guacamole
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/apache/guacamole-client
+    - https://github.com/apache/guacamole-server
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/guacamole-0.1.0/guacamole-0.1.0.tgz
+    version: 0.1.0
+  haproxy-keepalived:
+  - apiVersion: v2
+    appVersion: 2.4.1-alpine-2.2.1-r0
+    created: "2021-07-26T23:05:11.396969549Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Load balancer with haproxy and keepalived
+    digest: 27283afda85471a7aab076f0d52232fe56033089097b225ecf8cec7b60a44f75
+    home: https://github.com/instantlinux/docker-tools
+    name: haproxy-keepalived
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/haproxy/haproxy
+    - https://github.com/acassen/keepalived
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/haproxy-keepalived-0.1.0/haproxy-keepalived-0.1.0.tgz
+    version: 0.1.0
+  liblocal:
+  - apiVersion: v2
+    created: "2021-07-26T23:05:11.576408453Z"
+    description: Standard templates library
+    digest: f5f70ec548cf13cde0d1bb8a04155a966843c2d193dac1ea2e2ed783a28caebe
+    name: liblocal
+    type: library
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/liblocal-0.1.0/liblocal-0.1.0.tgz
+    version: 0.1.0
+  mt-daapd:
+  - apiVersion: v2
+    appVersion: 26.4-dfsg1-1
+    created: "2021-07-26T23:05:11.759927683Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Dynamic-DNS client
+    digest: b9b4b59a5feb104acb4dc47c20c6c79c698d999969a6b2d50c23be7b8ae4338f
+    home: https://github.com/instantlinux/docker-tools
+    name: mt-daapd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://sourceforge.net/projects/mt-daapd/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/mt-daapd-0.1.0/mt-daapd-0.1.0.tgz
+    version: 0.1.0
+  mysqldump:
+  - apiVersion: v2
+    appVersion: 10.5.11-r0
+    created: "2021-07-26T23:05:11.957544346Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: git backup
+    digest: 29b102b24c6c85936535d21a724608f98813c4132d1dfe8fcbbd22447e32ef8f
+    home: https://github.com/instantlinux/docker-tools
+    name: mysqldump
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/mariadb/server/tree/10.5/client
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/mysqldump-0.1.0/mysqldump-0.1.0.tgz
+    version: 0.1.0
+  nexus:
+  - apiVersion: v2
+    appVersion: 3.31.1
+    created: "2021-07-26T23:05:12.151601626Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Sonatype nexus repository service
+    digest: d83eff4ce2cc12e4f2e02620d43d3afb861c567ca6211491c0176e49c50ec0a0
+    home: https://github.com/instantlinux/docker-tools
+    name: nexus
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/nexus-0.1.0/nexus-0.1.0.tgz
+    version: 0.1.0
+  nut-upsd:
+  - apiVersion: v2
+    appVersion: 2.7.4-r8
+    created: "2021-07-26T23:05:12.326295797Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Network UPS Tools
+    digest: 24f206d98d82bd6b66a1eb10a1043637afebae39b8f8bd69c8e7aed3ccfb2f81
+    home: https://github.com/instantlinux/docker-tools
+    name: nut-upsd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/networkupstools/nut
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/nut-upsd-0.1.0/nut-upsd-0.1.0.tgz
+    version: 0.1.0
+  postfix:
+  - apiVersion: v2
+    appVersion: 3.6.1-r0
+    created: "2021-07-26T23:05:12.519531981Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Postfix with python
+    digest: d78c8623c15b56ac90cef57712deb1b482971dc8a1ce06cbcd3f41270d97b1ca
+    home: https://github.com/instantlinux/docker-tools
+    name: postfix
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/vdukhovni/postfix
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/postfix-0.1.0/postfix-0.1.0.tgz
+    version: 0.1.0
+  proftpd:
+  - apiVersion: v2
+    appVersion: 1.3.7a-r0
+    created: "2021-07-26T23:05:12.763439924Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: FTP server
+    digest: 4a7bfb688a45823cad92858a13d558e1abf79c76cb7870460a677c6c725c695a
+    home: https://github.com/instantlinux/docker-tools
+    name: proftpd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/proftpd/proftpd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/proftpd-0.1.0/proftpd-0.1.0.tgz
+    version: 0.1.0
+  rsyslogd:
+  - apiVersion: v2
+    appVersion: 8.2012.0-r0
+    created: "2021-07-26T23:05:12.957708103Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: rsyslogd
+    digest: d49141bf78a15692e20170cbe62b977cef33a0e73e389e2078303000aee41079
+    home: https://github.com/instantlinux/docker-tools
+    name: rsyslogd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/rsyslog/rsyslog
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/rsyslogd-0.1.0/rsyslogd-0.1.0.tgz
+    version: 0.1.0
+  samba:
+  - apiVersion: v2
+    appVersion: 4.14.5-r0
+    created: "2021-07-26T23:05:13.140862634Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: samba file server
+    digest: 1bd9a3639eae1d85ab0aaed9b05b9fdced2dab88d7bdd964c3efb5920d24dc1f
+    home: https://github.com/instantlinux/docker-tools
+    name: samba
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://gitlab.com/samba-team/samba
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/samba-0.1.0/samba-0.1.0.tgz
+    version: 0.1.0
+  spamassassin:
+  - apiVersion: v2
+    appVersion: 3.4.2-1
+    created: "2021-07-26T23:05:13.349106247Z"
+    dependencies:
+    - name: liblocal
+      repository: file://../liblocal
+      version: 0.1.0
+    description: Spamassassin
+    digest: 923d283dec6b1113ecae15d88e83dd8bdf9be14e1ce5d7028123971883348637
+    home: https://github.com/instantlinux/docker-tools
+    name: spamassassin
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://svn.apache.org/viewvc/spamassassin
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/spamassassin-0.1.0/spamassassin-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-07-26T23:05:13.349115047Z"
