@@ -1,4 +1,4 @@
-{{- define "liblocal.ingress" -}}
+{{- define "chartlib.ingress" -}}
 {{- if hasKey .Values "ingress" -}}
 {{- if .Values.ingress.enabled | default true -}}
 {{- $fullName := include "local.fullname" . -}}

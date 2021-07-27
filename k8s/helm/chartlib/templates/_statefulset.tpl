@@ -1,4 +1,4 @@
-{{- define "liblocal.statefulset" -}}
+{{- define "chartlib.statefulset" -}}
 {{- if hasKey .Values "statefulset" }}
 {{- if or .Values.statefulset.enabled (not (hasKey .Values "statefulset.enabled")) }}
 {{- include "local.podSpec" (dict "pod" .Values.statefulset "kind" "StatefulSet" "Chart" .Chart "Release" .Release "Values" .Values) }}

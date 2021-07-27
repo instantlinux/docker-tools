@@ -6,12 +6,12 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/vdukhovni/dovecot
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: "2.3.14-r0"
 dependencies:
-- name: liblocal
-  version: 0.1.0
-  repository: file://../liblocal
+- name: chartlib
+  version: 0.1.1
+  repository: https://instantlinux.github.io/docker-tools
 - name: data-sync
-  version: 0.1.0
-  repository: file://../data-sync
+  version: 0.1.1
+  repository: https://instantlinux.github.io/docker-tools

@@ -1,4 +1,4 @@
-{{- define "liblocal.configmap" -}}
+{{- define "chartlib.configmap" -}}
 {{- if hasKey .Values "configmap" }}
 {{- if or .Values.configmap.enabled (not (hasKey .Values.configmap "enabled")) -}}
 apiVersion: v1

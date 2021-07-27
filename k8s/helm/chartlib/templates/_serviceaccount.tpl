@@ -1,4 +1,4 @@
-{{- define "liblocal.serviceaccount" -}}
+{{- define "chartlib.serviceaccount" -}}
 {{- if .Values.serviceAccount.create -}}
 apiVersion: v1
 kind: ServiceAccount

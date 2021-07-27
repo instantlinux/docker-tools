@@ -1,4 +1,4 @@
-{{- define "liblocal.service" -}}
+{{- define "chartlib.service" -}}
 {{- if hasKey .Values "service" }}
 {{- if or .Values.service.enabled (not (hasKey .Values.service "enabled")) }}
 apiVersion: v1

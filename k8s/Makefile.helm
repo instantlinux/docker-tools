@@ -19,5 +19,5 @@ helm_install: /usr/local/bin/helm \
 	helm repo add bitnami https://charts.bitnami.com/bitnami
 
 CHARTLOCK = $(addsuffix /Chart.lock, $(addprefix helm/, $(CHARTS)))
-$(CHARTLOCK): helm/liblocal/Chart.yaml
+$(CHARTLOCK):
 	helm dependency update $(dir $@)

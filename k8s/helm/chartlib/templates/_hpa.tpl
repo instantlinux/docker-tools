@@ -1,4 +1,4 @@
-{{- define "liblocal.hpa" -}}
+{{- define "chartlib.hpa" -}}
 {{- if .Values.autoscaling.enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler

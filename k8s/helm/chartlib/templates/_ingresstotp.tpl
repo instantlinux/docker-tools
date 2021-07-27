@@ -1,4 +1,4 @@
-{{- define "liblocal.ingresstotp" -}}
+{{- define "chartlib.ingresstotp" -}}
 {{- if hasKey .Values "ingressTOTP" -}}
 {{- if .Values.ingressTOTP.enabled | default true -}}
 {{- $fullName := include "local.fullname" . -}}

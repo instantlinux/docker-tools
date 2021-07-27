@@ -1,0 +1,7 @@
+apiVersion: v2
+name: chartlib
+description: Standard templates library
+sources:
+- https://github.com/instantlinux/docker-tools
+type: library
+version: 0.1.1

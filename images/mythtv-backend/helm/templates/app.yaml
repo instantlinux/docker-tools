@@ -1,13 +1,13 @@
-{{- include "liblocal.deployment" . }}
+{{- include "chartlib.deployment" . }}
 ---
-{{- include "liblocal.hpa" . }}
+{{- include "chartlib.hpa" . }}
 ---
-{{- include "liblocal.ingress" . }}
+{{- include "chartlib.ingress" . }}
 ---
-{{- include "liblocal.ingresstotp" . }}
+{{- include "chartlib.ingresstotp" . }}
 ---
-{{- include "liblocal.service" . }}
+{{- include "chartlib.service" . }}
 ---
-{{- include "liblocal.serviceaccount" . }}
+{{- include "chartlib.serviceaccount" . }}
 ---
-{{- include "liblocal.statefulset" . }}
+{{- include "chartlib.statefulset" . }}
