@@ -7,5 +7,5 @@ sources:
 - https://github.com/apache/guacamole-client
 - https://github.com/apache/guacamole-server
 type: application
-version: 0.1.1
+version: 0.1.0
 appVersion: "1.16.0"
