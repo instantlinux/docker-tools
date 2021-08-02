@@ -1,13 +1,14 @@
 apiVersion: v2
-name: blacklist
-description: DNS blacklist for spamassassin
+name: gitlab-runner
+description: Distributed build agent for GitLab
 home: https://github.com/instantlinux/docker-tools
 sources:
+- https://hub.docker.com/r/gitlab/gitlab-runner
 - https://github.com/instantlinux/docker-tools
-- https://github.com/spamhaus/rbldnsd
+- https://gitlab.com/gitlab-org/gitlab-runner
 type: application
-version: 0.1.2
-appVersion: "0.998b"
+version: 0.1.0
+appVersion: "alpine-v13.11.0"
 dependencies:
 - name: chartlib
   version: 0.1.5

@@ -4,8 +4,11 @@
 TARBALL = helm-v$(VERSION_HELM)-linux-amd64.tar.gz
 .PHONY: helm_install
 
-helm_install: /usr/local/bin/helm \
-	~/.helm/repository/cache/bitnami-index.yaml
+helm_install: /usr/local/bin/helm
+	helm repo add instantlinux https://instantlinux.github.io/docker-tools/
+helm_list:
+	@helm list --time-format="Mon Jan 2 15:04" --all-namespaces \
+	  --kube-context=sudo
 
 /usr/local/bin/helm:
 	wget -O /tmp/$(TARBALL) https://get.helm.sh/$(TARBALL)
@@ -14,9 +17,6 @@ helm_install: /usr/local/bin/helm \
 	tar xf /tmp/helm-amd64.tar.gz -C /tmp
 	sudo mv /tmp/linux-amd64/helm /usr/local/bin
 	rm -r /tmp/$(TARBALL)* /tmp/linux-amd64
-
-~/.helm/repository/cache/bitnami-index.yaml:
-	helm repo add bitnami https://charts.bitnami.com/bitnami
 
 CHARTLOCK = $(addsuffix /Chart.lock, $(addprefix helm/, $(CHARTS)))
 $(CHARTLOCK):

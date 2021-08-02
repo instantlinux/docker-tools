@@ -1,0 +1,41 @@
+# Default values for rainloop.
+tlsHostname: rainloop.example.com
+deployment:
+  env:
+    gid: 991
+    uid: 2022
+    log_to_stdout: "true"
+  containerPorts:
+  - containerPort: 8888
+volumeMounts:
+- mountPath: /rainloop/data
+  name: share
+  subPath: rainloop/data
+volumes:
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: hardware/rainloop
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 8888 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 20m
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 20m

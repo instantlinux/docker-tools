@@ -13,7 +13,6 @@ jobs:
 
       - name: Run chart-testing (lint)
         uses: helm/chart-testing-action@v2.1.0
-        run: ct lint --config .github/ct.yaml
         with:
           charts_dir: k8s/helm
           command: lint

@@ -1,0 +1,45 @@
+# Default values for gitlab-runner.
+statefulset:
+  nodeSelector:
+    service.gitlab-runner: allow
+  replicas: 1
+  serviceAccountName: gitlab-runner-dockersock
+volumeMounts:
+- mountPath: /etc/gitlab-runner
+  name: config
+- mountPath: /var/run/docker.sock
+  name: docker-socket
+# This is for deploying a local root CA: make a secret named
+#  selfsigned-ca containing the path tls.crt
+- mountPath: /etc/gitlab-runner/certs/ca.crt
+  name: ca-secret
+  readOnly: true
+  subPath: tls.crt
+volumes:
+- name: docker-socket
+  hostPath: { path: /var/run/docker.sock }
+- name: ca-secret
+  secret:
+    secretName: selfsigned-ca
+volumeClaimTemplates:
+- metadata:
+    name: config
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 50Mi
+
+image:
+  repository: gitlab/gitlab-runner
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: gitlab-runner-dockersock
+autoscaling:
+  enabled: false

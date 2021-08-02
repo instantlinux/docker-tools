@@ -27,11 +27,13 @@ gitlab-runner::
 	@echo Invoke 'make gitlab-agent' instead
 	@exit 1
 
-gitlab-agent:
+gitlab-agent: ../admin/services/values.yaml ./helm/gitlab-runner/Chart.lock
 	@echo Installing service with privileged /var/run/docker.sock access
 	@K8S_NAMESPACE=gitlab make install/limits
-	@SERVICE_NAME=gitlab-runner \
-	  envsubst < gitlab-runner.yaml | kubectl $(ACTION) $(ADMIN_CTX) -n gitlab -f -
+	@helm upgrade --install -f global.yaml -f $< \
+	  -f ../admin/services/values/gitlab-runner.yaml $(XARGS) \
+	  gitlab-runner ./helm/gitlab-runner --namespace gitlab \
+	  --kube-context=kubernetes-admin@$(CLUSTER)
 	-sops -d secrets/$(CA_SECRET).yml | envsubst | kubectl create $(ADMIN_CTX) -n gitlab -f -
 
 nut-upsd::
@@ -41,19 +43,6 @@ nut-upsd::
 samba-dc::
 	@echo Invoke 'make dcxx' target for domain controllers
 	@exit 1
-#dc0%:
-	# @echo --$(NOTICE) $@--
-	# $(eval BIND_IP := $(shell case $@ in (dc03) echo $(DC03_IP);; \
-	#  (dc05) echo $(DC05_IP);; esac))
-	# @SERVICE_NAME=$@ BIND_IP=$(BIND_IP) SAMBADC_INTERFACES="lo $(BIND_IP)" \
-	#  envsubst < samba-dc.yaml | kubectl $(ACTION) -f -
 
 wordpress::
 	@echo Please specify a specific instance e.g. wordpress-ci && exit 1
-
-wordpress-ci wordpress-il:
-	@echo --$(NOTICE) $@--
-	$(eval fqdn := $(shell case $@ in (wordpress-ci) echo www.ci.net;;\
-	  (wordpress-il) echo www.instantlinux.net;; esac))
-	@SERVICE_NAME=$@ DB_NAME=$(shell echo $@ | tr - _) HOST_FQDN=$(fqdn) \
-	  envsubst < wordpress.yaml | kubectl $(ACTION) -f -

@@ -2,9 +2,9 @@ apiVersion: v2
 name: artifactory
 description: JFrog Artifactory service
 type: application
-version: 0.1.2
+version: 0.1.3
 appVersion: "6.15.1"
 dependencies:
 - name: chartlib
-  version: 0.1.3
+  version: 0.1.5
   repository: https://instantlinux.github.io/docker-tools

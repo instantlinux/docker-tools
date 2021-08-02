@@ -4,4 +4,4 @@ description: Standard templates library
 sources:
 - https://github.com/instantlinux/docker-tools
 type: library
-version: 0.1.4
+version: 0.1.5

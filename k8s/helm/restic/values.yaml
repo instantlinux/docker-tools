@@ -1,0 +1,140 @@
+# Default values for restic.
+#  These settings work with Backblaze B2 storage service; see
+#  restic doc for AWS S3 settings
+
+deployment:
+  command: [/bin/sh]
+  args:
+  - -c
+  - >
+    apk add --update restic==0.12.0-r1 tzdata &&
+    ln -s /usr/share/zoneinfo/$TZ /etc/localtime &&
+    echo $TZ > /etc/timezone &&
+    echo "if [ -r $HOME/.resticrc ]; then . $HOME/.resticrc; fi" \
+      >>/etc/profile.d/restic.sh &&
+    touch /var/log/restic.log && /usr/sbin/crond &&
+    mkdir -p /var/log/week && tail -f -n 0 /var/log/restic.log
+  env:
+    env: /etc/profile
+    tz: UTC
+  nodeSelector:
+    service.data-sync: allow
+  resources:
+    limits:
+      memory: 2048Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+volumeMounts:
+- mountPath: /var/spool/cron/crontabs/root
+  name: config
+  subPath: cron
+- mountPath: /root/.restic/excludes.txt
+  name: config
+  subPath: excludes.txt
+- mountPath: /root/.resticrc
+  name: config
+  subPath: .resticrc
+- mountPath: /bin/set-key.sh
+  name: config
+  subPath: set-key.sh
+- mountPath: /root/.cache/restic
+  name: cache
+
+# this secret should contain keys b2-account-id / b2-account-key
+# and any other API id/key pairs
+- mountPath: /root/.restic/b2-apikey
+  name: b2-apikey
+
+# this secret has keys restic-repo-local (for rest-server) and
+# restic-repo-password (default encryption key for all repos)
+- mountPath: /root/.restic/repo-password
+  name: restic-repo-password
+
+- mountPath: /var/log
+  name: logs
+- mountPath: /restore
+  name: restore
+- mountPath: /b/share
+  name: share
+
+# list of volumes to back up, customize as needed
+- mountPath: /b/home
+  name: home
+  readOnly: true
+volumes:
+- name: config
+  configMap:
+    name: restic
+- name: b2-apikey
+  secret:
+    secretName: restic-b2-apikey
+    defaultMode: 0400
+- name: restic-repo-password
+  secret:
+    secretName: restic-repo-password
+    defaultMode: 0400
+- name: backup
+  hostPath: { path: /var/lib/docker/k8s-volumes/backup }
+- name: cache
+  persistentVolumeClaim:
+    claimName: restic-cache
+- name: logs
+  hostPath: { path: /var/lib/docker/k8s-volumes/share/restic/logs }
+- name: restore
+  persistentVolumeClaim:
+    claimName: backup-restore
+
+# Volumes to be backed up
+- name: home
+  hostPath: { path: /var/lib/docker/k8s-volumes/home }
+
+image:
+  repository: alpine
+  pullPolicy: IfNotPresent
+  tag: 3.14
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  enabled: false
+autoscaling:
+  enabled: false
+
+configmap:
+  name: restic
+  data:
+    .resticrc: |
+      export B2_ACCOUNT_ID=`cat $HOME/.restic/b2-apikey/b2-account-id`
+      export B2_ACCOUNT_KEY=`cat $HOME/.restic/b2-apikey/b2-account-key`
+      export REPO_LOCAL_PASSWORD=`cat $HOME/.restic/repo-password/restic-repo-local`
+      export RESTIC_PASSWORD_FILE=$HOME/.restic/repo-password/restic-repo-password
+      export BACKUP_OPTS="--exclude-file=$HOME/.restic/excludes.txt --host=k8s --json"
+      export REPO_B2=b2:main-b2
+      export REPO_B2_MAIL=b2:webmail
+      export REPO_B2_PIC=b2:braunpic
+      export REPO_B2_USER=b2:hdrive-b2
+      export REPO_LOCAL=rest:http://bkp:$REPO_LOCAL_PASSWORD@k2.ci.net:8000
+      export RESTIC_PROGRESS_FPS=1
+      export RETAIN_SCHED="forget --keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75"
+
+    cron: |
+      # Customize as desired
+      # Here's a minimal example that does backups, retention, check and prune:
+      0 2 * * * . /etc/profile && restic -r $REPO_B2:b backup $BACKUP_OPTS -x /b/home  | grep -v percent_done >>/var/log/restic.log && touch /var/log/b2-home-status.txt
+      0 1 * * * . /etc/profile && restic -r $REPO_B2:b $RETAIN_SCHED >>/var/log/restic.log
+      0 5 * * 0 . /etc/profile && restic -r $REPO_B2:b check --verbose >>/var/log/restic.log
+      0 5 2 * * . /etc/profile && restic -r $REPO_B2:b prune >>/var/log/restic.log
+
+    set-key.sh: |
+      # Use this script to apply per-bucket B2 API keys
+      export B2_ACCOUNT_ID=`cat $HOME/.restic/b2-apikey/$1-id`
+      export B2_ACCOUNT_KEY=`cat $HOME/.restic/b2-apikey/$1-key`
+
+    excludes.txt: |
+      .imap
+      lost+found
+      nextcloud.log

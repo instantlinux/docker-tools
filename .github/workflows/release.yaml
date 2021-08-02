@@ -2,7 +2,7 @@ name: Release Helm Charts
 
 on:
   push:
-    branches: [gh-pages, master]
+    branches: [gh-pages, master, SYS-546_bustedrepo]
 
 jobs:
   release:
