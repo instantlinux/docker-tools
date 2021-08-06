@@ -18,6 +18,9 @@ spec:
   {{- end }}
   selector:
     {{- include "local.selectorLabels" . | nindent 4 }}
+  {{- if hasKey .Values.service "sessionAffinity" }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

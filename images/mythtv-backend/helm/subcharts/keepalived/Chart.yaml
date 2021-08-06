@@ -1,0 +1,15 @@
+apiVersion: v2
+name: keepalived
+description: Keepalived VRRP for high-availabity networking
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://hub.docker.com/r/osixia/keepalived
+- https://github.com/instantlinux/docker-tools
+- https://github.com/acassen/keepalived
+type: application
+version: 0.1.0
+appVersion: "2.0.20"
+dependencies:
+- name: chartlib
+  version: 0.1.5
+  repository: https://instantlinux.github.io/docker-tools

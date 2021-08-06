@@ -10,7 +10,7 @@ version: 0.1.1
 appVersion: "2.3.14-r0"
 dependencies:
 - name: chartlib
-  version: 0.1.1
+  version: 0.1.5
   repository: https://instantlinux.github.io/docker-tools
 - name: data-sync
   version: 0.1.1

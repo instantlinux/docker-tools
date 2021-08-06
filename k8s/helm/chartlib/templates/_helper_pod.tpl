@@ -12,7 +12,7 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   {{- if hasKey .pod "replicas" }}
   replicas: {{ .pod.replicas }}
-  {{- else }}
+  {{- else if ne .kind "DaemonSet" }}
   replicas: 1
   {{- end }}
   {{- end }}

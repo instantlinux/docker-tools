@@ -119,3 +119,79 @@ ingressTOTP:
   tls:
   - secretName: tls-mythtv-backend
     hosts: [ mythweb.example.com ]
+
+# Subchart data-sync, maintains persistent data across nodes
+data-sync:
+  enabled: true
+  statefulset:
+    env:
+      sync_interval: 240
+    nodeSelector:
+      service.mythtv-backend: allow
+    replicas: 2
+    resources:
+      limits:
+        memory: 1024Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+  volumeMounts:
+  - name: archive
+    mountPath: /root/.unison
+  - name: config-sync
+    mountPath: /etc/unison.d/common.prf
+    subPath: common.prf
+  - mountPath: /etc/ssh
+    name: etc
+  - mountPath: /var/log/unison
+    name: logs
+  - mountPath: /var/data-sync/data
+    name: data
+  - mountPath: /var/data-sync/home
+    name: share
+    subPath: mythtv-backend/home
+  - mountPath: /run/secrets/data-sync-sshkey1
+    name: sshkeys
+    subPath: sshkey1
+  - mountPath: /run/secrets/data-sync-sshkey2
+    name: sshkeys
+    subPath: sshkey2
+  volumes:
+  - name: config-sync
+    configMap:
+      name: mythtv-backend-data-sync
+  - name: data
+    hostPath: { path: /var/mythtv }
+  - name: share
+    hostPath: { path: /var/lib/docker/k8s-volumes/share }
+  - name: sshkeys
+    secret:
+      secretName: data-sync-ssh
+  - name: logs
+    hostPath: { path: /var/lib/docker/k8s-volumes/sync-logs/mythtv-backend-ha }
+  volumeClaimTemplates:
+  - metadata:
+      name: archive
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 50Mi
+  - metadata:
+      name: etc
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 50Mi
+
+keepalived:
+  enabled: true
+  virtualIpAddress: 192.168.1.200
+  deployment:
+    nodeSelector:
+      service.mythtv-backend: allow
+  volumes:
+  - name: etc
+    configMap:
+      name: mythtv-backend-keepalived

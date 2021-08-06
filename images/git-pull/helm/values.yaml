@@ -1,0 +1,41 @@
+# Default values for git-pull.
+daemonset:
+  env:
+    git_commit: master
+    # can also specify port, using quotes like "bitbucket.example.com:8000"
+    git_host: github.com
+    git_org: example
+    git_repo: "ssh://git@$(GIT_HOST)/$(GIT_ORG)/admin.git"
+    interval: 60
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
+# this whole list must be overridden, helm cannot interpolate values here
+volumeMounts:
+- name: admin
+  mountPath: /git
+- name: sshkey
+  mountPath: /run/secrets/git-deploy-sshkey
+  readOnly: true
+  subPath: git-deploy-sshkey
+volumes:
+- name: admin
+  hostPath: { path: /var/lib/docker/k8s-volumes/admin }
+- name: sshkey
+  secret:
+    secretName: git-deploy-sshkey
+
+image:
+  repository: instantlinux/git-pull
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+autoscaling:
+  enabled: false

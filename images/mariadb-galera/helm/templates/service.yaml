@@ -1,0 +1,35 @@
+# Primary NodePort is safe for reading and writing.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "local.fullname" . }}-primary
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+  - { port: 3306, nodePort: {{ .Values.nodePort }}, name: db }
+  selector:
+    {{- include "local.selectorLabels" . | nindent 4 }}
+  sessionAffinity: ClientIP
+---
+# Secondary IP is served directly by k8s service here; splits
+# across cluster. Use for horizontal-scaling read-only db access.
+# If your applications write to this IP, beware of multi-master
+# (MDL) conflicts that cause severe performance and stability
+# problems.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "local.fullname" . }}-readonly
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  clusterIP: {{ .Values.ipReadOnly }}
+  ports:
+  - port: 3306
+  selector:
+    {{- include "local.selectorLabels" . | nindent 4 }}
+  sessionAffinity: ClientIP

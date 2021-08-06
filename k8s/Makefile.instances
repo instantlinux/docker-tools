@@ -6,22 +6,7 @@
 mariadb-galera::
 	@echo Please specify a specific instance e.g. db03 && exit 1
 
-db00 db01 db02: etcd
-	@echo --$(NOTICE) $@--
-	$(eval RESOURCE := $(shell case $@ in (db03) echo mariadb-galera-single;; \
-	 (*) echo mariadb-galera;; esac))
-	$(eval DB_NODEPORT := $(shell case $@ in (db00) echo $(NODEPORT_DB00);; \
-	 (db03) echo $(NODEPORT_DB03);; esac))
-	@SERVICE_NAME=$@ DB_NODEPORT=$(DB_NODEPORT) \
-	  DB_IP_RO=$(shell dig +short $@-ro.$(DOMAIN)) \
-	  envsubst < $(RESOURCE).yaml | kubectl $(ACTION) -f -
-db03: etcd
-	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$@ DB_NODEPORT=$(NODEPORT_DB03) \
-	  DB_NET_READ_TIMEOUT=1800 DB_INNODB_POOL_SIZE=2048M \
-	  DB_INNODB_LOG_SIZE=128M \
-	  DB_IP_RO=$(shell dig +short $@-ro.$(DOMAIN)) \
-	  envsubst < mariadb-galera-single.yaml | kubectl $(ACTION) -f -
+db00 db01 db02 db03:: etcd
 
 gitlab-runner::
 	@echo Invoke 'make gitlab-agent' instead

@@ -8,4 +8,14 @@ sources:
 - https://github.com/apache/guacamole-server
 type: application
 version: 0.1.1
-appVersion: "1.16.0"
+appVersion: "1.3.0"
+dependencies:
+- name: chartlib
+  version: 0.1.5
+  repository: https://instantlinux.github.io/docker-tools
+- name: guacamole-server
+  version: 0.1.0
+  repository: file://subcharts/guacamole-server
+- name: guacd
+  version: 0.1.0
+  repository: file://subcharts/guacd

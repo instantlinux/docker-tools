@@ -1,5 +1,6 @@
 # Default values for data-sync.
 statefulset:
+  containerPorts: [ containerPort: 22 ]
   env:
     sync_interval: "10"
     tz: UTC
