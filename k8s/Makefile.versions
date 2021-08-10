@@ -1,17 +1,12 @@
 # Versions (images within this repo published to docker hub)
-#  Note - these are getting migrated to Chart.yaml in each helm chart
+#  See Chart.yaml appVersion for services defined as helm charts
 export VERSION_DATA_SYNC     ?= 2.51.4-4.12.0-r0
 export VERSION_DUPLICATI     ?= 2.0.5.0
-export VERSION_GIT_PULL      ?= 2.32.0-r0
 export VERSION_NAGIOS        ?= 4.4.6-2.3.2
 export VERSION_NAGIOSQL      ?= 3.4.1-4.4.6
 export VERSION_OX_APPSUITE   ?= 7.10.3-15
 
 # Third-party versions - dockerhub
-# TODO breaking change
-# level=error msg="Policy [bypass] for rule #1 domain [monitor.ci.net] with subjects [[user:richb]] is invalid. It is not supported to configure both policy bypass and subjects. For more information see: https://www.authelia.com/docs/configuration/access-control.html#combining-subjects-and-the-bypass-policy"
-# export VERSION_AUTHELIA      ?= 4.28.2
-export VERSION_AUTHELIA      ?= 4.26.1
 export VERSION_DASHBOARD     ?= 2.1.0
 export VERSION_LOGSPOUT      ?= v3.2.13
 export VERSION_NGINX         ?= 1.20.0-alpine

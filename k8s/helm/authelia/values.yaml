@@ -1,0 +1,89 @@
+# Default values for authelia.
+baseDN: dc=example,dc=com
+bypassDomain: monitor.example.com
+bypassUser: "user:username"
+domains: [ example.com ]
+logLevel: info
+mysql:
+  host: db00
+  port: 3306
+  database: authelia
+  username: authelia
+session:
+  domain: example.com
+  expiration: 1209600000
+  inactivity: 300000
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  sender: notyetset@example.com
+  username: notyetset@gmail.com
+tlsHostname: authelia.example.com
+
+deployment:
+  containerPorts: [ containerPort: 80 ]
+  env:
+    authelia_jwt_secret_file: /config/secrets/jwt_secret
+    authelia_session_secret_file: /config/secrets/session_secret
+    authelia_session_redis_password_file: /config/secrets/redis_password
+    authelia_storage_mysql_password_file: /config/secrets/mysql_password
+    authelia_notifier_smtp_password_file: /config/secrets/smtp_password
+    authelia_authentication_backend_ldap_password_file: /config/secrets/ldap_password
+  ports:
+  - containerPort: 80
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+volumeMounts:
+- mountPath: /config/configuration.yml
+  name: config
+  subPath: configuration.yml
+- mountPath: /config/secrets
+  name: secrets
+volumes:
+- name: config
+  configMap:
+    name: authelia
+- name: secrets
+  secret:
+    secretName: authelia-secrets
+    defaultMode: 0400
+    
+image:
+  repository: authelia/authelia
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  clusterIP: 10.101.1.5
+  ports: [ port: 80 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: true
+
+ldap:
+  deployment:
+    env:
+      slapd_organisation: Example Org
+      slapd_domain: example.com
+      slapd_additional_modules: memberof
+      slapd_additional_schemas: openldap
+      slapd_force_reconfigure: "true"
+  fullnameOverride: ldap
+
+redis:
+  deployment:
+    command: [redis-server]
+    args: [/etc/redis/redis.conf]
+  fullnameOverride: redis

@@ -1,4 +1,5 @@
 # Default values for haproxy-keepalived.
+interface: br0
 deployment:
   affinity:
     podAntiAffinity:
@@ -20,11 +21,10 @@ deployment:
     capabilities:
       add: [ NET_ADMIN ]
 volumeMounts:
-- name: admin
+- name: config
   mountPath: /usr/local/etc/haproxy.d
   readOnly: true
-  subPath: services/haproxy/etc-k8s
-- name: keepalived-etc
+- name: etc
   mountPath: /etc/keepalived/keepalived.conf
   subPath: keepalived.conf
 - name: secret
@@ -32,9 +32,10 @@ volumeMounts:
   readOnly: true
   subPath: haproxy-stats-password
 volumes:
-- name: admin
-  hostPath: { path: /var/lib/docker/k8s-volumes/admin }
-- name: keepalived-etc
+- name: config
+  configMap:
+    name: haproxy-keepalived
+- name: etc
   configMap:
     name: haproxy-keepalived-etc
 - name: secret
@@ -62,27 +63,13 @@ autoscaling:
   enabled: false
 
 configmap:
-  name: haproxy-keepalived-etc
+  name: haproxy-keepalived
   data:
-    keepalived.conf: |
-      global_defs {
-        max_auto_priority 10
-      }
-      vrrp_instance VI_1 {
-        interface br0
-      @main  priority 101
-      @^main priority 100
-        virtual_ipaddress {
-          192.168.100.1
-        }
-        virtual_router_id 50
-      }
-      vrrp_instance VI_2 {
-        interface br0
-      @main  priority 101
-      @^main priority 100
-        virtual_ipaddress {
-          192.168.100.2
-        }
-        virtual_router_id 51
-      }
+    www.cfg: |
+      listen http
+        bind 192.168.1.150:80
+        mode tcp
+        maxconn 500
+        balance roundrobin
+        server node1 192.168.1.20:30080 check inter 30000
+        server elbrus 192.168.1.21:30080 check inter 30000

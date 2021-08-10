@@ -1,0 +1,23 @@
+{{- $interface := .Values.interface -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "local.fullname" . }}-etc
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+data:
+  keepalived.conf: |
+    global_defs {
+      max_auto_priority 10
+    }
+    {{- range .Values.vips }}
+    vrrp_instance {{ .instance }} {
+      interface {{ $interface }}
+    @main  priority 101
+    @^main priority 100
+      virtual_ipaddress {
+        {{ .virtual_ipaddress }}
+      }
+      virtual_router_id {{ .virtual_router_id }}
+    }
+    {{- end }}

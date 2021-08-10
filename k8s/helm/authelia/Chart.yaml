@@ -1,0 +1,20 @@
+apiVersion: v2
+name: authelia
+description: Authelia single-signon with MFA
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://github.com/authelia/authelia
+type: application
+version: 0.1.0
+appVersion: "4.26.1"
+dependencies:
+- name: chartlib
+  version: 0.1.5
+  repository: https://instantlinux.github.io/docker-tools
+- name: ldap
+  version: 0.1.0
+  repository: file://subcharts/ldap
+- name: redis
+  version: 0.1.0
+  repository: file://subcharts/redis

@@ -1,5 +1,3 @@
-{{- include "chartlib.configmap" . }}
----
 {{- include "chartlib.deployment" . }}
 ---
 {{- include "chartlib.hpa" . }}

@@ -71,7 +71,6 @@ ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
 VERSION_SOPS    ?= 3.2.0
 SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
 STACKS = $(basename $(wildcard *.yaml))
-CHARTS = $(notdir $(wildcard ./helm/*))
 
 include Makefile.vars
 include Makefile.versions
@@ -90,17 +89,6 @@ $(STACKS)::
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$(@F) \
 	  envsubst < $@.yaml | kubectl $(ACTION) --namespace $(K8S_NAMESPACE) -f -
-
-$(CHARTS):: %: ../admin/services/values.yaml helm/%/Chart.lock
-	@echo --$(NOTICE) $@--
-ifeq ($(ACTION), delete)
-	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
-else
-	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
-	  && echo "-f ../admin/services/values/$@.yaml"))
-	helm upgrade --install -f global.yaml -f $< $(OVERRIDE) $(XARGS) $@ ./helm/$@
-endif
-	@helm list --time-format="Mon Jan 2 15:04" --selector name=$@
 
 ##########
 # Installation

@@ -1,58 +1,8 @@
 authelia:
   fqdn: authtotp.example.com
   ip: 10.101.1.5
-caSecret: instantlinux-ca
-cloudUser1: admin
-cloudUser2: user
-clusterNetwork: calico
-dbHost: db00.example.com
-datasync:
-  clusterSize: 3
-  secret: data-sync-ssh
 domain: example.com
 hostnameEmail: example.com
-k8s:
-  adminPath: /var/lib/docker/k8s-volumes/admin/services
-  backupPath: /var/lib/docker/k8s-volumes/backup
-  imagepullSpec: "name: regcred"
-  localVolumes:
-  - cloud
-  - dos
-  - duplicati
-  - gitlab
-  - home
-  - household
-  - inbox
-  - jira
-  - nexus
-  - splunk
-  - webmail
-  - wx
-  namespace: worker
-  nfsHost: nfs.example.com
-  nodes:
-  - kube1.example.com
-  - kube2.example.com
-  - kube3.example.com
-  sharePath: /var/lib/docker/k8s-volumes/share
-  volumesPath: /var/lib/docker/k8s-volumes
-  workerCount: 3
-mydomain: example.com
-network:
-  dhcpNetbiosNameServers:
-  - 192.168.2.50
-  - 192.168.2.60
-  dhcpRange1: 192.168.2.8 192.168.2.15
-  dhcpRange2: 192.168.2.16 192.168.2.31
-  dhcpSubnet1: 192.168.2.0
-  dnsServers:
-  - 192.168.2.40
-  - 192.168.2.45
-  ntpServers:
-  - 192.168.2.40
-  - 192.168.2.45
-  subnet1Gateway: 192.168.1.1
-  subnet1Interface: br0
 serviceAccount:
   enabled: false
 tz: UTC

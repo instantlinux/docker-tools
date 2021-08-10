@@ -2,6 +2,8 @@
 # Helm
 ##########
 TARBALL = helm-v$(VERSION_HELM)-linux-amd64.tar.gz
+CHARTS = $(notdir $(wildcard ./helm/*))
+INSTANCES = $(notdir $(wildcard ./helm/instances/*))
 .PHONY: helm_install
 
 helm_install: /usr/local/bin/helm
@@ -9,6 +11,36 @@ helm_install: /usr/local/bin/helm
 helm_list:
 	@helm list --time-format="Mon Jan 2 15:04" --all-namespaces \
 	  --kube-context=sudo
+
+# TODO get rid of global.yaml and values.yaml, the idea made sense before
+#  adopting helm when values were from environment variables but makes no
+#  sense with per-instance yaml override files; helm's developers explicitly
+#  exclude the possibility of reading env vars from the shell enviroment
+#  in which helm is running - so global is leftover from my decade-earlier
+#  LXC-era designs
+$(CHARTS):: %: ../admin/services/values.yaml helm/%/Chart.lock
+	@echo --$(NOTICE) $@--
+ifeq ($(ACTION), delete)
+	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
+else
+	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
+	  && echo "-f ../admin/services/values/$@.yaml"))
+	helm upgrade --install -f global.yaml -f $< $(OVERRIDE) $(XARGS) $@ ./helm/$@
+endif
+	@helm list --time-format="Mon Jan 2 15:04" --selector name=$@
+
+# TODO this is identical to above but for subdir, DRY it out
+#   the helmify project is just too exhausting
+$(INSTANCES):: %: ../admin/services/values.yaml helm/instances/%/Chart.lock
+	@echo --$(NOTICE) $@--
+ifeq ($(ACTION), delete)
+	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
+else
+	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
+	  && echo "-f ../admin/services/values/$@.yaml"))
+	helm upgrade --install -f global.yaml -f $< $(OVERRIDE) $(XARGS) $@ ./helm/instances/$@
+endif
+	@helm list --time-format="Mon Jan 2 15:04" --selector name=$@
 
 /usr/local/bin/helm:
 	wget -O /tmp/$(TARBALL) https://get.helm.sh/$(TARBALL)
@@ -18,6 +50,7 @@ helm_list:
 	sudo mv /tmp/linux-amd64/helm /usr/local/bin
 	rm -r /tmp/$(TARBALL)* /tmp/linux-amd64
 
-CHARTLOCK = $(addsuffix /Chart.lock, $(addprefix helm/, $(CHARTS)))
+CHARTLOCK = $(addsuffix /Chart.lock, $(addprefix helm/, $(CHARTS))) \
+	  $(addsuffix /Chart.lock, $(addprefix helm/instances/, $(INSTANCES)))
 $(CHARTLOCK):
 	helm dependency update $(dir $@)

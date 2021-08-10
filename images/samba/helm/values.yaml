@@ -19,9 +19,7 @@ deployment:
 # override volume list as required
 volumeMounts:
 - mountPath: /etc/samba/conf.d
-  name: admin
-  readOnly: true
-  subPath: services/samba/etc
+  name: config
 - mountPath: /var/lib/samba
   name: share
   subPath: samba/var/lib
@@ -38,8 +36,10 @@ volumes:
 - name: samba-admin-password
   secret:
     secretName: samba-admin-password
-- name: admin
-  hostPath: { path: /var/lib/docker/k8s-volumes/admin }
+- name: config
+  configMap:
+    name: samba
+    defaultMode: 0555
 - name: log
   emptyDir: {}
 - name: share
@@ -54,3 +54,20 @@ nameOverride: ""
 fullnameOverride: ""
 autoscaling:
   enabled: false
+
+configmap:
+  name: samba
+  data:
+    # 0globals.conf: |
+    #         map to guest = Bad Password
+    homes.conf: |
+      [homes]
+              comment = Home Directory
+              browseable = No
+              read only = No
+              inherit acls = Yes
+    users.sh: |
+      #!/bin/sh
+
+      # Generate local uid/gid entries under Alpine Linux
+      #  put your addgroup / adduser commands below
