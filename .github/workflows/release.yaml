@@ -24,3 +24,4 @@ jobs:
         CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       with:
         charts_dir: k8s/helm
+        skip_existing: true
