@@ -13,5 +13,5 @@ dependencies:
   version: 0.1.5
   repository: https://instantlinux.github.io/docker-tools
 - name: data-sync
-  version: 0.1.1
+  version: 0.1.0
   repository: https://instantlinux.github.io/docker-tools
