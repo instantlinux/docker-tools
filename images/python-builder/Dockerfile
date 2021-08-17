@@ -17,6 +17,7 @@ ENV BUILD_DIR=/build \
 ARG BUILDX_VERSION=0.5.1
 ARG CFFI_VERSION=1.14.5-r1
 ARG COMPOSE_VERSION=1.29.1
+ARG HELM_VERSION=3.6.3-r0
 ARG KUBECTL_VERSION=1.20.4
 ARG MUSL_VERSION=1.2.2-r3
 ARG PYTHON_VERSION=3.9.5-r1
@@ -38,6 +39,8 @@ COPY Pipfile* /root/
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
+    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
+      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client python3==$PYTHON_VERSION \
@@ -45,7 +48,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       py3-cffi=$CFFI_VERSION py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet py3-itsdangerous \
       py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
-      sqlite tar tzdata wget && \
+      helm@testing=$HELM_VERSION sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     mkdir -p /usr/lib/docker/cli-plugins && \
