@@ -1,0 +1,2 @@
+# options for chart-releaser-action
+skip-existing: true
