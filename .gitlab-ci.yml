@@ -29,6 +29,10 @@ stages:
   - vsftpd
   - weewx
   - wxcam-upload
+workflow:
+  rules:
+  - if: $CI_COMMIT_TAG =~ /^chart-.*/
+    when: never
 
 image: docker:19.03.8
 

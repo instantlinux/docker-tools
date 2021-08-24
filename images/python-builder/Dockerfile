@@ -15,7 +15,6 @@ ENV BUILD_DIR=/build \
     TZ=UTC
 
 ARG BUILDX_VERSION=0.5.1
-ARG CFFI_VERSION=1.14.5-r1
 ARG COMPOSE_VERSION=1.29.1
 ARG HELM_VERSION=3.6.3-r0
 ARG KUBECTL_VERSION=1.20.4
@@ -45,7 +44,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       bash curl docker-cli gcc gettext git gzip jq make musl==$MUSL_VERSION \
       musl-dev==$MUSL_VERSION openssh-client python3==$PYTHON_VERSION \
       python3-dev py3-authlib py3-boto3 py3-botocore py3-cachetools \
-      py3-cffi=$CFFI_VERSION py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet py3-itsdangerous \
       py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       helm@testing=$HELM_VERSION sqlite tar tzdata wget && \
