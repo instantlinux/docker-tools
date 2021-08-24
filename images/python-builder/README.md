@@ -8,8 +8,10 @@ Define this in a .gitlab.yml job:
 ```
 job:
   image: instantlinux/python-builder:latest
-  script: echo hello world
+  script: make analysis
 ```
+
+Look in the [Pipfile](https://github.com/instantlinux/docker-tools/blob/master/images/python-builder/Pipfile) of this image to see what tools are provided.
 
 ### Variables
 

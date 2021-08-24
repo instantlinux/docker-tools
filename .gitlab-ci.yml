@@ -31,8 +31,7 @@ stages:
   - wxcam-upload
 workflow:
   rules:
-  - if: $CI_COMMIT_TAG =~ /^chart-.*/
-    when: never
+  - { if: $CI_COMMIT_TAG =~ /^chart-.*/, when: never }
   - when: always
 
 image: docker:19.03.8
