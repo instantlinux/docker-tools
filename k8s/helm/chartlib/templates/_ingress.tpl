@@ -1,6 +1,6 @@
 {{- define "chartlib.ingress" -}}
 {{- if hasKey .Values "ingress" -}}
-{{- if .Values.ingress.enabled | default true -}}
+{{- if or .Values.ingress.enabled (not (hasKey .Values.ingress "enabled")) -}}
 {{- $fullName := include "local.fullname" . -}}
 {{- $svcPort := .Values.ingress.port | default (index .Values.service.ports 0).port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}

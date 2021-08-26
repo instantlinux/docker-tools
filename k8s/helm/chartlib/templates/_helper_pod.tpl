@@ -92,6 +92,10 @@ spec:
           volumeMounts:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           {{- end }}
+      {{- if hasKey .pod "initContainers" }}
+      initContainers:
+        {{- toYaml .pod.initContainers | nindent 8 }}
+      {{- end }}
       {{- if hasKey .pod "dnsConfig" }}
       dnsConfig:
         {{- toYaml .pod.dnsConfig | nindent 8 }}

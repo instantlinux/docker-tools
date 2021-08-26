@@ -1,6 +1,6 @@
 {{- define "chartlib.ingresstotp" -}}
 {{- if hasKey .Values "ingressTOTP" -}}
-{{- if .Values.ingressTOTP.enabled | default true -}}
+{{- if or .Values.ingressTOTP.enabled (not (hasKey .Values.ingressTOTP "enabled")) -}}
 {{- $fullName := include "local.fullname" . -}}
 {{- $svcPort := .Values.ingressTOTP.port | default (index .Values.service.ports 0).port -}}
 {{- if and .Values.ingressTOTP.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
