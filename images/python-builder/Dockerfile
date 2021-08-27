@@ -44,9 +44,9 @@ RUN addgroup -g $DOCKER_GID docker && \
       bash curl docker-cli gcc gettext git gzip jq libffi-dev make \
       musl==$MUSL_VERSION musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev py3-authlib py3-boto3 py3-botocore \
-      py3-cachetools py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
-      py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet py3-itsdangerous \
-      py3-passlib \
+      py3-cachetools py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet \
+      py3-itsdangerous py3-passlib \
       py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       helm@testing=$HELM_VERSION sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \

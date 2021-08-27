@@ -19,7 +19,7 @@ RUN apk add --virtual .fetch-deps gcc git jpeg-dev make musl-dev \
       libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
       proj py3-authlib py3-boto3 py3-botocore py3-cachetools \
-      py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-pip \
+      py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-pip \
       py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet py3-itsdangerous \
       py3-passlib py3-pillow=$PYPILLOW_VERSION py3-requests py3-setuptools \
       py3-virtualenv python3==$PYTHON_VERSION uwsgi==$UWSGI_VERSION \
