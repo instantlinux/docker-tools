@@ -1,7 +1,7 @@
 ## python-wsgi
 [![](https://img.shields.io/docker/v/instantlinux/python-wsgi?sort=date)](https://microbadger.com/images/instantlinux/python-wsgi "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/python-wsgi.svg)](https://microbadger.com/images/instantlinux/python-wsgi "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/python-wsgi/Dockerfile "dockerfile")
 
-A python-3.9 image for running applications under alpine and UWSGI. See the (Pipfile)[https://github.com/instantlinux/docker-tools/blob/master/images/python-wsgi/Pipfile] for the list of pypi packages included.
+A python-3.9 image for running applications under alpine and UWSGI. See the ]Pipfile](https://github.com/instantlinux/docker-tools/blob/master/images/python-wsgi/Pipfile) for the list of pypi packages included.
 
 ### Usage
 Add your app FROM this image in your application Dockerfile, such as:
