@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/mysqldump/fgfdDDS3pok7V2LB7TldIr6LGl0=

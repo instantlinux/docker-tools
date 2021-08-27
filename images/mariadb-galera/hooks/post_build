@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/mariadb-galera/roy2bfj6cN5Ny4Nq9OsJWJ8QF-I=

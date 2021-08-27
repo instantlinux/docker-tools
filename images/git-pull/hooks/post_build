@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/git-pull/-zxsTdaSase4Sc-Vigc-FBBbg0Y=
