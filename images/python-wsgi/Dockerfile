@@ -15,8 +15,8 @@ ARG PYPILLOW_VERSION=8.2.0-r0
 ARG UWSGI_VERSION=2.0.19.1-r2
 
 COPY Pipfile* uwsgi.ini /usr/src/
-RUN apk add --virtual .fetch-deps gcc git jpeg-dev make musl-dev \
-      libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
+RUN apk add --virtual .fetch-deps gcc git jpeg-dev linux-headers make \
+      musl-dev libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
       proj py3-authlib py3-boto3 py3-botocore py3-cachetools \
       py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-pip \
