@@ -1,7 +1,5 @@
 # Versions (images within this repo published to docker hub)
 #  See Chart.yaml appVersion for services defined as helm charts
-export VERSION_DATA_SYNC     ?= 2.51.4-4.12.0-r0
-export VERSION_DUPLICATI     ?= 2.0.5.0
 export VERSION_NAGIOS        ?= 4.4.6-2.3.2
 export VERSION_NAGIOSQL      ?= 3.4.1-4.4.6
 export VERSION_OX_APPSUITE   ?= 7.10.3-15
@@ -14,7 +12,6 @@ export VERSION_NGINX         ?= 1.20.0-alpine
 # Third-party versions - other (quay.io, k8s.gcr.io, crunchydata.com)
 export VERSION_CERT_MANAGER   ?= 1.1.0
 export VERSION_DEFAULTBACKEND ?= 1.5
-export VERSION_ETCD           ?= v3.4.14
 export VERSION_FLANNEL        ?= 0.13.0
 export VERSION_HELM           ?= 3.6.0
 export VERSION_METRICS        ?= 0.4.1

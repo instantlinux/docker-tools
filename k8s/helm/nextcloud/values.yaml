@@ -13,7 +13,10 @@ passwordSalt: CkEFy/t4IpPhjJoem3NRdPt/UD8gOS
 redis:
   port: 6379
   tag: 6.2.4-alpine
-versionPrev: 20.0.7
+# To prevent the update detector logic from triggering upon every
+# restart, get the value written to /var/www/html/config/config.php
+# after last upgrade as 'version' and set this value to match:
+versionPrev: 21.0.5.1
 
 deployment:
   command: [/bin/bash]

@@ -26,3 +26,5 @@
 {{- end }}
 {{- end }}
 {{- end }}
+2. Make sure to set the versionPrev value to the version returned in
+   /var/www/html/config/config.php after most recent upgrade
