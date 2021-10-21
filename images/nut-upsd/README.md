@@ -45,6 +45,7 @@ GROUP | nut | local group
 NAME | ups | user-assigned config name
 POLLINTERVAL | | Poll Interval for ups.conf
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
+SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
 SECRET | nut-upsd-password | secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
@@ -65,8 +66,8 @@ Device: ID 051d:0002 American Power Conversion Uninterruptible Power Supply
   idProduct          0x0002 Uninterruptible Power Supply
   bcdDevice            0.90
   iManufacturer           1 American Power Conversion
-  iProduct                2 Back-UPS RS 1500G FW:865.L6 .D USB FW:L6 
-  iSerial                 3 4B1624P26350  
+  iProduct                2 Back-UPS RS 1500G FW:865.L6 .D USB FW:L6
+  iSerial                 3 4B1624P26350
 ```
 
 If you require udev rules to set permissions, configure your host prior to running the container. For example:
