@@ -22,6 +22,9 @@ EOF
     if [ ! -z "$VENDORID" ]; then
       echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
     fi
+    if [ ! -z "$SDORDER" ]; then
+      echo "        sdorder = $SDORDER" >> /etc/nut/ups.conf
+    fi
   fi
   if [ -e /etc/nut/local/upsd.conf ]; then
     cp /etc/nut/local/upsd.conf /etc/nut/upsd.conf
