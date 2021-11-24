@@ -3,6 +3,48 @@ entries:
   artifactory:
   - apiVersion: v2
     appVersion: 6.15.1
+    created: "2021-08-17T14:49:18.392101005Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.6
+    description: JFrog Artifactory service
+    digest: a9ff09e759da99753328b01f1b5f0f83c8400218e38fb98efaf7c93a5b931898
+    name: artifactory
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/artifactory-0.1.5/artifactory-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 6.15.1
+    created: "2021-08-10T04:55:38.112886317Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: JFrog Artifactory service
+    digest: 2fd86fbdc839dd5a980f58f7b757c5765f086551d848de67a336ec33f6837f1b
+    name: artifactory
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/artifactory-0.1.4/artifactory-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 6.15.1
+    created: "2021-08-02T05:44:17.546950953Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: JFrog Artifactory service
+    digest: 1118279fd27a40098f7ddc6e91135f2bc1d2bc67bc1f7084bd4656256804eca3
+    name: artifactory
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/artifactory-0.1.3/artifactory-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 6.15.1
     created: "2021-07-26T23:05:09.542316968Z"
     dependencies:
     - name: liblocal
@@ -15,7 +57,74 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/artifactory-0.1.0/artifactory-0.1.0.tgz
     version: 0.1.0
+  authelia:
+  - apiVersion: v2
+    appVersion: 4.26.1
+    created: "2021-08-17T14:49:18.577641018Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    - name: ldap
+      repository: file://subcharts/ldap
+      version: 0.1.0
+    - name: redis
+      repository: file://subcharts/redis
+      version: 0.1.0
+    description: Authelia single-signon with MFA
+    digest: 4e085ff4a7d76d70c10497056ff7db54242d6be94b4b6798425c9d3f6833edb0
+    home: https://github.com/instantlinux/docker-tools
+    name: authelia
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/authelia/authelia
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/authelia-0.1.1/authelia-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 4.26.1
+    created: "2021-08-10T04:55:38.299646119Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    - name: ldap
+      repository: file://subcharts/ldap
+      version: 0.1.0
+    - name: redis
+      repository: file://subcharts/redis
+      version: 0.1.0
+    description: Authelia single-signon with MFA
+    digest: 1df6eb253137eee73df8d728df3799625b0a35d875fea6a5a4d252e4630fa4b7
+    home: https://github.com/instantlinux/docker-tools
+    name: authelia
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/authelia/authelia
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/authelia-0.1.0/authelia-0.1.0.tgz
+    version: 0.1.0
   blacklist:
+  - apiVersion: v2
+    appVersion: 0.998b
+    created: "2021-08-10T04:55:38.476802997Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: DNS blacklist for spamassassin
+    digest: 14b844dcd8d329ca00ca4b8e1a871ca94d944de48f5c0555ccc2064524c6635a
+    home: https://github.com/instantlinux/docker-tools
+    name: blacklist
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/spamhaus/rbldnsd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/blacklist-0.1.2/blacklist-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 0.998b
     created: "2021-07-26T23:05:09.718784896Z"
@@ -36,6 +145,39 @@ entries:
     version: 0.1.0
   chartlib:
   - apiVersion: v2
+    created: "2021-08-26T04:59:37.641514194Z"
+    description: Standard templates library
+    digest: 7c3c3c5f34992b5eae185c08707f1c99045e5a75b07a6165f318b4a30da84183
+    name: chartlib
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: library
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-chartlib-0.1.7/chartlib-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    created: "2021-08-10T04:55:38.68932653Z"
+    description: Standard templates library
+    digest: 232ec37b5439113808953b2fc6f04961d671df24aef3d6bb9f9a55012b196172
+    name: chartlib
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: library
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chartlib-0.1.6/chartlib-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    created: "2021-08-02T05:25:27.119368874Z"
+    description: Standard templates library
+    digest: d17a34aca7938d8529c2738904e4e112a85e41cedfd50738f759307a90189c28
+    name: chartlib
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: library
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chartlib-0.1.5/chartlib-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
     created: "2021-07-27T01:39:58.98716257Z"
     description: Standard templates library
     digest: d39ad42a242d91fe1c0f6e9ab2a337c7028ef8ed04fb47ec1318d0d3e2c8c500
@@ -47,6 +189,23 @@ entries:
     - https://github.com/instantlinux/docker-tools/releases/download/chartlib-0.1.3/chartlib-0.1.3.tgz
     version: 0.1.3
   data-sync:
+  - apiVersion: v2
+    appVersion: 2.51.4-4.12.0-r0
+    created: "2021-08-10T04:55:38.87276859Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: git backup
+    digest: c1302b7b8ba19dd67e736996bcf61efd152ed8182f051a6298eab605a5a91169
+    home: https://github.com/instantlinux/docker-tools
+    name: data-sync
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/data-sync-0.1.1/data-sync-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 2.51.4-4.12.0-r0
     created: "2021-07-26T23:05:09.914637517Z"
@@ -64,7 +223,44 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/data-sync-0.1.0/data-sync-0.1.0.tgz
     version: 0.1.0
+  davite:
+  - apiVersion: v2
+    appVersion: "19.06"
+    created: "2021-08-10T04:55:39.069275717Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: David Madison's event invitation service
+    digest: f9a514b5236df73378720990ee9c62a082528c213f413c1cb7b79728087d36aa
+    home: https://github.com/instantlinux/docker-tools
+    name: davite
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/instantlinux/docker-tools/tree/master/images/davite/src
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/davite-0.1.0/davite-0.1.0.tgz
+    version: 0.1.0
   ddclient:
+  - apiVersion: v2
+    appVersion: 3.9.1-r0
+    created: "2021-08-10T04:55:39.259096058Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Dynamic-DNS client
+    digest: cf0ba5e50ff310420e3f349ad119090e13e8a4db4e2fc28a34ffd952abb4a92d
+    home: https://github.com/instantlinux/docker-tools
+    name: ddclient
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/ddclient/ddclient/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/ddclient-0.1.1/ddclient-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 3.9.1-r0
     created: "2021-07-26T23:05:10.11555101Z"
@@ -86,6 +282,25 @@ entries:
   dhcpd-dns-pxe:
   - apiVersion: v2
     appVersion: 4.4.2_p1-r0-2.85-r2
+    created: "2021-08-10T04:55:39.456364695Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: DHCP server with dnsmasq
+    digest: d9998badaec962bf8ddd319d4886b3eb406f758cc68918b5df134346566a8882
+    home: https://github.com/instantlinux/docker-tools
+    name: dhcpd-dns-pxe
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://source.isc.org/git/dhcp.git
+    - http://thekelleys.org.uk/gitweb/?p=dnsmasq.git
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/dhcpd-dns-pxe-0.1.1/dhcpd-dns-pxe-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 4.4.2_p1-r0-2.85-r2
     created: "2021-07-26T23:05:10.350437915Z"
     dependencies:
     - name: liblocal
@@ -104,6 +319,27 @@ entries:
     - https://github.com/instantlinux/docker-tools/releases/download/dhcpd-dns-pxe-0.1.0/dhcpd-dns-pxe-0.1.0.tgz
     version: 0.1.0
   dovecot:
+  - apiVersion: v2
+    appVersion: 2.3.14-r0
+    created: "2021-08-10T04:55:39.667294908Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    - name: data-sync
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.0
+    description: Dovecot imapd server
+    digest: 9b38908329803cd0ed514ea8e58340196e8747e9130cace3f09053e5d13d969c
+    home: https://github.com/instantlinux/docker-tools
+    name: dovecot
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/vdukhovni/dovecot
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/dovecot-0.1.1/dovecot-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 3.6.1-r0
     created: "2021-07-26T23:05:10.544666045Z"
@@ -125,7 +361,44 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/dovecot-0.1.0/dovecot-0.1.0.tgz
     version: 0.1.0
+  etcd:
+  - apiVersion: v2
+    appVersion: v3.4.14
+    created: "2021-08-10T04:55:39.874136868Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Distributed kv-store - for VERSION 2 API, not 3
+    digest: 2c169357fdf4420a9365ea124ef893ded7de08a0e15476cdd7aa01260faadf7e
+    home: https://github.com/instantlinux/docker-tools
+    name: etcd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/etcd-io/etcd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/etcd-0.1.0/etcd-0.1.0.tgz
+    version: 0.1.0
   ez-ipupdate:
+  - apiVersion: v2
+    appVersion: 3.0.10-r9
+    created: "2021-08-10T04:55:40.053622176Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Dynamic-DNS client
+    digest: 74fca4880dde732258454eec2c7aa6bfbe8435260893d70d186063c0b9c1bd6d
+    home: https://github.com/instantlinux/docker-tools
+    name: ez-ipupdate
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://sourceforge.net/projects/ez-ipupdate/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/ez-ipupdate-0.1.1/ez-ipupdate-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 3.0.10-r9
     created: "2021-07-26T23:05:10.730510321Z"
@@ -147,6 +420,23 @@ entries:
   git-dump:
   - apiVersion: v2
     appVersion: 2.32.0-r0
+    created: "2021-08-10T04:55:40.270002159Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: git backup
+    digest: 77818a6f4c8c8b45c29b875644b0bd6737d3a9cb6b904104fade53ff6584b7d1
+    home: https://github.com/instantlinux/docker-tools
+    name: git-dump
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/git-dump-0.1.1/git-dump-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 2.32.0-r0
     created: "2021-07-26T23:05:10.934840795Z"
     dependencies:
     - name: liblocal
@@ -162,7 +452,90 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/git-dump-0.1.0/git-dump-0.1.0.tgz
     version: 0.1.0
+  git-pull:
+  - apiVersion: v2
+    appVersion: 2.32.0-r0
+    created: "2021-08-10T04:55:40.46138612Z"
+    dependencies:
+    - name: chartlib
+      repository: file://../chartlib
+      version: 0.1.6
+    description: Keep a directory path in sync with periodic git pull
+    digest: bd4206e0731ba12ee3315e1d9ea5ca6ea6e36d3d8406452cdbad88b99585ed1d
+    home: https://github.com/instantlinux/docker-tools
+    name: git-pull
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/git-pull-0.1.0/git-pull-0.1.0.tgz
+    version: 0.1.0
+  gitlab:
+  - apiVersion: v2
+    appVersion: 13.11.3-ce.0
+    created: "2021-08-10T04:55:40.670346708Z"
+    dependencies:
+    - name: chartlib
+      repository: file://../chartlib
+      version: 0.1.5
+    description: Gitlab CI/CD
+    digest: c28de70afa6246fa6e18d0a7034159b06a76c4f3602264d559679cc047fdfd52
+    home: https://github.com/instantlinux/docker-tools
+    name: gitlab
+    sources:
+    - https://hub.docker.com/r/gitlab/gitlab-ce
+    - https://github.com/instantlinux/docker-tools
+    - https://gitlab.com/gitlab-org/gitlab
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/gitlab-0.1.2/gitlab-0.1.2.tgz
+    version: 0.1.2
+  gitlab-runner:
+  - apiVersion: v2
+    appVersion: alpine-v13.11.0
+    created: "2021-08-10T04:55:40.889279923Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Distributed build agent for GitLab
+    digest: 9ccd01cc92a72414008a3b2598ec4d01b66f39c04b054b79287acee4ce35cd69
+    home: https://github.com/instantlinux/docker-tools
+    name: gitlab-runner
+    sources:
+    - https://hub.docker.com/r/gitlab/gitlab-runner
+    - https://github.com/instantlinux/docker-tools
+    - https://gitlab.com/gitlab-org/gitlab-runner
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/gitlab-runner-0.1.0/gitlab-runner-0.1.0.tgz
+    version: 0.1.0
   guacamole:
+  - apiVersion: v2
+    appVersion: 1.3.0
+    created: "2021-08-10T04:55:41.08419523Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    - name: guacamole-server
+      repository: file://subcharts/guacamole-server
+      version: 0.1.0
+    - name: guacd
+      repository: file://subcharts/guacd
+      version: 0.1.0
+    description: Apache Guacamole remote desktop service
+    digest: 1999889afdd2d0df791b8b7c9900b2b386e073f0c6487a3db3930465749f89f8
+    home: https://github.com/instantlinux/docker-tools
+    name: guacamole
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/apache/guacamole-client
+    - https://github.com/apache/guacamole-server
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/guacamole-0.1.1/guacamole-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2021-07-26T23:05:11.210081978Z"
@@ -179,6 +552,25 @@ entries:
     - https://github.com/instantlinux/docker-tools/releases/download/guacamole-0.1.0/guacamole-0.1.0.tgz
     version: 0.1.0
   haproxy-keepalived:
+  - apiVersion: v2
+    appVersion: 2.4.1-alpine-2.2.1-r0
+    created: "2021-08-10T04:55:41.272205648Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Load balancer with haproxy and keepalived
+    digest: ee5b46251873400cbd988d1b0add16fa81c8aeed47373aaef1890e636a4e3a99
+    home: https://github.com/instantlinux/docker-tools
+    name: haproxy-keepalived
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/haproxy/haproxy
+    - https://github.com/acassen/keepalived
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/haproxy-keepalived-0.1.2/haproxy-keepalived-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 2.4.1-alpine-2.2.1-r0
     created: "2021-07-26T23:05:11.396969549Z"
@@ -198,6 +590,44 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/haproxy-keepalived-0.1.0/haproxy-keepalived-0.1.0.tgz
     version: 0.1.0
+  il-v1:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2021-08-10T04:55:41.484141674Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: InstantLinux v1
+    digest: d4a5d6ec27c41f2d60ef4a2d904f1d2de13eeeb66a29a20c9474b83cd99c607b
+    home: https://github.com/instantlinux/docker-tools
+    name: il-v1
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://git.instantlinux.net/richb/instantlinux
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/il-v1-0.1.0/il-v1-0.1.0.tgz
+    version: 0.1.0
+  jira:
+  - apiVersion: v2
+    appVersion: 8.13.4
+    created: "2021-08-10T04:55:41.667256029Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Jira issue and project tracking
+    digest: e779d8818e74bc74a5705a29a1fcaee956d07f058359fba10de01a052a2e87fa
+    home: https://github.com/instantlinux/docker-tools
+    name: jira
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://hub.docker.com/r/atlassian/jira-core
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/jira-0.1.0/jira-0.1.0.tgz
+    version: 0.1.0
   liblocal:
   - apiVersion: v2
     created: "2021-07-26T23:05:11.576408453Z"
@@ -208,7 +638,45 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/liblocal-0.1.0/liblocal-0.1.0.tgz
     version: 0.1.0
+  mariadb-galera:
+  - apiVersion: v2
+    appVersion: 10.4.20
+    created: "2021-08-10T04:55:41.840828661Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: MariaDB with Galera clustering
+    digest: 2e8f1a143c0b6f4f37cbd96636f4751237de697e300c1e46b20258198ca1515d
+    home: https://github.com/instantlinux/docker-tools
+    name: mariadb-galera
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/MariaDB/server
+    - https://github.com/MariaDB/galera
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/mariadb-galera-0.1.0/mariadb-galera-0.1.0.tgz
+    version: 0.1.0
   mt-daapd:
+  - apiVersion: v2
+    appVersion: 26.4-dfsg1-1
+    created: "2021-08-10T04:55:42.034074146Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Dynamic-DNS client
+    digest: 6ab29dd457523bb8f2a5afe40a2ecf62a7ef2846b2d15fedd8530dfeb53465d8
+    home: https://github.com/instantlinux/docker-tools
+    name: mt-daapd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://sourceforge.net/projects/mt-daapd/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/mt-daapd-0.1.2/mt-daapd-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 26.4-dfsg1-1
     created: "2021-07-26T23:05:11.759927683Z"
@@ -230,6 +698,24 @@ entries:
   mysqldump:
   - apiVersion: v2
     appVersion: 10.5.11-r0
+    created: "2021-08-10T04:55:42.232283395Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: git backup
+    digest: b19d5d39100385a70f7372923749199ba8847c28af54bfae7c5d2fbaf41e32f9
+    home: https://github.com/instantlinux/docker-tools
+    name: mysqldump
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/mariadb/server/tree/10.5/client
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/mysqldump-0.1.2/mysqldump-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 10.5.11-r0
     created: "2021-07-26T23:05:11.957544346Z"
     dependencies:
     - name: liblocal
@@ -246,7 +732,69 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/mysqldump-0.1.0/mysqldump-0.1.0.tgz
     version: 0.1.0
+  mythtv-backend:
+  - apiVersion: v2
+    appVersion: 31.0-fixes.202106102123.0680b37c68
+    created: "2021-08-10T04:55:42.430333343Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    - condition: data-sync.enabled
+      name: data-sync
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.0
+    - condition: keepalived.enabled
+      name: keepalived
+      repository: file://subcharts/keepalived
+      version: 0.1.0
+    description: MythTV DVR backend
+    digest: 42bd2f43271768016e731de11e9ed91fd93a1a60fb8c78e837fade93c86b5d0f
+    home: https://github.com/instantlinux/docker-tools
+    name: mythtv-backend
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/mythtv/mythtv
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/mythtv-backend-0.1.1/mythtv-backend-0.1.1.tgz
+    version: 0.1.1
+  nextcloud:
+  - apiVersion: v2
+    appVersion: 20.0.7
+    created: "2021-08-10T04:55:42.620089183Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Nextcloud file-sharing and application server
+    digest: 583df961818d48d53fe6c928ff4fd9e9ef3a5458c0b784e3eb6ceecb068a7ce9
+    home: https://github.com/instantlinux/docker-tools
+    name: nextcloud
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/nextcloud-0.1.2/nextcloud-0.1.2.tgz
+    version: 0.1.2
   nexus:
+  - apiVersion: v2
+    appVersion: 3.31.1
+    created: "2021-08-10T04:55:42.787252633Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Sonatype nexus repository service
+    digest: af165626b76c90ed4f7910df624708efde2b6cb79a81948327c6df437a101aa7
+    home: https://github.com/instantlinux/docker-tools
+    name: nexus
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/nexus-0.1.2/nexus-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 3.31.1
     created: "2021-07-26T23:05:12.151601626Z"
@@ -265,6 +813,24 @@ entries:
     - https://github.com/instantlinux/docker-tools/releases/download/nexus-0.1.0/nexus-0.1.0.tgz
     version: 0.1.0
   nut-upsd:
+  - apiVersion: v2
+    appVersion: 2.7.4-r8
+    created: "2021-08-10T04:55:42.956678112Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Network UPS Tools
+    digest: 6adf707dbc385e0ff86da00614cd57bdabb096ada26ee9902e9835203a98d4dc
+    home: https://github.com/instantlinux/docker-tools
+    name: nut-upsd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/networkupstools/nut
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/nut-upsd-0.1.1/nut-upsd-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 2.7.4-r8
     created: "2021-07-26T23:05:12.326295797Z"
@@ -286,6 +852,24 @@ entries:
   postfix:
   - apiVersion: v2
     appVersion: 3.6.1-r0
+    created: "2021-08-10T04:55:43.162221555Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Postfix with python
+    digest: 741b82116c61f95b850738003db1828e31181e234dd9b912676a07f651e955e9
+    home: https://github.com/instantlinux/docker-tools
+    name: postfix
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/vdukhovni/postfix
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/postfix-0.1.2/postfix-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 3.6.1-r0
     created: "2021-07-26T23:05:12.519531981Z"
     dependencies:
     - name: liblocal
@@ -305,6 +889,24 @@ entries:
   proftpd:
   - apiVersion: v2
     appVersion: 1.3.7a-r0
+    created: "2021-08-10T04:55:43.35078648Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: FTP server
+    digest: 20781ae39f65017fee33e661d2f881346c704fb581f639fa903026aaa4f22b47
+    home: https://github.com/instantlinux/docker-tools
+    name: proftpd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/proftpd/proftpd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/proftpd-0.1.1/proftpd-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.3.7a-r0
     created: "2021-07-26T23:05:12.763439924Z"
     dependencies:
     - name: liblocal
@@ -321,7 +923,63 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/proftpd-0.1.0/proftpd-0.1.0.tgz
     version: 0.1.0
+  rainloop:
+  - apiVersion: v2
+    appVersion: 1.13.0
+    created: "2021-08-10T04:55:43.519261547Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Rainloop webmail server
+    digest: fb31fbb0b8eee9fe03af013fa1ece685af78142ffe53a29d69cc3b67bd5b3fbc
+    home: https://github.com/instantlinux/docker-tools
+    name: rainloop
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/RainLoop/rainloop-webmail
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/rainloop-0.1.0/rainloop-0.1.0.tgz
+    version: 0.1.0
+  restic:
+  - apiVersion: v2
+    appVersion: 0.12.0-r1
+    created: "2021-08-10T04:55:43.686065192Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Restic backups
+    digest: b60b13b121cbacd8cb0bede18a93a251c4214341c10ad1da8f5c20eade2ee844
+    home: https://github.com/instantlinux/docker-tools
+    name: restic
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/restic/restic
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/restic-0.1.0/restic-0.1.0.tgz
+    version: 0.1.0
   rsyslogd:
+  - apiVersion: v2
+    appVersion: 8.2012.0-r0
+    created: "2021-08-10T04:55:43.847231365Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: rsyslogd
+    digest: 8ae32e486d1836eeec0e731c27b19fed3b38c62f027823b87920cc74a42a977e
+    home: https://github.com/instantlinux/docker-tools
+    name: rsyslogd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/rsyslog/rsyslog
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/rsyslogd-0.1.1/rsyslogd-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 8.2012.0-r0
     created: "2021-07-26T23:05:12.957708103Z"
@@ -343,6 +1001,24 @@ entries:
   samba:
   - apiVersion: v2
     appVersion: 4.14.5-r0
+    created: "2021-08-10T04:55:44.012944596Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: samba file server
+    digest: 4ba09c953d9a01fbd3b7bc9dad97231080d9945a267e70407f3fef6817b00485
+    home: https://github.com/instantlinux/docker-tools
+    name: samba
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://gitlab.com/samba-team/samba
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/samba-0.1.1/samba-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 4.14.5-r0
     created: "2021-07-26T23:05:13.140862634Z"
     dependencies:
     - name: liblocal
@@ -359,7 +1035,44 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/samba-0.1.0/samba-0.1.0.tgz
     version: 0.1.0
+  samba-dc:
+  - apiVersion: v2
+    appVersion: 4.14.5-r0
+    created: "2021-08-10T04:55:44.210441836Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Samba domain controller
+    digest: 560a5eed06be2666536ab50e4bf8d23fff6a56290c9fa2be078a1153e28df26c
+    home: https://github.com/instantlinux/docker-tools
+    name: samba-dc
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - ttps://gitlab.com/samba-team/samba
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/samba-dc-0.1.1/samba-dc-0.1.1.tgz
+    version: 0.1.1
   spamassassin:
+  - apiVersion: v2
+    appVersion: 3.4.2-1
+    created: "2021-08-10T04:55:44.394078793Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Spamassassin
+    digest: c8e00f5e5a30805c423085dddaee6f260fbc9b2f037829963a46214d4680c1ca
+    home: https://github.com/instantlinux/docker-tools
+    name: spamassassin
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://svn.apache.org/viewvc/spamassassin
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/spamassassin-0.1.1/spamassassin-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 3.4.2-1
     created: "2021-07-26T23:05:13.349106247Z"
@@ -378,4 +1091,119 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/spamassassin-0.1.0/spamassassin-0.1.0.tgz
     version: 0.1.0
-generated: "2021-07-27T01:39:58.987174671Z"
+  splunk:
+  - apiVersion: v2
+    appVersion: 8.1.3
+    created: "2021-08-10T04:55:44.570531553Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Splunk Enterprise (free up to 500Mb/day)
+    digest: 3bc455dd9fd66e16f2dd8637889260906d9fb7d05d9424c051ed30caf66e2453
+    home: https://github.com/instantlinux/docker-tools
+    name: splunk
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://hub.docker.com/r/splunk/splunk
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/splunk-0.1.1/splunk-0.1.1.tgz
+    version: 0.1.1
+  squirrelmail:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2021-08-10T04:55:44.73736349Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Squirrelmail (vintage 2003)
+    digest: b699f4bfc01138e96ca07958254f7e29eadbfbe1856696f6687633a1232419f1
+    home: https://github.com/instantlinux/docker-tools
+    name: squirrelmail
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/squirrelmail-0.1.0/squirrelmail-0.1.0.tgz
+    version: 0.1.0
+  weewx:
+  - apiVersion: v2
+    appVersion: 4.5.1
+    created: "2021-08-10T04:55:44.898317752Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Weather Station software
+    digest: 176a46dcb6513b96e2f9a8862e43dd60063072134181332534cd156e04c0deb6
+    home: https://github.com/instantlinux/docker-tools
+    name: weewx
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/weewx/weewx/
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/weewx-0.1.2/weewx-0.1.2.tgz
+    version: 0.1.2
+  wordpress:
+  - apiVersion: v2
+    appVersion: 5.7.1-php7.4-apache
+    created: "2021-08-10T04:55:45.07926547Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: WordPress content management
+    digest: e76a9b89dde961e9e8b2c6e40678fc21d73d95b449c728c88010c2c9acdd7350
+    home: https://github.com/instantlinux/docker-tools
+    name: wordpress
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://build.trac.wordpress.org/browser
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/wordpress-0.1.0/wordpress-0.1.0.tgz
+    version: 0.1.0
+  wx-nginx:
+  - apiVersion: v2
+    appVersion: 1.20.0-alpine
+    created: "2021-08-10T04:55:45.278683824Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    description: Nginx front-end for weewx
+    digest: e18a1a6133115c116ee837daab18a771f57bbaa0b86c93c26552083f11a13d9d
+    home: https://github.com/instantlinux/docker-tools
+    name: wx-nginx
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/wx-nginx-0.1.0/wx-nginx-0.1.0.tgz
+    version: 0.1.0
+  wxcam-upload:
+  - apiVersion: v2
+    appVersion: 1.3.7a-r0
+    created: "2021-08-10T04:55:45.470644883Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.5
+    - name: data-sync
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.0
+    description: Uploader for Weather Underground images
+    digest: 0cd90bce4e5bcd2a084a2b4372899d7ca808592c5905e14320ee2041576c05ca
+    home: https://github.com/instantlinux/docker-tools
+    name: wxcam-upload
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/proftpd/proftpd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/wxcam-upload-0.1.1/wxcam-upload-0.1.1.tgz
+    version: 0.1.1
+generated: "2021-08-26T04:59:41.071884353Z"
