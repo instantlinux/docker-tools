@@ -1,20 +1,20 @@
 # Default values for splunk.
 tlsHostname: splunk.example.com
 statefulset:
-  command: [/bin/sh]
-  args:
-  # The image lacks tzdata, this looks up and installs rpm
-  - -c
-  - >
-    source /etc/os-release && cd /tmp &&
-    PKG=`rpm -q tzdata`.rpm &&
-    DIST=`wget -qO- http://mirror.centos.org/centos|
-      egrep -o "href=\"${VERSION_ID}\.[0-9]+"|cut -d\" -f 2` &&
-    curl -Lo $PKG \
-      http://mirror.centos.org/centos/${DIST}/BaseOS/x86_64/os/Packages/$PKG &&
-    sudo rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official &&
-    sudo rpm -ivh --reinstall $PKG &&
-    exec /sbin/entrypoint.sh start-service
+  # command: [/bin/sh]
+  # args:
+  # # The image lacks tzdata, this looks up and installs rpm
+  # - -c
+  # - >
+  #   source /etc/os-release && cd /tmp &&
+  #   PKG=`rpm -q tzdata`.rpm &&
+  #   DIST=`wget -qO- http://mirror.centos.org/centos|
+  #     egrep -o "href=\"${VERSION_ID}\.[0-9]+"|cut -d\" -f 2` &&
+  #   curl -Lo $PKG \
+  #     http://mirror.centos.org/centos/${DIST}/BaseOS/x86_64/os/Packages/$PKG &&
+  #   sudo rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official &&
+  #   sudo rpm -ivh --reinstall $PKG &&
+  #   exec /sbin/entrypoint.sh start-service
   env:
     splunk_add: tcp 1514
     splunk_enable_listen: "9997"

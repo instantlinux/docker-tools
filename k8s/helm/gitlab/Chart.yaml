@@ -8,9 +8,13 @@ sources:
 - https://gitlab.com/gitlab-org/gitlab
 type: application
 version: 0.1.2
-appVersion: "13.11.3-ce.0"
+appVersion: "14.1.7-ce.0"
 dependencies:
 - name: chartlib
   version: 0.1.5
   # repository: https://instantlinux.github.io/docker-tools
   repository: file://../chartlib
+- name: postgres
+  version: 0.1.0
+  repository: file://subcharts/postgres
+  condition: postgres.enabled

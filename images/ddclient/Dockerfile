@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DDCLIENT_VERSION=3.9.1-r0
+ARG DDCLIENT_VERSION=3.9.1-r1
 ENV HOST= \
     INTERVAL=3600 \
     IPLOOKUP_URI=http://ipinfo.io/ip \

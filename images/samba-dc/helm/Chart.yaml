@@ -7,7 +7,7 @@ sources:
 - ttps://gitlab.com/samba-team/samba
 type: application
 version: 0.1.1
-appVersion: "4.14.5-r0"
+appVersion: "4.14.8-r0"
 dependencies:
 - name: chartlib
   version: 0.1.5

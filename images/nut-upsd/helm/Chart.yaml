@@ -7,7 +7,7 @@ sources:
 - https://github.com/networkupstools/nut
 type: application
 version: 0.1.1
-appVersion: "2.7.4-r8"
+appVersion: "2.7.4-r10"
 dependencies:
 - name: chartlib
   version: 0.1.5

@@ -10,7 +10,7 @@ data:
     gitaly['logging_level'] = 'warn'
     gitlab_rails['db_adapter'] = 'postgresql'
     gitlab_rails['db_encoding'] = 'utf8'
-    gitlab_rails['db_host'] = 'dbgitlab.pgo'
+    gitlab_rails['db_host'] = 'gitlab-postgres'
     gitlab_rails['db_port'] = 5432
     gitlab_rails['db_username'] = 'gitlab-psql'
     gitlab_rails['smtp_enable'] = true
