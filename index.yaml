@@ -205,6 +205,23 @@ entries:
   data-sync:
   - apiVersion: v2
     appVersion: 2.51.4-4.12.0-r0
+    created: "2021-11-25T17:30:31.816044211Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.7
+    description: git backup
+    digest: ca642003a0296284b03d5118b195ee22bbfab0b6c52baa79ae79f7f481b4d1cd
+    home: https://github.com/instantlinux/docker-tools
+    name: data-sync
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-data-sync-0.1.2/data-sync-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 2.51.4-4.12.0-r0
     created: "2021-08-10T04:55:38.87276859Z"
     dependencies:
     - name: chartlib
@@ -1220,4 +1237,4 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/wxcam-upload-0.1.1/wxcam-upload-0.1.1.tgz
     version: 0.1.1
-generated: "2021-11-25T07:14:22.416662668Z"
+generated: "2021-11-25T17:30:31.816129711Z"
