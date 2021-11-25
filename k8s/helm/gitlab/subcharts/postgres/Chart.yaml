@@ -1,13 +1,14 @@
 apiVersion: v2
-name: rsyslogd
-description: rsyslogd
+name: postgres
+description: PostgreSQL database
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
-- https://github.com/rsyslog/rsyslog
+- https://hub.docker.com/_/postgres
 type: application
-version: 0.1.1
-appVersion: "8.2012.0-r1"
+version: 0.1.0
+# specify version tag from hub.docker.com in top-level values.yaml
+appVersion: "0.0.1"
 dependencies:
 - name: chartlib
   version: 0.1.7
