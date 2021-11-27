@@ -3,6 +3,20 @@ entries:
   artifactory:
   - apiVersion: v2
     appVersion: 6.15.1
+    created: "2021-11-27T08:31:16.749411444Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.8
+    description: JFrog Artifactory service
+    digest: 02bd4723fb21b7b7080ee5a6701f04943a6fba8195cf00daeeaa5cac59ec07fd
+    name: artifactory
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-artifactory-0.1.8/artifactory-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 6.15.1
     created: "2021-11-25T07:14:21.42954242Z"
     dependencies:
     - name: chartlib
@@ -1289,4 +1303,4 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/wxcam-upload-0.1.1/wxcam-upload-0.1.1.tgz
     version: 0.1.1
-generated: "2021-11-27T08:28:18.215678304Z"
+generated: "2021-11-27T08:31:20.366330317Z"
