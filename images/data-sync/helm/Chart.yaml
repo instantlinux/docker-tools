@@ -9,5 +9,5 @@ version: 0.1.1
 appVersion: "2.51.4-4.12.0-r0"
 dependencies:
 - name: chartlib
-  version: 0.1.5
+  version: 0.1.7
   repository: https://instantlinux.github.io/docker-tools
