@@ -10,10 +10,10 @@ version: 0.1.1
 appVersion: "31.0-fixes.202106102123.0680b37c68"
 dependencies:
 - name: chartlib
-  version: 0.1.7
+  version: 0.1.8
   repository: https://instantlinux.github.io/docker-tools
 - name: data-sync
-  version: 0.1.2
+  version: 0.1.3
   repository: https://instantlinux.github.io/docker-tools
   condition: data-sync.enabled
 - name: keepalived
