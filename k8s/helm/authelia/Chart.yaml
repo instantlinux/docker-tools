@@ -6,11 +6,11 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/authelia/authelia
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: "4.29.4"
 dependencies:
 - name: chartlib
-  version: 0.1.5
+  version: 0.1.7
   repository: https://instantlinux.github.io/docker-tools
 - name: ldap
   version: 0.1.0
