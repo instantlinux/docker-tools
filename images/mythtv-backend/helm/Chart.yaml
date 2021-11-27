@@ -13,7 +13,7 @@ dependencies:
   version: 0.1.7
   repository: https://instantlinux.github.io/docker-tools
 - name: data-sync
-  version: 0.1.0
+  version: 0.1.2
   repository: https://instantlinux.github.io/docker-tools
   condition: data-sync.enabled
 - name: keepalived
