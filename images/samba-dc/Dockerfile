@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.15
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -24,7 +24,7 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=AD
 
-ARG SAMBA_VERSION=4.14.8-r0
+ARG SAMBA_VERSION=4.15.2-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/

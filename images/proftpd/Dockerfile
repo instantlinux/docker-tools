@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.15
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG PROFTPD_VERSION=1.3.7a-r0
+ARG PROFTPD_VERSION=1.3.7c-r2
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \
     ANON_UPLOAD_ENABLE=DenyAll \
@@ -27,10 +27,8 @@ ENV ALLOW_OVERWRITE=on \
     WRITE_ENABLE=AllowAll
 
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
-RUN echo '@community http://dl-cdn.alpinelinux.org/alpine/edge/community' \
-      >>/etc/apk/repositories && \
-    chmod 644 /etc/proftpd/proftpd.conf && \
-    apk add --update libcrypto1.1 proftpd@community=$PROFTPD_VERSION tzdata
+RUN chmod 644 /etc/proftpd/proftpd.conf && \
+    apk add --update libcrypto1.1 proftpd=$PROFTPD_VERSION tzdata
 
 VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp
 EXPOSE 21 $PASV_MIN_PORT-$PASV_MAX_PORT

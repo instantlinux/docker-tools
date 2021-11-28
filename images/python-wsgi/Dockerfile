@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.15
 
 MAINTAINER Rich Braun "richb@instantlinux.net"
 ARG BUILD_DATE
@@ -9,9 +9,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name=python-wsgi \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/python-wsgi
-ARG PYTHON_VERSION=3.9.5-r1
-ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r1
-ARG PYPILLOW_VERSION=8.2.0-r0
+ARG PYTHON_VERSION=3.9.7-r4
+ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r3
+ARG PYPILLOW_VERSION=8.4.0-r1
 ARG UWSGI_VERSION=2.0.19.1-r2
 
 COPY Pipfile* uwsgi.ini /usr/src/
