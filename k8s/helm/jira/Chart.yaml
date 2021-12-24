@@ -7,7 +7,7 @@ sources:
 - https://hub.docker.com/r/atlassian/jira-core
 type: application
 version: 0.1.0
-appVersion: "8.13.4"
+appVersion: "8.20.2"
 dependencies:
 - name: chartlib
   version: 0.1.8
