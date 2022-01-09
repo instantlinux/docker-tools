@@ -14,6 +14,10 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 if [ ! -f /var/lib/samba/registry.tdb ]; then
+  if [ ! -f /run/secrets/$ADMIN_PASSWORD_SECRET ]; then
+    echo 'Cannot read secret $ADMIN_PASSWORD_SECRET in /run/secrets'
+    exit 1
+  fi
   ADMIN_PASSWORD=$(cat /run/secrets/$ADMIN_PASSWORD_SECRET)
   if [ "$BIND_INTERFACES_ONLY" == yes ]; then
     INTERFACE_OPTS="--option=\"bind interfaces only=yes\" \
