@@ -87,6 +87,30 @@ entries:
     version: 0.1.0
   authelia:
   - apiVersion: v2
+    appVersion: 4.32.2
+    created: "2022-01-26T16:36:22.422473425Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.8
+    - name: ldap
+      repository: file://subcharts/ldap
+      version: 0.1.0
+    - name: redis
+      repository: file://subcharts/redis
+      version: 0.1.0
+    description: Authelia single-signon with MFA
+    digest: c85f8515001596b7b6616892a63af3b04d625f59d107fb402f36c9aa7edc8698
+    home: https://github.com/instantlinux/docker-tools
+    name: authelia
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/authelia/authelia
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-authelia-0.1.3/authelia-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     appVersion: 4.29.4
     created: "2021-11-27T07:56:13.886889565Z"
     dependencies:
@@ -460,6 +484,24 @@ entries:
     version: 0.1.0
   etcd:
   - apiVersion: v2
+    appVersion: v3.5.1
+    created: "2022-01-26T16:36:22.611844388Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.8
+    description: Distributed kv-store - for VERSION 2 API, not 3
+    digest: fc64e370c8904afc655f8df863131b8370e76cab4e2441b8fe45569742bf9e15
+    home: https://github.com/instantlinux/docker-tools
+    name: etcd
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://github.com/etcd-io/etcd
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-etcd-0.1.1/etcd-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: v3.4.14
     created: "2021-08-10T04:55:39.874136868Z"
     dependencies:
@@ -708,6 +750,24 @@ entries:
     version: 0.1.0
   jira:
   - apiVersion: v2
+    appVersion: 8.20.3
+    created: "2022-01-26T16:36:22.799269727Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.8
+    description: Jira issue and project tracking
+    digest: 047054198747c0dd5a95e512e9679305a7ff18ab30b2e67641014745f0a61f5d
+    home: https://github.com/instantlinux/docker-tools
+    name: jira
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://hub.docker.com/r/atlassian/jira-core
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-jira-0.1.1/jira-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 8.13.4
     created: "2021-08-10T04:55:41.667256029Z"
     dependencies:
@@ -892,6 +952,23 @@ entries:
     - https://github.com/instantlinux/docker-tools/releases/download/nextcloud-0.1.2/nextcloud-0.1.2.tgz
     version: 0.1.2
   nexus:
+  - apiVersion: v2
+    appVersion: 3.37.3
+    created: "2022-01-26T16:36:22.992275836Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.8
+    description: Sonatype nexus repository service
+    digest: d20f51c54f3dcb61d6d65a3465e35a04ce03389d3beb267475249569cbb8b1c3
+    home: https://github.com/instantlinux/docker-tools
+    name: nexus
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-nexus-0.1.3/nexus-0.1.3.tgz
+    version: 0.1.3
   - apiVersion: v2
     appVersion: 3.31.1
     created: "2021-08-10T04:55:42.787252633Z"
@@ -1299,6 +1376,24 @@ entries:
     version: 0.1.2
   wordpress:
   - apiVersion: v2
+    appVersion: 5.8.3-php7.4-apache
+    created: "2022-01-26T16:36:23.173869802Z"
+    dependencies:
+    - name: chartlib
+      repository: https://instantlinux.github.io/docker-tools
+      version: 0.1.8
+    description: WordPress content management
+    digest: b1909acea81f14aaee4b3e3f22612ec982f04025d898198ea402c753e7269526
+    home: https://github.com/instantlinux/docker-tools
+    name: wordpress
+    sources:
+    - https://github.com/instantlinux/docker-tools
+    - https://build.trac.wordpress.org/browser
+    type: application
+    urls:
+    - https://github.com/instantlinux/docker-tools/releases/download/chart-wordpress-0.1.2/wordpress-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 5.8.2-php7.4-apache
     created: "2021-12-24T02:30:43.959626886Z"
     dependencies:
@@ -1374,4 +1469,4 @@ entries:
     urls:
     - https://github.com/instantlinux/docker-tools/releases/download/wxcam-upload-0.1.1/wxcam-upload-0.1.1.tgz
     version: 0.1.1
-generated: "2021-12-24T02:30:43.959719687Z"
+generated: "2022-01-26T16:36:23.173986503Z"
