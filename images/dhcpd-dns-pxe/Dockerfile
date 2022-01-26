@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DHCP_VERSION=4.4.2_p1-r0
+ARG DHCP_VERSION=4.4.2_p1-r1
 ARG DNSMASQ_VERSION=2.86-r0
 
 ENV DHCP_BOOT=pxelinux.0 \
