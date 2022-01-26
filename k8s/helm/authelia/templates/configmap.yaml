@@ -6,9 +6,11 @@ metadata:
     {{- include "local.labels" . | nindent 4 }}
 data:
   configuration.yml: |
-    port: 80
+    server:
+      port: 80
     # set to trace for troubleshooting
-    log_level: {{ .Values.logLevel }}
+    log:
+      level: {{ .Values.logLevel }}
 
     authentication_backend:
       ldap:

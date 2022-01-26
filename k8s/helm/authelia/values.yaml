@@ -29,6 +29,7 @@ deployment:
     authelia_storage_mysql_password_file: /config/secrets/mysql_password
     authelia_notifier_smtp_password_file: /config/secrets/smtp_password
     authelia_authentication_backend_ldap_password_file: /config/secrets/ldap_password
+    authelia_port: 80
   ports:
   - containerPort: 80
   resources:
