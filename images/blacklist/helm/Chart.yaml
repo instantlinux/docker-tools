@@ -7,7 +7,7 @@ sources:
 - https://github.com/spamhaus/rbldnsd
 type: application
 version: 0.1.2
-appVersion: "0.998b"
+appVersion: "0.999"
 dependencies:
 - name: chartlib
   version: 0.1.8

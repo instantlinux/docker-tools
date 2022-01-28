@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -17,18 +17,16 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DB_NAME=blacklist \
     DB_HOST=dbhost
 
-ARG RBLDNSD_VERSION=0.998b~pre1-1
+ARG RBLDNSD_VERSION=0.999~20180516-3
 
 COPY src/ /root/
 RUN apt-get -yq update && \
     apt-get -yq --no-install-recommends install \
       cron curl rbldnsd=$RBLDNSD_VERSION perl libdbd-mysql-perl \
-      mariadb-client patch && \
-    curl -sL http://www.blue-quartz.com/rbl/rebuild_rbldns.txt > \
-      /usr/local/bin/rebuild_rbldns.pl && \
-    patch -d /usr/local/bin < /root/rebuild_rbldns.diff && \
+      mariadb-client && \
+    mv /root/rebuild_rbldns.pl /usr/local/bin/ && \
     chmod 755 /usr/local/bin/rebuild_rbldns.pl && \
-    apt-get purge -yq --auto-remove curl patch && \
+    apt-get purge -yq --auto-remove curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
 
 VOLUME $HOMEDIR

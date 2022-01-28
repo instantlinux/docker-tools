@@ -1,7 +1,7 @@
 ## DNS blacklist for spamassassin
-[![](https://img.shields.io/docker/v/instantlinux/blacklist?sort=date)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/blacklist.svg)](https://microbadger.com/images/instantlinux/blacklist "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/blacklist/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/blacklist?sort=date)](https://microbadger.com/images/instantlinux/blacklist "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/blacklist?sort=date)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/blacklist "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/blacklist/Dockerfile "dockerfile")
 
-This is based on [Running Your Own RBL DNS Blacklist](http://www.blue-quartz.com/rbl/) using the Debian rbldnsd
+This is based on [Running Your Own RBL DNS Blacklist](http://www.blue-quartz.com/rbl/) (or see [alt link](https://g33kinfo.com/info/running-your-own-rbl-dns-blacklist/)) using the Debian rbldnsd
 package adapted from scripts published by Herb Rubin some years ago.
 This attempts to counter large-scale botnets (with hundreds of
 thousands of scattered IP addresses) that spammers use to bypass the
