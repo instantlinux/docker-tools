@@ -26,6 +26,7 @@ RUN apt-get -yq update && \
      libmail-dkim-perl libnet-ident-perl make pyzor razor gpg gpg-agent \
      procps spamassassin=$SPAMD_VERSION && \
      usermod --uid $SPAMD_UID $USERNAME && \
+     chsh -s /bin/sh $USERNAME && \
      mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
 \
 # Distributed Checksum Clearinghouse - requires a source-compile
