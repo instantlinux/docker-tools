@@ -1,5 +1,5 @@
 ## mythtv-backend
-[![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/mythtv-backend/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mythtv-backend?sort=date)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/mythtv-backend "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/mythtv-backend/Dockerfile "dockerfile")
 
 The MythTV backend built under Ubuntu Focal Fossa.
 

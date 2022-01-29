@@ -11,8 +11,10 @@ stages:
   - ez-ipupdate
   - git-pull
   - haproxy-keepalived
+  - mariadb-galera
   - mt-daapd
   - mysqldump
+  - mythtv-backend
   - nagios
   - nagiosql
   - nut-upsd
@@ -137,6 +139,15 @@ haproxy-keepalived:
   only:
     changes: [ images/haproxy-keepalived/**, lib/**, .image-gitlab-ci.yml ]
 
+mariadb-galera:
+  stage: mariadb-galera
+  trigger:
+    include:
+    - artifact: .child-mariadb-galera.yml
+      job: prepare
+  only:
+    changes: [ images/mariadb-galera/**, lib/**, .image-gitlab-ci.yml ]
+
 mt-daapd:
   stage: mt-daapd
   trigger:
@@ -154,6 +165,15 @@ mysqldump:
       job: prepare
   only:
     changes: [ images/mysqldump/**, lib/**, .image-gitlab-ci.yml ]
+
+mythtv-backend:
+  stage: mythtv-backend
+  trigger:
+    include:
+    - artifact: .child-mythtv-backend.yml
+      job: prepare
+  only:
+    changes: [ images/mythtv-backend/**, lib/**, .image-gitlab-ci.yml ]
 
 nagios:
   stage: nagios
