@@ -6,9 +6,15 @@ else
   API_PASSWORD="$SECRET"
 fi
 
+cp_local_conf() {
+  cp "$1" "$2"
+  chown root:nut "$2"
+  chmod 0640 "$2"
+}
+
 if [ ! -e /etc/nut/.setup ]; then
   if [ -e /etc/nut/local/ups.conf ]; then
-    cp /etc/nut/local/ups.conf /etc/nut/ups.conf
+    cp_local_conf /etc/nut/local/ups.conf /etc/nut/ups.conf
   else
     if [ -z "$SERIAL" ]; then
       echo "** This container may not work without setting for SERIAL **"
@@ -31,14 +37,14 @@ EOF
     fi
   fi
   if [ -e /etc/nut/local/upsd.conf ]; then
-    cp /etc/nut/local/upsd.conf /etc/nut/upsd.conf
+    cp_local_conf /etc/nut/local/upsd.conf /etc/nut/upsd.conf
   else
     cat <<EOF >>/etc/nut/upsd.conf
 LISTEN 0.0.0.0
 EOF
   fi
   if [ -e /etc/nut/local/upsd.users ]; then
-    cp /etc/nut/local/upsd.users /etc/nut/upsd.users
+    cp_local_conf /etc/nut/local/upsd.users /etc/nut/upsd.users
   else
     cat <<EOF >>/etc/nut/upsd.users
 [$API_USER]
@@ -47,7 +53,7 @@ EOF
 EOF
   fi
   if [ -e /etc/nut/local/upsmon.conf ]; then
-    cp /etc/nut/local/upsmon.conf /etc/nut/upsmon.conf
+    cp_local_conf /etc/nut/local/upsmon.conf /etc/nut/upsmon.conf
   else
     cat <<EOF >>/etc/nut/upsmon.conf
 MONITOR $NAME@localhost 1 $API_USER $API_PASSWORD $SERVER
