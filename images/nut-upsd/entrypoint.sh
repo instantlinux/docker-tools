@@ -1,6 +1,10 @@
 #! /bin/sh -e
 
-API_PASSWORD=$(cat /run/secrets/$SECRET)
+if [ -r "/run/secrets/$SECRET" ]; then
+  API_PASSWORD=$(cat /run/secrets/$SECRET)
+else
+  API_PASSWORD="$SECRET"
+fi
 
 if [ ! -e /etc/nut/.setup ]; then
   if [ -e /etc/nut/local/ups.conf ]; then
