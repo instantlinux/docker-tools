@@ -89,7 +89,7 @@ mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 Version 31:
 
-You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from Schedules Direct. See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
+You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from [Schedules Direct](https://www.schedulesdirect.org/). See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
 
 * Go into mythtv-setup, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
 * Invoke a channel-scan
