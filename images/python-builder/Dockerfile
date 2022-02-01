@@ -11,7 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ENV BUILD_DIR=/build \
     BUILD_USER=build \
     LANG=en_US \
-    PYTHONPATH=/usr/lib/python3.10/site-packages \
+    PYTHONPATH= \
     TZ=UTC
 
 ARG BUILDX_VERSION=0.7.1
@@ -19,9 +19,10 @@ ARG COMPOSE_VERSION=1.29.2
 ARG HELM_VERSION=3.7.2-r0
 ARG KUBECTL_VERSION=1.20.4
 ARG MUSL_VERSION=1.2.2-r7
+ARG PIP_VERSION=20.2.3
 ARG PYTHON_VERSION=3.9.7-r4
 ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r3
-ARG PYPILLOW_VERSION=9.0.0-r0
+ARG PYPILLOW_VERSION=8.4.0-r2
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _BUILDX_URL=https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64
@@ -38,8 +39,6 @@ COPY Pipfile* /root/
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
-    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
-      >>/etc/apk/repositories && \
     echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
       >>/etc/apk/repositories && \
     apk add --update --no-cache \
@@ -49,7 +48,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       py3-cachetools py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet \
       py3-itsdangerous py3-passlib \
-      py3-pillow@edge=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
+      py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
       helm@testing=$HELM_VERSION sqlite tar tzdata wget && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
@@ -62,7 +61,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       " /usr/local/bin/kubectl" | sha256sum -c && \
     chmod +x /usr/lib/docker/cli-plugins/docker-buildx \
       /usr/local/bin/docker-compose /usr/local/bin/kubectl && \
-    pip install --upgrade pipenv pip && \
+    pip install --upgrade pipenv pip==$PIP_VERSION && \
     cd /root && pipenv install --system --deploy && pip freeze && \
     mkdir -p /certs/client && \
     chown $BUILD_USER /certs/client /etc/localtime /etc/timezone && \

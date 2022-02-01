@@ -1,6 +1,6 @@
 # To generate Pipfile.lock:
 #  docker run --rm -it -v `pwd`:/build alpine:3.15 sh
-#  apk add python3 gcc musl-dev libffi-dev py3-pip py3-pillow
+#  apk add python3-dev gcc musl-dev libffi-dev py3-pip py3-pillow
 #  pip install pipenv==2020.11.15 && cd /build && pipenv lock --verbose
 
 [packages]
@@ -18,7 +18,8 @@ greenlet = "==1.1.2"
 itsdangerous = "==2.0.1"
 packaging = "==20.9"
 passlib = "1.7.4"
-Pillow = "==9.0.0"
+# Commented out until alpine 3.16
+# Pillow = "==8.4.0"
 pycryptodomex = "==3.10.1"
 python-dateutil = "==2.8.2"
 requests = "==2.26.0"
