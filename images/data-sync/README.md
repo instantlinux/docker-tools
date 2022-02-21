@@ -1,5 +1,5 @@
 ## data-sync
-[![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://microbadger.com/images/instantlinux/data-sync "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/data-sync.svg)](https://microbadger.com/images/instantlinux/data-sync "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/data-sync/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/data-sync?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/data-sync "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/data-sync/Dockerfile "dockerfile")
 
 This provides HA storage for a bare-metal cluster. NAS servers are not usually HA and SAN installations are costly. Add this resource definition to your Kubernetes cluster and the volumes you mount under a directory /var/data-sync will be kept in sync using the [unison](https://www.cis.upenn.edu/~bcpierce/unison/) file synchronizer from UPenn.
 
@@ -18,7 +18,7 @@ make data-sync
 Define any custom directives in the data-sync ConfigMap, and set environment variable $SERVICE_NAME to data-sync (you can run more than one copy of this by setting different SERVICE_NAME and ConfigMap names).
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with [helm](https://github.com/instantlinux/docker-tools/blob/master/images/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can deploy with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/data-sync/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/data-sync/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -58,5 +58,9 @@ Interval is slightly inexact, intentionally. An earlier version of this used cro
 | ------ | ----------- |
 | data-sync-sshkey1 | private half of ssh keypair |
 | data-sync-sshkey2 | private half of ssh keypair |
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-bcpierce00%2Funison-blue.svg)](https://github.com/bcpierce00/unison "Code repo")

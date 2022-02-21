@@ -1,5 +1,5 @@
 ## dovecot
-[![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://microbadger.com/images/instantlinux/dovecot "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dovecot.svg)](https://microbadger.com/images/instantlinux/dovecot "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/dovecot/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://hub.docker.com/r/instantlinux/dovecot/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/dovecot?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/dovecot "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/dovecot/Dockerfile "dockerfile")
 
 The dovecot imapd daemon in a small Alpine Linux container, with
 postfix for local delivery and procmail for filtering.
@@ -25,12 +25,12 @@ Configuration is defined as files in a volume mounted as
   ./mkcert.sh
   ```
 
-For settings, see etc-example directory and [helm]((https://github.com/instantlinux/docker-tools/tree/master/images/dovecot/helm) / kubernetes.yaml / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) file defines default values.
+For settings, see etc-example directory and [helm]((https://github.com/instantlinux/docker-tools/tree/main/images/dovecot/helm) / kubernetes.yaml / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) file defines default values.
 
 Also configure postfix as described in the postfix image.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with [helm]((https://github.com/instantlinux/docker-tools/tree/master/images/dovecot/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dovecot/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/dovecot/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/dovecot/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -55,6 +55,10 @@ Need more configurability? Edit the ConfigMap defined in kubernetes.yaml.
 | ------ | ----------- |
 | ldap-ro-passwd | password for looking up LDAP users |
 | *key.pem | keyfile specified for ssl_dh certificate |
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")
 

@@ -1,5 +1,5 @@
 ## dhcpd-dns-pxe
-[![](https://img.shields.io/docker/v/instantlinux/dhcpd-dns-pxe?sort=date)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/dhcpd-dns-pxe.svg)](https://microbadger.com/images/instantlinux/dhcpd-dns-pxe "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/dhcpd-dns-pxe/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/dhcpd-dns-pxe?sort=date)](https://hub.docker.com/r/instantlinux/dhcpd-dns-pxe/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/dhcpd-dns-pxe?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/dhcpd-dns-pxe "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/dhcpd-dns-pxe/Dockerfile "dockerfile")
 
 Serve DNS and DHCP from one or more small Alpine Linux container(s). This
 supplies DNS and tftp (for network PXE booting) using dnsmasq, and
@@ -19,7 +19,7 @@ Mount these under /etc:
 Mount your PXE boot images and client definitions under /tftpboot/pxelinux.
 
 See the kubernetes.yaml provided here. If you're using Swarm, see the docker-compose.yml file provided here in the source directory; this needs to run on host network with kernel capability CAP_NET_ADMIN, so it will not currently run in Docker Swarm. (You can run a single instance of this via _docker run_ or _docker-compose_.) This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/dhcpd-dns-pxe/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/dhcpd-dns-pxe/helm), or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/dhcpd-dns-pxe/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -62,5 +62,9 @@ SUBNET1_INTERFACE | eth0 | serve only on this subnet
 SUBNET1_NETMASK | 255.255.255.0 | network mask
 TFTP_ENABLE | yes | enable tftp server
 TFTP_ROOT | /tftpboot/pxelinux | don't change this
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-isc%2Fdhcp-blue.svg)](https://source.isc.org/git/dhcp.git "Code repo") [![](https://img.shields.io/badge/code-thekelleys%2Fdnsmasq-blue.svg)](http://thekelleys.org.uk/gitweb/?p=dnsmasq.git "Code repo")

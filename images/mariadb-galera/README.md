@@ -1,5 +1,5 @@
 ## mariadb-galera
-[![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://microbadger.com/images/instantlinux/mariadb-galera "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mariadb-galera.svg)](https://microbadger.com/images/instantlinux/mariadb-galera "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mariadb-galera?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/mariadb-galera "Image badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mariadb-galera/Dockerfile "dockerfile")
 
 MariaDB 10.4 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 
@@ -52,7 +52,7 @@ its ingress load-balancer thus:
           mode: host
 ~~~
 You almost definitely want a separate load-balancer for serving your published port.
-This method is defined and documented here in [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml).
+This method is defined and documented here in [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mariadb-galera/kubernetes.yaml).
 
 ### DNS names and read/write
 
@@ -69,7 +69,7 @@ and the cluster won't provide stable performance. To make this long story short,
 * Set up an haproxy (or other) load balancer for the primary IP address, with one cluster node configured to serve traffic and the others defined as backup
 * Bind the built-in Docker or Kubernetes service to all the cluster members
 
-For Docker Swarm users, this exercise is left to the reader. For Kubernetes, the [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) and [Makefile](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile) provided here will automate these steps once you've set up the two DNS entries.
+For Docker Swarm users, this exercise is left to the reader. For Kubernetes, the [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mariadb-galera/kubernetes.yaml) and [Makefile](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile) provided here will automate these steps once you've set up the two DNS entries.
 
 ### Logging
 
@@ -79,10 +79,10 @@ that log.
 
 ### Setting up etcd
 
-See the [k8s/Makefile](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile) for a _make etcd_ to start etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/master/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
+See the [k8s/Makefile](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile) for a _make etcd_ to start etcd under kubernetes. A docker-compose service definition is available at [docker-tools/services/etcd](https://github.com/instantlinux/docker-tools/tree/main/services/etcd). Instructions for using the free discovery.etc.io bootstrap service are given there.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/mariadb-galera/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mariadb-galera/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -92,7 +92,7 @@ make db00
 
 ### Usage - swarm
 
-This was originally developed under docker Swarm. A [docker-compose](https://github.com/instantlinux/docker-tools/blob/master/images/mariadb-galera/docker.compose) file is a legacy of that original work. Before stack-deploying it, invoke _docker secret create_ to generate the two secrets _mysql-root-password_ and _sst-auth-password-, and define an ADMIN_PATH environment variable pointing to your my.cnf (it has to be in the same location on each docker node).
+This was originally developed under docker Swarm. A [docker-compose](https://github.com/instantlinux/docker-tools/blob/main/images/mariadb-galera/docker.compose) file is a legacy of that original work. Before stack-deploying it, invoke _docker secret create_ to generate the two secrets _mysql-root-password_ and _sst-auth-password-, and define an ADMIN_PATH environment variable pointing to your my.cnf (it has to be in the same location on each docker node).
 
 ### Variables
 
@@ -132,5 +132,9 @@ be invoked without HA resources using kubernetes-single.yaml.
 ### Credits
 
 Thanks to ashraf-s9s of severalnines for the healthcheck script.
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver-blue)](https://github.com/MariaDB/server "Code repo")

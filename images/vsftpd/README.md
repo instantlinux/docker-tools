@@ -1,5 +1,5 @@
 ## vsftpd
-[![](https://img.shields.io/docker/v/instantlinux/vsftpd?sort=date)](https://microbadger.com/images/instantlinux/vsftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Image badge") [![](https://images.microbadger.com/badges/commit/instantlinux/vsftpd.svg)](https://microbadger.com/images/instantlinux/vsftpd "Commit badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/vsftpd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/vsftpd?sort=date)](https://hub.docker.com/r/instantlinux/vsftpd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/vsftpd?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/vsftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/vsftpd/Dockerfile "dockerfile")
 
 A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in Alpine.
 
@@ -18,7 +18,7 @@ A single upload user can be specified via the FTPUSER_xxx variables. It is activ
     docker secret create ftp-user-password-secret -
 
 An example compose file is provided here in docker-compose.yml. This is for the common scenario of sharing from Docker swarm the contents of a network-attached volume as a read-only anonymous-ftp service. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/vsftpd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/vsftpd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -54,5 +54,9 @@ WRITE_ENABLE | YES | allow put/rm
 Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-ubuntu%2Fvsftpd-blue.svg)](https://launchpad.net/ubuntu/+source/vsftpd "Code")

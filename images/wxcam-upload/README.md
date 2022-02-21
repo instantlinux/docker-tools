@@ -1,12 +1,16 @@
 ## wxcam-upload
-[![](https://img.shields.io/docker/v/instantlinux/wxcam-upload?sort=date)](https://microbadger.com/images/instantlinux/wxcam-upload "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/wxcam-upload.svg)](https://microbadger.com/images/instantlinux/wxcam-upload "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/wxcam-upload/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/wxcam-upload?sort=date)](https://hub.docker.com/r/instantlinux/wxcam-upload/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/wxcam-upload?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/wxcam-upload "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/wxcam-upload/Dockerfile "dockerfile")
 
 This wraps an upload script along with proftpd for publishing still images from network-attached webcams to the Weather Underground webcam server.
+
+### Status
+
+DEPRECATED - IBM discontinued webcam for Wunderground Oct 2021.
 
 ### Usage
 
 Sign up with Weather Underground to get a user login, and set up one or more webcams. Add secrets to your Docker Swarm installation (or define them as plain-text files), and set parameters as defined below. An example compose file is provided here in docker-compose.yml. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/wxcam-upload/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/wxcam-upload/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/wxcam-upload/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s

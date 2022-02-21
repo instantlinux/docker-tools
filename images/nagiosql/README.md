@@ -1,16 +1,15 @@
 ## nagiosql
-
-[![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://microbadger.com/images/instantlinux/nagiosql "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nagiosql.svg)](https://microbadger.com/images/instantlinux/nagiosql "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/nagiosql/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nagiosql?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/nagiosql "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nagiosql/Dockerfile "dockerfile")
 
 Web GUI for managing Nagios monitoring service.
 
 ### Usage
 
-NagiosQL is a UI for managing host, service and related definitions for Nagios. In May 2018 it was finally updated to work with Nagios Core v4.x. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) which will launch 3 services: the instantlinux/nagios image, this NagiosQL image and an nginx server which provides SSL termination.
+NagiosQL is a UI for managing host, service and related definitions for Nagios. In May 2018 it was finally updated to work with Nagios Core v4.x. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql/docker-compose.yml) which will launch 3 services: the instantlinux/nagios image, this NagiosQL image and an nginx server which provides SSL termination.
 
 Steps:
 * Create a blank database (e.g. nagiosql) or a copy of your existing NagiosQL database on your MySQL server and assign its password in the docker secret identified in your docker-compose.yml (see example as noted above)
-* Copy the [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) from this repo and define any environment-var overrides you might need (as defined below)
+* Copy the [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql/docker-compose.yml) from this repo and define any environment-var overrides you might need (as defined below)
 * Specifically, check the environment variable NAGIOS_ETC to confirm it matches your nagios installation. The jasonrivers/nagios image used the Ubuntu location /opt/nagios/etc. The instantlinux/nagios alpine image needs NAGIOS_ETC=/etc/nagios.
 * Bring up Nagios4 and NagiosQL using `docker-compose up`
 * In a browser, connect to NagiosQL UI at the port number identified in docker-compose.yml, log in as nagiosadmin / nagios, enter the database install or update dialog
@@ -52,5 +51,9 @@ Secret | Description
 ------ | -----------
 nagiosql-db-password | database credential
 \<hostname>-server-key.pem | SSL cert (if using docker-compose)
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-sourceforge%2Fnagiosql-blue.svg)](https://sourceforge.net/projects/nagiosql/ "Code repo")

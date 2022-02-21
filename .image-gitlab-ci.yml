@@ -39,5 +39,5 @@ promote_image:
   <<: *registry_login
   script: apk add curl jq make && cd images/$IMAGE && make promote_image
   only:
-    refs: [ master, tags ]
+    refs: [ main, tags ]
     variables: [ $REGISTRY_URI == "registry.gitlab.com" ]

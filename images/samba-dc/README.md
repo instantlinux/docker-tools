@@ -1,5 +1,5 @@
 ## samba-dc
-[![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://microbadger.com/images/instantlinux/samba-dc "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/samba-dc.svg)](https://microbadger.com/images/instantlinux/samba-dc "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/samba/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://hub.docker.com/r/instantlinux/samba-dc/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/samba-dc?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/samba-dc "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/samba/Dockerfile "dockerfile")
 
 Samba domain controller.
 
@@ -19,7 +19,7 @@ The most-common directives can be specified in environment variables as shown be
 Test your configuration and/or manage contents of your directory using Apache Directory Studio. Make a connection on port 636 with method SSL encryption (ldaps); specify simple authentication with username <realm prefix>\<your name>. The ldaps certificate is self-signed so you'll need to accept it first.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/samba-dc/kubernetes.yaml)  using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/samba-dc/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/samba-dc/kubernetes.yaml)  using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -60,7 +60,7 @@ Secret | Description
 ------ | -----------
 samba-admin-password | domain-administrator pw
 
-Secrets can be specified as kubernetes secrets, files (see the _secrets_ section of the example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/samba-dc/docker-compose.yml) provided in this repo), or as swarm secrets.
+Secrets can be specified as kubernetes secrets, files (see the _secrets_ section of the example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/samba-dc/docker-compose.yml) provided in this repo), or as swarm secrets.
 
 ### Notes
 Getting a domain-controller cluster up and running properly requires a lot of correctly-configured trust relationships established between domain controllers, and Samba's documentation of error messages and problem-resolutions is pretty thin. If you're only running this version of samba, it's likely there will be few problems. But in a mixed environment with Microsoft Active Directory servers and/or older versions of samba4, you're bound to run into problems that require tweaking. A few diagnostic commands are available within this container; here are notes that might help you get up and running more quickly:
@@ -117,5 +117,9 @@ Then restart the secondary with `DOMAIN_ACTION=join`.
 {noformat}
 samba-tool domain demote --remove-other-dead-server=xxx
 {noformat}
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-GPL--3.0-red.svg)](https://choosealicense.com/licenses/gpl-3.0/ "License badge") [![](https://img.shields.io/badge/code-samba_team%2Fsamba-blue.svg)](https://gitlab.com/samba-team/samba "Code repo")

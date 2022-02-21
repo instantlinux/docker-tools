@@ -8,7 +8,7 @@ sources:
 - https://gitlab.com/gitlab-org/gitlab
 type: application
 version: 0.1.2
-appVersion: "14.1.7-ce.0"
+appVersion: "14.7.3-ce.0"
 dependencies:
 - name: chartlib
   version: 0.1.8

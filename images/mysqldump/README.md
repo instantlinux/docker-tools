@@ -1,5 +1,5 @@
 ## mysqldump
-[![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://microbadger.com/images/instantlinux/mysqldump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://images.microbadger.com/badges/commit/instantlinux/mysqldump.svg)](https://microbadger.com/images/instantlinux/mysqldump "Commit badge")
+[![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mysqldump?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/mysqldump "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mysqldump/Dockerfile "dockerfile")
 
 This dockerizes a simple script I wrote in 2008 to perform a daily dump of
 the MySQL databases in a Percona Galera cluster. This image is based on
@@ -40,7 +40,7 @@ than $KEEP_DAYS will be automatically removed.
 
 Launch this docker image in kubernetes or docker-compose using one of the
 files provided here. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can launch [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/blacklist/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/mysqldump/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mysqldump/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -90,5 +90,9 @@ databases, increase this to prevent consuming excessive memory or CPU.
 It's tested on MariaDB, so the LOCK_FOR_BACKUP parameter isn't really
 supported unless someone submits a pull-request to make this work with
 Percona again.
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-mariadb%2Fserver%2Fclient-blue.svg)](https://github.com/mariadb/server/tree/10.3/client "Code repo")

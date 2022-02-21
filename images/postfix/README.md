@@ -1,5 +1,5 @@
 ## postfix
-[![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://microbadger.com/images/instantlinux/postfix "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/postfix.svg)](https://microbadger.com/images/instantlinux/postfix "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/postfix/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://hub.docker.com/r/instantlinux/postfix/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/postfix?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/postfix "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/postfix/Dockerfile "dockerfile")
 
 The postfix daemon in a small Alpine Linux container, with client
 support for separate spamassassin container. This is a layer which supports related image [postfix-python](https://hub.docker.com/r/instantlinux/postfix-python).
@@ -52,5 +52,9 @@ You will no longer see the error message:
 ```
 postalias: fatal: unsupported dictionary type: hash. Is the postfix-hash package installed?
 ```
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-IPL--1.0-red.svg)](https://opensource.org/licenses/IPL-1.0 "License badge") [![](https://img.shields.io/badge/code-vdukhovni%2Fpostfix-blue.svg)](https://github.com/vdukhovni/postfix "Code repo")

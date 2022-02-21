@@ -1,6 +1,5 @@
 ## proftpd
-
-[![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://microbadger.com/images/instantlinux/proftpd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/proftpd.svg)](https://microbadger.com/images/instantlinux/proftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/proftpd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/proftpd?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/proftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/proftpd/Dockerfile "dockerfile")
 
 An easy-to-use, tiny yet full-featured installation of ProFTPD.
 
@@ -17,7 +16,7 @@ A single upload user can be specified via the FTPUSER_xxx variables. It is activ
     docker secret create ftp-user-password-secret -
 
 An example compose file is provided here in docker-compose.yml. This is for the common scenario of sharing from Docker swarm the contents of a network-attached volume as a read-only anonymous-ftp service. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/proftpd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/proftpd/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/proftpd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -51,5 +50,9 @@ WRITE_ENABLE | AllowAll | allow put/rm
 Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-proftpd%2Fproftpd-blue.svg)](https://github.com/proftpd/proftpd "Code repo")

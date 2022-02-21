@@ -1,5 +1,5 @@
 ## git-dump
-[![](https://img.shields.io/docker/v/instantlinux/git-dump?sort=date)](https://microbadger.com/images/instantlinux/git-dump "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/git-dump.svg)](https://microbadger.com/images/instantlinux/git-dump "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/git-dump/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/git-dump?sort=date)](https://hub.docker.com/r/instantlinux/git-dump/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/git-dump?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/git-dump "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/git-dump/Dockerfile "dockerfile")
 
 This dockerizes a simple script I wrote years ago to create git bundle
 backups of a private git server.
@@ -30,7 +30,7 @@ key. This script supports the GitLab v3 API to read the list of
 projects at runtime, so you don't have to specify the REPOS parameter.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy with helm or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/git-dump/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can deploy with helm or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/git-dump/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -60,4 +60,9 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | ------ | ----------- |
 | git-dump_sshkey | read-only key for git repos (override name above) |
 | xxx-api-token | API token for fetching project list from gitlab |
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
+
 [![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-git%2Fgit.git-blue.svg)](https://git.kernel.org/pub/scm/git/git.git/ "Code repo")

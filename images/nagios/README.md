@@ -1,18 +1,17 @@
 ## nagios
-
-[![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://microbadger.com/images/instantlinux/nagios "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nagios.svg)](https://microbadger.com/images/instantlinux/nagios "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/nagios/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nagios?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/nagios "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nagios/Dockerfile "dockerfile")
 
 Nagios Core monitoring service built under Alpine for multiple platforms
 
 ### Usage
 
-This is Nagios Core 4.x and the primary plugins, served by nginx in an efficient Alpine image. It exists mainly because the jasonrivers/nagios image hasn't been maintained regularly since about 2018; this one is simpler, easier to keep up-to-date, handles restart properly and runs on your choice of platform. The new version of plugins has quite a few additions and improvements since then. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) which will launch 3 services: this instantlinux/nagios image, the [NagiosQL image](https://hub.docker.com/repository/docker/instantlinux/nagiosql) and another nginx server which provides SSL termination. To round out the monitoring solution, this setup is compatible with the free [easyNag](https://www.easynag.com/) mobile app.
+This is Nagios Core 4.x and the primary plugins, served by nginx in an efficient Alpine image. It exists mainly because the jasonrivers/nagios image hasn't been maintained regularly since about 2018; this one is simpler, easier to keep up-to-date, handles restart properly and runs on your choice of platform. The new version of plugins has quite a few additions and improvements since then. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql/docker-compose.yml) which will launch 3 services: this instantlinux/nagios image, the [NagiosQL image](https://hub.docker.com/repository/docker/instantlinux/nagiosql) and another nginx server which provides SSL termination. To round out the monitoring solution, this setup is compatible with the free [easyNag](https://www.easynag.com/) mobile app.
 
 To support plugins that you might want to add as a volume-mount, the image includes bash, the mariadb client, perl, python3, samba client, and sudo.
 
 Steps:
-* Set up NagiosQL as defined in its [README](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql), or import your existing Nagios configuration to a mountable volume.
-* Copy the [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/master/images/nagiosql/docker-compose.yml) from this repo and define any environment-var overrides you might need (as defined below)
+* Set up NagiosQL as defined in its [README](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql), or import your existing Nagios configuration to a mountable volume.
+* Copy the [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql/docker-compose.yml) from this repo and define any environment-var overrides you might need (as defined below)
 * Set up the nagios-htpasswd secret for basic-auth using the htpasswd command and place it in /var/adm/secrets/nagios-htpasswd
 * Bring up Nagios4 and NagiosQL using `docker-compose up`
 
@@ -23,7 +22,7 @@ Note: if using NagiosQL for the first time, manual edits of nagios.cfg plus clea
 This will run under docker-compose or kubernetes using the bridge network; if you need to use certain plugins like check_dhcp which require direct host network, use the NGINX_PORT parameter to override the default port 80 to specify port (or ip:port if desired).
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/nagios/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/nagios/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -91,6 +90,10 @@ sed -i -e 's:/opt/nagios/libexec:/usr/lib/nagios/plugins:' resource.cfg
 - Set the environment variable NAGIOS_ETC to the new pathname /etc/nagios in your docker-compose or kubernetes container startup
 - Change volume mounts to /etc/nagios and /var/nagios
 
-If you want nagiosgraph or other features added, please [submit an issue](https://github.com/instantlinux/docker-tools/issues).
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
+
+If you want nagiosgraph or other features added, please [submit an issue](https://github.com/instantlinux/docker-tools/issues) with suggestions on implementation.
 
 [![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-NagiosEnterprises%2Fnagioscore-blue.svg)](https://github.com/NagiosEnterprises/nagioscore)
