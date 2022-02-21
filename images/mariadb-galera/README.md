@@ -1,5 +1,5 @@
 ## mariadb-galera
-[![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mariadb-galera?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/mariadb-galera "Image badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mariadb-galera/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mariadb-galera?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/mariadb-galera "Image badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mariadb-galera/Dockerfile "dockerfile")
 
 MariaDB 10.4 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
 

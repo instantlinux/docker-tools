@@ -1,5 +1,5 @@
 ## postfix
-[![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://hub.docker.com/r/instantlinux/postfix/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/postfix?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/postfix "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/postfix/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://hub.docker.com/r/instantlinux/postfix/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/postfix?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/postfix "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/postfix/Dockerfile "dockerfile")
 
 The postfix daemon in a small Alpine Linux container, with client
 support for separate spamassassin container. This is a layer which supports related image [postfix-python](https://hub.docker.com/r/instantlinux/postfix-python).

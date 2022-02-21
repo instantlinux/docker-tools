@@ -1,5 +1,5 @@
 ## git-pull
-[![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/git-pull?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/git-pull "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/git-pull/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/git-pull?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/git-pull "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/git-pull/Dockerfile "dockerfile")
 
 Git pull, plain and simple (why wasn't there already a published
 container to do this?) - with multi-architecture support.

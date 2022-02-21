@@ -1,5 +1,5 @@
 ## vsftpd
-[![](https://img.shields.io/docker/v/instantlinux/vsftpd?sort=date)](https://hub.docker.com/r/instantlinux/vsftpd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/vsftpd?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/vsftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/vsftpd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/vsftpd?sort=date)](https://hub.docker.com/r/instantlinux/vsftpd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/vsftpd?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/vsftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/vsftpd/Dockerfile "dockerfile")
 
 A clean, easy-to-use, tiny yet full-featured installation of vsftpd wrapped in Alpine.
 

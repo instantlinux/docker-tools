@@ -1,5 +1,5 @@
 ## wxcam-upload
-[![](https://img.shields.io/docker/v/instantlinux/wxcam-upload?sort=date)](https://hub.docker.com/r/instantlinux/wxcam-upload/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/wxcam-upload?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/wxcam-upload "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/wxcam-upload/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/wxcam-upload?sort=date)](https://hub.docker.com/r/instantlinux/wxcam-upload/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/wxcam-upload?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/wxcam-upload "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/wxcam-upload/Dockerfile "dockerfile")
 
 This wraps an upload script along with proftpd for publishing still images from network-attached webcams to the Weather Underground webcam server.
 

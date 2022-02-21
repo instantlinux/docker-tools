@@ -1,5 +1,5 @@
 ## davite
-[![](https://img.shields.io/docker/v/instantlinux/davite?sort=date)](https://hub.docker.com/r/instantlinux/davite/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/davite?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/davite "Image badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/davite/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/davite?sort=date)](https://hub.docker.com/r/instantlinux/davite/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/davite?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/davite "Image badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/davite/Dockerfile "dockerfile")
 
 DaVITE is an event-invitations server modeled after eVite, written in
 2001 by David Madison. This image wraps it in a layer of the official

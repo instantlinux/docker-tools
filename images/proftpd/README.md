@@ -1,5 +1,5 @@
 ## proftpd
-[![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/proftpd?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/proftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/proftpd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/proftpd?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/proftpd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/proftpd/Dockerfile "dockerfile")
 
 An easy-to-use, tiny yet full-featured installation of ProFTPD.
 

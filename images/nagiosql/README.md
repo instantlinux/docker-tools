@@ -1,5 +1,5 @@
 ## nagiosql
-[![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nagiosql?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/nagiosql "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nagiosql/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nagiosql?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/nagiosql "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nagiosql/Dockerfile "dockerfile")
 
 Web GUI for managing Nagios monitoring service.
 

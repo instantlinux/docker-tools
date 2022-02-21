@@ -1,5 +1,5 @@
 ## nut-upsd
-[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nut-upsd?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/nut-upsd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nut-upsd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nut-upsd?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/nut-upsd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nut-upsd/Dockerfile "dockerfile")
 
 The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units. This multi-architecture image supports Intel/AMD and ARM (Raspberry Pi etc).
 

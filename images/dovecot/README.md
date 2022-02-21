@@ -1,5 +1,5 @@
 ## dovecot
-[![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://hub.docker.com/r/instantlinux/dovecot/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/dovecot?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/dovecot "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/dovecot/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://hub.docker.com/r/instantlinux/dovecot/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/dovecot?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/dovecot "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/dovecot/Dockerfile "dockerfile")
 
 The dovecot imapd daemon in a small Alpine Linux container, with
 postfix for local delivery and procmail for filtering.

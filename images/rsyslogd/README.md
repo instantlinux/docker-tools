@@ -1,5 +1,5 @@
 ## rsyslogd
-[![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/rsyslogd?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/rsyslogd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/rsyslogd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/rsyslogd?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/rsyslogd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/rsyslogd/Dockerfile "dockerfile")
 
 Run your central rsyslog in a high-availability container on top of shared storage. Then send all that into Splunk or wherever.
 

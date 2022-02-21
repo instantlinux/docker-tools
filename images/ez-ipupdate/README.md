@@ -1,5 +1,5 @@
 ## ez-ipupdate
-[![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/ez-ipupdate?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/ez-ipupdate "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/ez-ipupdate/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/ez-ipupdate?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/ez-ipupdate "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/ez-ipupdate/Dockerfile "dockerfile")
 
 Dynamic-DNS client - automatically updates a public DNS name with your dynamic IP address. Set this up under Kubernetes or Docker Swarm to ensure it's always running.
 

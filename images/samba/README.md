@@ -1,5 +1,5 @@
 ## samba
-[![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/samba?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/samba "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/samba/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/samba?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/samba "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/samba/Dockerfile "dockerfile")
 
 Samba as a file server. This is stripped down to the basics to enable greatest flexibility. Supported on multiple architectures.
 

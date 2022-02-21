@@ -1,5 +1,5 @@
 ## dhcpd-dns-pxe
-[![](https://img.shields.io/docker/v/instantlinux/dhcpd-dns-pxe?sort=date)](https://hub.docker.com/r/instantlinux/dhcpd-dns-pxe/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/dhcpd-dns-pxe?sort=date)](https://github.com/instantlinux/docker-tools/-/blob/main/images/dhcpd-dns-pxe "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/dhcpd-dns-pxe/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/dhcpd-dns-pxe?sort=date)](https://hub.docker.com/r/instantlinux/dhcpd-dns-pxe/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/dhcpd-dns-pxe?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/dhcpd-dns-pxe "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/dhcpd-dns-pxe/Dockerfile "dockerfile")
 
 Serve DNS and DHCP from one or more small Alpine Linux container(s). This
 supplies DNS and tftp (for network PXE booting) using dnsmasq, and
