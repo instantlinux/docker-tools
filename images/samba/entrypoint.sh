@@ -24,4 +24,4 @@ for file in $(ls -A /etc/samba/conf.d/*.conf); do
 done
 
 nmbd -D
-exec smbd -FS --no-process-group </dev/null
+exec smbd -F --debug-stdout --no-process-group </dev/null
