@@ -7,7 +7,7 @@ metadata:
 data:
   gitlab.rb: |
     external_url 'http://{{ .Values.tlsHostname }}'
-    gitaly['logging_level'] = 'warn'
+    gitaly['logging_level'] = '{{ .Values.gitaly.logging_level }}'
     gitlab_rails['db_adapter'] = 'postgresql'
     gitlab_rails['db_encoding'] = 'utf8'
     gitlab_rails['db_host'] = 'gitlab-postgres'
@@ -20,12 +20,15 @@ data:
     gitlab_rails['smtp_openssl_verify_mode'] = 'none'
     gitlab_rails['smtp_port'] = 25
     gitlab_rails['time_zone'] = '{{ .Values.deployment.env.tz }}'
+    gitlab_shell['log_level'] = '{{ .Values.gitlab_shell.log_level }}'
+    nginx['error_log_level'] = '{{ .Values.nginx.error_log_level }}'
     postgresql['enable'] = false
     # prometheus['flags'] = {
     #   'storage.tsdb.retention' => '3d',
     #   'config.file' => "#{node['gitlab']['prometheus']['home']}/prometheus.yml"
     # }
     prometheus_monitoring['enable'] = false
+    registry['log_level'] = '{{ .Values.registry.log_level }}'
   gitback: |
     #!/bin/sh
 

@@ -1,5 +1,13 @@
 # Default values for gitlab.
+gitaly:
+  logging_level: warn
+gitlab_shell:
+  log_level: WARN
+nginx:
+  error_log_level: error
 nodeportSSH: 30999
+registry:
+  log_level: info
 smtp:
   domain: example.com
   relayHost: smtp.example.com
