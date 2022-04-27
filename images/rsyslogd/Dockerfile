@@ -16,6 +16,7 @@ RUN apk add --update gzip logrotate rsyslog=$RSYSLOG_VERSION \
 VOLUME /var/log /etc/logrotate.d /etc/rsyslog.d
 EXPOSE 514 514/udp
 COPY logrotate.conf /etc/logrotate.conf
+RUN chmod 644 /etc/logrotate.conf
 
 ADD entrypoint.sh /root/
 ENTRYPOINT /root/entrypoint.sh
