@@ -16,7 +16,6 @@ ENV DEST=. \
     INTERVAL=0
 
 RUN apk add --no-cache --update git=$GIT_VERSION openssh-client
-
 VOLUME /git
 
 COPY entrypoint.sh /root/
