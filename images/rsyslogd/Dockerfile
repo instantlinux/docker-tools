@@ -13,7 +13,6 @@ ENV TZ=UTC
 RUN apk add --update gzip logrotate rsyslog=$RSYSLOG_VERSION \
       rsyslog-mysql=$RSYSLOG_VERSION tar xz && \
     rm -fr /var/log/* /var/cache/apk/*
-
 VOLUME /var/log /etc/logrotate.d /etc/rsyslog.d
 EXPOSE 514 514/udp
 COPY logrotate.conf /etc/logrotate.conf

@@ -7,7 +7,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name=nut-upsd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-
 ARG NUT_VERSION=2.7.4-r10
 ENV API_USER=upsmon \
     DESCRIPTION=UPS \
