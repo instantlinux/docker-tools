@@ -8,6 +8,7 @@ data:
   gitlab.rb: |
     external_url 'http://{{ .Values.tlsHostname }}'
     gitaly['logging_level'] = '{{ .Values.gitaly.logging_level }}'
+    gitlab_rails['backup_keep_time'] = 2592000
     gitlab_rails['db_adapter'] = 'postgresql'
     gitlab_rails['db_encoding'] = 'utf8'
     gitlab_rails['db_host'] = 'gitlab-postgres'
@@ -36,7 +37,7 @@ data:
     while [ 1 -eq 1 ]; do
       HOUR=$(date +%H)
       if [ $HOUR -eq 16 ]; then
-        /opt/gitlab/bin/gitlab-rake gitlab:backup:create
+        /opt/gitlab/bin/gitlab-backup create
         tar cjf /var/backups/gitlab/gitlab_etc_$(date +%Y%m%d%H).tar.bz /etc/gitlab
       fi
       sleep 3600

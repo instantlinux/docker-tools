@@ -1,6 +1,8 @@
 #! /bin/sh -e
 
-API_PASSWORD=$(cat /run/secrets/$SECRET)
+if [ -d /run/secrets ] && [ -s /run/secrets/$SECRET ]; then
+  API_PASSWORD=$(cat /run/secrets/$SECRET)
+fi
 
 if [ ! -e /etc/nut/.setup ]; then
   if [ -e /etc/nut/local/ups.conf ]; then
@@ -53,6 +55,8 @@ EOF
   touch /etc/nut/.setup
 fi
 
+chgrp $GROUP /etc/nut/*
+chmod 640 /etc/nut/*
 mkdir -p -m 2750 /dev/shm/nut
 chown $USER.$GROUP /dev/shm/nut
 [ -e /var/run/nut ] || ln -s /dev/shm/nut /var/run
