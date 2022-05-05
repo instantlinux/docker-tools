@@ -53,6 +53,41 @@ USER | nut | local user
 VENDORID | | vendor ID for ups.conf
 ### Notes
 
+If you need a driver other than `usbhid-ups`, the full list of supported drivers can be listed as follows:
+```
+docker run --rm --entrypoint /bin/ls instantlinux/nut-upsd /usr/lib/nut
+```
+The entrypoint script can set parameters based on the above environment variables; each driver has its own parameters (which can be configured by mounting your own ups.conf file) as documented:
+```
+MYDRIVER=liebert
+docker run --rm --entrypoint /usr/lib/nut/$MYDRIVER instantlinux/nut-upsd -h
+Network UPS Tools - Liebert MultiLink UPS driver 1.02 (3.15.0_alpha20210804-3402-gced1683082)
+Warning: This is an experimental driver.
+Some features may not function correctly.
+
+
+usage: liebert -a <id> [OPTIONS]
+  -a <id>        - autoconfig using ups.conf section <id>
+                 - note: -x after -a overrides ups.conf settings
+
+  -V             - print version, then exit
+  -L             - print parseable list of driver variables
+  -D             - raise debugging level
+  -q             - raise log level threshold
+  -h             - display this help
+  -k             - force shutdown
+  -i <int>       - poll interval
+  -r <dir>       - chroot to <dir>
+  -u <user>      - switch to <user> (if started as root)
+  -x <var>=<val> - set driver variable <var> to <val>
+                 - example: -x cable=940-0095B
+
+Acceptable values for -x or ups.conf in this driver:
+
+              Override manufacturer name : -x mfr=<value>
+                     Override model name : -x model=<value>
+```
+
 For Tripp Lite models, you may need to specify VENDORID 09ae in the environment. Also check to see if you need a POLLINTERVAL setting. For any make or model, here's how to identify the idVendor and iSerial values from a root shell on your host:
 
 ```

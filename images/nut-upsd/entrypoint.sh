@@ -8,16 +8,18 @@ if [ ! -e /etc/nut/.setup ]; then
   if [ -e /etc/nut/local/ups.conf ]; then
     cp /etc/nut/local/ups.conf /etc/nut/ups.conf
   else
-    if [ -z "$SERIAL" ]; then
+    if [ -z "$SERIAL" ] && [ $DRIVER = usbhid-ups ] ; then
       echo "** This container may not work without setting for SERIAL **"
     fi
     cat <<EOF >>/etc/nut/ups.conf
 [$NAME]
         driver = $DRIVER
         port = $PORT
-        serial = "$SERIAL"
         desc = "$DESCRIPTION"
 EOF
+    if [ ! -z "$SERIAL" ]; then
+      echo "        serial = \"$SERIAL\"" >> /etc/nut/ups.conf
+    fi
     if [ ! -z "$POLLINTERVAL" ]; then
       echo "        pollinterval = $POLLINTERVAL" >> /etc/nut/ups.conf
     fi
