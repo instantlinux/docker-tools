@@ -39,6 +39,7 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 Variable | Default | Description |
 -------- | ------- | ----------- |
 API_USER | upsmon| API user
+API_PASSWORD | | API password, if not using secret
 DESCRIPTION | UPS | user-assigned description
 DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html))
 GROUP | nut | local group
@@ -46,7 +47,7 @@ NAME | ups | user-assigned config name
 POLLINTERVAL | | Poll Interval for ups.conf
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
 SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
-SECRET | nut-upsd-password | secret to use for API user
+SECRET | nut-upsd-password | name of secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
 USER | nut | local user
@@ -114,6 +115,8 @@ udevadm control --reload-rules && udevadm trigger
 ```
 
 ### Secrets
+
+If the API user needs a password, you have two ways to specify it: pass the value itself as environment variable API_PASSWORD, or define a Docker secret as follows:
 
 | Secret | Description |
 | ------ | ----------- |
