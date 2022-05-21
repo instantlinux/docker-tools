@@ -7,7 +7,7 @@ deployment:
   args:
   - -c
   - >
-    apk add --update restic==0.12.1-r3 tzdata &&
+    apk add --update restic==0.12.1-r5 tzdata &&
     ln -s /usr/share/zoneinfo/$TZ /etc/localtime &&
     echo $TZ > /etc/timezone &&
     echo "if [ -r $HOME/.resticrc ]; then . $HOME/.resticrc; fi" \
