@@ -16,13 +16,13 @@ ENV BUILD_DIR=/build \
 
 ARG BUILDX_VERSION=0.7.1
 ARG COMPOSE_VERSION=1.29.2
-ARG HELM_VERSION=3.7.2-r0
+ARG HELM_VERSION=3.9.0-r1
 ARG KUBECTL_VERSION=1.20.4
 ARG MUSL_VERSION=1.2.2-r7
 ARG PIP_VERSION=20.2.3
 ARG PYTHON_VERSION=3.9.7-r4
 ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r3
-ARG PYPILLOW_VERSION=8.4.0-r2
+ARG PYPILLOW_VERSION=8.4.0-r3
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
 ARG _BUILDX_URL=https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64
