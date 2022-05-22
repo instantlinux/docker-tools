@@ -11,8 +11,8 @@ guacamole-server:
   tlsHostname: guacamole.example.com
   deployment:
     env:
-      guacd_hostname: $(GUACD_SERVICE_HOST)
-      guacd_port: $(GUACD_SERVICE_PORT)
+      guacd_hostname: guacamole-guacd
+      guacd_port: 4822
       mysql_database: guacamole
       mysql_hostname: db00
       mysql_user: guacamole_user
