@@ -36,7 +36,7 @@ make dc03
 ### Variables
 Variable | Default | Description |
 -------- | ------- | ----------- |
-ADMIN_PASSWORD_SECRET | samba-admin-password | admin secret, see below
+ADMIN_PASSWORD_SECRET | samba-admin-password | name of admin secret, see below
 ALLOW_DNS_UPDATES | secure | enable DNS updates
 BIND_INTERFACES_ONLY | yes | specify IP addresses or interfaces
 DOMAIN_ACTION | provision | set to 'join' if existing domain
@@ -54,7 +54,7 @@ WORKGROUP | AD | workgroup (realm prefix - poorly documented)
 
 ### Secrets
 This is only needed at first run, for samba domain provision or join. Do NOT leave your domain-controller administrator secret activated at any other time.
-For clarity, this is a docker-secret with the initial Samba admin password, not the password itself.
+For clarity, this is a docker-secret with the initial Samba admin password, not the password itself. It must contain a passphrase of sufficient complexity.
 
 Secret | Description
 ------ | -----------
@@ -117,6 +117,12 @@ Then restart the secondary with `DOMAIN_ACTION=join`.
 {noformat}
 samba-tool domain demote --remove-other-dead-server=xxx
 {noformat}
+
+* If you get the error message shown here, check that the samba-admin-password secret contains a value.
+```
+ERROR(ldb): uncaught exception - Element clearTextPassword has empty attribute in ldb
+message (CN=Administrator,CN=Users,DC=ad,DC=***,DC=nl)
+```
 
 ### Contributing
 

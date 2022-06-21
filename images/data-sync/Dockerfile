@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.16
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -17,13 +17,12 @@ ENV PEERNAME= \
     SSHKEY2=data-sync-sshkey2
 
 ARG UNISON_VERSION=2.52.1
-ARG OCAML_VERSION=4.13.1-r0
+ARG OCAML_VERSION=4.14.0-r0
 ARG UNISON_SHA=ff7d920e1b4ec0872df764130b82a515f6f21a361f31a67b39c3e3ea12bfda80
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 
 COPY src/ /root/src/
 RUN apk add --update openssh-client openssh-server perl rsync && \
-    passwd -u root && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/instantlinux/docker-tools/master/ansible/roles/docker_node/files/rrsync && \
     echo "$RRSYNC_SHA  rrsync" | sha256sum -c && \
