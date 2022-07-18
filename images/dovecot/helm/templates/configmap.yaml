@@ -51,4 +51,5 @@ data:
     user_attrs = sAMAccountName=home=/home/%$
     user_filter = (&(ObjectClass=user)(sAMAccountName=%u))
     pass_filter = (&(ObjectClass=user)(sAMAccountName=%u))
+    tls = {{ .Values.ldap.tls }}
 {{- end }}

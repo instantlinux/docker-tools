@@ -3,7 +3,7 @@
 
 Dynamic-DNS client - automatically updates a public DNS name with your dynamic IP address. Set this up under Kubernetes or Docker Swarm to ensure it's always running.
 
-*Status:* This is sunsetted, use the [instantlinux/ddclient](https://hub.docker.com/repository/docker/instantlinux/ddclient) image if you can.
+*Status:* This is sunsetted, use the [instantlinux/ddclient](https://hub.docker.com/r/instantlinux/ddclient) image if you can.
 
 First create a secret:
 

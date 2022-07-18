@@ -15,7 +15,7 @@ fi
 
 sed -i -e "s/server_name .*/server_name $NAGIOS_FQDN;/" \
        -e "s/listen .*/listen $NGINX_PORT;/" \
-  /etc/nginx/conf.d/nagios.conf
+  /etc/nginx/http.d/nagios.conf
 
 if [ -s /etc/nagios/nagios.cfg.proto ]; then
   # Generate a nagios.cfg
@@ -82,7 +82,7 @@ EOF
   fi
 fi
 chown root.nagios /etc/ssmtp/ssmtp.conf
-sudo chmod 640 /etc/ssmtp/ssmtp.conf
+chmod 640 /etc/ssmtp/ssmtp.conf
 
 # Check configuration for errors
 [ "$CONFIG_CHECK" == "yes" ] && /usr/sbin/nagios -v /etc/nagios/nagios.cfg
@@ -94,10 +94,18 @@ for item in backup hosts services; do
 done
 start-stop-daemon -u nginx -b --exec /usr/bin/fcgiwrap -- \
   -s unix:/run/fcgiwrap/fcgiwrap.sock
-/usr/sbin/php-fpm7
+/usr/sbin/php-fpm8
 /usr/sbin/nginx
 touch /var/nagios/nagios.log && tail -1 -f /var/nagios/nagios.log &
 find /var/nagios -not -user nagios -exec chown nagios.nagios {} \;
 find /etc/nagios/objects -not -user www-data -exec chown www-data.nagios {} \;
 
-exec /usr/sbin/nagios /etc/nagios/nagios.cfg
+# TODO change this back to exec after fix is published
+#  https://github.com/NagiosEnterprises/nagioscore/issues/861
+if ! /usr/sbin/nagios /etc/nagios/nagios.cfg; then
+  echo Segfault - please set check_for_updates=0 in /etc/nagios/nagios.cfg
+  exit 1
+fi
+while [ 1 == 1 ]; do
+  sleep 60
+done

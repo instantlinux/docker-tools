@@ -91,10 +91,12 @@
     id: "{{ docker.apt_repo.key }}"
     url: "{{ docker.apt_repo.url }}"
 
+# TODO fix for 22.04 jammy
 - name: Docker repo
   apt_repository:
     filename: docker
     repo: "{{ docker.apt_repo.repo }}"
+  when: False
 
 # The Ubuntu package installer defines ExecStart option that conflicts
 # with our daemon.json. Need to suppress daemon startup until after

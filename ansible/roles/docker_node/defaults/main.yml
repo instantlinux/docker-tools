@@ -68,7 +68,6 @@ system_certs:
   
 ubuntu_packages:
   - libpam-google-authenticator
-  - python
   - snmpd
   - thin-provisioning-tools
 

@@ -17,6 +17,8 @@ Steps:
 
 This will generate a nagios.cfg.proto; it will be copied to /etc/nagios/nagios.cfg only the first time the volume is mounted, after which you will have to edit it manually.
 
+*If version `4.4.7` won't start due to segfault, see note below for `nagios.cfg` workaround.*
+
 Note: if using NagiosQL for the first time, manual edits of nagios.cfg plus cleaning up distributed files (e.g. printer.cfg, windows.cfg) will most likely be required before nagios configuration check passes.
 
 This will run under docker-compose or kubernetes using the bridge network; if you need to use certain plugins like check_dhcp which require direct host network, use the NGINX_PORT parameter to override the default port 80 to specify port (or ip:port if desired).
@@ -65,6 +67,8 @@ Some other important path names are:
 Path | Description
 ---- | -----------
 /usr/lib/nagios/plugins | System plugins ($USER1$)
+
+Note for version 4.4.7: there is a bug ([issue #861](https://github.com/NagiosEnterprises/nagioscore/issues/861)) which causes segfault on startup. Make sure to set `check_for_updates=0` in the `nagios.cfg` file mounted to `/etc/nagios`.
 
 ### Secrets
 

@@ -71,6 +71,7 @@ ldap:
   base: cn=Users,DC=workgroup,DC=example,DC=com
   dn: ldap@workgroup.example.com
   hosts: dc01 dc02
+  tls: "no"
 # Force reload of certs at least every 30 days
 livenessProbe:
   exec:
