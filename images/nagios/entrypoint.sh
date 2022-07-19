@@ -106,6 +106,7 @@ if ! /usr/sbin/nagios /etc/nagios/nagios.cfg; then
   echo Segfault - please set check_for_updates=0 in /etc/nagios/nagios.cfg
   exit 1
 fi
+
 while [ 1 == 1 ]; do
   sleep 60
 done
