@@ -68,10 +68,14 @@ dhcpSubnet1: 192.168.2.0/24
 domain: example.com
 hostnameEmail: example.com
 ldap:
+  active_directory: false
+  auth_bind: "yes"
+  auth_bind_userdn: ""
   base: cn=Users,DC=workgroup,DC=example,DC=com
-  dn: ldap@workgroup.example.com
+  dn: ""
   hosts: dc01 dc02
   tls: "no"
+  version: 3
 # Force reload of certs at least every 30 days
 livenessProbe:
   exec:

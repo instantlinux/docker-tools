@@ -11,7 +11,7 @@ Configuration is defined as files in a volume mounted as
 
 * Define your local settings as dovecot.conf.
 
-* If you have an LDAP server, put its settings in dovecot-ldap.conf.
+* If you have an LDAP server, put its settings in dovecot-ldap.conf. The helm chart provided here can support either Active Directory or openldap.
 
 * (Optional, to save startup time) generate a dh.pem file for TLS:
   ```

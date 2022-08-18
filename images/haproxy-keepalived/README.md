@@ -9,11 +9,11 @@ A load balancer with haproxy and keepalived (VRRP) to provide high-availability 
 Configuration is defined as files in volumes mounted as
 /usr/local/etc/haproxy.d and /etc/keepalived/keepalived.conf.
 
-* Define your local settings for haproxy under /etc/haproxy.d; see [man page](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html); the entrypoint script here will concatenate multiple files.
+* Define your local settings for haproxy under `/usr/local/etc/haproxy.d`; see [man page](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html); the entrypoint script here will concatenate multiple files.
 
 * Define your keepalived settings in /etc/keepalived/keepalived.conf; see [man page](https://www.mankier.com/5/keepalived.conf).
 
-* If you want to override the haproxy.cfg defined in this image, mount your own as /etc/haproxy.cfg with read-only set.
+* If you want to override the haproxy.cfg defined in this image, mount your own as `/usr/local/etc/haproxy/haproxy.cfg` with read-only set.
 
 See the [haproxy-keepalived/examples/](https://github.com/instantlinux/docker-tools/blob/main/images/haproxy-keepalived/examples) directory under this git repository to get started.
 

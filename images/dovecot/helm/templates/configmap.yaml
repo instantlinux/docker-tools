@@ -43,13 +43,20 @@ data:
     syslog_facility = "local1"
   dovecot-ldap.conf: |
     hosts = {{ .Values.ldap.hosts }}
+    {{- if .Values.ldap.dn }}
     dn = {{ .Values.ldap.dn }}
     dnpass = PASSWORD
-    ldap_version = 3
+    {{- end }}
+    ldap_version = {{ .Values.ldap.version }}
     base = {{ .Values.ldap.base }}
-    auth_bind = yes
+    auth_bind = {{ .Values.ldap.auth_bind }}
+    {{- if .Values.ldap.auth_bind_userdn }}
+    auth_bind_userdn = {{ .Values.ldap.auth_bind_userdn }}
+    {{- end }}
+    {{- if .Values.ldap.active_directory }}
     user_attrs = sAMAccountName=home=/home/%$
     user_filter = (&(ObjectClass=user)(sAMAccountName=%u))
     pass_filter = (&(ObjectClass=user)(sAMAccountName=%u))
+    {{- end }}
     tls = {{ .Values.ldap.tls }}
 {{- end }}

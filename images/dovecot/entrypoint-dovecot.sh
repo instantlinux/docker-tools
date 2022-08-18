@@ -32,14 +32,13 @@ else
   echo "ssl_dh = <$ETC/conf.local/$SSH_DH" >> $ETC/dovecot.conf
 fi
 if [ -s $ETC/conf.local/dovecot-ldap.conf ]; then
-  if [ ! -s /run/secrets/$LDAP_PASSWD_SECRET ]; then
-    echo "** Config dovecot-ldap.conf requires secret $LDAP_PASSWD_SECRET **"
-    sleep 10
-    exit 1
-  fi
   cp $ETC/conf.local/dovecot-ldap.conf $ETC
-  sed -i -e "s/PASSWORD/`cat /run/secrets/$LDAP_PASSWD_SECRET`/" \
-    $ETC/dovecot-ldap.conf
+  if [ -s /run/secrets/$LDAP_PASSWD_SECRET ]; then
+    sed -i -e "s/PASSWORD/`cat /run/secrets/$LDAP_PASSWD_SECRET`/" \
+      $ETC/dovecot-ldap.conf
+  else
+    echo "** Config dovecot-ldap.conf secret $LDAP_PASSWD_SECRET unspecified **"
+  fi
 fi
 if [ -f /etc/postfix/transport ]; then
   postmap /etc/postfix/transport
