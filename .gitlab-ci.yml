@@ -18,6 +18,7 @@ stages:
   - nagios
   - nagiosql
   - nut-upsd
+  - openldap
   - postfix
   - postfix-python
   - proftpd
@@ -210,6 +211,15 @@ postfix:
       job: prepare
   only:
     changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
+
+openldap:
+  stage: openldap
+  trigger:
+    include:
+    - artifact: .child-openldap.yml
+      job: prepare
+  only:
+    changes: [ images/openldap/**, lib/**, .image-gitlab-ci.yml ]
 
 postfix-python:
   stage: postfix-python

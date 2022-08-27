@@ -71,6 +71,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
+| openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | restic | ** | backups |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
 | samba | [![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba "Version badge") | file server |

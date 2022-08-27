@@ -1,0 +1,37 @@
+dn: ou=groups,dc=example,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: groups
+
+dn: ou=users,dc=example,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: users
+
+dn: cn=dev,ou=groups,dc=example,dc=com
+cn: dev
+member: cn=sharon,ou=users,dc=example,dc=com
+objectclass: groupOfNames
+objectclass: top
+
+dn: cn=admin,ou=groups,dc=example,dc=com
+cn: admin
+member: cn=sharon,ou=users,dc=example,dc=com
+objectclass: groupOfNames
+objectclass: top
+
+dn: uid=sharon,ou=users,dc=example,dc=com
+cn: sharon
+objectclass: inetOrgPerson
+objectclass: top
+mail: sharon@example.com
+sn: Sharon McKinsey
+uid: sharon
+
+dn: uid=joseph,ou=users,dc=example,dc=com
+cn: joseph
+objectclass: inetOrgPerson
+objectclass: top
+mail: joseph@example.com
+sn: Joseph Patel
+uid: joseph

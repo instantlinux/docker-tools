@@ -1,0 +1,23 @@
+version: "3.2"
+
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/openldap:${VERSION_OPENLDAP:-latest}
+    environment:
+      SLAPD_ROOTDN: ${SLAPD_ROOTDN:-cn=admin,dc=example,dc=com}
+      SLAPD_ROOTPW: ${SLAPD_ROOTPW}
+    hostname: openldap.docker
+    volumes:
+    - ${ADMIN_PATH:-/opt}/openldap/etc/prepopulate:/etc/openldap/prepopulate:ro
+    - ${ADMIN_PATH:-/opt}/openldap/etc/ssl:/etc/ssl/openldap:ro
+    - data:/var/lib/openldap/openldap-data
+    ports:
+    - ${PORT_OPENLDAP:-389}:389
+    - ${PORT_OPENLDAP_SSL:-636}:636
+
+volumes:
+  data:
+networks:
+  default:
+    external:
+      name: app_net
