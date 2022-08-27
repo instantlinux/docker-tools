@@ -32,15 +32,15 @@ make openldap
 | SLAPD_PWD_LOCKOUT_DURATION | 1200 | Clear lockout [20 min] |
 | SLAPD_PWD_MAX_FAILURE | 5 | Maximum attempts before lockout |
 | SLAPD_PWD_MIN_LENGTH | 8 | Password-modify minimum length |
-| SLAPD_ROOTDN |  | Admin user's DN (must be specified) |
+| SLAPD_ROOTDN | cn=admin,dc=(suffix)  | Admin user's DN |
 | SLAPD_ROOTPW |  | Plain-text admin password |
 | SLAPD_ROOTPW_HASH |  | Hashed admin password |
 | SLAPD_ROOTPW_SECRET | openldap-ro-password | Name of secret to hold pw |
-| SLAPD_SUFFIX | (based on `SLAPD_FQDN`)  | Suffix of DN |
+| SLAPD_SUFFIX | (based on `SLAPD_FQDN`) | Suffix of DN |
 | SLAPD_ULIMIT | 2048 | maximum file size |
 | SLAPD_USERPW_SECRET | openldap-user-passwords | Name of secret to hold pws |
 
-The root DN must be specified in the form `cn=admin,dc=example,dc=com`.
+If overriding default root DN, it should be specified in the form `cn=admin,dc=example,dc=com`.
 
 The root password must be specified in one of three ways:
 
@@ -50,6 +50,7 @@ The root password must be specified in one of three ways:
 
 You will want to override values for `SLAPD_FQDN` and `SLAPD_ORGANIZATION`. All the other default values will work for many typical use-cases.
 
+User passwords are normally initialized by the administrator using `ldappasswd`, and from then on updated by the user (through the same tool or protocol). With this image, you can also define user passwords by providing their (hashed) values via a secret. Don't use `ldappaswd` to update passwords that are provided with the latter method: use it to generate a new hashed value and update the secret.
 ### Volumes
 
 Mount these path names to persistent storage; all are optional.
@@ -65,7 +66,7 @@ Path | Description
 Secret | Description
 ------ | -----------
 openldap-rootpw | Hashed password (key name openldap-rootpw-hash)
-openldap-ssl | Certificate (cacert.pem, cert.pem, key.pem)
+openldap-ssl | Certificate (cacert.pem, tls.crt, tls.key)
 openldap-user-passwords | Hashed passwords (in _user: password_ form)
 
 ### Contributing
