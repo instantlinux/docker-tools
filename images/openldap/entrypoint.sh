@@ -74,18 +74,14 @@ tail -f -n0 /var/log/slapd-audit.log |
     echo 'Setting user passwords'
     PW_FILE=$(find /run/secrets/$SLAPD_USERPW_SECRET -type f | head -1)
     if [[ ! -z "${PW_FILE}" && -s "${PW_FILE}" ]]; then
-        TMP=$(mktemp)
-        >$TMP
-	while read entry; do
-	    cat <<-EOF >>$TMP
-dn: ${SLAPD_DN_ATTR}=`echo ${entry} | cut -d: -f 1`,${SLAPD_OU}${SLAPD_SUFFIX}
-changetype: modify
-replace: ${SLAPD_PWD_ATTRIBUTE}
-${SLAPD_PWD_ATTRIBUTE}: `echo ${entry} | cut -d: -f 2`
-
-EOF
-	done <${PW_FILE}
-	ldapmodify -Y EXTERNAL -H ${SLAPD_IPC_URL} -f $TMP ; rm $TMP
+        awk -F : -v dnattr=${SLAPD_DN_ATTR} \
+	  -v suffix=,${SLAPD_OU}${SLAPD_SUFFIX} \
+          -v pwdattr=${SLAPD_PWD_ATTRIBUTE} \
+	  '{ print "dn: " dnattr "=" $1 suffix "\n" \
+          "changetype: modify\n" \
+          "replace: " pwdattr "\n" \
+          pwdattr ": " $2 "\n" }' <${PW_FILE} | \
+        ldapmodify -Y EXTERNAL -H ${SLAPD_IPC_URL}
     fi
 ) &
 exec slapd -h "${SLAPD_URLPREFIX}:/// ${SLAPD_IPC_URL}" \

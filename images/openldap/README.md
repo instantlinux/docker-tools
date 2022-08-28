@@ -50,7 +50,7 @@ The root password must be specified in one of three ways:
 
 You will want to override values for `SLAPD_FQDN` and `SLAPD_ORGANIZATION`. All the other default values will work for many typical use-cases.
 
-User passwords are normally initialized by the administrator using `ldappasswd`, and from then on updated by the user (through the same tool or protocol). With this image, you can also define user passwords by providing their (hashed) values via a secret. Don't use `ldappaswd` to update passwords that are provided with the latter method: use it to generate a new hashed value and update the secret.
+User passwords are normally initialized by the administrator using `ldappasswd`, and from then on updated by the user (through the same tool or protocol). With this image, you can also define user passwords by providing their (hashed) values via a secret. Don't use `ldappasswd` to update passwords that are provided with the latter method: use it to generate a new hashed value and update the secret.
 ### Volumes
 
 Mount these path names to persistent storage; all are optional.
