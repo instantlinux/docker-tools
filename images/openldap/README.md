@@ -3,7 +3,7 @@
 
 This is OpenLDAP in a tiny alpine container, with simple setup. All features and capabilities are supported.
 
-Why this new image (in 2022), when there are others? The dinkel and osixia images fell out of maintenance, so the only current maintained alternative is the larger/more complex bitnami.
+Why this new image (in 2022), when there are others? The dinkel and osixia images fell out of maintenance, so the only current maintained alternative is the larger / more complex / single-platform bitnami.
 
 ### Usage
 
@@ -67,7 +67,7 @@ Secret | Description
 ------ | -----------
 openldap-rootpw | Hashed password (key name openldap-rootpw-hash)
 openldap-ssl | Certificate (cacert.pem, tls.crt, tls.key)
-openldap-user-passwords | Hashed passwords (in _user: password_ form)
+openldap-user-passwords | Hashed passwords (in _user: {PBK...} hash_ form)
 
 ### Contributing
 
