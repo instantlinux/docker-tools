@@ -15,6 +15,8 @@ Configuration is defined as files in volumes mounted as
 
 * If you want to override the haproxy.cfg defined in this image, mount your own as `/usr/local/etc/haproxy/haproxy.cfg` with read-only set.
 
+* If you want to add `vrrp_track_process` directive in keepalived config, specify pid=host to docker (see example in docker-compose.yml)
+
 See the [haproxy-keepalived/examples/](https://github.com/instantlinux/docker-tools/blob/main/images/haproxy-keepalived/examples) directory under this git repository to get started.
 
 This requires NET_ADMIN privileges: keepalived will run as root (but you can specify user `haproxy` or `keepalived_script` for the `vrrp_script` directive); haproxy will downgrade itself to user `haproxy` after startup. Also, you will need the ip_vs kernel module and ip_nonlocal set on the host running docker engine:

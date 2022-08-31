@@ -116,6 +116,9 @@ spec:
       nodeSelector:
         {{- toYaml .pod.nodeSelector | nindent 8 }}
       {{- end }}
+      {{- if hasKey .pod "pid" }}
+      pid: {{ .pod.pid }}
+      {{- end }}
       {{- if hasKey .pod "affinity" }}
       affinity:
         {{- toYaml .pod.affinity | nindent 8 }}

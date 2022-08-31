@@ -7,9 +7,9 @@ sources:
 - https://github.com/haproxy/haproxy
 - https://github.com/acassen/keepalived
 type: application
-version: 0.1.5
-appVersion: "2.6.0-alpine-2.2.7-r1"
+version: 0.1.7
+appVersion: "2.6.4-alpine-2.2.7-r1"
 dependencies:
 - name: chartlib
   version: 0.1.8
-  repository: https://instantlinux.github.io/docker-tools
+  repository: http://instantlinux.github.io/docker-tools

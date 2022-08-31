@@ -16,6 +16,8 @@ services:
     secrets:
      - haproxy-stats-password
     network_mode: host
+    # Uncomment if you want to use vrrp_track_process
+    # pid: host
     cap_add:
     - NET_ADMIN
 
