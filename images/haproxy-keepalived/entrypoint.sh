@@ -6,7 +6,7 @@ else
   STATS_PASSWORD=changeme
 fi
 HAPROXY_PATH=/usr/local/etc/haproxy
-if [ ! -e $$HAPROXY_PATH/haproxy.cfg ]; then
+if [ ! -e $HAPROXY_PATH/haproxy.cfg ]; then
   cat <<EOF >$HAPROXY_PATH/haproxy.cfg
 global
 	log 127.0.0.1	local1 notice
