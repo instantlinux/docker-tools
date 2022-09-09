@@ -15,7 +15,8 @@ network_defaults:
   mode: dhcp
   nameservers: "{{ hostvars[inventory_hostname]['ansible_dns']['nameservers'] }}"
   netmask: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['netmask'] }}"
-  routes: []
+  routes:
+  - "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
   cluster_ip: null
   vrrp_interface: null

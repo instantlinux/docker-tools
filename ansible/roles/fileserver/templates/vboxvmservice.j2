@@ -1,0 +1,17 @@
+[Unit]
+Description=VBox Virtual Machine %i Service
+Requires=systemd-modules-load.service crypt-vols.service
+RequiresMountsFor=/var/backup
+After=network.target crypt-vols.service
+
+[Service]
+User=vmserve
+Group=vboxusers
+ExecStart=/bin/bash -c "sleep $(($RANDOM % 5 * 20)); \
+  /usr/bin/VBoxManage discardstate %i; \
+  /usr/bin/VBoxHeadless -e 'TCP/Ports=14800-14820' --vrde on -s %i"
+ExecStop=/usr/bin/VBoxManage controlvm %i savestate
+#RequiresMountsFor=/u
+
+[Install]
+WantedBy=multi-user.target

@@ -83,6 +83,7 @@ ubuntu_packages:
   - bc
   - nagios-nrpe-server
   - python3-pip
+  - rsyslog
   - smartmontools
   - snmpd
   - sysstat

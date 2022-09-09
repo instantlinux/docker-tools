@@ -1,4 +1,10 @@
 ---
+- name: Check out instantlinux source
+  ansible.builtin.git:
+    repo: 'https://git.instantlinux.net/richb/instantlinux.git/'
+    dest: /opt/instantlinux
+    update: no
+
 - name: Link to usr/lib/ilinux
   file:
     dest: /var/lib/ilinux

@@ -14,3 +14,14 @@
 - name: Virtualbox package
   package:
     name: virtualbox
+  when: ansible_distribution_version < '22.04'
+
+- name: Virtualbox package
+  package:
+    name: virtualbox-6.1
+  when: ansible_distribution_version >= '22.04'
+
+- name: Virtualbox systemd unit file
+  template:
+    dest: /lib/systemd/system/vboxvmservice@.service
+    src: vboxvmservice.j2
