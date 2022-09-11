@@ -9,8 +9,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG SAMBA_VERSION=4.15.7-r0
-ENV DOMAIN_LOGONS=no \
-    LOGON_DRIVE=H \
+ENV LOGON_DRIVE=H \
     NETBIOS_NAME=samba \
     SERVER_STRING="Samba Server" \
     TZ=UTC \
