@@ -1,12 +1,17 @@
 ---
-- name: Disable local sources
-  replace:
-    dest: /etc/apt/sources.list
-    replace: "# deb ftp://ovulator.ci.net removed"
-    regexp: "^deb ftp://ovulator.ci.net/.*(updates|backports|iverse).*"
-
-- name: Ensure repos available
+- name: Ensure ubuntu repos available
   apt_repository:
     repo: "{{ item }}"
     filename: ubuntu
   with_items: "{{ ubuntu_repos }}"
+
+- name: Docker repo key
+  apt_key:
+    id: "{{ docker.apt_repo.key }}"
+    url: "{{ docker.apt_repo.url }}"
+    state: present
+
+- name: Docker repo
+  apt_repository:
+    filename: docker
+    repo: "{{ docker.apt_repo.repo }}"

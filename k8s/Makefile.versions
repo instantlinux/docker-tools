@@ -1,23 +1,21 @@
 # Versions (images within this repo published to docker hub)
 #  See Chart.yaml appVersion for services defined as helm charts
-export VERSION_NAGIOS        ?= 4.4.6-2.3.2
+export VERSION_NAGIOS        ?= 4.4.7-2.4.0
 export VERSION_NAGIOSQL      ?= 3.4.1-4.4.6
-export VERSION_OX_APPSUITE   ?= 7.10.3-15
 
 # Third-party versions - dockerhub
-export VERSION_DASHBOARD     ?= 2.1.0
-export VERSION_LOGSPOUT      ?= v3.2.13
-export VERSION_NGINX         ?= 1.20.0-alpine
+export VERSION_DASHBOARD     ?= 2.7.0
+export VERSION_LOGSPOUT      ?= v3.2.14
+export VERSION_NGINX         ?= 1.23.1-alpine
 
 # Third-party versions - other (quay.io, k8s.gcr.io, crunchydata.com)
-export VERSION_CERT_MANAGER   ?= 1.1.0
+export VERSION_CERT_MANAGER   ?= 1.9.1
 export VERSION_DEFAULTBACKEND ?= 1.5
-export VERSION_FLANNEL        ?= 0.13.0
-export VERSION_HELM           ?= 3.6.0
-export VERSION_METRICS        ?= 0.4.1
-export VERSION_PGO            ?= 4.5.1
+export VERSION_FLANNEL        ?= 0.19.2
+export VERSION_HELM           ?= 3.8.2
+export VERSION_METRICS        ?= 0.6.1
 
 # Held back versions - more effort to upgrade
 export VERSION_CALICO        ?= 3.16.5
 # upstream moved from quay to gcr, needs new pod privileges
-export VERSION_INGRESS_NGINX  ?= 0.33.0
+export VERSION_INGRESS_NGINX  ?= 1.3.0

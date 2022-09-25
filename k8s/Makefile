@@ -75,7 +75,6 @@ STACKS = $(basename $(wildcard *.yaml))
 include Makefile.vars
 include Makefile.versions
 include Makefile.instances
-include Makefile.pgo
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -96,14 +95,14 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = dashboard cert-manager flannel metrics postgres-operator
+IMPORTS      = dashboard cert-manager flannel metrics
 #IMPORTS     = calico calico-etcd
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user cluster_network \
-	install/podsecurity install/local-storage storage_localdefault imports \
+	install/local-storage storage_localdefault imports \
 	install_imports install/gitlab-rbac install/k8s-backup \
 	install/logspout remote_volumes \
 	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config \

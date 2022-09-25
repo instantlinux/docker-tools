@@ -40,6 +40,10 @@ SERVER_STRING | "Samba Server" | server banner string
 TZ | UTC | local timezone
 WORKGROUP | WORKGROUP | workgroup name
 
+### Notes
+
+* Older versions of samba published here can be used as a workaround for clients that need smb v1 / NT1 protocol. For example, Sonos S1 devices won't work with samba 4.15.x; you can run this container with tag `4.13.7-r0` and set `server min protocol = NT1` global directive to support such use cases.
+
 ### Contributing
 
 If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).

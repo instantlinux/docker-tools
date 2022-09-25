@@ -22,7 +22,6 @@ with full-disk LUKS encryption for local volumes. The Makefile in
 this directory adds these capabilities which aren't part of the
 kubeadm suite:
 
-* Pod security policies
 * Direct-attached SSD local storage pools
 * Dashboard
 * Non-default namespace with its own service account (full permissions
@@ -47,13 +46,9 @@ Set up three or more bare-metal quad-core servers or VMs with at least
 a couple gigabytes of RAM each. At present [kubeadm is limited](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#limitations) to a single
 master node so the recommended configuration to support clustered
 services such as etc and MariaDB is 4+ nodes. (An inexpensive node
-similar to mine is an [Intel J5005 NUC](https://www.newegg.com/Product/Product.aspx?Item=N82E16856102204) with two 8GB DDR4 RAM modules
-and a 500GB to 2TB drive installed in each. Yes, you *can* put 16GB of
-RAM into a Goldmont / Gemini Lake mainboard, just flat-out ignore
-Intel's inexplicable 8GB-max claims. As of Nov 2018 a J5005 with 16GB
-of RAM and 500GB of SSD costs just under $400USD so three of those
-plus a master node of 250GB SSD and 8GB of RAM totals $1500USD; you
-can shave maybe $400 off by reducing RAM and storage, and another $300
+similar to mine is an [Intel N6005 Mini PC](https://www.newegg.com/neosmay-ac8-jasper-lake/p/2SW-006Y-00003) with two 8GB DDR4 RAM modules
+and a 500GB to 2TB drive installed in each.) As of Sep 2022 three of these configured with 16GB of RAM and 512GB SSD costs plus a master node of 250GB SSD and 8GB of RAM add up to about $1250USD; you
+can shave maybe $400 off by reducing RAM and storage, and another $250
 by virtualizing the manager on your existing server.
 
 ### Assumptions
@@ -62,14 +57,14 @@ by virtualizing the manager on your existing server.
   cloud instances but isn't tested there; if you're already in
   cloud and willing to pay for it you don't need this tool anyway)
 * You want to run a current stable version of docker engine
-* You're running Ubuntu 18.04 LTS on the nodes
+* You're running Ubuntu 22.04 LTS on the nodes
 * You want fastest / most secure direct-attached SSD performance:
   persistent storage will be local LUKS-encrypted directories on
   each node
 * You have a local docker registry, or plan to use a public one
   such as hub.docker.com
 * You want the simplest way to manage kubernetes, with tools like
-  _make_ rather than helm / ksonnet / ansible (I independently opted
+  _make_ and _helm_ rather than ksonnet / ansible (I independently opted
   to learn kubernetes this way, as described in [Using Makefiles and
   envsubst as an Alternative to Helm and Ksonnet](https://vadosware.io/post/using-makefiles-and-envsubst-as-an-alternative-to-helm-and-ksonnet/) by vados.
 
@@ -103,8 +98,8 @@ Choose a namespace and define these environment variables with values
 as desired:
 ```
 export DOMAIN=domain.com
-export EDITOR=vi export
-K8S_NAMESPACE=mynamespace
+export EDITOR=vi
+export K8S_NAMESPACE=mynamespace
 export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
 export TZ=America/Los_Angeles
 ```

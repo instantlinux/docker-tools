@@ -1,5 +1,5 @@
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup
@@ -14,7 +14,7 @@ spec:
           containers:
           - name: backup
             # Same image as in /etc/kubernetes/manifests/etcd.yaml
-            image: k8s.gcr.io/etcd-amd64:3.2.24
+            image: k8s.gcr.io/etcd-amd64:3.5.5
             command: ["/bin/sh"]
             args: ["-c", "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(date +%Y-%m-%d_%H:%M:%S_%Z).db"]
             env:

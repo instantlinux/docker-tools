@@ -22,6 +22,9 @@ statefulset:
     requests:
       cpu: 100m
       memory: 512Mi
+  securityContext:
+    capabilities:
+      add: ["SYS_ADMIN"]
 volumeMounts:
 - mountPath: /var/lib/samba
   name: var

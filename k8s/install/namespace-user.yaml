@@ -212,3 +212,14 @@ subjects:
 - kind: ServiceAccount
   name: pod-ingress-privileged
   namespace: $K8S_NAMESPACE
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $K8S_NAMESPACE-user
+  namespace: $K8S_NAMESPACE
+  annotations:
+    kubernetes.io/service-account.name: "$K8S_NAMESPACE-user"
+type: kubernetes.io/service-account-token
+data:
+  extra: cGFzc3dvcmQK

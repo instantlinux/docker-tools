@@ -33,6 +33,7 @@
         advertiseAddress: {{ k8s.master_ip }}
         bindPort: 6443
       nodeRegistration:
+        criSocket: unix:///var/run/cri-dockerd.sock
         imagePullPolicy: IfNotPresent
         name: {{ ansible_fqdn }}
         taints:
