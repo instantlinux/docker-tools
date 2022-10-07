@@ -87,7 +87,8 @@ all: imports $(INSTALL_YAML) $(STACKS)
 $(STACKS)::
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$(@F) \
-	  envsubst < $@.yaml | kubectl $(ACTION) --namespace $(K8S_NAMESPACE) -f -
+	  envsubst < $@.yaml | kubectl $(ACTION) --context=sudo \
+	  --namespace $(K8S_NAMESPACE) -f -
 
 ##########
 # Installation
@@ -95,7 +96,8 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = dashboard cert-manager flannel metrics
+IMPORTS      = dashboard cert-manager flannel
+#IMPORTS     = metrics  TODO this is busted due to TLS errors
 #IMPORTS     = calico calico-etcd
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))

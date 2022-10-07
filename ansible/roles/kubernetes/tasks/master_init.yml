@@ -11,7 +11,7 @@
     state: unmounted
 
 - name: Reset Kubernetes component
-  command: kubeadm reset --force
+  command: kubeadm reset --force --cri-socket unix:///var/run/cri-docker.sock
   register: reset_cluster
 
 - name: Set kubeadm configuration
@@ -46,10 +46,15 @@
       # apiServer:
       #   certSans:
       #   - {{ k8s.master_ip }}
-      certificatesDir: /etc/kubernetes/pki
-      controllerManager:
+      apiServer:
         extraArgs:
-          address: 0.0.0.0
+          oidc-issuer-url: {{ oidc.issuer_url }}
+          oidc-client-id: {{ oidc.client_id }}
+          oidc-username-claim: {{ oidc.username_claim }}
+          oidc-groups-claim: {{ oidc.groups_claim }}
+          oidc-username-prefix: {{ oidc.username_prefix }}
+          oidc-groups-prefix: {{ oidc.username_prefix }}
+      certificatesDir: /etc/kubernetes/pki
       dns: {}
       etcd:
         local:
@@ -59,9 +64,6 @@
       networking:
         podSubnet: {{ k8s.pod_network }}
         serviceSubnet: {{ k8s.service_network }}
-      scheduler:
-        extraArgs:
-          address: 0.0.0.0
 
 - name: Init Kubernetes cluster
   command: kubeadm init --config /etc/kubernetes/kubeadm-config.yaml

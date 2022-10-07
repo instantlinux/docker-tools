@@ -1,6 +1,6 @@
 DOM = ci.net
 DOM2 = instantlinux.net
-WEB_HOSTS = monitor.$(DOM) nexus.$(DOM2)
+WEB_HOSTS = monitor.$(DOM) nexus.$(DOM2) oidc.$(DOM2)
 DOCKER_HOSTS = swarm01.$(DOM) mckinley.$(DOM) vinson.$(DOM) denali.$(DOM)
 DOCKER_CLIENTS = administrator portainer
 CERT_INFO = --subj-city='San Francisco' --subj-state=CA \
@@ -23,8 +23,8 @@ $(DOCKER_CLIENTS):
 
 $(WEB_HOSTS): flake8
 	./gencerts.py -v --host-name=$@ --client-name=$@ --directory=~/ssl \
-	--ca-file=instantlinux-ca --cn-root='InstantLinux CA' \
-        --ca-subject='InstantLinux Root' $(CERT_INFO)
+	--ca-file=instantlinux-ca2 --cn-root='InstantLinux CA 2' \
+        --ca-subject='InstantLinux Root' --days=9125 $(CERT_INFO)
 
 flake8:
 	@flake8 .

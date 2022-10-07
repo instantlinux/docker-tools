@@ -33,6 +33,14 @@ k8s: "{{ k8s_defaults | combine(k8s_override) }}"
 cri_dockerd:
   version: 0.2.0
 
+oidc:
+  client_id: client-not-yet-set
+  issuer_url: https://accounts.google.com
+  groups_claim: ""
+  group_prefix: oidc_
+  username_claim: email
+  username_prefix: ""
+
 sysctl:
   net.bridge.bridge-nf-call-iptables: 1
   vm.swappiness: 0

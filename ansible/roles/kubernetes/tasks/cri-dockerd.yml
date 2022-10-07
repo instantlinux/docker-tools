@@ -1,0 +1,46 @@
+---
+- name: Get cri-dockerd binary
+  ansible.builtin.unarchive:
+    creates: /usr/bin/cri-dockerd
+    dest: /usr/bin
+    remote_src: yes
+    src: https://github.com/Mirantis/cri-dockerd/releases/download/v{{ cri_dockerd.version }}/cri-dockerd-v{{ cri_dockerd.version }}-linux-amd64.tar.gz
+
+- name: Get cri-docker service definition
+  ansible.builtin.get_url:
+    dest: /etc/systemd/system/cri-docker.service
+    url: https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
+
+- name: Get cri-docker socket definition
+  ansible.builtin.get_url:
+    dest: /etc/systemd/system/cri-docker.socket
+    url: https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
+
+- name: Override directory for cri-docker options
+  file:
+    dest: /etc/systemd/system/cri-docker.service.d
+    state: directory
+
+- name: Set cri-docker startup options
+  copy:
+    dest: /etc/systemd/system/cri-docker.service.d/opts.conf
+    content: |
+      ExecStart=
+      ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd:// \
+      --network-plugin=cni \
+      --cni-bin-dir=/opt/cni/bin \
+      --cni-cache-dir=/var/lib/cni/cache \
+      --cni-conf-dir=/etc/cni/net.d \
+      --pod-infra-container-image=k8s.gcr.io/pause:3.7
+
+- name: Enable cri-docker.service
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    enabled: yes
+    name: cri-docker
+
+- name: Enable cri-docker.socket
+  ansible.builtin.systemd:
+    enabled: yes
+    name: cri-docker.socket
+    state: started

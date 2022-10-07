@@ -47,8 +47,8 @@
   with_dict: "{{ sysctl }}"
 
 - name: Set static hostname as FQDN
-  ansible.builtin.hostname:
-    name: "{{ ansible_fqdn }}"
+  command: hostnamectl --static set-hostname {{ inventory_hostname }}
+  when: inventory_hostname != ansible_hostname
 
 - include: cri-dockerd.yml
 

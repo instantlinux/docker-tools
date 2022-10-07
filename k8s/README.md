@@ -26,7 +26,8 @@ kubeadm suite:
 * Dashboard
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
-* Helm with tiller
+* Helm
+* Keycloak
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
@@ -155,7 +156,42 @@ Set a symlink from a directory under this one (k8s/secrets) to a
 subdirectory in your local administrative repo. This is where you will
 store kubernetes secrets, encrypted by a tool called _sops_.
 
-Then invoke the following in this directory:
+To tighten security by creating API users you will need to set up OpenID / OAuth2. An on-site user directory can be established using the open-source tool [Keycloak](https://www.keycloak.org/) (a docker-compose file is provided under [services/keycloak](https://github.com/instantlinux/docker-tools/tree/main/services/keycloak/docker-compose.yml)) for which a somewhat complicated configuration is required (TODO - I'll write up the procedure in the docs here). Start by downloading [krew](https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz) and adding it to your $PATH. To get a single-user setup working, follow these steps:
+
+* Go to your google account and add client-id k8slogin of type desktop, in [credentials dashboard](https://console.cloud.google.com/apis/credentials);
+* Run these commands, filling in the redacted fields from first step:
+```
+CLIENT_ID=<redacted>
+CLIENT_SECRET=<redacted>
+kubectl krew install oidc-login
+kubectl oidc-login setup  --oidc-issuer-url=https://accounts.google.com \
+  --oidc-client-id=$CLIENT_ID --oidc-client-secret=$CLIENT_SECRET
+# copy-paste following command from setup output item 3
+kubectl create clusterrolebinding oidc-cluster-admin \
+  --clusterrole=cluster-admin \
+  --user='https://accounts.google.com#<redacted>
+```
+* Add a user to ~/.kube/config:
+```
+- name: oidc-google
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: kubectl
+      args:
+      - oidc-login
+      - get-token
+      - --oidc-issuer-url=https://accounts.google.com
+      - --oidc-client-id=<redacted>
+      - --oidc-client-secret=<redacted>
+- context:
+    cluster: kubernetes
+    namespace: mynamespace
+    user: oidc
+  name: user@kubernetes
+```
+
+To configure k8s resources, invoke the following in this directory ([k8s](https://github.com/instantlinux/docker-tools/tree/main/k8s)):
 ```
 make install
 ```

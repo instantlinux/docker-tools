@@ -23,18 +23,6 @@
   register: reset_cluster
   when: not kubeadm_ca.stat.exists
 
-# There is a problem with kubelet volume mounting
-#  See https://github.com/kubernetes/kubernetes/pull/71663
-#  Workaround here requires manually copying data into mounted
-#  path after installation completes
-- name: TODO remove when bug 1294 is fixed - unmount kubelet vol
-  mount:
-    fstype: ext4
-    path: /var/lib/kubelet
-    src: /dev/mapper/luks-kubelet
-    state: unmounted
-  when: not kubeadm_ca.stat.exists
-
 - name: Join to Kubernetes cluster
   command: kubeadm join --config /etc/kubernetes/kubeadm-config.yaml
   register: join_cluster

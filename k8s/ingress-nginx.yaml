@@ -51,8 +51,8 @@ spec:
     spec:
       terminationGracePeriodSeconds: 60
       containers:
-      - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:$VERSION_INGRESS_NGINX
-        # image: k8s.gcr.io/ingress-nginx/controller:v$VERSION_INGRESS_NGINX
+      # - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:$VERSION_INGRESS_NGINX
+      - image: k8s.gcr.io/ingress-nginx/controller:v$VERSION_INGRESS_NGINX
         name: nginx-ingress-controller
         ports:
         - containerPort: 80
@@ -215,6 +215,16 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - "coordination.k8s.io"
+    resources:
+      - leases
+    verbs: [create, get, list, update]
+  - apiGroups:
+      - "discovery.k8s.io"
+    resources:
+      - endpointslices
+    verbs: [get, list]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -230,6 +240,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: pod-ingress-privileged
+    namespace: $K8S_NAMESPACE
 ---
 apiVersion: v1
 kind: ServiceAccount
