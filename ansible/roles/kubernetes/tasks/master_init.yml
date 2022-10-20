@@ -42,10 +42,6 @@
       ---
       apiVersion: kubeadm.k8s.io/v1beta3
       kind: ClusterConfiguration
-      # certSans deprecated in 1.24
-      # apiServer:
-      #   certSans:
-      #   - {{ k8s.master_ip }}
       apiServer:
         extraArgs:
           oidc-issuer-url: {{ oidc.issuer_url }}

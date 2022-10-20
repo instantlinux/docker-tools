@@ -4,9 +4,9 @@ statefulset:
   args:
   - -c
   - >
-    echo "34.70.122.102 discovery.etcd.io" >> /etc/hosts &&
-    /usr/local/bin/etcd \
-      -discovery https://discovery.etcd.io/$(DISCOVERY_TOKEN)
+    apt update && apt install -y ca-certificates &&
+    chmod 700 /var/lib/etcd &&
+    /usr/local/bin/etcd --discovery https://discovery.etcd.io/$(DISCOVERY_TOKEN)
   containerPorts:
   - { containerPort: 2379 }
   - { containerPort: 2380 }

@@ -12,7 +12,6 @@
 #
 # Usage - after step 1, review Makefile.vars, set your override vars, then do
 #   make install
-#   make storage_localdefault
 #   for node in kube1.domain kube2.domain <etc>; do
 #     NODE=$node make persistent_dirs
 #   done
@@ -105,11 +104,10 @@ VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user cluster_network \
 	install/local-storage storage_localdefault imports \
-	install_imports install/gitlab-rbac install/k8s-backup \
-	install/logspout remote_volumes \
-	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config \
-	secrets
- # extend_dashboard_ttl
+	install_imports namespace_config install/gitlab-rbac \
+	install/k8s-backup install/logspout remote_volumes \
+	sops data-sync-ssh persistent secrets install/ingress-nginx
+ # extend_dashboard_ttl ~/.kube/config.conf 
  # TODO install/cert-manager
 
 namespace_config: install/namespace install/limits install/namespace-user \

@@ -9,7 +9,7 @@ docker_defaults:
   apt_repo:
     key: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     package_name: docker-ce
-    package_ver: 5:19.03.14~3-0~ubuntu-focal
+    package_ver: 5:20.10.19~3-0~ubuntu-jammy
     repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     url: https://download.docker.com/linux/ubuntu/gpg
   certs:
@@ -67,9 +67,12 @@ system_certs:
   - registry-cert.pem
   
 ubuntu_packages:
+  - bash-completion
   - libpam-google-authenticator
+  - rsync
   - snmpd
   - thin-provisioning-tools
+  - uuid-runtime
 
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
 

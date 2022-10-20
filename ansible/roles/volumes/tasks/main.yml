@@ -19,7 +19,8 @@
     /usr/bin/chattr +i {{ item.value.path }}
   with_dict: "{{ luks_volumes | combine(network_mounts) |
                  combine(local_volumes) }}"
-  
+  changed_when: False
+
 - name: Create volumes
   lvol:
     lv: "{{ item.key }}"

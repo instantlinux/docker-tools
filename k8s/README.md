@@ -235,7 +235,6 @@ kubernetes-dashboard-769df7fb6d-qdzjm   1/1     Running   0          26m
 logspout-nq95g                          1/1     Running   0          26m
 logspout-tbz65                          1/1     Running   0          16m
 logspout-whmhb                          1/1     Running   0          16m
-tiller-deploy-6b6d4b6895-d8mxt          1/1     Running   0          26m
 ```
 
 Check /var/log/syslog, and the output logs of pods that you can access
@@ -248,6 +247,13 @@ _make secrets/keyname.yml_.  Upload them to Kubernetes by invoking
 _make secrets/keyname_. Manage their contents and lifecycle using the
 _sops_ command. This tool also supports cloud key-managers like KMS,
 but gpg is suitable for bare-metal data center setups.
+
+Cert-manager installation is part of the above _make install_; to
+start the issuer invoke:
+```
+CERT_MGR_EMAIL=<my email> make install/cert-manager
+```
+A lot of things have to be functioning before letsencrypt will issue certs: the [Let's Encrypt troubleshooting guide](https://cert-manager.io/docs/troubleshooting/acme/) is super-helpful.
 
 ### Network and local storage
 

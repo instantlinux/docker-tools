@@ -1,5 +1,15 @@
 # Default values for blacklist.
-statefulset:
+deployment:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - blacklist
+        topologyKey: "kubernetes.io/hostname"
   containerPorts:
   - { containerPort: 53, protocol: UDP }
   env:
@@ -7,6 +17,8 @@ statefulset:
     ns_servers: blacklist-k8s.example.com
     rbl_domain: blacklist.example.com
     tz: UTC
+  nodeSelector:
+    service.blacklist: allow
   replicas: 2
 volumeMounts:
 - mountPath: /var/lib/rbldns
@@ -18,14 +30,8 @@ volumes:
 - name: mysql-blacklist-user
   secret:
     secretName: mysql-blacklist-user
-volumeClaimTemplates:
-- metadata:
-    name: data
-  spec:
-    accessModes: [ ReadWriteOnce ]
-    resources:
-      requests:
-        storage: 500Mi
+- name: data
+  emptyDir: {}
 
 image:
   repository: instantlinux/blacklist

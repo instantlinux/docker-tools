@@ -25,6 +25,7 @@
   copy:
     dest: /etc/systemd/system/cri-docker.service.d/opts.conf
     content: |
+      [Service]
       ExecStart=
       ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd:// \
       --network-plugin=cni \

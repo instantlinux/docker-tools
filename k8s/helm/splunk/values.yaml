@@ -51,7 +51,7 @@ volumeClaimTemplates:
         storage: 50Mi
     selector:
       matchLabels:
-        volume.group: $SERVICE_NAME
+        volume.group: splunk
 
 image:
   repository: splunk/splunk
