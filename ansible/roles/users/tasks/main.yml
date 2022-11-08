@@ -56,6 +56,14 @@
     line: ChallengeResponseAuthentication yes
   notify: Restart sshd
 
+
+- name: Set sshd KbdInteractiveAuthentication for google authenticator
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "(?i)^KbdInteractiveAuthentication .*"
+    line: KbdInteractiveAuthentication yes
+  notify: Restart sshd
+
 - name: Root .ssh directory
   file:
     path: /root/.ssh

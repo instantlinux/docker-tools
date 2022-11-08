@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG POSTFIX_VERSION=3.7.2-r0
+ARG POSTFIX_VERSION=3.7.3-r0
 ENV SASL_PASSWD_SECRET=postfix-sasl-passwd \
     TZ=UTC
 

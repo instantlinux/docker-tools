@@ -81,6 +81,16 @@ spec:
           requests:
             cpu: 50m
             memory: 192Mi
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values:
+                - nginx-ingress-controller
+            topologyKey: "kubernetes.io/hostname"
       serviceAccountName: pod-ingress-privileged
 ---
 apiVersion: v1

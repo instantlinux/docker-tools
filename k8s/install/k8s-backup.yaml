@@ -14,9 +14,9 @@ spec:
           containers:
           - name: backup
             # Same image as in /etc/kubernetes/manifests/etcd.yaml
-            image: k8s.gcr.io/etcd-amd64:3.5.5
+            image: k8s.gcr.io/etcd:3.5.4-0
             command: ["/bin/sh"]
-            args: ["-c", "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(date +%Y-%m-%d_%H:%M:%S_%Z).db"]
+            args: ["-c", "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(printf '%(%y-%m-%d_%T)T').db"]
             env:
             - name: ETCDCTL_API
               value: "3"
@@ -28,7 +28,7 @@ spec:
               name: backup
           hostNetwork: true
           nodeSelector:
-            node-role.kubernetes.io/master: ""
+            node-role.kubernetes.io/control-plane: ""
           tolerations:
           - effect: NoSchedule
             operator: Exists

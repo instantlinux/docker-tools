@@ -63,3 +63,10 @@
     path: /etc/kubernetes/manifests/kube-apiserver.yaml
     insertafter: etcd-servers=https://127.0.0.1:2379
     line: '    - --encryption-provider-config=/etc/kubernetes/pki/secrets.conf'
+
+- name: Create / restrict directory for etcd backups
+  file:
+    dest: /var/backup/k8s
+    group: nagios
+    mode: 0750
+    state: directory

@@ -17,6 +17,7 @@ rules:
   - configmaps
   - daemonsets
   - deployments
+  - deployments/scale
   - events
   - endpoints
   - horizontalpodautoscalers
@@ -153,14 +154,16 @@ subjects:
   name: oidc_$K8S_NAMESPACE
   namespace: $K8S_NAMESPACE
 ---
+# TODO - this is regular full-access, may need to add a privileged role
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: $K8S_NAMESPACE:privileged-psp
+  name: $K8S_NAMESPACE-privileged-user
+  namespace: $K8S_NAMESPACE
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: approved-psp
+  kind: Role
+  name: $K8S_NAMESPACE:full-access-user
 subjects:
 - kind: ServiceAccount
   name: $K8S_NAMESPACE-privileged

@@ -189,6 +189,20 @@ keepalived:
   enabled: true
   virtualIpAddress: 192.168.1.200
   deployment:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - keepalived
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+              - mythtv-backend
+          topologyKey: "kubernetes.io/hostname"
     nodeSelector:
       service.mythtv-backend: allow
   volumes:

@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -21,15 +21,16 @@ ENV APACHE_LOG_DIR=/var/log/apache2 \
 ARG APT_KEY=13551B881504888C
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
-ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/31
-ARG MYTHTV_VERSION=2:31.0+fixes.202203040618.7e4ce1ba98~ubuntu20.04.1
+ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/32
+ARG MYTHTV_VERSION=2:32.0+fixes.202211050719.18f5b48ee1~ubuntu22.04.1
+# 2:32.0+fixes.202210280026.ba52c13223~ubuntu22.04.1
 ARG SSH_PORT=2022
 ARG MYTHWEB_PORT=6760
 
 RUN \
   apt-get -yq update && apt-get install -yq gnupg locales wget && \
   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
-  echo "deb $MYTHTV_PPA/ubuntu focal main" \
+  echo "deb $MYTHTV_PPA/ubuntu jammy main" \
     > /etc/apt/sources.list.d/mythbuntu.list && \
   apt-get -yq update && \
   locale-gen $LANG && \

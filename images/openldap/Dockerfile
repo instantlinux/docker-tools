@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OPENLDAP_VERSION=2.6.3-r0
+ARG OPENLDAP_VERSION=2.6.3-r3
 ENV SLAPD_DN_ATTR=uid \
     SLAPD_FQDN=example.com \
     SLAPD_LOG_LEVEL=Config,Stats \
