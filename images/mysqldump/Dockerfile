@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.16
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -19,7 +19,7 @@ ENV HOUR=3 MINUTE=30 \
 
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=10.5.17-r0
+ARG CLIENT_VERSION=10.6.10-r0
 
 RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \

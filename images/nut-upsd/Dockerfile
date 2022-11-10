@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.16
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -7,7 +7,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name=nut-upsd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-ARG NUT_VERSION=2.8.0-r2
+ARG NUT_VERSION=2.8.0-r4
 ENV API_USER=upsmon \
     API_PASSWORD= \
     DESCRIPTION=UPS \
