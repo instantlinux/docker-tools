@@ -7,7 +7,7 @@ deployment:
   - containerPort: 5000
   - containerPort: 8081
   env:
-    install4j_add_vm_params: -Xms2048m -Xmx2560m -XX:MaxDirectMemorySize=3g
+    install4j_add_vm_params: -Xms2048m -Xmx4096m -XX:MaxDirectMemorySize=3g
     tz: UTC
   nodeSelector:
     service.nexus: allow

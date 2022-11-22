@@ -30,7 +30,10 @@ COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
-    apk add --update --no-cache krb5 ldb-tools samba-dc@edge=$SAMBA_VERSION tdb \
+    apk add --update --no-cache krb5 ldb-tools samba-dc@edge=$SAMBA_VERSION \
+      samba-libs@edge libwbclient@edge samba-client-libs@edge \
+      samba-server-libs@edge samba-libs-py3@edge libsmbclient@edge \
+      ldb@edge py3-ldb@edge tdb \
       bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 
