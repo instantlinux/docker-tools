@@ -24,11 +24,13 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=AD
 
-ARG SAMBA_VERSION=4.15.7-r0
+ARG SAMBA_VERSION=4.16.7-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
-RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
+    apk add --update --no-cache krb5 ldb-tools samba-dc@edge=$SAMBA_VERSION tdb \
       bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 
