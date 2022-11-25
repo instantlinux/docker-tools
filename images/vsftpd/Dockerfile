@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG VSFTPD_VERSION=3.0.5-r1
+ARG VSFTPD_VERSION=3.0.5-r2
 ENV ANONYMOUS_ENABLE=YES \
     ANON_MKDIR_WRITE_ENABLE=NO \
     ANON_UPLOAD_ENABLE=NO \

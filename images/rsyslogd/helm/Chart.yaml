@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/rsyslog/rsyslog
 type: application
-version: 0.1.5
-appVersion: "8.2204.1-r0"
+version: 0.1.6
+appVersion: "8.2210.0-r0"
 dependencies:
 - name: chartlib
   version: 0.1.8

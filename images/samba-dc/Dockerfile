@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -28,12 +28,7 @@ ARG SAMBA_VERSION=4.16.7-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    apk add --update --no-cache krb5 ldb-tools samba-dc@edge=$SAMBA_VERSION \
-      samba-libs@edge libwbclient@edge samba-client-libs@edge \
-      samba-server-libs@edge samba-libs-py3@edge libsmbclient@edge \
-      ldb@edge py3-ldb@edge tdb \
+RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
       bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 
