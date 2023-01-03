@@ -1,4 +1,4 @@
-FROM haproxy:2.6.6-alpine
+FROM haproxy:2.7.1-alpine
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,11 +8,12 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG KEEPALIVED_VERSION=2.2.7-r1
+ARG KEEPALIVED_VERSION=2.2.7-r2
 ENV KEEPALIVE_CONFIG_ID=main \
     PORT_HAPROXY_STATS=8080 \
     STATS_ENABLE=yes \
     STATS_SECRET=haproxy-stats-password \
+    STATS_USER=haproxy \
     STATS_URI=/stats \
     TIMEOUT=50000 \
     TZ=UTC

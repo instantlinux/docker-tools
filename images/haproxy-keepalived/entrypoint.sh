@@ -33,7 +33,7 @@ listen stats
        mode		http
        stats		enable
        stats		hide-version
-       stats auth	haproxy:$STATS_PASSWORD
+       stats auth	$STATS_USER:$STATS_PASSWORD
        stats realm	HAProxy\ Statistics
        stats uri	$STATS_URI
 EOF
