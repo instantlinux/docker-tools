@@ -15,7 +15,7 @@ use=web
 web=$IPLOOKUP_URI
 ssl=yes
 
-server=members.easydns.com, protocol=$SERVICE_TYPE, login=$USER_LOGIN, password=$USER_PASSWORD $HOST
+server=$SERVER, protocol=$SERVICE_TYPE, login=$USER_LOGIN, password=$USER_PASSWORD $HOST
 EOF
 fi
 chown ddclient.ddclient /etc/ddclient/ddclient.conf
