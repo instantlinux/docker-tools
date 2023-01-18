@@ -7,7 +7,7 @@ The MythTV backend built under Ubuntu jammy (22.04).
 
 This image must be run in network_mode:host in order to communicate with HD Homerun tuners; assign a new IP address and hostname for this application, and define it as a secondary IP address on your Docker host's primary interface.
 
-For configuration, see the example docker-compose.yml (for swarm or standalone docker) or [helm](https://github.com/instantlinux/docker-tools/blob/main/images/helm) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, customize volume mounts as desired. This repo has complete instructions for
+For configuration, see the example docker-compose.yml (for swarm or standalone docker) or [helm](https://github.com/instantlinux/docker-tools/blob/main/images/helm) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, and customize volume mounts as desired. This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/mythtv-backend/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mythtv-backend/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git

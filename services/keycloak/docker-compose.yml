@@ -1,0 +1,43 @@
+version: '3'
+services:
+  db:
+    image: mariadb:10
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+      MARIADB_USER:                 ${KEYCLOAK_DB_USER:-keycloak}
+      MARIADB_PASSWORD:             ${KEYCLOAK_DB_PASSWORD}
+      MARIADB_DATABASE:             ${KEYCLOAK_DATABASE:-keycloak}
+    restart: unless-stopped
+    volumes:
+    - data:/var/lib/mysql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:${VERSION_KEYCLOAK:-latest}
+    command: >
+      start
+        --https-certificate-file=/certs/tls.crt
+        --https-certificate-key-file=/certs/tls.key
+    depends_on:
+    - db
+    environment:
+      KEYCLOAK_ADMIN:          ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-changeme}
+      KC_DB:                   mariadb
+      KC_DB_URL_HOST:          db
+      KC_DB_URL_PORT:          3306
+      KC_DB_URL_DATABASE:      ${KEYCLOAK_DATABASE:-keycloak}
+      KC_DB_USERNAME:          ${KEYCLOAK_DB_USER:-keycloak}
+      KC_DB_PASSWORD:          ${KEYCLOAK_DB_PASSWORD}
+      KC_HOSTNAME:             ${KEYCLOAK_HOSTNAME:-oidc.instantlinux.net}
+      KC_PROXY:                none
+    ports:
+    - ${PORT_KEYCLOAK:-80}:8080
+    - ${PORT_KEYCLOAK_SSL:-443}:8443
+    restart: unless-stopped
+    volumes:
+    - ${SHARE_PATH:-/opt}/common/pki/certs/${KEYCLOAK_HOSTNAME:-oidc.instantlinux.net}-server-cert.pem:/certs/tls.crt:ro
+    - ${SHARE_PATH:-/opt}/common/pki/certs/${KEYCLOAK_HOSTNAME:-oidc.instantlinux.net}-server-key.pem:/certs/tls.key:ro
+
+volumes:
+  data:
+    driver: local
