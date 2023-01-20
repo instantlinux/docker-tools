@@ -28,8 +28,9 @@ ARG SAMBA_VERSION=4.16.8-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
+COPY chrony.conf /etc/chrony/
 RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
-      bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata && \
+      bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata chrony && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 
 VOLUME /etc/samba /var/lib/samba
