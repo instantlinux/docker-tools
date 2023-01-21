@@ -51,6 +51,7 @@ SERVER_STRING | Samba Domain Controller | server identity
 TZ | UTC | local timezone
 WINBIND_USE_DEFAULT_DOMAIN | yes | allow username without domain component
 WORKGROUP | AD | workgroup (realm prefix - poorly documented)
+DNS_FORWARDER | none | value to place in `dns forwarder` in smb.conf
 
 ### Secrets
 This is only needed at first run, for samba domain provision or join. Do NOT leave your domain-controller administrator secret activated at any other time.
