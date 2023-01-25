@@ -7,8 +7,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://gitlab.com/gitlab-org/gitlab
 type: application
-version: 0.1.5
-appVersion: "14.10.3-ce.0"
+version: 0.1.6
+appVersion: "15.8.0-ce.0"
 dependencies:
 - name: chartlib
   version: 0.1.8

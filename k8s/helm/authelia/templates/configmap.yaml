@@ -16,7 +16,6 @@ data:
       ldap:
         url: ldap://ldap
         base_dn: {{ .Values.baseDN }}
-        additional_users_dn: ou=users
         users_filter: (&({username_attribute}={input})(objectClass=inetOrgPerson))
         username_attribute: uid
         additional_users_dn: ou=users

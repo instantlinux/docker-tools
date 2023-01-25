@@ -70,3 +70,15 @@
     group: nagios
     mode: 0750
     state: directory
+
+- name: Cron package - needed for cleaning old backups
+  apt:
+    name: cron
+
+- name: Backup-pruning crontab
+  cron:
+    job: find /var/backup/k8s -mtime +25 -delete
+    hour: 3
+    minute: 0
+    user: root
+    weekday: 1

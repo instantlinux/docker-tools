@@ -24,6 +24,7 @@ deployment:
     sh -c 'sh /usr/local/bin/gitback &' &&
     exec /assets/wrapper
   env:
+    gitlab_log_level: warn
     tz: UTC
   xenv:
   - name: GITLAB_OMNIBUS_CONFIG

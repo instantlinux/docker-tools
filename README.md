@@ -112,5 +112,6 @@ Thank you to the following contributors!
 * [Frank Riley](https://github.com/fhriley)
 * [Devin Bayer](https://github.com/akvadrako)
 * [Daniel Muller](https://github.com/DanielMuller)
+* [Brian Hechinger](https://github.com/bhechinger)
 
-Contents created 2017-20 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
+Contents created 2017-23 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.

@@ -7,5 +7,3 @@
 {{- include "chartlib.ingresstotp" . }}
 ---
 {{- include "chartlib.serviceaccount" . }}
----
-{{- include "chartlib.deployment" . }}
