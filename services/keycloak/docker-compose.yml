@@ -7,7 +7,7 @@ services:
       MARIADB_USER:                 ${KEYCLOAK_DB_USER:-keycloak}
       MARIADB_PASSWORD:             ${KEYCLOAK_DB_PASSWORD}
       MARIADB_DATABASE:             ${KEYCLOAK_DATABASE:-keycloak}
-    restart: unless-stopped
+    restart: always
     volumes:
     - data:/var/lib/mysql
 
@@ -33,7 +33,7 @@ services:
     ports:
     - ${PORT_KEYCLOAK:-80}:8080
     - ${PORT_KEYCLOAK_SSL:-443}:8443
-    restart: unless-stopped
+    restart: always
     volumes:
     - ${SHARE_PATH:-/opt}/common/pki/certs/${KEYCLOAK_HOSTNAME:-oidc.instantlinux.net}-server-cert.pem:/certs/tls.crt:ro
     - ${SHARE_PATH:-/opt}/common/pki/certs/${KEYCLOAK_HOSTNAME:-oidc.instantlinux.net}-server-key.pem:/certs/tls.key:ro

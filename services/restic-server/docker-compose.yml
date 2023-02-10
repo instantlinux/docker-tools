@@ -3,7 +3,7 @@ version: "3.1"
 services:
   app:
     image: restic/rest-server:${VERSION_RESTIC:-latest}
-    restart: unless-stopped
+    restart: always
     ports:
     - ${PORT_RESTIC:-8000}:8000
     volumes:
