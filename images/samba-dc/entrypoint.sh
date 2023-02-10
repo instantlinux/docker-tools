@@ -45,19 +45,7 @@ fi
 mkdir -p -m 700 /etc/samba/conf.d
 for file in /etc/samba/smb.conf /etc/samba/conf.d/netlogon.conf \
       /etc/samba/conf.d/sysvol.conf; do
-  sed -e "s:{{ ALLOW_DNS_UPDATES }}:$ALLOW_DNS_UPDATES:" \
-      -e "s:{{ BIND_INTERFACES_ONLY }}:$BIND_INTERFACES_ONLY:" \
-      -e "s:{{ DNS_FORWARDER }}:$DNS_FORWARDER:" \
-      -e "s:{{ DOMAIN_LOGONS }}:$DOMAIN_LOGONS:" \
-      -e "s:{{ DOMAIN_MASTER }}:$DOMAIN_MASTER:" \
-      -e "s+{{ INTERFACES }}+$INTERFACES+" \
-      -e "s:{{ LOG_LEVEL }}:$LOG_LEVEL:" \
-      -e "s:{{ NETBIOS_NAME }}:$NETBIOS_NAME:" \
-      -e "s:{{ REALM }}:$REALM:" \
-      -e "s:{{ SERVER_STRING }}:$SERVER_STRING:" \
-      -e "s:{{ WINBIND_USE_DEFAULT_DOMAIN }}:$WINBIND_USE_DEFAULT_DOMAIN:" \
-      -e "s:{{ WORKGROUP }}:$WORKGROUP:" \
-      /root/$(basename $file).j2 > $file
+  j2 /root/$(basename $file).j2 -o $file
 done
 for file in $(ls -A /etc/samba/conf.d/*.conf); do
   echo "include = $file" >> /etc/samba/smb.conf
