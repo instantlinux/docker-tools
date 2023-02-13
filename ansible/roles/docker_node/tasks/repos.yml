@@ -6,6 +6,7 @@
   with_items: "{{ ubuntu_repos }}"
 
 - name: Docker repo key
+  # TODO - apt-key is deprecated since 2020 or so
   apt_key:
     id: "{{ docker.apt_repo.key }}"
     url: "{{ docker.apt_repo.url }}"
@@ -15,3 +16,7 @@
   apt_repository:
     filename: docker
     repo: "{{ docker.apt_repo.repo }}"
+  # TODO - this fails with
+  #  Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see
+  #   the DEPRECATION section in apt-key(8) for details.
+  ignore_errors: True

@@ -127,11 +127,15 @@
     dest: /etc/docker/daemon.json
   notify: Restart docker
 
-- name: Deal with conflicting systemd-unit option if present
-  lineinfile:
-    line: ExecStart=/usr/bin/dockerd
-    path: /lib/systemd/system/docker.service
-    regexp: "^ExecStart=.*"
+- name: Systemd override path for docker.service
+  file:
+    dest: /lib/systemd/system/docker.service.d
+    state: directory
+
+- name: Deal with conflicting systemd-unit option, await vol mount
+  template:
+    dest: /lib/systemd/system/docker.service.d/docker.service.conf
+    src: docker.service.conf.j2
   notify: Reload systemd
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
@@ -140,15 +144,6 @@
     src: docker-permissions.service
 
 # TODO parse fstab seeking last luks line
-
-- name: Add RequiresMountsFor to docker.service
-  replace:
-    dest: /lib/systemd/system/docker.service
-    regexp: "^Requires=docker.socket$"
-    replace: >
-      Requires=docker.socket 
-      \n# Added by Ansible
-      \nRequiresMountsFor={{ docker_volumewait }}
 
 - name: Reenable systemctl start
   file:

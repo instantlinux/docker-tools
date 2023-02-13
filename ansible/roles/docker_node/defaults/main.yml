@@ -9,12 +9,13 @@ docker_defaults:
   apt_repo:
     key: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     package_name: docker-ce
-    package_ver: 5:20.10.19~3-0~ubuntu-jammy
+    package_ver: 5:23.0.1-1~ubuntu.22.04~jammy
     repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     url: https://download.docker.com/linux/ubuntu/gpg
   certs:
     ca_root: ca-root.pem
     path: /root/certs
+  cli_opts: --containerd=/run/containerd/containerd.sock
   compose:
     sha256: acfa66dba77dac9635ff9b195ccea81768eb009ce9c9f1181c000eb95effb963
     version: 1.15.0
