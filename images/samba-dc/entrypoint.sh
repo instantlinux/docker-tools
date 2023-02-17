@@ -63,5 +63,4 @@ for file in $(ls -A /etc/samba/conf.d/*.conf); do
   echo "include = $file" >> /etc/samba/smb.conf
 done
 ln -fns /var/lib/samba/private/krb5.conf /etc/
-
 exec samba --model=$MODEL -i </dev/null
