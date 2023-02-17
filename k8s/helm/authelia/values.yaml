@@ -11,8 +11,8 @@ mysql:
   username: authelia
 session:
   domain: example.com
-  expiration: 1209600000
-  inactivity: 300000
+  expiration: 2w
+  inactivity: 5m
 smtp:
   host: smtp.gmail.com
   port: 587
