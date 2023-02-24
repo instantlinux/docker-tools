@@ -16,6 +16,4 @@
 	log level = {{ LOG_LEVEL }}
 	winbind refresh tickets = Yes
 	winbind use default domain = {{ WINBIND_USE_DEFAULT_DOMAIN }}
-{% if DNS_FORWARDER %}
-    dns forwarder = {{ DNS_FORWARDER }}
-{%  endif %}
+{% if DNS_FORWARDER is defined and DNS_FORWARDER %}	dns forwarder = {{ DNS_FORWARDER }}{%  endif %}
