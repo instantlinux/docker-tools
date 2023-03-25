@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -24,10 +24,8 @@ ENV API_USER=upsmon \
     VENDORID=
 HEALTHCHECK CMD upsc ups@localhost:3493 2>&1|grep -q stale && exit 1 || true
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
-      >>/etc/apk/repositories && \
-    apk add --update nut@edge=$NUT_VERSION \
-      libcrypto1.1 libssl1.1 musl net-snmp-libs
+RUN apk add --update nut=$NUT_VERSION \
+      libcrypto1.1 libssl1.1 libusb musl net-snmp-libs
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/

@@ -59,26 +59,15 @@ volumeMounts:
 - mountPath: /var/www/html
   name: synced
   subPath: html
+- mountPath: /var/www/html/data/nextcloud.log
+  name: synced
+  subPath: html/data/nextcloud.log
 - name: config
   mountPath: /var/www/html/config/config.php.k8s
   subPath: config.php
-- mountPath: /pictures
+- mountPath: /var/www/html/data
   name: pictures
-# TODO: figure out a better way to handle NextCloud's upside-
-#  down naming hierarchy. If your photo collection has the year
-#  at a high level of the hierarchy, there's a conflict.
-- mountPath: /var/www/html/data/admin/files/Photos/2021
-  name: pictures
-  subPath: DigitalPics/2021/admin-nextcloud
-- mountPath: /var/www/html/data/admin/files/Photos/2022
-  name: pictures
-  subPath: DigitalPics/2022/admin-nextcloud
-- mountPath: /var/www/html/data/user/files/Photos/2021
-  name: pictures
-  subPath: DigitalPics/2021/user-nextcloud
-- mountPath: /var/www/html/data/user/files/Photos/2022
-  name: pictures
-  subPath: DigitalPics/2022/user-nextcloud
+  subPath: nextcloud
 volumes:
 - name: config
   configMap:
