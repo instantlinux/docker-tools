@@ -41,6 +41,8 @@ MAX_INSTANCES | 30 | process limit
 PASV_ADDRESS |  | required--address of docker engine
 PASV_MAX_PORT | 30100 | range of client ports (rebuild image if changed)
 PASV_MIN_PORT | 30091 | 
+SFTP_ENABLE | off | use sftp instead of ftp
+SFTP_PORT | 2222 | sftp port
 TIMES_GMT | off | local time for directory listing
 TZ | UTC | local timezone
 WRITE_ENABLE | AllowAll | allow put/rm
