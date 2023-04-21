@@ -19,8 +19,6 @@ if [ -e /run/secrets/$FTPUSER_PASSWORD_SECRET ] && ! id -u "$FTPUSER_NAME"; then
 fi
 
 if [ "$SFTP_ENABLE" = "on" ]; then
-  apk add proftpd-mod_sftp openssh-keygen
-
   mkdir /etc/ssh
   ssh-keygen -m PEM -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa -b 2048
   ssh-keygen -m PEM -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa -b 1024
