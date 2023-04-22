@@ -19,10 +19,10 @@ if [ -e /run/secrets/$FTPUSER_PASSWORD_SECRET ] && ! id -u "$FTPUSER_NAME"; then
 fi
 
 if [ "$SFTP_ENABLE" = "on" ]; then
-  mkdir /etc/ssh
-  ssh-keygen -m PEM -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa -b 2048
-  ssh-keygen -m PEM -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa -b 1024
-  ssh-keygen -m PEM -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
+  mkdir -p /etc/ssh
+  test -f /etc/ssh/ssh_host_rsa_key   || ssh-keygen -m PEM -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa -b 2048
+  test -f /etc/ssh/ssh_host_dsa_key   || ssh-keygen -m PEM -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa -b 1024
+  test -f /etc/ssh/ssh_host_ecdsa_key || ssh-keygen -m PEM -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
 
   sed -i -e "/^Port/s/^/#/" /etc/proftpd/proftpd.conf
   
@@ -38,9 +38,9 @@ if [ "$ANONYMOUS_DISABLE" = "on" ]; then
   sed -i '/<Anonymous/,/<\/Anonymous>/d' /etc/proftpd/proftpd.conf
 else
   sed -i \
-    -e "s:{{ ANONYMOUS_DISABLE }}:$ANONYMOUS_DISABLE:" \
-    -e "s:{{ ANON_UPLOAD_ENABLE }}:$ANON_UPLOAD_ENABLE:" \
-    /etc/proftpd/proftpd.conf
+      -e "s:{{ ANONYMOUS_DISABLE }}:$ANONYMOUS_DISABLE:" \
+      -e "s:{{ ANON_UPLOAD_ENABLE }}:$ANON_UPLOAD_ENABLE:" \
+      /etc/proftpd/proftpd.conf
 fi
 
 mkdir -p /run/proftpd && chown proftpd /run/proftpd/

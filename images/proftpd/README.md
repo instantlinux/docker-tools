@@ -6,6 +6,7 @@ An easy-to-use, tiny yet full-featured installation of ProFTPD.
 ### Usage
 
 The most-common directives can be specified in environment variables as shown below. One is required, the PASV_ADDRESS. If you need further customizations, put them in one or more files under mount points /etc/proftpd.d and /etc/proftpd/modules.d.
+In case SFTP is enabled, it is important to create a persistent volume to be mounted in /etc/ssh, to avoid generating SSH keys each time a container is created.
 
 A single upload user can be specified via the FTPUSER_xxx variables. It is activated by defining ftp-user-password-secret thus:
 

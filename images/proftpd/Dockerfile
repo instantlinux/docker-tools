@@ -37,7 +37,7 @@ RUN chmod 644 /etc/proftpd/proftpd.conf && \
         proftpd-mod_sftp \
         openssh-keygen
 
-VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp
+VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp /etc/ssh
 EXPOSE 21 $SFTP_PORT $PASV_MIN_PORT-$PASV_MAX_PORT
 
 COPY entrypoint.sh /usr/local/bin/
