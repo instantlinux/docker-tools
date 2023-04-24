@@ -21,6 +21,8 @@ ENV ALLOW_OVERWRITE=on \
     PASV_ADDRESS= \
     PASV_MAX_PORT=30100 \
     PASV_MIN_PORT=30091 \
+    SFTP_ENABLE=off \
+    SFTP_PORT=2222 \
     SERVER_NAME=ProFTPD \
     TIMES_GMT=off \
     TZ=UTC \
@@ -28,10 +30,15 @@ ENV ALLOW_OVERWRITE=on \
 
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 RUN chmod 644 /etc/proftpd/proftpd.conf && \
-    apk add --update libcrypto1.1 proftpd=$PROFTPD_VERSION tzdata
+    apk add --update \
+        libcrypto1.1 \
+        proftpd=$PROFTPD_VERSION \
+        tzdata \
+        proftpd-mod_sftp \
+        openssh-keygen
 
-VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp
-EXPOSE 21 $PASV_MIN_PORT-$PASV_MAX_PORT
+VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp /etc/ssh
+EXPOSE 21 $SFTP_PORT $PASV_MIN_PORT-$PASV_MAX_PORT
 
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
