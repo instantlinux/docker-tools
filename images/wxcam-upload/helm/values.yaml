@@ -1,0 +1,133 @@
+# Default values for wxcam-upload.
+deployment:
+  containerPorts:
+  - containerPort: 21
+  - containerPort: 30080
+  - containerPort: 30081
+  - containerPort: 30082
+  - containerPort: 30083
+  - containerPort: 30084
+  - containerPort: 30085
+  - containerPort: 30086
+  - containerPort: 30087
+  - containerPort: 30088
+  - containerPort: 30089
+  - containerPort: 30090
+  env:
+    pasv_address: 10.101.1.70
+    tz: UTC
+  nodeSelector:
+    service.wxcam-upload: allow
+volumeMounts:
+- mountPath: /home/wx/upload
+  name: synced
+- name: wunderground-pw-cam
+  mountPath: /run/secrets/wunderground-pw-cam
+- name: wxcam-password-hashed
+  mountPath: /run/secrets/wxcam-password-hashed
+  subPath: wxcam-password-hashed
+volumes:
+- name: synced
+  hostPath: { path: /var/lib/docker/k8s-volumes/wx }
+- name: wunderground-pw-cam
+  secret:
+    secretName: wunderground-pw-cam
+- name: wxcam-password-hashed
+  secret:
+    secretName: wxcam-password-hashed
+
+image:
+  repository: instantlinux/wxcam-upload
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: 10.101.1.70
+  ports:
+  - { port: 21, targetPort: 21, name: ftp }
+  - { port: 30081, targetPort: 30081, name: pasv1 }
+  - { port: 30082, targetPort: 30082, name: pasv2 }
+  - { port: 30083, targetPort: 30083, name: pasv3 }
+  - { port: 30084, targetPort: 30084, name: pasv4 }
+  - { port: 30085, targetPort: 30085, name: pasv5 }
+  - { port: 30086, targetPort: 30086, name: pasv6 }
+  - { port: 30087, targetPort: 30087, name: pasv7 }
+  - { port: 30088, targetPort: 30088, name: pasv8 }
+  - { port: 30089, targetPort: 30089, name: pasv9 }
+  - { port: 30090, targetPort: 30090, name: pasv10 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+# Subchart data-sync, maintains persistent data across nodes
+data-sync:
+  statefulset:
+    containerPorts: [ containerPort: 22 ]
+    env:
+      sync_interval: 20
+      tz: UTC
+    nodeSelector:
+      service.wxcam-upload: allow
+    replicas: 2
+    resources:
+      limits:
+        memory: 1536Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  volumeMounts:
+  - name: archive
+    mountPath: /root/.unison
+  - name: config-sync
+    mountPath: /etc/unison.d/common.prf
+    subPath: common.prf
+  - mountPath: /etc/ssh
+    name: etc
+  - mountPath: /var/log/unison
+    name: logs
+  - mountPath: /var/data-sync/wx
+    name: wx
+  - mountPath: /run/secrets/data-sync-sshkey1
+    name: sshkeys
+    subPath: sshkey1
+  - mountPath: /run/secrets/data-sync-sshkey2
+    name: sshkeys
+    subPath: sshkey2
+  volumes:
+  - name: config-sync
+    configMap:
+      name: wxcam-upload-data-sync
+  - name: sshkeys
+    secret:
+      secretName: data-sync-ssh
+  - name: logs
+    hostPath: { path: /var/lib/docker/k8s-volumes/sync-logs/wxcam-upload }
+  volumeClaimTemplates:
+  - metadata:
+      name: archive
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: etc
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: wx
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: wx

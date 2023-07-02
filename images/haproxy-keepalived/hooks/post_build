@@ -1,3 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/haproxy-keepalived/TAR5BpeTTCQH0KoYiLX7uQOCy-Y=
-

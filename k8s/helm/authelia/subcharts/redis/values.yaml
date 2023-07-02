@@ -1,0 +1,27 @@
+# Default values for redis.
+deployment:
+  containerPorts: [ containerPort: 6379 ]
+volumeMounts:
+- mountPath: /etc/redis/redis.conf
+  name: redis-config
+  subPath: redis.conf
+volumes:
+- name: redis-config
+  secret:
+    secretName: redis-config
+
+image:
+  repository: redis
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  ports: [ port: 6379 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false

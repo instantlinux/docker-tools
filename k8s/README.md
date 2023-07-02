@@ -22,12 +22,12 @@ with full-disk LUKS encryption for local volumes. The Makefile in
 this directory adds these capabilities which aren't part of the
 kubeadm suite:
 
-* Pod security policies
 * Direct-attached SSD local storage pools
 * Dashboard
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
-* Helm with tiller
+* Helm
+* Keycloak
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
@@ -47,13 +47,9 @@ Set up three or more bare-metal quad-core servers or VMs with at least
 a couple gigabytes of RAM each. At present [kubeadm is limited](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#limitations) to a single
 master node so the recommended configuration to support clustered
 services such as etc and MariaDB is 4+ nodes. (An inexpensive node
-similar to mine is an [Intel J5005 NUC](https://www.newegg.com/Product/Product.aspx?Item=N82E16856102204) with two 8GB DDR4 RAM modules
-and a 500GB to 2TB drive installed in each. Yes, you *can* put 16GB of
-RAM into a Goldmont / Gemini Lake mainboard, just flat-out ignore
-Intel's inexplicable 8GB-max claims. As of Nov 2018 a J5005 with 16GB
-of RAM and 500GB of SSD costs just under $400USD so three of those
-plus a master node of 250GB SSD and 8GB of RAM totals $1500USD; you
-can shave maybe $400 off by reducing RAM and storage, and another $300
+similar to mine is an [Intel N6005 Mini PC](https://www.newegg.com/neosmay-ac8-jasper-lake/p/2SW-006Y-00003) with two 8GB DDR4 RAM modules
+and a 500GB to 2TB drive installed in each.) As of Sep 2022 three of these configured with 16GB of RAM and 512GB SSD costs plus a master node of 250GB SSD and 8GB of RAM add up to about $1250USD; you
+can shave maybe $400 off by reducing RAM and storage, and another $250
 by virtualizing the manager on your existing server.
 
 ### Assumptions
@@ -62,14 +58,14 @@ by virtualizing the manager on your existing server.
   cloud instances but isn't tested there; if you're already in
   cloud and willing to pay for it you don't need this tool anyway)
 * You want to run a current stable version of docker engine
-* You're running Ubuntu 18.04 LTS on the nodes
+* You're running Ubuntu 22.04 LTS on the nodes
 * You want fastest / most secure direct-attached SSD performance:
   persistent storage will be local LUKS-encrypted directories on
   each node
 * You have a local docker registry, or plan to use a public one
   such as hub.docker.com
 * You want the simplest way to manage kubernetes, with tools like
-  _make_ rather than helm / ksonnet / ansible (I independently opted
+  _make_ and _helm_ rather than ksonnet / ansible (I independently opted
   to learn kubernetes this way, as described in [Using Makefiles and
   envsubst as an Alternative to Helm and Ksonnet](https://vadosware.io/post/using-makefiles-and-envsubst-as-an-alternative-to-helm-and-ksonnet/) by vados.
 
@@ -103,8 +99,8 @@ Choose a namespace and define these environment variables with values
 as desired:
 ```
 export DOMAIN=domain.com
-export EDITOR=vi export
-K8S_NAMESPACE=mynamespace
+export EDITOR=vi
+export K8S_NAMESPACE=mynamespace
 export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
 export TZ=America/Los_Angeles
 ```
@@ -160,7 +156,42 @@ Set a symlink from a directory under this one (k8s/secrets) to a
 subdirectory in your local administrative repo. This is where you will
 store kubernetes secrets, encrypted by a tool called _sops_.
 
-Then invoke the following in this directory:
+To tighten security by creating API users you will need to set up OpenID / OAuth2. An on-site user directory can be established using the open-source tool [Keycloak](https://www.keycloak.org/) (a docker-compose file is provided under [services/keycloak](https://github.com/instantlinux/docker-tools/tree/main/services/keycloak/docker-compose.yml)) for which a somewhat complicated configuration is required (TODO - I'll write up the procedure in the docs here). Start by downloading [krew](https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz) and adding it to your $PATH. To get a single-user setup working, follow these steps:
+
+* Go to your google account and add client-id k8slogin of type desktop, in [credentials dashboard](https://console.cloud.google.com/apis/credentials);
+* Run these commands, filling in the redacted fields from first step:
+```
+CLIENT_ID=<redacted>
+CLIENT_SECRET=<redacted>
+kubectl krew install oidc-login
+kubectl oidc-login setup  --oidc-issuer-url=https://accounts.google.com \
+  --oidc-client-id=$CLIENT_ID --oidc-client-secret=$CLIENT_SECRET
+# copy-paste following command from setup output item 3
+kubectl create clusterrolebinding oidc-cluster-admin \
+  --clusterrole=cluster-admin \
+  --user='https://accounts.google.com#<redacted>
+```
+* Add a user to ~/.kube/config:
+```
+- name: oidc-google
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: kubectl
+      args:
+      - oidc-login
+      - get-token
+      - --oidc-issuer-url=https://accounts.google.com
+      - --oidc-client-id=<redacted>
+      - --oidc-client-secret=<redacted>
+- context:
+    cluster: kubernetes
+    namespace: mynamespace
+    user: oidc
+  name: user@kubernetes
+```
+
+To configure k8s resources, invoke the following in this directory ([k8s](https://github.com/instantlinux/docker-tools/tree/main/k8s)):
 ```
 make install
 ```
@@ -204,7 +235,6 @@ kubernetes-dashboard-769df7fb6d-qdzjm   1/1     Running   0          26m
 logspout-nq95g                          1/1     Running   0          26m
 logspout-tbz65                          1/1     Running   0          16m
 logspout-whmhb                          1/1     Running   0          16m
-tiller-deploy-6b6d4b6895-d8mxt          1/1     Running   0          26m
 ```
 
 Check /var/log/syslog, and the output logs of pods that you can access
@@ -217,6 +247,13 @@ _make secrets/keyname.yml_.  Upload them to Kubernetes by invoking
 _make secrets/keyname_. Manage their contents and lifecycle using the
 _sops_ command. This tool also supports cloud key-managers like KMS,
 but gpg is suitable for bare-metal data center setups.
+
+Cert-manager installation is part of the above _make install_; to
+start the issuer invoke:
+```
+CERT_MGR_EMAIL=<my email> make install/cert-manager
+```
+A lot of things have to be functioning before letsencrypt will issue certs: the [Let's Encrypt troubleshooting guide](https://cert-manager.io/docs/troubleshooting/acme/) is super-helpful.
 
 ### Network and local storage
 

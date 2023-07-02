@@ -1,0 +1,77 @@
+# Default values for haproxy-keepalived.
+interface: br0
+deployment:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - haproxy-keepalived
+        topologyKey: "kubernetes.io/hostname"
+  env:
+    keepalived_config_id: main
+  hostNetwork: true
+  # override pid: host to use vrrp_track_process
+  pid: false
+  nodeSelector:
+    service.haproxy-keepalived: allow
+  replicas: 2
+  securityContext:
+    capabilities:
+      add: [ NET_ADMIN ]
+volumeMounts:
+- name: config
+  mountPath: /usr/local/etc/haproxy.d
+  readOnly: true
+- name: etc
+  mountPath: /etc/keepalived/keepalived.conf
+  subPath: keepalived.conf
+- name: secret
+  mountPath: /run/secrets/haproxy-stats-password
+  readOnly: true
+  subPath: haproxy-stats-password
+volumes:
+- name: config
+  configMap:
+    name: haproxy-keepalived
+- name: etc
+  configMap:
+    name: haproxy-keepalived-etc
+- name: secret
+  secret:
+    secretName: haproxy-stats-password
+
+image:
+  repository: instantlinux/haproxy-keepalived
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: example-privileged
+
+service:
+  clusterIP: None
+  ports:
+  - { port: 8080, targetPort: 8080 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  name: haproxy-keepalived
+  data:
+    www.cfg: |
+      listen http
+        bind 192.168.1.150:80
+        mode tcp
+        maxconn 500
+        balance roundrobin
+        server node1 192.168.1.20:30080 check inter 30000
+        server elbrus 192.168.1.21:30080 check inter 30000

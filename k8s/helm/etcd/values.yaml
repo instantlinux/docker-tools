@@ -1,0 +1,74 @@
+# Default values for etcd.
+statefulset:
+  command: [/bin/sh]
+  args:
+  - -c
+  - >
+    apt update && apt install -y ca-certificates &&
+    chmod 700 /var/lib/etcd &&
+    /usr/local/bin/etcd --discovery https://discovery.etcd.io/$(DISCOVERY_TOKEN)
+  containerPorts:
+  - { containerPort: 2379 }
+  - { containerPort: 2380 }
+  xenv:
+    # To generate the secret:
+    # curl -s https://discovery.etcd.io/new?size=3|cut -d / -f 4|base64
+    # sops secrets/etcd-token.yml
+    # kubectl delete secret etcd-token
+    # make secrets/etcd-token
+    - name: DISCOVERY_TOKEN
+      valueFrom:
+        secretKeyRef:
+          key: etcd-token
+          name: etcd-token
+    - name: ETCD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    # TODO use pod DNS name when coredns working reliably
+    #  (this requires running with hostNetwork: true)
+    - name: NODENAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: ETCD_ADVERTISE_CLIENT_URLS
+      value: "http://$(NODENAME):2379"
+    - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
+      value: "http://$(NODENAME):2380"
+  env:
+    etcdctl_api: "2"
+    etcd_data_dir: /var/lib/etcd
+    etcd_enable_v2: "true"
+    etcd_listen_client_urls: "http://0.0.0.0:2379"
+    etcd_listen_peer_urls: "http://0.0.0.0:2380"
+  hostNetwork: true
+  replicas: 3
+volumeMounts:
+- mountPath: /var/lib/etcd
+  name: data
+volumeClaimTemplates:
+- metadata:
+    name: data
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 50Mi
+
+image:
+  repository: quay.io/coreos/etcd
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: example-privileged
+service:
+  clusterIP: 10.101.1.19
+  ports: [ port: 2379 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false

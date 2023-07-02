@@ -2,6 +2,7 @@
 options {
     directory "{{ bind9.directory }}";
     dump-file "{{ bind9.dump_file }}";
+    managed-keys-directory "{{ bind9.managed_keys_directory }}";
     statistics-file "{{ bind9.statistics_file }}";
     listen-on-v6 { any; };
     allow-query { {{ '; '.join(bind9.allow_query) }}; };

@@ -1,2 +1,5 @@
 {{ ansible_managed | comment }}
+module(load="imuxsock"
+ SysSock.RateLimit.Interval="{{ syslog.ratelimit.interval }}"
+ SysSock.RateLimit.Burst="{{ syslog.ratelimit.burst }}")
 *.info;mail.none;cron.!=info;local3.none        @@{{ syslog.host }}:{{ syslog.port }}

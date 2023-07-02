@@ -25,10 +25,21 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.15.2
-  cni_version: 0.7.5
+  version: 1.25.3
+  cni_version: 1.1.1
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
+
+cri_dockerd:
+  version: 0.2.0
+
+oidc:
+  client_id: client-not-yet-set
+  issuer_url: https://accounts.google.com
+  groups_claim: ""
+  group_prefix: oidc_
+  username_claim: email
+  username_prefix: ""
 
 sysctl:
   net.bridge.bridge-nf-call-iptables: 1

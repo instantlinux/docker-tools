@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/rsyslogd/8v7eb_Yx6_DwgTkaf0HoGwMa2NQ=

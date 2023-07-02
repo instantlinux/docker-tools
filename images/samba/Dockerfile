@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,9 +8,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG SAMBA_VERSION=4.12.9-r0
-ENV DOMAIN_LOGONS=no \
-    LOGON_DRIVE=H \
+ARG SAMBA_VERSION=4.16.8-r0
+ENV LOGON_DRIVE=H \
     NETBIOS_NAME=samba \
     SERVER_STRING="Samba Server" \
     TZ=UTC \

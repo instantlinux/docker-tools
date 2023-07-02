@@ -28,7 +28,7 @@ Options:
   --days=N            Key expiration, days [default: 3650]
   --directory=PATH    Path for SSL files [default: ~/.docker/tls]
   --host-name=FQDN    Host server name
-  --key-size=N        Key size, in bits [default: 2048]
+  --key-size=N        Key size, in bits [default: 4096]
   --port=N            TCP port number of docker-engine API [default: 4243]
   --no-encrypted-ca   Skip encryption on ca-key.pem
   --subj-city=STR     CSR subject - city / location
@@ -171,11 +171,11 @@ def main():
         if ex.strerror != 'File exists':
             raise
     os.chdir(os.path.expanduser(gencerts.directory))
-    os.umask(077)
+    os.umask(0o77)
     if not os.path.isfile('%s.pem' % gencerts.ca_file):
         gencerts.gen_ca_key()
     if gencerts.verbose > 1:
-        print 'CA contains:'
+        print('CA contains:')
         openssl('x509 -noout -issuer -subject -dates -in %(ca)s.pem' % {
             'ca': gencerts.ca_file})
     gencerts.create_config_file(
@@ -191,9 +191,9 @@ def main():
         if gencerts.client_ips:
             gencerts.docker_opts(fqdn, 'server')
         if gencerts.verbose:
-            print 'export DOCKER_HOST=tcp://%s:%d' % (fqdn, gencerts.port)
-            print 'export DOCKER_CERT_PATH=%s' % gencerts.directory
-            print 'export DOCKER_TLS_VERIFY=1'
+            print('export DOCKER_HOST=tcp://%s:%d' % (fqdn, gencerts.port))
+            print('export DOCKER_CERT_PATH=%s' % gencerts.directory)
+            print('export DOCKER_TLS_VERIFY=1')
 
 
 if __name__ == '__main__':

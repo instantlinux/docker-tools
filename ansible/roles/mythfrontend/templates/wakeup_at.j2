@@ -3,7 +3,12 @@
 
 # Clear any previous setting, then assert new wakeup time
 echo 0 > /sys/class/rtc/rtc0/wakealarm
-echo `date +%s -d "$1"` > /sys/class/rtc/rtc0/wakealarm
+WAKETIME=`date +%s -d "$1"`
+if [ $WAKETIME -lt `date +%s` ]; then
+  # A wakeup time earlier than sleep time means tomorrow
+  WAKETIME=$(($WAKETIME + 86400))
+fi
+echo $WAKETIME > /sys/class/rtc/rtc0/wakealarm
 logger -p local1.info "`basename $0`: alarm set to `echo \`grep alrm /proc/driver/rtc|cut -f 2-4 -d:\`` (UTC)"
 sleep 2
 systemctl suspend

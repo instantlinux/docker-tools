@@ -1,0 +1,60 @@
+# Default values for samba-dc.
+statefulset:
+  dnsConfig:
+    # Set this to the fixed IP address of the k8s node where this will run
+    nameservers: [ 192.168.1.150 ]
+  env:
+    domain_action: join
+    interfaces: lo
+    netbios_name: samba
+    realm: workgroup.example.com
+    tz: UTC
+    workgroup: WORKGROUP
+  # TODO: this will join with incorrect hostname until the following
+  #  directive is actually implemented when hostNetwork=true.
+  #  See issue https://github.com/kubernetes/kubernetes/issues/67019
+  hostname: samba.workgroup.example.com
+  hostNetwork: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2560Mi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  securityContext:
+    capabilities:
+      add: ["SYS_ADMIN"]
+volumeMounts:
+- mountPath: /var/lib/samba
+  name: var
+- mountPath: /run/secrets/samba-admin-password
+  name: samba-admin-password
+  subPath: samba-admin-password
+volumes:
+- name: samba-admin-password
+  secret:
+    secretName: samba-admin-password
+volumeClaimTemplates:
+  - metadata:
+      name: var
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 500Mi
+
+image:
+  repository: instantlinux/samba-dc
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: example-privileged
+
+autoscaling:
+  enabled: false

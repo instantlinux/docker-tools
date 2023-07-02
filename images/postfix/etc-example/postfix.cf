@@ -1,7 +1,7 @@
 # Local modifications
 #  See postfix documentation at http://www.postfix.org/postconf.5.html
 #  Any values placed here will be inserted to the container's /etc/postfix/main.cf
-alias_maps = hash:/etc/postfix/aliases
+alias_maps = ldmb:/etc/postfix/aliases
 bounce_queue_lifetime = 8h
 data_directory = /var/run/postfix
 delay_warning_time = 4h
@@ -31,4 +31,4 @@ smtputf8_enable = no
 tls_high_cipherlist = EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA256:EECDH:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!IDEA:!ECDSA:kEDH:CAMELLIA128-SHA:AES128-SHA
 tls_preempt_cipherlist = yes
 tls_random_source = dev:/dev/urandom
-virtual_alias_maps = hash:/etc/postfix/virtusertable
+virtual_alias_maps = lmdb:/etc/postfix/virtusertable

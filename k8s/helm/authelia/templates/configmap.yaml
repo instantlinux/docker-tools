@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+data:
+  configuration.yml: |
+    server:
+      port: 80
+    # set to trace for troubleshooting
+    log:
+      level: {{ .Values.logLevel }}
+
+    authentication_backend:
+      ldap:
+        url: ldap://ldap
+        base_dn: {{ .Values.baseDN }}
+        users_filter: (&({username_attribute}={input})(objectClass=inetOrgPerson))
+        username_attribute: uid
+        additional_users_dn: ou=users
+        additional_groups_dn: ou=groups
+        display_name_attribute: sn
+        groups_filter: (&(member={dn})(objectclass=groupOfNames))
+        group_name_attribute: cn
+        mail_attribute: mail
+        user: cn=admin,{{ .Values.baseDN }}
+
+    # Access Control
+    access_control:
+      default_policy: bypass
+      rules:
+      # TODO - deal with
+      # level=error msg="Policy [bypass] for rule #1 domain
+      # [xxx.ci.net] with subjects [[user:xxx]] is invalid. It
+      # is not supported to configure both policy bypass and
+      # subjects. For more information see:
+      # https://www.authelia.com/docs/configuration/access-control.html#combining-subjects-and-the-bypass-policy"
+      # - domain: {{ .Values.bypassDomain }}
+      #   policy: bypass
+      #   subject: {{ .Values.bypassUser }}
+      - domain:
+        {{- range .Values.domains }}
+        - "*.{{ . }}"
+        {{- end }}
+        policy: two_factor
+
+    # Configuration of session cookies
+    session:
+      expiration: {{ .Values.session.expiration }}
+      inactivity: {{ .Values.session.inactivity }}
+      domain: {{ .Values.session.domain }}
+      redis:
+        host: redis
+        port: 6379
+
+    # Configuration of the authentication regulation mechanism.
+    regulation:
+      max_retries: 3
+      find_time: 120
+      ban_time: 300
+
+    # The directory where the DB files will be saved
+    storage:
+      mysql:
+        host: {{ .Values.mysql.host }}
+        port: {{ .Values.mysql.port }}
+        database: {{ .Values.mysql.database }}
+        username: {{ .Values.mysql.username }}
+
+    # Configuration of the notification system.
+    notifier:
+      smtp:
+        username: {{ .Values.smtp.username }}
+        host: {{ .Values.smtp.host }}
+        port: {{ .Values.smtp.port }}
+        sender: {{ .Values.smtp.sender }}

@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/data-sync/ob-L5eNj40alBA9R8U4Tgt1Hvs8=

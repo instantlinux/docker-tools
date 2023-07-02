@@ -1,0 +1,42 @@
+# Default values for guacamole-server.
+tlsHostname: guacamole.example.com
+deployment:
+  containerPorts:
+  - { containerPort: 8080 }
+  # environment variables defined in parent
+  env: {}
+  xenv: []
+image:
+  repository: guacamole/guacamole
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 8080, name: guacamole-server }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /guacamole/\#/login
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/app-root: /guacamole
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Connection $http_connection;
+      proxy_set_header Upgrade $http_upgrade;
+ingressTOTP:
+  enabled: true

@@ -1,0 +1,15 @@
+apiVersion: v2
+name: dhcpd-dns-pxe
+description: DHCP server with dnsmasq
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://source.isc.org/git/dhcp.git
+- http://thekelleys.org.uk/gitweb/?p=dnsmasq.git
+type: application
+version: 0.1.8
+appVersion: "4.4.3_p1-r1-2.87-r0"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

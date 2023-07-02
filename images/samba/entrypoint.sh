@@ -11,8 +11,7 @@ if [ -x /etc/samba/conf.d/users.sh ] && [ ! -f /var/tmp/.users-created ]; then
   touch /var/tmp/.users-created
 fi
 
-sed -e "s:{{ DOMAIN_LOGONS }}:$DOMAIN_LOGONS:" \
-    -e "s:{{ LOGON_DRIVE }}:$LOGON_DRIVE:" \
+sed -e "s:{{ LOGON_DRIVE }}:$LOGON_DRIVE:" \
     -e "s:{{ NETBIOS_NAME }}:$NETBIOS_NAME:" \
     -e "s:{{ SERVER_STRING }}:$SERVER_STRING:" \
     -e "s:{{ WORKGROUP }}:$WORKGROUP:" \
@@ -24,4 +23,4 @@ for file in $(ls -A /etc/samba/conf.d/*.conf); do
 done
 
 nmbd -D
-exec smbd -FS --no-process-group </dev/null
+exec smbd -F --debug-stdout --no-process-group </dev/null

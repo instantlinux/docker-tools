@@ -1,5 +1,5 @@
-coverage==5.1
-flake8==3.8.3
-mock==3.0.5
-pytest==4.6.11
-pytest-cov==2.10.0
+coverage==5.4
+flake8==3.9.0
+mock==4.0.3
+pytest==6.2.2
+pytest-cov==2.11.1

@@ -1,0 +1,27 @@
+# Default values for ez-ipupdate.
+deployment:
+  env:
+    host: www.example.com
+volumeMounts:
+- name: secret
+  mountPath: /run/secrets/ez-ipupdate-user
+  subPath: ez-ipupdate-user
+volumes:
+- name: secret
+  secret:
+    secretName: ez-ipupdate-user
+
+image:
+  repository: instantlinux/ez-ipupdate
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  enabled: false
+
+autoscaling:
+  enabled: false

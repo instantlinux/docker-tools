@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "local.fullname" . }}-nodeport
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+  - { port: 22, nodePort: {{ .Values.nodeportSSH }}, name: ssh }
+  selector:
+    {{- include "local.selectorLabels" . | nindent 4 }}

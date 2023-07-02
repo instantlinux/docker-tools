@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+data:
+  keepalived.conf: |
+    global_defs {
+      enable_script_security
+    }
+    vrrp_script chk_port {
+      script "/bin/busybox /usr/bin/nc -z localhost 6549"
+      fall 3
+      interval 20
+      user nobody
+      rise 1
+      weight 2
+    }
+    vrrp_instance VI_1 {
+      interface br0
+      priority 150
+      track_script {
+        chk_port
+      }
+      virtual_ipaddress {
+        {{ .Values.virtualIpAddress }}
+      }
+      virtual_router_id 151
+    }

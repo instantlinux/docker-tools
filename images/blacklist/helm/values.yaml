@@ -1,0 +1,51 @@
+# Default values for blacklist.
+deployment:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - blacklist
+        topologyKey: "kubernetes.io/hostname"
+  containerPorts:
+  - { containerPort: 53, protocol: UDP }
+  env:
+    db_host: db00
+    ns_servers: blacklist-k8s.example.com
+    rbl_domain: blacklist.example.com
+    tz: UTC
+  nodeSelector:
+    service.blacklist: allow
+  replicas: 2
+volumeMounts:
+- mountPath: /var/lib/rbldns
+  name: data
+- name: mysql-blacklist-user
+  mountPath: /run/secrets/mysql-blacklist-user
+  subPath: mysql-blacklist-user
+volumes:
+- name: mysql-blacklist-user
+  secret:
+    secretName: mysql-blacklist-user
+- name: data
+  emptyDir: {}
+
+image:
+  repository: instantlinux/blacklist
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: 10.101.1.10
+  ports:
+  - { port: 53, protocol: UDP, targetPort: 53 }
+  type: clusterIP
+autoscaling:
+  enabled: false

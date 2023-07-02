@@ -1,0 +1,14 @@
+apiVersion: v2
+name: postfix
+description: Postfix with python
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://github.com/vdukhovni/postfix
+type: application
+version: 0.1.8
+appVersion: "3.7.3-r1"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

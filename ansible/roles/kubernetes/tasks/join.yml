@@ -1,31 +1,30 @@
 ---
+- name: Set kubeadm configuration
+  copy:
+    dest: /etc/kubernetes/kubeadm-config.yaml
+    content: |
+      apiVersion: kubeadm.k8s.io/v1beta3
+      kind: JoinConfiguration
+      discovery:
+        bootstrapToken:
+          apiServerEndpoint: "{{ k8s.master_ip }}:6443"
+          token: "{{ vault_k8s.join_token }}"
+          unsafeSkipCAVerification: True
+      nodeRegistration:
+        criSocket: unix:///var/run/cri-dockerd.sock
+
 - name: Check if kubeadm has already run
   stat:
     path: "/etc/kubernetes/pki/ca.crt"
   register: kubeadm_ca
 
 - name: Reset Kubernetes component
-  command: kubeadm reset --force
+  command: kubeadm reset --force --cri-socket unix:///var/run/cri-docker.sock
   register: reset_cluster
   when: not kubeadm_ca.stat.exists
 
-# There is a problem with kubelet volume mounting
-#  See https://github.com/kubernetes/kubernetes/pull/71663
-#  Workaround here requires manually copying data into mounted
-#  path after installation completes
-- name: TODO remove when bug 1294 is fixed - unmount kubelet vol
-  mount:
-    fstype: ext4
-    path: /var/lib/kubelet
-    src: /dev/mapper/luks-kubelet
-    state: unmounted
-  when: not kubeadm_ca.stat.exists
-
 - name: Join to Kubernetes cluster
-  command: >
-    kubeadm join --token {{ vault_k8s.join_token }}
-    --discovery-token-unsafe-skip-ca-verification
-    {{ k8s.master_ip }}:6443
+  command: kubeadm join --config /etc/kubernetes/kubeadm-config.yaml
   register: join_cluster
   notify:
   - Recreate kube-dns

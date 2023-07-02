@@ -1,0 +1,14 @@
+apiVersion: v2
+name: spamassassin
+description: Spamassassin
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://svn.apache.org/viewvc/spamassassin
+type: application
+version: 0.1.1
+appVersion: "3.4.6-1"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

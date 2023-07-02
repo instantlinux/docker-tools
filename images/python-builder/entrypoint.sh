@@ -8,9 +8,9 @@ fi
 
 if [ ! -s $BUILD_DIR/.docker/config.json ]; then
   umask 077
-  mkdir -p $BUILD_DIR/.docker
-  echo -e '{ "auths": {\n  }\n}' > /dev/shm/config.json
-  ln -s /dev/shm/config.json $BUILD_DIR/.docker/
+  mkdir -p /dev/shm/.docker
+  echo -e '{ "auths": {\n  }\n}' > /dev/shm/.docker/config.json
+  ln -s /dev/shm/.docker $BUILD_DIR/
 fi
 
 . /usr/local/bin/docker-entrypoint.sh

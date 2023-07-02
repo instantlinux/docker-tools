@@ -1,0 +1,14 @@
+apiVersion: v2
+name: guacd
+description: Guacamole client
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://github.com/apache/guacamole-client
+type: application
+version: 0.1.1
+appVersion: "1.4.0"
+dependencies:
+- name: chartlib
+  version: 0.1.5
+  repository: https://instantlinux.github.io/docker-tools

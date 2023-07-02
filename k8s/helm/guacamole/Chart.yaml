@@ -1,0 +1,21 @@
+apiVersion: v2
+name: guacamole
+description: Apache Guacamole remote desktop service
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://github.com/apache/guacamole-client
+- https://github.com/apache/guacamole-server
+type: application
+version: 0.1.2
+appVersion: "1.4.0"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools
+- name: guacamole-server
+  version: 0.1.1
+  repository: file://subcharts/guacamole-server
+- name: guacd
+  version: 0.1.1
+  repository: file://subcharts/guacd

@@ -22,20 +22,21 @@ Find a lot more details about the Kubernetes bare-metal installer in [k8s/README
 
 ### Kubernetes capabilities
 
-The cluster-deployment tools here include ansible playbooks to spin up bare-metal or VM master/worker nodes, and a Makefile to add several additional features.
+The cluster-deployment tools here include helm charts and ansible playbooks to spin up bare-metal or VM master/worker nodes, and a Makefile to add several additional features.
 
-* Pod security policies
 * Direct-attached SSD local storage pools
 * Dashboard
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
-* Helm with tiller
+* Keycloak for OpenID / OAuth2 user authentication / authorization
+* Helm3
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Calico or flannel networking
 * ingress-nginx
 * Local-volume sync
+* Pod security policies
 * Automatic certificate issuing/renewal with Letsencrypt
 * PostgreSQL-operator from CrunchyData
 
@@ -71,6 +72,7 @@ The cluster-deployment tools here include ansible playbooks to spin up bare-meta
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
+| openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | restic | ** | backups |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
 | samba | [![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba "Version badge") | file server |
@@ -110,5 +112,6 @@ Thank you to the following contributors!
 * [Frank Riley](https://github.com/fhriley)
 * [Devin Bayer](https://github.com/akvadrako)
 * [Daniel Muller](https://github.com/DanielMuller)
+* [Brian Hechinger](https://github.com/bhechinger)
 
-Contents created 2017-20 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
+Contents created 2017-23 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.

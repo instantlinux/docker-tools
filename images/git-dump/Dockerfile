@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -7,7 +7,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name=git-dump \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-
 ENV API_TOKEN_SECRET= \
     DEST_DIR=/var/backup/git \
     HOUR=0 MINUTE=45 \
@@ -19,7 +18,7 @@ ENV API_TOKEN_SECRET= \
     USERNAME=git-dump \
     TZ=UTC
 
-ARG GIT_VERSION=2.26.2-r0
+ARG GIT_VERSION=2.38.4-r1
 ARG GROUP=care
 ARG GID=505
 ARG UID=212

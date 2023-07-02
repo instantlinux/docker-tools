@@ -34,13 +34,15 @@ spec:
       - name: $SERVICE_NAME
         env:
         - { name: TZ, value: UTC }
-        image: instantlinux/$SERVICE_NAME:$VERSION_RSYSLOGD
+        image: $REGISTRY_URI/$SERVICE_NAME:$VERSION_RSYSLOGD
         # Force reload every week; TODO better way to manage
         # storage both inside the container and in host's docker log
         livenessProbe:
           exec:
             command: [ 'false' ]
           initialDelaySeconds: 604800
+        ports:
+        - containerPort: 514
         volumeMounts:
         - mountPath: /etc/logrotate.d
           name: logrotate
@@ -66,10 +68,8 @@ metadata:
 data:
   custom.conf: |
     # This file created from k8s configmap
-    ${DOL}ModLoad imtcp.so
+    module(load="imtcp")
     ${DOL}InputTCPServerRun 514
-
-    ${DOL}MarkMessagePeriod 3600
     ${DOL}RepeatedMsgReduction on
 
     :msg, regex, "Connection closed by 192.168.2.[0-9]\\{1,3\\} \\[preauth\\]" stop

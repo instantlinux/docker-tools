@@ -1,0 +1,14 @@
+apiVersion: v2
+name: nextcloud
+description: Nextcloud file-sharing and application server
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+type: application
+version: 0.1.4
+# Upon changes: requires manual update in admin UI after restarting image
+appVersion: "25.0.3"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

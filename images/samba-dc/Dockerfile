@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -24,12 +24,14 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=AD
 
-ARG SAMBA_VERSION=4.12.9-r0
+ARG SAMBA_VERSION=4.16.8-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
-RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION tdb \
-      bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata && \
+RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION samba-winbind-clients=$SAMBA_VERSION tdb \
+      bind bind-libs bind-tools libcrypto1.1 libxml2 tzdata py3-setuptools py3-pip && \
+    pip install j2cli && \
+    apk del py3-pip && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 
 VOLUME /etc/samba /var/lib/samba

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: redis
+description: Redis kv-store
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://hub.docker.com/_/redis
+type: application
+version: 0.1.0
+appVersion: "3.2.11-alpine"
+dependencies:
+- name: chartlib
+  version: 0.1.6
+  repository: https://instantlinux.github.io/docker-tools

@@ -5,7 +5,7 @@ if [ -z "$NETBIOS_NAME" ]; then
 else
   NETBIOS_NAME=$(echo $NETBIOS_NAME | tr [a-z] [A-Z])
 fi
-REALM=$(echo "$REALM" | tr [A-Z] [a-z])
+REALM=$(echo "$REALM" | tr [a-z] [A-Z])
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo 'Set timezone'
@@ -14,6 +14,10 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 if [ ! -f /var/lib/samba/registry.tdb ]; then
+  if [ ! -f /run/secrets/$ADMIN_PASSWORD_SECRET ]; then
+    echo 'Cannot read secret $ADMIN_PASSWORD_SECRET in /run/secrets'
+    exit 1
+  fi
   ADMIN_PASSWORD=$(cat /run/secrets/$ADMIN_PASSWORD_SECRET)
   if [ "$BIND_INTERFACES_ONLY" == yes ]; then
     INTERFACE_OPTS="--option=\"bind interfaces only=yes\" \
@@ -41,22 +45,10 @@ fi
 mkdir -p -m 700 /etc/samba/conf.d
 for file in /etc/samba/smb.conf /etc/samba/conf.d/netlogon.conf \
       /etc/samba/conf.d/sysvol.conf; do
-  sed -e "s:{{ ALLOW_DNS_UPDATES }}:$ALLOW_DNS_UPDATES:" \
-      -e "s:{{ BIND_INTERFACES_ONLY }}:$BIND_INTERFACES_ONLY:" \
-      -e "s:{{ DOMAIN_LOGONS }}:$DOMAIN_LOGONS:" \
-      -e "s:{{ DOMAIN_MASTER }}:$DOMAIN_MASTER:" \
-      -e "s+{{ INTERFACES }}+$INTERFACES+" \
-      -e "s:{{ LOG_LEVEL }}:$LOG_LEVEL:" \
-      -e "s:{{ NETBIOS_NAME }}:$NETBIOS_NAME:" \
-      -e "s:{{ REALM }}:$REALM:" \
-      -e "s:{{ SERVER_STRING }}:$SERVER_STRING:" \
-      -e "s:{{ WINBIND_USE_DEFAULT_DOMAIN }}:$WINBIND_USE_DEFAULT_DOMAIN:" \
-      -e "s:{{ WORKGROUP }}:$WORKGROUP:" \
-      /root/$(basename $file).j2 > $file
+  j2 /root/$(basename $file).j2 -o $file
 done
 for file in $(ls -A /etc/samba/conf.d/*.conf); do
   echo "include = $file" >> /etc/samba/smb.conf
 done
 ln -fns /var/lib/samba/private/krb5.conf /etc/
-
 exec samba --model=$MODEL -i </dev/null

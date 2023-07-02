@@ -10,7 +10,7 @@ BindsTo=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/bash -c "chgrp nagcmd /var/lib/docker/volumes ; chmod g+x /var/lib/docker/volumes"
+ExecStart=/bin/bash -c "chgrp nagcmd /var/lib/docker/volumes ; chmod g+x /var/lib/docker/volumes ; chmod o+x /var/lib/docker"
 
 [Install]
 WantedBy=multi-user.target

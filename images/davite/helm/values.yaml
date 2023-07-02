@@ -1,0 +1,40 @@
+# Default values for davite.
+tlsHostname: davite.example.com
+deployment:
+  containerPorts:
+  - containerPort: 80
+  env:
+    hostname: davite.example.com
+    scheme: https
+    smtp_port: "25"
+    smtp_smarthost: smtp.example.com
+    tcp_port: ""
+    tz: UTC
+volumeMounts:
+- name: share
+  mountPath: /var/adm/DaVite_Data
+  subPath: davite
+volumes:
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: instantlinux/davite
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports: [ port: 80 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx

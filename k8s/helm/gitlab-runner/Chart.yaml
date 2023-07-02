@@ -1,0 +1,15 @@
+apiVersion: v2
+name: gitlab-runner
+description: Distributed build agent for GitLab
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://hub.docker.com/r/gitlab/gitlab-runner
+- https://github.com/instantlinux/docker-tools
+- https://gitlab.com/gitlab-org/gitlab-runner
+type: application
+version: 0.1.1
+appVersion: "alpine-v15.2.0"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

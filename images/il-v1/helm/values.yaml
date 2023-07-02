@@ -1,0 +1,97 @@
+# Default values for il-v1.
+tlsHostname: homebase.instantlinux.net
+deployment:
+  containerPorts:
+  - containerPort: 80
+  env:
+    db_host: db00
+    fqdn: homebase.instantlinux.net
+    remotes: nfs.instantlinux.net
+    secret_mysql_backup: mysql-backup-creds
+    tz: UTC
+
+imagePullSecrets: [ name: regcred ]
+volumeMounts:
+- mountPath: /var/run/ilinux/arch
+  name: share
+  subPath: ilinux/arch
+- mountPath: /var/log
+  name: logs
+- mountPath: /var/www/logs
+  name: logs2
+- mountPath: /var/www/htdocs/il/app/tmp
+  name: tmp
+- name: il-capi-sshkey
+  mountPath: /run/secrets/il_capi_sshkey
+  readOnly: true
+  subPath: il_capi_sshkey
+- name: il-proxy-sshkey
+  mountPath: /run/secrets/il_proxy_sshkey
+  readOnly: true
+  subPath: il_proxy_sshkey
+- name: il-v1-db-password
+  mountPath: /run/secrets/il-v1-db-password
+  readOnly: true
+  subPath: il-v1-db-password
+- name: ilclient-password
+  mountPath: /run/secrets/ilclient-password
+  readOnly: true
+  subPath: ilclient-password
+- name: ilinux-password
+  mountPath: /run/secrets/ilinux-password
+  readOnly: true
+  subPath: ilinux-password
+- name: mysql-backup-creds
+  mountPath: /run/secrets/mysql-backup-creds
+  readOnly: true
+  subPath: mysql-backup-creds
+volumes:
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+- name: logs
+  emptyDir: {}
+- name: logs2
+  emptyDir: {}
+- name: tmp
+  emptyDir: {}
+- name: il-capi-sshkey
+  secret:
+    secretName: il-capi-sshkey
+- name: il-proxy-sshkey
+  secret:
+    secretName: il-proxy-sshkey
+- name: il-v1-db-password
+  secret:
+    secretName: il-v1-db-password
+- name: ilclient-password
+  secret:
+    secretName: ilclient-password
+- name: ilinux-password
+  secret:
+    secretName: ilinux-password
+- name: mysql-backup-creds
+  secret:
+    secretName: mysql-backup-creds
+
+image:
+  repository: nexus.instantlinux.net/il-v1
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports: [ port: 80 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Server $host;

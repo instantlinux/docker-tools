@@ -1,0 +1,51 @@
+# Default values for proftpd.
+deployment:
+  containerPorts:
+  - containerPort: 21
+  - containerPort: 30091
+  - containerPort: 30092
+  - containerPort: 30093
+  - containerPort: 30094
+  - containerPort: 30095
+  - containerPort: 30096
+  - containerPort: 30097
+  - containerPort: 30098
+  - containerPort: 30099
+  - containerPort: 30100
+  env:
+    pasv_address: 10.101.1.30
+    tz: UTC
+volumeMounts:
+- name: ftp
+  mountPath: /var/lib/ftp
+volumes:
+- name: ftp
+  persistentVolumeClaim:
+    claimName: ftp
+
+image:
+  repository: instantlinux/proftpd
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: 10.101.1.30
+  ports:
+  - { port: 21, targetPort: 21, name: ftp }
+  - { port: 30091, targetPort: 30091, name: pasv1 }
+  - { port: 30092, targetPort: 30092, name: pasv2 }
+  - { port: 30093, targetPort: 30093, name: pasv3 }
+  - { port: 30094, targetPort: 30094, name: pasv4 }
+  - { port: 30095, targetPort: 30095, name: pasv5 }
+  - { port: 30096, targetPort: 30096, name: pasv6 }
+  - { port: 30097, targetPort: 30097, name: pasv7 }
+  - { port: 30098, targetPort: 30098, name: pasv8 }
+  - { port: 30099, targetPort: 30099, name: pasv9 }
+  - { port: 30100, targetPort: 30100, name: pasv10 }
+  type: ClusterIP
+autoscaling:
+  enabled: false

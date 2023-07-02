@@ -35,7 +35,7 @@ spec:
             add: [ NET_ADMIN ]
         volumeMounts:
         - name: admin
-          mountPath: /etc/haproxy.d
+          mountPath: /usr/local/etc/haproxy.d
           readOnly: true
           subPath: services/haproxy/etc-k8s
         - name: keepalived-etc
@@ -66,6 +66,9 @@ metadata:
   name: $SERVICE_NAME-keepalived
 data:
   keepalived.conf: |
+    global_defs {
+      max_auto_priority 10
+    }
     vrrp_instance VI_1 {
       interface $SUBNET1_INTERFACE
     @main  priority 101

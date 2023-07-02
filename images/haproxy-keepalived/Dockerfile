@@ -1,4 +1,4 @@
-FROM haproxy:2.1.7-alpine
+FROM haproxy:2.7.1-alpine
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,23 +8,25 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG KEEPALIVED_VERSION=2.0.20-r0
+ARG KEEPALIVED_VERSION=2.2.7-r2
 ENV KEEPALIVE_CONFIG_ID=main \
     PORT_HAPROXY_STATS=8080 \
     STATS_ENABLE=yes \
     STATS_SECRET=haproxy-stats-password \
+    STATS_USER=haproxy \
     STATS_URI=/stats \
     TIMEOUT=50000 \
     TZ=UTC
 
+USER root
 RUN apk add --no-cache --update \
       keepalived=$KEEPALIVED_VERSION rsyslog && \
-    adduser -D -s /bin/false haproxy && \
+    getent passwd haproxy || adduser -S -u 99 haproxy && \
     adduser -D -s /bin/sh keepalived_script && \
-    mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.dist
+    rm -f /etc/keepalived/keepalived.conf
 
 EXPOSE 8080
-VOLUME /etc/haproxy.d
+VOLUME /usr/local/etc/haproxy.d /etc/keepalived
 
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

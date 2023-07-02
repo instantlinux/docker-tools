@@ -1,0 +1,103 @@
+# Default values for openldap.
+deployment:
+  env:
+    slapd_dn_attr: uid
+    slapd_fqdn: example.com
+    slapd_log_level: Config,Stats
+    slapd_organization: Example
+    slapd_ou: ou=users,
+    slapd_pwd_attribute: userPassword
+    slapd_pwd_check_quality: 2
+    slapd_pwd_failure_count_interval: 1200
+    slapd_pwd_lockout_duration: 1200
+    slapd_pwd_max_failure: 5
+    slapd_pwd_min_length: 8
+    slapd_rootdn: ""
+    slapd_ulimit: 2048
+    slapd_userpw_secret: openldap-user-passwords
+  xenv:
+  - name: SLAPD_ROOTPW_HASH
+    valueFrom:
+      secretKeyRef:
+        name: openldap-rootpw
+        key: openldap-rootpw-hash
+  containerPorts:
+  - containerPort: 389
+  - containerPort: 636
+volumeMounts:
+- mountPath: /etc/openldap/prepopulate
+  name: prepopulate
+  readOnly: true
+- mountPath: /etc/ssl/openldap
+  name: ssl
+  readOnly: true
+- mountPath: /run/secrets/openldap-user-passwords
+  name: openldap-user-passwords
+  readOnly: true
+- mountPath: /var/lib/openldap/openldap-data
+  name: share
+  subPath: openldap/data
+volumes:
+- name: prepopulate
+  configMap:
+    name: openldap
+- name: ssl
+  secret:
+    name: openldap-ssl
+- name: openldap-user-passwords
+  secret:
+    secretName: openldap-user-passwords
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: instantlinux/openldap
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 389, targetPort: 389, name: openldap }
+  - { port: 636, targetPort: 636, name: openldap-ssl }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  name: openldap
+  data:
+    local.ldif: |
+      dn: ou=groups,dc=example,dc=com
+      objectclass: organizationalUnit
+      objectclass: top
+      ou: groups
+
+      dn: ou=users,dc=example,dc=com
+      objectclass: organizationalUnit
+      objectclass: top
+      ou: users
+
+      dn: cn=dev,ou=groups,dc=example,dc=com
+      cn: dev
+      member: cn=sharon,ou=users,dc=example,dc=com
+      objectclass: groupOfNames
+      objectclass: top
+
+      dn: cn=admin,ou=groups,dc=example,dc=com
+      cn: admin
+      member: cn=sharon,ou=users,dc=example,dc=com
+      objectclass: groupOfNames
+      objectclass: top
+
+      dn: uid=sharon,ou=users,dc=example,dc=com
+      cn: sharon
+      objectclass: inetOrgPerson
+      objectclass: top
+      mail: sharon@example.com
+      sn: Sharon McKinsey
+      uid: sharon

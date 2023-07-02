@@ -1,0 +1,30 @@
+# Default values for guacamole.
+guacd:
+  deployment:
+    resources:
+      limits:
+        memory: 1536Mi
+      requests:
+        cpu: 100m
+        memory: 512Mi
+guacamole-server:
+  tlsHostname: guacamole.example.com
+  deployment:
+    env:
+      guacd_hostname: guacamole-guacd
+      guacd_port: 4822
+      mysql_database: guacamole
+      mysql_hostname: db00
+      mysql_user: guacamole_user
+    xenv:
+    - name: MYSQL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: guacamole-db-password
+          key: guacamole-db-password
+    resources:
+      limits:
+        memory: 1024Mi
+      requests:
+        cpu: 100m
+        memory: 768Mi

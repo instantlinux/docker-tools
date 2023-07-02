@@ -1,5 +1,5 @@
 ## nut-upsd
-[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://microbadger.com/images/instantlinux/nut-upsd "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/nut-upsd.svg)](https://microbadger.com/images/instantlinux/nut-upsd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/nut-upsd/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/nut-upsd?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/nut-upsd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/nut-upsd/Dockerfile "dockerfile")
 
 The Network UPS Tools (nut) package in an Alpine container, with enough configuration to support Nagios monitoring of your UPS units. This multi-architecture image supports Intel/AMD and ARM (Raspberry Pi etc).
 
@@ -24,7 +24,7 @@ If you have a different model of UPS, contents of the files ups.conf, upsd.conf,
 If you have more than one UPS connected to a host, run more than one copy of this container and bind the container port 3493 from each to a separate TCP port.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/nut-upsd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/nut-upsd/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/nut-upsd/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -39,18 +39,55 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 Variable | Default | Description |
 -------- | ------- | ----------- |
 API_USER | upsmon| API user
+API_PASSWORD | | API password, if not using secret
 DESCRIPTION | UPS | user-assigned description
 DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html))
 GROUP | nut | local group
 NAME | ups | user-assigned config name
 POLLINTERVAL | | Poll Interval for ups.conf
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
-SECRET | nut-upsd-password | secret to use for API user
+SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
+SECRET | nut-upsd-password | name of secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
 ### Notes
+
+If you need a driver other than `usbhid-ups`, the full list of supported drivers can be listed as follows:
+```
+docker run --rm --entrypoint /bin/ls instantlinux/nut-upsd /usr/lib/nut
+```
+The entrypoint script can set parameters based on the above environment variables; each driver has its own parameters (which can be configured by mounting your own ups.conf file) as documented:
+```
+MYDRIVER=liebert
+docker run --rm --entrypoint /usr/lib/nut/$MYDRIVER instantlinux/nut-upsd -h
+Network UPS Tools - Liebert MultiLink UPS driver 1.02 (3.15.0_alpha20210804-3402-gced1683082)
+Warning: This is an experimental driver.
+Some features may not function correctly.
+
+
+usage: liebert -a <id> [OPTIONS]
+  -a <id>        - autoconfig using ups.conf section <id>
+                 - note: -x after -a overrides ups.conf settings
+
+  -V             - print version, then exit
+  -L             - print parseable list of driver variables
+  -D             - raise debugging level
+  -q             - raise log level threshold
+  -h             - display this help
+  -k             - force shutdown
+  -i <int>       - poll interval
+  -r <dir>       - chroot to <dir>
+  -u <user>      - switch to <user> (if started as root)
+  -x <var>=<val> - set driver variable <var> to <val>
+                 - example: -x cable=940-0095B
+
+Acceptable values for -x or ups.conf in this driver:
+
+              Override manufacturer name : -x mfr=<value>
+                     Override model name : -x model=<value>
+```
 
 For Tripp Lite models, you may need to specify VENDORID 09ae in the environment. Also check to see if you need a POLLINTERVAL setting. For any make or model, here's how to identify the idVendor and iSerial values from a root shell on your host:
 
@@ -65,8 +102,8 @@ Device: ID 051d:0002 American Power Conversion Uninterruptible Power Supply
   idProduct          0x0002 Uninterruptible Power Supply
   bcdDevice            0.90
   iManufacturer           1 American Power Conversion
-  iProduct                2 Back-UPS RS 1500G FW:865.L6 .D USB FW:L6 
-  iSerial                 3 4B1624P26350  
+  iProduct                2 Back-UPS RS 1500G FW:865.L6 .D USB FW:L6
+  iSerial                 3 4B1624P26350
 ```
 
 If you require udev rules to set permissions, configure your host prior to running the container. For example:
@@ -79,8 +116,14 @@ udevadm control --reload-rules && udevadm trigger
 
 ### Secrets
 
+If the API user needs a password, you have two ways to specify it: pass the value itself as environment variable API_PASSWORD, or define a Docker secret as follows:
+
 | Secret | Description |
 | ------ | ----------- |
 | nut-upsd-password | Password for API user |
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-networkupstools%2Fnut-blue.svg)](https://github.com/networkupstools/nut "Code repo")

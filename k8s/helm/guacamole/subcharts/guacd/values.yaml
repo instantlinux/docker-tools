@@ -1,0 +1,22 @@
+# Default values for guacd.
+deployment:
+  containerPorts:
+  - { containerPort: 4822 }
+  hostname: guacd
+  subdomain: guacamole
+
+image:
+  repository: guacamole/guacd
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  ports: [ port: 4822 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false

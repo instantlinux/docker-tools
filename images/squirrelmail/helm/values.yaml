@@ -1,0 +1,61 @@
+# Default values for squirrelmail.
+tlsHostname: squirrelmail.ci.net
+deployment:
+  containerPorts:
+  - containerPort: 80
+  env:
+    db_host: db00.ci.net
+    db_name_addr: rbaddr
+    domain: pioneer.ci.net
+    imap_server: imap.ci.net
+    message_motd: Remote WebMail Access \\&nbsp;\\&nbsp; pioneer.ci.net
+    organization: Community Internet
+    smtp_port: "25"
+    smtp_smarthost: smtp.ci.net
+
+volumeMounts:
+- mountPath: /var/local/squirrelmail/attach
+  name: share
+  subPath: squirrelmail/attach
+- mountPath: /var/local/squirrelmail/data
+  name: share
+  subPath: squirrelmail/data
+- mountPath: /var/log
+  name: logs
+- name: squirrelmail-db-password
+  mountPath: /run/secrets/squirrelmail-db-password
+  subPath: squirrelmail-db-password
+volumes:
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+- name: logs
+  emptyDir: {}
+- name: squirrelmail-db-password
+  secret:
+    secretName: squirrelmail-db-password
+
+image:
+  repository: nexus.instantlinux.net/squirrelmail
+  pullPolicy: IfNotPresent
+  # tag: default
+imagePullSecrets: [ name: regcred ]
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports: [ port: 80 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /src/login.php
+ingress:
+  enabled: true
+ingressTOTP:
+  enabled: true

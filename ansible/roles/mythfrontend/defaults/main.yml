@@ -227,7 +227,7 @@ ir_device:
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"
 
-mythtv_version: 31
+mythtv_version: 32
 
 opensuse_packages:
   - ImageMagick-devel
@@ -301,11 +301,17 @@ suspend:
   weekday: 1-5
 
 ubuntu_apt_keys:
-  chrome: 78BD65473CB3BD13
+  # workaround: wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
+  #  | sudo apt-key add -
+  #  and in /etc/apt/sources.list.d/google-chrome.list:
+  #    deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+  #
+  # chrome: 78BD65473CB3BD13
   graphics: FCAE110B1118213C
   mythbuntu: 13551B881504888C
 
 ubuntu_packages:
+  - cron
   - evtest
   - google-chrome-stable
   - ir-keytable

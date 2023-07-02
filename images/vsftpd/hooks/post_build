@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/vsftpd/kY2voY3ZGGdSuiLatUKzr71B-dg=

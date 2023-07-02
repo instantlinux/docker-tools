@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-redis
+  labels:
+    app.kubernetes.io/name: nextcloud-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nextcloud-redis
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nextcloud-redis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nextcloud-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:{{ .Values.redis.tag }}
+        ports:
+        - containerPort: {{ .Values.redis.port }}

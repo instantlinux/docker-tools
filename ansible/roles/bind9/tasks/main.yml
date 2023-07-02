@@ -26,3 +26,11 @@
   service:
     name: bind9
     enabled: True
+
+- name: Ensure directory writeable
+  file:
+    dest: "{{ bind9.directory }}"
+    mode: 02775
+    owner: root
+    group: bind
+    state: directory

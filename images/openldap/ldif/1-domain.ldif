@@ -1,0 +1,6 @@
+dn: ${SLAPD_SUFFIX}
+# dc: ${SLAPD_DOMAIN}
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: ${SLAPD_ORGANIZATION}

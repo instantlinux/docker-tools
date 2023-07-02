@@ -9,15 +9,5 @@
 - include: netplan.yml
   when: ansible_distribution_version >= '18.04'
 
-- name: Set up keepalived (VRRP) for ingress load-balancer
-  template:
-    dest: /etc/keepalived/keepalived.conf
-    mode: 0600
-    src: keepalived.conf.j2
-  notify: Restart keepalived
-  # TODO remove, now using k8s container
-  # when: network.vrrp_interface
-  when: False
-
 - include: kernel.yml
 - include: sshd.yml

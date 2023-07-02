@@ -1,0 +1,20 @@
+apiVersion: v2
+name: gitlab
+description: Gitlab CI/CD
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://hub.docker.com/r/gitlab/gitlab-ce
+- https://github.com/instantlinux/docker-tools
+- https://gitlab.com/gitlab-org/gitlab
+type: application
+version: 0.1.6
+appVersion: "15.8.0-ce.0"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  # repository: https://instantlinux.github.io/docker-tools
+  repository: file://../chartlib
+- name: postgres
+  version: 0.1.0
+  repository: file://subcharts/postgres
+  condition: postgres.enabled

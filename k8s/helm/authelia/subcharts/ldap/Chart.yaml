@@ -1,0 +1,14 @@
+apiVersion: v2
+name: ldap
+description: OpenLDAP server
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://hub.docker.com/r/dinkel/openldap
+type: application
+version: 0.1.0
+appVersion: "latest"
+dependencies:
+- name: chartlib
+  version: 0.1.6
+  repository: https://instantlinux.github.io/docker-tools

@@ -1,0 +1,11 @@
+{{- include "chartlib.deployment" . }}
+---
+{{- include "chartlib.hpa" . }}
+---
+{{- include "chartlib.ingress" . }}
+---
+{{- include "chartlib.ingresstotp" . }}
+---
+{{- include "chartlib.service" . }}
+---
+{{- include "chartlib.serviceaccount" . }}

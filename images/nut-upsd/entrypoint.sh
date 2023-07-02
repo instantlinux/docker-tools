@@ -1,26 +1,33 @@
 #! /bin/sh -e
 
-API_PASSWORD=$(cat /run/secrets/$SECRET)
+if [ -d /run/secrets ] && [ -s /run/secrets/$SECRET ]; then
+  API_PASSWORD=$(cat /run/secrets/$SECRET)
+fi
 
 if [ ! -e /etc/nut/.setup ]; then
   if [ -e /etc/nut/local/ups.conf ]; then
     cp /etc/nut/local/ups.conf /etc/nut/ups.conf
   else
-    if [ -z "$SERIAL" ]; then
+    if [ -z "$SERIAL" ] && [ $DRIVER = usbhid-ups ] ; then
       echo "** This container may not work without setting for SERIAL **"
     fi
     cat <<EOF >>/etc/nut/ups.conf
 [$NAME]
         driver = $DRIVER
         port = $PORT
-        serial = "$SERIAL"
         desc = "$DESCRIPTION"
 EOF
+    if [ ! -z "$SERIAL" ]; then
+      echo "        serial = \"$SERIAL\"" >> /etc/nut/ups.conf
+    fi
     if [ ! -z "$POLLINTERVAL" ]; then
       echo "        pollinterval = $POLLINTERVAL" >> /etc/nut/ups.conf
     fi
     if [ ! -z "$VENDORID" ]; then
       echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
+    fi
+    if [ ! -z "$SDORDER" ]; then
+      echo "        sdorder = $SDORDER" >> /etc/nut/ups.conf
     fi
   fi
   if [ -e /etc/nut/local/upsd.conf ]; then
@@ -50,6 +57,8 @@ EOF
   touch /etc/nut/.setup
 fi
 
+chgrp $GROUP /etc/nut/*
+chmod 640 /etc/nut/*
 mkdir -p -m 2750 /dev/shm/nut
 chown $USER.$GROUP /dev/shm/nut
 [ -e /var/run/nut ] || ln -s /dev/shm/nut /var/run

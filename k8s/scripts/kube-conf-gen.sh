@@ -25,6 +25,8 @@ kubectl config --kubeconfig=$NEW set-credentials kubernetes-admin --client-certi
 # Add a synonym sudo
 kubectl config --kubeconfig=$NEW set-context sudo --cluster=$CLUSTER --namespace=kube-system --user=kubernetes-admin
 
+# TODO oidc configuration; this token-based auth is obsolete in 1.25
+
 # Set credentials for user
 SECRET=`kubectl get sa $ADMIN_CTX $K8S_NAMESPACE-user -n $K8S_NAMESPACE -o jsonpath={.secrets[0].name}`
 kubectl get secret $SECRET -n $K8S_NAMESPACE -o jsonpath='{.data.ca\.crt}' | \

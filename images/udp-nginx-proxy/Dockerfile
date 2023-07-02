@@ -1,4 +1,4 @@
-FROM nginx:1.19-alpine
+FROM nginx:1.22.0-alpine
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF

@@ -1,0 +1,252 @@
+# Default values for dovecot.
+aliases: |
+  # This is the aliases file - it says who gets mail for whom.
+  #
+  # >>>>>>>>>>      The program "newaliases" will need to be run
+  # >> NOTE >>      after this file is updated for any changes
+  # >>>>>>>>>>      to show through to sendmail.
+  #
+
+  # It is probably best to not work as user root and redirect all
+  # email to "root" to the address of a HUMAN who deals with this
+  # system's problems. Then you don't have to check for important
+  # email too often on the root account.
+  # The "\root" will make sure that email is also delivered to the
+  # root-account, but also forwared to the user "joe".
+  #root:		joe, \root
+
+  # Basic system aliases that MUST be present.
+  postmaster:	root
+  mailer-daemon:	postmaster
+
+  # amavis
+  virusalert:	root
+
+  # General redirections for pseudo accounts in /etc/passwd.
+  administrator:	root
+  daemon:		root
+  lp:		root
+  news:		root
+  uucp:		root
+  games:		root
+  man:		root
+  at:		root
+  postgres:	root
+  mdom:		root
+  amanda:		root
+  ftp:		root
+  wwwrun:		root
+  squid:		root
+  msql:		root
+  gnats:		root
+  nobody:		root
+  # "bin" used to be in /etc/passwd
+  bin:		root
+
+  # Further well-known aliases for dns/news/ftp/mail/fax/web/gnats.
+  newsadm:	news
+  newsadmin:	news
+  usenet:		news
+  ftpadm:		ftp
+  ftpadmin:	ftp
+  ftp-adm:	ftp
+  ftp-admin:	ftp
+  hostmaster:	root
+  mail:		postmaster
+  postman:	postmaster
+  post_office:	postmaster
+  # "abuse" is often used to fight against spam email
+  abuse:	postmaster
+  spam:		postmaster
+  faxadm:	root
+  faxmaster:	root
+  webmaster:	root
+  gnats-admin:	root
+  mailman:	root
+  mailman-owner:	mailman
+dhcpSubnet1: 192.168.2.0/24
+domain: example.com
+hostnameEmail: example.com
+ldap:
+  active_directory: false
+  auth_bind: "yes"
+  auth_bind_userdn: ""
+  base: cn=Users,DC=workgroup,DC=example,DC=com
+  dn: ""
+  hosts: dc01 dc02
+  tls: "no"
+  version: 3
+# Force reload of certs at least every 30 days
+livenessProbe:
+  exec:
+    command: [ 'false' ]
+  initialDelaySeconds: 2592000
+myDestination: example.com $myhostname
+nodeportSMTP: 30825
+nodeportImapd: 30843
+nodeportImaps: 30993
+postfixIp: 192.168.2.59
+postfixPort: 3425
+relayDomains: example.com email.example.com
+relayHost: smtp.gmail.com:587
+users: {}
+  # - username: user1
+  #   name: Jane Doe
+  #   uid: 300
+  # - username: user2
+  #   name: John Doe
+  #   uid: 301
+
+deployment:
+  command: [/bin/sh]
+  args:
+  - -c
+  - >
+    cp -r /etc/postfix.d /etc/postfix &&
+    newaliases &&
+    sh /etc/postfix.d/users.sh &&
+    exec /usr/local/bin/entrypoint-dovecot.sh
+  containerPorts:
+  - containerPort: 25
+  - containerPort: 143
+  - containerPort: 993
+  nodeSelector:
+    service.dovecot: allow
+volumeMounts:
+- mountPath: /etc/dovecot/conf.local
+  name: etc
+- mountPath: /etc/postfix.d
+  name: postfix-etc
+- mountPath: /var/spool/mail
+  name: inbox
+- mountPath: /var/spool/postfix
+  name: spool
+- mountPath: /home
+  name: webmail
+- mountPath: /run/secrets/ldap-ro-password
+  name: ldap-ro-password
+  subPath: ldap-ro-password
+- mountPath: /run/secrets/postfix-sasl-passwd
+  name: postfix-sasl-passwd
+  subPath: postfix-sasl-passwd
+- mountPath: /etc/ssl/certs/smtpd-cert.pem
+  name: ssl-cert
+  subPath: tls.crt
+- mountPath: /run/secrets/smtpd-key.pem
+  name: ssl-cert
+  subPath: tls.key
+volumes:
+- name: etc
+  configMap:
+    name: dovecot-etc
+- name: postfix-etc
+  configMap:
+    name: dovecot-postfix
+- name: inbox
+  hostPath: { path: /var/lib/docker/k8s-volumes/inbox }
+- name: spool
+  hostPath: { path: /var/lib/docker/k8s-volumes/postfix_spool }
+- name: webmail
+  hostPath: { path: /var/lib/docker/k8s-volumes/webmail }
+- name: ldap-ro-password
+  secret:
+    secretName: ldap-ro-password
+- name: postfix-sasl-passwd
+  secret:
+    secretName: postfix-sasl-passwd
+- name: ssl-cert
+  secret:
+    secretName: tls-rainloop
+image:
+  repository: instantlinux/dovecot
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 825, targetPort: 25, name: smtp }
+  - { port: 843, targetPort: 143, name: imapd }
+  - { port: 993, targetPort: 993, name: imaps }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+# to replace with your own config maps, add overrides with data
+# and set enabled
+configmap:
+  enabled: false
+  name: dovecot-etc
+  data: {}
+configmapPostfix:
+  enabled: false
+  name: dovecot-postfix
+  data: {}
+
+# Subchart data-sync, maintains persistent data across nodes
+data-sync:
+  statefulset:
+    containerPorts: [ containerPort: 22 ]
+    env:
+      sync_interval: 2
+    nodeSelector:
+      service.dovecot: allow
+    replicas: 3
+    resources:
+      limits:
+        memory: 1536Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  volumeMounts:
+  - name: archive
+    mountPath: /root/.unison
+  - name: config-sync
+    mountPath: /etc/unison.d/common.prf
+    subPath: common.prf
+  - mountPath: /etc/ssh
+    name: etc
+  - mountPath: /var/log/unison
+    name: logs
+  - mountPath: /var/data-sync/inbox
+    name: inbox
+  - mountPath: /var/data-sync/webmail
+    name: webmail
+  - mountPath: /run/secrets/data-sync-sshkey1
+    name: sshkeys
+    subPath: sshkey1
+  - mountPath: /run/secrets/data-sync-sshkey2
+    name: sshkeys
+    subPath: sshkey2
+  volumes:
+  - name: inbox
+    hostPath: { path: /var/lib/docker/k8s-volumes/inbox }
+  - name: webmail
+    hostPath: { path: /var/lib/docker/k8s-volumes/webmail }
+  - name: config-sync
+    configMap:
+      name: dovecot-data-sync
+  - name: sshkeys
+    secret:
+      secretName: data-sync-ssh
+  - name: logs
+    hostPath: { path: /var/lib/docker/k8s-volumes/sync-logs/dovecot }
+  volumeClaimTemplates:
+  - metadata:
+      name: archive
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: etc
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi

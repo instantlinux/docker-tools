@@ -1,0 +1,14 @@
+apiVersion: v2
+name: il-v1
+description: InstantLinux v1
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://git.instantlinux.net/richb/instantlinux
+type: application
+version: 0.1.0
+appVersion: "latest"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

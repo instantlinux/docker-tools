@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+data:
+  my.cnf: |
+    # --- Deployed from kubernetes configmap ---
+    #
+    # For documentation see
+    # https://mariadb.com/kb/en/library/server-system-variables
+
+    [mysqld]
+    #
+    # * Basic Settings
+    #
+    basedir                 = /usr
+    tmpdir                  = /tmp
+    skip-external-locking
+    character_set_server    = {{ .Values.character_set_server }}
+    ignore_db_dirs          = lost+found
+
+    #
+    # * Fine Tuning
+    #
+    ft_min_word_len         = {{ .Values.ft_min_word_len }}
+    join_buffer_size        = {{ .Values.join_buffer_size }}
+    key_buffer_size         = {{ .Values.key_buffer_size }}
+    max_allowed_packet      = {{ .Values.max_allowed_packet }}
+    #max_connections        = 100
+    max_heap_table_size     = {{ .Values.max_heap_table_size }}
+    query_cache_type        = OFF
+    query_cache_size        = 0
+    read_buffer_size        = {{ .Values.read_buffer_size }}
+    read_rnd_buffer_size    = {{ .Values.read_rnd_buffer_size }}
+    table_open_cache        = 4096
+    thread_stack            = {{ .Values.thread_stack }}
+    thread_cache_size       = {{ .Values.thread_cache_size }}
+    #thread_concurrency     = 12
+    tmp_table_size          = {{ .Values.tmp_table_size }}
+
+    interactive_timeout     = {{ .Values.interactive_timeout }}
+    net_read_timeout        = {{ .Values.net_read_timeout }}
+    net_write_timeout       = {{ .Values.net_read_timeout }}
+    wait_timeout            = {{ .Values.wait_timeout }}
+
+    #
+    # * Slow query log
+    #
+    slow_query_log_file     = /var/log/mysql/mysql-slow.log
+    slow_query_log          = {{ .Values.slow_query_log }}
+    long_query_time         = {{ .Values.long_query_time }}
+    #log_queries_not_using_indexes
+
+    #
+    # * InnoDB
+    #
+    innodb_data_file_path        = ibdata1:10M:autoextend
+    innodb_buffer_pool_instances = {{ .Values.innodb_buffer_pool_instances }}
+    innodb_buffer_pool_size      = {{ .Values.innodb_buffer_pool_size }}
+    innodb_log_file_size         = {{ .Values.innodb_log_file_size }}
+
+    [mysqldump]
+    quick
+    quote-names
+    max_allowed_packet           = 16M
+  wsrep.cnf: |
+    {{- if .Values.wsrep.enabled }}
+    [mysqld]
+    wsrep_log_conflicts
+    wsrep_on                     = ON
+    wsrep_provider               = /usr/lib/libgalera_smm.so
+    wsrep_slave_threads          = {{ .Values.wsrep.slave_threads }}
+    wsrep_sst_method             = {{ .Values.wsrep.sst_method }}
+
+    # Galera requires change for InnoDB autoincrement locks
+    innodb_autoinc_lock_mode     = {{ .Values.wsrep.innodb_autoinc_lock_mode }}
+
+    # Galera requires binlog format ROW
+    binlog_format                = ROW
+    {{- else }}
+    # wsrep disabled for single-instance
+    {{- end }}

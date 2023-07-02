@@ -15,6 +15,16 @@ spec:
       labels:
         app.kubernetes.io/name: $SERVICE_NAME
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - $SERVICE_NAME
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: $SERVICE_NAME
         env:

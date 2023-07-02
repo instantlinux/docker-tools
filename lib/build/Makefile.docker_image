@@ -19,7 +19,14 @@ endif
 ifeq ($(IMAGE),data-sync)
   PLATFORMS = linux/amd64,linux/aarch64
 endif
+ifeq ($(IMAGE),mythtv-backend)
+  PLATFORMS = linux/amd64
+endif
 ifeq ($(IMAGE),nagiosql)
+  PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
+endif
+ifeq ($(IMAGE),python-builder)
+  # helm package on arm/v6 isn't supported as of Aug 2021
   PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
 endif
 ifeq ($(IMAGE),spamassassin)

@@ -7,6 +7,7 @@ bind9_defaults:
   dns_slaves:
   - 127.0.0.1
   dump_file: /var/cache/bind/named_dump.db
+  managed_keys_directory: /var/cache/bind
   server_ips: []
   statistics_file: /var/cache/bind/named.stats
   transfer_secret: "{{ vault_bind9_secret }}"

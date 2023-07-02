@@ -1,0 +1,13 @@
+apiVersion: v2
+name: nexus
+description: Sonatype nexus repository service
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+type: application
+version: 0.1.6
+appVersion: "3.45.1"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

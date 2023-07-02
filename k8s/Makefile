@@ -12,7 +12,6 @@
 #
 # Usage - after step 1, review Makefile.vars, set your override vars, then do
 #   make install
-#   make storage_localdefault
 #   for node in kube1.domain kube2.domain <etc>; do
 #     NODE=$node make persistent_dirs
 #   done
@@ -68,7 +67,6 @@
 ACTION          ?= apply
 CLUSTER         ?= kubernetes
 ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
-VERSION_HELM    ?= 2.14.1
 VERSION_SOPS    ?= 3.2.0
 SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
 STACKS = $(basename $(wildcard *.yaml))
@@ -76,7 +74,6 @@ STACKS = $(basename $(wildcard *.yaml))
 include Makefile.vars
 include Makefile.versions
 include Makefile.instances
-include Makefile.pgo
 
 ifeq ($(ACTION), delete)
   NOTICE=Removing
@@ -89,7 +86,8 @@ all: imports $(INSTALL_YAML) $(STACKS)
 $(STACKS)::
 	@echo --$(NOTICE) $@--
 	@SERVICE_NAME=$(@F) \
-	  envsubst < $@.yaml | kubectl $(ACTION) --namespace $(K8S_NAMESPACE) -f -
+	  envsubst < $@.yaml | kubectl $(ACTION) --context=sudo \
+	  --namespace $(K8S_NAMESPACE) -f -
 
 ##########
 # Installation
@@ -97,19 +95,19 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = dashboard cert-manager flannel metrics postgres-operator
+IMPORTS      = dashboard cert-manager flannel
+#IMPORTS     = metrics  TODO this is busted due to TLS errors
 #IMPORTS     = calico calico-etcd
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user cluster_network \
-	install/podsecurity install/local-storage storage_localdefault imports \
-	install_imports install/gitlab-rbac install/k8s-backup \
-	install/logspout remote_volumes \
-	sops data-sync-ssh ~/.kube/config.conf persistent namespace_config \
-	secrets
- # extend_dashboard_ttl
+	install/local-storage storage_localdefault imports \
+	install_imports namespace_config install/gitlab-rbac \
+	install/k8s-backup install/logspout remote_volumes \
+	sops data-sync-ssh persistent secrets install/ingress-nginx
+ # extend_dashboard_ttl ~/.kube/config.conf 
  # TODO install/cert-manager
 
 namespace_config: install/namespace install/limits install/namespace-user \

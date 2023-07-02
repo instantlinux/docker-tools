@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/jenkins-master/E23qyWPRxRP0WnWP_FPt9W1HhHw=

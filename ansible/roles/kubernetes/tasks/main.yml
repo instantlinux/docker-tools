@@ -46,6 +46,12 @@
     sysctl_set: yes
   with_dict: "{{ sysctl }}"
 
+- name: Set static hostname as FQDN
+  command: hostnamectl --static set-hostname {{ inventory_hostname }}
+  when: inventory_hostname != ansible_hostname
+
+- include: cri-dockerd.yml
+
 - name: Set up master
   include: master.yml
   when: k8s.master

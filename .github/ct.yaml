@@ -1,0 +1,4 @@
+# options for chart-testing-action
+debug: true
+check-version-increment: true
+helm-extra-args: --timeout 600

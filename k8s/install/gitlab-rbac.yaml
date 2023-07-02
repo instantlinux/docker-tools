@@ -53,42 +53,6 @@ subjects:
   name: gitlab-pod-privileged
   namespace: $K8S_NAMESPACE
 ---
-apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
-metadata:
-  annotations:
-    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
-  name: dockersock
-spec:
-  allowedCapabilities: []
-  allowedHostPaths:
-  - pathPrefix: /var/run/docker.sock
-  allowPrivilegeEscalation: false
-  fsGroup:
-    rule: MustRunAs
-    ranges:
-      - min: 1
-        max: 65535
-  hostIPC: false
-  hostNetwork: false
-  hostPID: false
-  privileged: false
-  readOnlyRootFilesystem: false
-  runAsUser:
-    rule: RunAsAny
-  seLinux:
-    rule: RunAsAny
-  supplementalGroups:
-    rule: RunAsAny
-  volumes:
-  - configMap
-  - downwardAPI
-  - emptyDir
-  - hostPath
-  - persistentVolumeClaim
-  - projected
-  - secret
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:

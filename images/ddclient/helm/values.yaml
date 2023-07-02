@@ -1,0 +1,47 @@
+# Default values for ddclient.
+deployment:
+  env:
+    # host: required
+    interval: 3600
+    iplookup_uri: http://ipinfo.io/ip
+    server: members.easydns.com
+    service_type: easydns
+    user_login: ""
+volumeMounts:
+- name: secret
+  mountPath: /run/secrets/ddclient-user
+  subPath: ddclient-user
+volumes:
+- name: secret
+  secret:
+    secretName: ddclient-user
+
+image:
+  repository: instantlinux/ddclient
+  pullPolicy: IfNotPresent
+  # tag: default
+
+imagePullSecrets: [ name: regcred ]
+nameOverride: ""
+fullnameOverride: ""
+
+deployment: {}
+serviceAccount: {}
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  enabled: false
+
+ingress:
+  enabled: false
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

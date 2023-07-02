@@ -1,0 +1,3 @@
+# options for chart-releaser-action
+release-name-template: chart-{{ .Name }}-{{ .Version }}
+skip-existing: true

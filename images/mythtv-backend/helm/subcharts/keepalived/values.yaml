@@ -1,0 +1,38 @@
+# Default values for keepalived.
+virtualIpAddress: 192.168.1.200
+deployment:
+  env:
+    keepalived_command_line_arguments: --dump-conf
+  xenv:
+  - name: POD_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.name
+  hostNetwork: true
+  replicas: 2
+  securityContext:
+    capabilities:
+      add: [ NET_ADMIN ]
+  serviceAccountName: example-privileged
+volumeMounts:
+- mountPath: /usr/local/etc/keepalived
+  name: etc
+volumes:
+- name: etc
+  configMap:
+    name: keepalived
+
+image:
+  repository: osixia/keepalived
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  enabled: false
+autoscaling:
+  enabled: false

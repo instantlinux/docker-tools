@@ -1,4 +1,4 @@
-FROM python:3.8.6-slim-buster
+FROM python:3.8.10-slim-buster
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -18,7 +18,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SST_AUTH_SECRET=sst-auth-password
 
 ARG MARIADB_MAJOR=10.4
-ARG MARIADB_VERSION=10.4.17
+ARG MARIADB_VERSION=10.4.20
 ARG APT_KEY=F1656F24C74CD1D8
 ARG DEB_REL=buster
 ARG UID=212

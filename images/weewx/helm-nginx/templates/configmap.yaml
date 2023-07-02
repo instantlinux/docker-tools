@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+data:
+  wx.conf: |
+    access_log /dev/stdout;
+    error_log stderr;
+
+    server {
+      listen       80;
+      server_name  {{ .Values.fqdn }};
+      index        current.html;
+
+      location / {
+        root /usr/share/nginx/wx;
+      }
+    }

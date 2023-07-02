@@ -1,0 +1,81 @@
+# Default values for jira.
+tlsHostname: jira.example.com
+deployment:
+  env:
+    atl_db_driver: com.mysql.jdbc.Driver
+    db_host: db00
+    atl_db_schema_name: jira
+    # Note - vendor doesn't support mariadb 10.4+ but it works fine
+    atl_db_type: mysql
+    atl_jdbc_url: "jdbc:mysql://$(DB_HOST):3306/$(ATL_DB_SCHEMA_NAME)?useUnicode=true&amp;characterEncoding=UTF8&amp;sessionVariables=default_storage_engine=InnoDB"
+    atl_jdbc_user: jira
+    atl_proxy_name: jira.example.com
+    atl_proxy_port: 443
+    atl_tomcat_scheme: https
+    atl_tomcat_secure: "true"
+    jvm_minimum_memory: 1536m
+    jvm_maximum_memory: 2048m
+    jvm_support_recommended_args: -Datlassian.plugins.enable.wait=600
+    tz: UTC
+  xenv:
+  - name: ATL_JDBC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: jira-db-password
+        name: jira-db-password
+  containerPorts:
+  - containerPort: 8080
+  nodeSelector:
+    service.jira: allow
+  resources:
+    limits:
+      memory: 6144Mi
+    requests:
+      cpu: 300m
+      memory: 2048Mi
+volumeMounts:
+- mountPath: /var/atlassian/application-data/jira
+  name: data
+  subPath: home
+- mountPath: /opt/atlassian/jira/lib/mysql-connector-java-8.0.22.jar
+  name: data
+  readOnly: true
+  subPath: mysql-connector/mysql-connector-java-8.0.22.jar
+- mountPath: /opt/atlassian/jira/conf/Catalina/localhost
+  name: data
+  subPath: catalina
+- mountPath: /opt/atlassian/jira/logs
+  name: data
+  subPath: logs
+volumes:
+- name: data
+  hostPath: { path: /var/lib/docker/k8s-volumes/jira }
+
+image:
+  repository: atlassian/jira-core
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 8080 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /login.jsp
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+ingressTOTP:
+  enabled: true

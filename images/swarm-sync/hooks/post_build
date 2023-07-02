@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -X post https://hooks.microbadger.com/images/instantlinux/swarm-sync/8mRR-5H0jz9fCCYAk9I4nncST0U=

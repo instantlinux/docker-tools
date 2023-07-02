@@ -6,9 +6,11 @@
 .coverage
 .deploy
 __pycache__
+Chart.lock
 coverage.xml
 htmlcov
 k8s/imports
 python_env
 results.xml
 OBS
+*.tgz

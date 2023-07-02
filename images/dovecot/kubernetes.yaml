@@ -372,8 +372,8 @@ data:
   postfix.cf: |
     #  See postfix documentation at http://www.postfix.org/postconf.5.html
     #  Any values placed here will be inserted to the container's /etc/postfix/main.cf
-    alias_database = hash:/etc/postfix/aliases
-    alias_maps = hash:/etc/postfix/aliases
+    alias_database = lmdb:/etc/postfix/aliases
+    alias_maps = lmdb:/etc/postfix/aliases
     bigdest_destination_concurrency_failed_cohort_limit = 100
     bigdest_destination_concurrency_limit = 25
     bounce_queue_lifetime = 8h
@@ -393,7 +393,7 @@ data:
     relay_domains = $POSTFIX_RELAY_DOMAINS
     relayhost = [$POSTFIX_IP]:$PORT_POSTFIX_INTERNAL
     smtp_sasl_auth_enable = yes
-    smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+    smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd
     smtp_sasl_security_options = noanonymous
     smtp_sasl_tls_security_options = noanonymous
     smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
@@ -418,7 +418,7 @@ data:
     tls_high_cipherlist = EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA256:EECDH:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!IDEA:!ECDSA:kEDH:CAMELLIA128-SHA:AES128-SHA
     tls_preempt_cipherlist = yes
     tls_random_source = dev:/dev/urandom
-    transport_maps = hash:/etc/postfix/transport
+    transport_maps = lmdb:/etc/postfix/transport
   transport.map: |
     # Empty file
   users.sh: |

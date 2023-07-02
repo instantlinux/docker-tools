@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.16
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -46,8 +46,8 @@ ENV AIRLINK_HOST= \
     WX_USER=weewx \
     XTIDE_LOCATION=unset
 
-ARG WEEWX_VERSION=4.1.1
-ARG WEEWX_SHA=f9c30d6e5f491c003dfaac2a71d9e05b5a65146623d42f50837991b6f2093419
+ARG WEEWX_VERSION=4.9.1
+ARG WEEWX_SHA=a5b4f8410b15ee4827f53272acb6daa91fb605c558f6ae1c9c5541aebdae14c7
 ARG WEEGREEN_VERSION=v0.12
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
@@ -56,8 +56,8 @@ ARG XTIDE_SHA=e5c4afbb17269fdde296e853f2cb84845ed1c1bb1932f780047ad71d623bc681
 COPY install-input.txt requirements.txt /root/
 RUN apk add --no-cache --update \
       curl freetype libjpeg libstdc++ openssh openssl python3 py3-cheetah \
-      py3-configobj py3-mysqlclient py3-pillow py3-requests py3-six rsync \
-      rsyslog tzdata && \
+      py3-configobj py3-mysqlclient py3-pillow py3-requests py3-six py3-usb \
+      rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mkdir build && cd build && \
     curl -sLo weewx.tar.gz \

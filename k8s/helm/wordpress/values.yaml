@@ -1,0 +1,100 @@
+# Default values for wordpress.
+tlsHostname: wordpress.example.com
+deployment:
+  containerPorts:
+  - containerPort: 80
+  env:
+    wordpress_db_host: db00
+    wordpress_db_name: wordpress
+    wordpress_db_user: wordpress
+    tz: UTC
+  xenv:
+  - name: WORDPRESS_DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_DB_PASSWORD
+  - name: WORDPRESS_AUTH_KEY
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_AUTH_KEY
+  - name: WORDPRESS_SECURE_AUTH_KEY
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_SECURE_AUTH_KEY
+  - name: WORDPRESS_LOGGED_IN_KEY
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_LOGGED_IN_KEY
+  - name: WORDPRESS_NONCE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_NONCE_KEY
+  - name: WORDPRESS_AUTH_SALT
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_AUTH_SALT
+  - name: WORDPRESS_SECURE_AUTH_SALT
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_SECURE_AUTH_SALT
+  - name: WORDPRESS_NONCE_SALT
+    valueFrom:
+      secretKeyRef:
+        name: wordpress
+        key: WORDPRESS_NONCE_SALT
+
+volumeMounts:
+- mountPath: /usr/local/etc/php/conf.d/local-php.ini
+  name: init
+  subPath: local-php.ini
+- mountPath: /var/www/html
+  name: share
+  subPath: wordpress/html
+volumes:
+- name: init
+  configMap:
+    name: wordpress
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: wordpress
+  pullPolicy: IfNotPresent
+  # tag: default
+imagePullSecrets: [ name: regcred ]
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports: [ port: 80 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  data:
+    local-php.ini: |
+      upload_max_filesize = 32M
+      post_max_size = 40M
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /(wp-login.php|wp-admin)
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+ingressTOTP:
+  enabled: true

@@ -1,0 +1,99 @@
+# Default values for mariadb-galera.
+ipReadOnly: 10.101.1.101
+nodePort: 30306
+character_set_server: utf8
+ft_min_word_len: 3
+innodb_buffer_pool_instances: 1
+innodb_buffer_pool_size: 1024M
+innodb_log_file_size: 32M
+interactive_timeout: 28800
+join_buffer_size: 131072
+key_buffer_size: 16M
+long_query_time: 4
+max_allowed_packet: 256M
+max_heap_table_size: 16M
+net_read_timeout: 30
+net_write_timeout: 60
+read_buffer_size: 131072
+read_rnd_buffer_size: 262144
+slow_query_log: 1
+thread_stack: 192K
+thread_cache_size: 8
+tmp_table_size: 16M
+wait_timeout: 3600
+
+statefulset:
+  containerPorts: [ containerPort: 3306 ]
+  env:
+    cluster_name: mariadb
+    discovery_service: "10.101.1.19:2379"
+    cluster_size: 3
+  replicas: 3
+  resources:
+    limits:
+      memory: 8192Mi
+    requests:
+      cpu: 300m
+      memory: 128Mi
+volumeMounts:
+- mountPath: /etc/mysql/my.cnf.d
+  name: etc
+- mountPath: /etc/wsrep.cnf
+  name: etc
+  subPath: wsrep.cnf
+- mountPath: /var/log/mysql
+  name: logs
+- mountPath: /var/lib/mysql
+  name: data
+- name: mysql-root-password
+  mountPath: /run/secrets/mysql-root-password
+  subPath: mysql-root-password
+- name: sst-auth-password
+  mountPath: /run/secrets/sst-auth-password
+  subPath: sst-auth-password
+volumes:
+- name: etc
+  configMap:
+    name: mariadb-galera
+- name: mysql-root-password
+  secret:
+    secretName: mysql-root-password
+- name: sst-auth-password
+  secret:
+    secretName: sst-auth-password
+volumeClaimTemplates:
+- metadata:
+    name: data
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 8Gi
+- metadata:
+    name: logs
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 500Mi
+
+image:
+  repository: instantlinux/mariadb-galera
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+wsrep:
+  enabled: true
+  innodb_autoinc_lock_mode: 2
+  slave_threads: 8
+  sst_method: mariabackup

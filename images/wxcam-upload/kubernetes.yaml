@@ -72,7 +72,7 @@ spec:
         - name: ndots
       imagePullSecrets: [ $IMAGEPULL_SPEC ]
       nodeSelector:
-        service.data-sync: allow
+        service.$SERVICE_NAME: allow
       volumes:
       - name: synced
         hostPath: { path: $K8S_VOLUMES_PATH/wx }
@@ -82,3 +82,116 @@ spec:
       - name: wxcam-password-hashed
         secret:
           secretName: wxcam-password-hashed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICE_NAME-sync
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME-sync
+spec:
+  clusterIP: None
+  ports:
+  - { port: 22, targetPort: 22 }
+  selector:
+    app.kubernetes.io/name: $SERVICE_NAME-sync
+    release: "0.1"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME-sync
+    release: "0.1"
+  name: $SERVICE_NAME-sync
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: $SERVICE_NAME-sync
+      release: "0.1"
+  serviceName: $SERVICE_NAME-sync
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: $SERVICE_NAME-sync
+        release: "0.1"
+    spec:
+      containers:
+      - name: $SERVICE_NAME-sync
+        env:
+        - name: PUBKEY1
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey1
+        - name: PUBKEY2
+          valueFrom:
+            secretKeyRef:
+              name: $DATA_SYNC_SECRET
+              key: pubkey2
+        - { name: SYNC_INTERVAL, value: "20" }
+        - { name: TZ, value: $TZ }
+        image: $REGISTRY_URI/data-sync:$VERSION_DATA_SYNC
+        ports:
+        - containerPort: 22
+        resources:
+          limits:
+            memory: 1536Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        volumeMounts:
+        - name: archive
+          mountPath: /root/.unison
+        - name: config-sync
+          mountPath: /etc/unison.d/common.prf
+          subPath: common.prf
+        - mountPath: /etc/ssh
+          name: etc
+        - mountPath: /var/log/unison
+          name: logs
+        - mountPath: /var/data-sync/wx
+          name: wx
+        - mountPath: /run/secrets/data-sync-sshkey1
+          name: sshkeys
+          subPath: sshkey1
+        - mountPath: /run/secrets/data-sync-sshkey2
+          name: sshkeys
+          subPath: sshkey2
+      nodeSelector:
+        service.$SERVICE_NAME: allow
+      volumes:
+      - name: config-sync
+        configMap:
+          name: data-sync
+      - name: sshkeys
+        secret:
+          secretName: $DATA_SYNC_SECRET
+      - name: logs
+        hostPath: { path: $K8S_VOLUMES_PATH/sync-logs/$SERVICE_NAME }
+  volumeClaimTemplates:
+  - metadata:
+      name: archive
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: etc
+    spec:
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: wx
+    spec:
+      accessModes: [ ReadWriteMany ]
+      resources:
+        requests:
+          storage: 8Gi
+      selector:
+        matchLabels:
+          volume.group: wx

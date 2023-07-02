@@ -4,6 +4,7 @@ grub_timeout: 5
 local_group_defaults:
   nagcmd: 486
   nrpe: 552
+  syslog: 113
   users: 100
 
 local_group_additions: {}

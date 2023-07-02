@@ -86,16 +86,6 @@
     lvs -o+seg_monitor
   changed_when: False
 
-- name: Docker repo key
-  apt_key:
-    id: "{{ docker.apt_repo.key }}"
-    url: "{{ docker.apt_repo.url }}"
-
-- name: Docker repo
-  apt_repository:
-    filename: docker
-    repo: "{{ docker.apt_repo.repo }}"
-
 # The Ubuntu package installer defines ExecStart option that conflicts
 # with our daemon.json. Need to suppress daemon startup until after
 # the ExecStart option is updated via lineinfile below. Note:
@@ -137,11 +127,15 @@
     dest: /etc/docker/daemon.json
   notify: Restart docker
 
-- name: Deal with conflicting systemd-unit option if present
-  lineinfile:
-    line: ExecStart=/usr/bin/dockerd
-    path: /lib/systemd/system/docker.service
-    regexp: "^ExecStart=.*"
+- name: Systemd override path for docker.service
+  file:
+    dest: /lib/systemd/system/docker.service.d
+    state: directory
+
+- name: Deal with conflicting systemd-unit option, await vol mount
+  template:
+    dest: /lib/systemd/system/docker.service.d/docker.service.conf
+    src: docker.service.conf.j2
   notify: Reload systemd
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
@@ -150,15 +144,6 @@
     src: docker-permissions.service
 
 # TODO parse fstab seeking last luks line
-
-- name: Add RequiresMountsFor to docker.service
-  replace:
-    dest: /lib/systemd/system/docker.service
-    regexp: "^Requires=docker.socket$"
-    replace: >
-      Requires=docker.socket 
-      \n# Added by Ansible
-      \nRequiresMountsFor={{ docker_volumewait }}
 
 - name: Reenable systemctl start
   file:

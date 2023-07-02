@@ -1,4 +1,4 @@
-FROM python:3.8.5-alpine3.12
+FROM alpine:3.15
 
 MAINTAINER Rich Braun "richb@instantlinux.net"
 ARG BUILD_DATE
@@ -9,27 +9,25 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name=python-wsgi \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/python-wsgi
-ENV PYTHONPATH=/usr/lib/python3.8/site-packages
-ARG CFFI_VERSION=1.14.0-r2
-ARG PYCRYPTOGRAPHY_VERSION=3.2.1-r0
-ARG PYPILLOW_VERSION=7.1.2-r0
-ARG UWSGI_VERSION=2.0.18-r8
+ENV PYTHONPATH=
+ARG PIP_VERSION=20.2.3
+ARG PYTHON_VERSION=3.9.7-r4
+ARG PYCRYPTOGRAPHY_VERSION=3.3.2-r3
+ARG PYPILLOW_VERSION=8.4.0-r3
+ARG UWSGI_VERSION=2.0.19.1-r2
 
-COPY requirements.txt uwsgi.ini /usr/src/
-RUN echo '@community http://dl-cdn.alpinelinux.org/alpine/edge/community' \
-      >>/etc/apk/repositories && \
-    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    apk add --virtual .fetch-deps gcc git jpeg-dev libffi-dev make musl-dev \
-      libwebp-dev openssl-dev pcre-dev zlib-dev && \
+COPY Pipfile* uwsgi.ini /usr/src/
+RUN apk add --virtual .fetch-deps gcc git jpeg-dev linux-headers make \
+      musl-dev libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
-      proj@community py3-boto3 py3-botocore py3-cffi==$CFFI_VERSION \
-      py3-coverage py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION \
-      py3-pycryptodomex@edge py3-flask py3-itsdangerous py3-jwt \
-      py3-pillow==$PYPILLOW_VERSION py3-requests py3-setuptools \
-      py3-urllib3 py3-virtualenv uwsgi==$UWSGI_VERSION \
+      proj py3-authlib py3-boto3 py3-botocore py3-cachetools \
+      py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-pip \
+      py3-pycryptodomex py3-flask py3-flask-babel py3-greenlet py3-itsdangerous \
+      py3-passlib py3-pillow=$PYPILLOW_VERSION py3-requests py3-setuptools \
+      py3-virtualenv python3==$PYTHON_VERSION uwsgi==$UWSGI_VERSION \
       uwsgi-python3 zlib && \
-    pip3 install -r /usr/src/requirements.txt && pip freeze && \
+    pip install --upgrade pipenv pip==$PIP_VERSION && \
+    cd /usr/src && pipenv install --system --deploy && pip freeze && \
     apk del .fetch-deps && rm -r /var/cache/apk/* /root/.cache
 
 CMD ["uwsgi", "--ini", "/usr/src/uwsgi.ini"]

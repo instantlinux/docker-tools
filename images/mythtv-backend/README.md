@@ -1,14 +1,14 @@
 ## mythtv-backend
-[![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://microbadger.com/images/instantlinux/mythtv-backend "Version badge") [![](https://images.microbadger.com/badges/image/instantlinux/mythtv-backend.svg)](https://microbadger.com/images/instantlinux/mythtv-backend "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/master/images/mythtv-backend/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://hub.docker.com/r/instantlinux/mythtv-backend/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mythtv-backend?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/mythtv-backend "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mythtv-backend/Dockerfile "dockerfile")
 
-The MythTV backend built under Ubuntu Focal Fossa.
+The MythTV backend built under Ubuntu jammy (22.04).
 
 ### Usage
 
 This image must be run in network_mode:host in order to communicate with HD Homerun tuners; assign a new IP address and hostname for this application, and define it as a secondary IP address on your Docker host's primary interface.
 
-For configuration, see the example docker-compose.yml (for swarm or standalone docker) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, customize volume mounts as desired. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/master/k8s/README.md) where you can then deploy [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/mythtv-backend/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) after cloning this repo:
+For configuration, see the example docker-compose.yml (for swarm or standalone docker) or [helm](https://github.com/instantlinux/docker-tools/blob/main/images/helm) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, and customize volume mounts as desired. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/mythtv-backend/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mythtv-backend/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
@@ -89,7 +89,7 @@ mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 Version 31:
 
-You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from Schedules Direct. See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
+You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from [Schedules Direct](https://www.schedulesdirect.org/). See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
 
 * Go into mythtv-setup, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
 * Invoke a channel-scan
@@ -103,5 +103,9 @@ tv_grab_na_dd --configure --config-file ~mythtv/.mythtv/${FILENAME}.xmltv
   # (select all channels)
 ```
 * As user mythtv, invoke mythfilldatabase; you'll probably encounter a number of warnings about unknown xmltv channel identifier -- suppress those by changing the text `channel:` to `not channel:` in any line of this ${FILENAME} for which you don't have a valid channel entry (as viewed in the channel list in any of these places - mythweb UI, mythtfrontend listings screen, or SELECT from database's channel table). This is because the listings service includes many channels that your channel scan won't pick up, and the `tv_grab` utility insists on re-writing its config file upon each run, with the entire list it fetched from the listings service.
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 [![](https://img.shields.io/badge/license-GPL--2.0-red.svg)](https://choosealicense.com/licenses/gpl-2.0/ "License badge") [![](https://img.shields.io/badge/code-mythtv%2Fmythtv-blue.svg)](https://github.com/mythtv/mythtv "Code repo")

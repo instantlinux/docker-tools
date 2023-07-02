@@ -5,6 +5,8 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/samba-dc:latest
     restart: always
     network_mode: host
+    cap_add:
+      - CAP_SYS_ADMIN
     hostname: ${SAMBADC_HOSTNAME:-dc.example.com}
     environment:
       DOMAIN_ACTION: join

@@ -56,6 +56,20 @@
     line: ChallengeResponseAuthentication yes
   notify: Restart sshd
 
+- name: Permit root login - with OTP
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: PermitRootLogin yes
+    regexp: "^PermitRootLogin .*"
+  notify: Restart sshd
+
+- name: Set sshd KbdInteractiveAuthentication for google authenticator
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "(?i)^KbdInteractiveAuthentication .*"
+    line: KbdInteractiveAuthentication yes
+  notify: Restart sshd
+
 - name: Root .ssh directory
   file:
     path: /root/.ssh

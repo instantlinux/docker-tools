@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "local.fullname" . }}-external
+spec:
+  type: NodePort
+  ports:
+  - { port: 25, nodePort: {{ .Values.nodeportSMTP }}, name: dovecot-smtp }
+  - { port: 143, nodePort: {{ .Values.nodeportImapd }}, name: dovecot-imapd }
+  - { port: 993, nodePort: {{ .Values.nodeportImaps }}, name: dovecot-imaps }
+  selector:
+    {{- include "local.selectorLabels" . | nindent 4 }}

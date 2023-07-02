@@ -1,0 +1,62 @@
+{{- if not .Values.configmap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "local.fullname" . }}-etc
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+data:
+  dovecot.conf: |
+    auth_mechanisms = plain login
+    disable_plaintext_auth = yes
+    mail_access_groups = mail
+    protocols = imap
+    mail_location = mbox:~/Mail:INBOX=/var/spool/mail/%u
+    mail_debug = no
+
+    first_valid_uid = 300
+    passdb {
+      driver = ldap
+      args = /etc/dovecot/dovecot-ldap.conf
+    }
+    userdb {
+      driver = passwd
+    }
+    service auth {
+      user = root
+      unix_listener /var/spool/postfix/private/auth {
+        mode = 0660
+        user = postfix
+        group = postfix
+      }
+    }
+    service imap-login {
+      inet_listener imaps {
+        address = 0.0.0.0
+        port = 993
+        ssl = yes
+      }
+    }
+    ssl_cert = </etc/ssl/certs/smtpd-cert.pem
+    ssl_key = </etc/ssl/private/smtpd-key.pem
+    ssl_min_protocol = TLSv1.1
+    syslog_facility = "local1"
+  dovecot-ldap.conf: |
+    hosts = {{ .Values.ldap.hosts }}
+    {{- if .Values.ldap.dn }}
+    dn = {{ .Values.ldap.dn }}
+    dnpass = PASSWORD
+    {{- end }}
+    ldap_version = {{ .Values.ldap.version }}
+    base = {{ .Values.ldap.base }}
+    auth_bind = {{ .Values.ldap.auth_bind }}
+    {{- if .Values.ldap.auth_bind_userdn }}
+    auth_bind_userdn = {{ .Values.ldap.auth_bind_userdn }}
+    {{- end }}
+    {{- if .Values.ldap.active_directory }}
+    user_attrs = sAMAccountName=home=/home/%$
+    user_filter = (&(ObjectClass=user)(sAMAccountName=%u))
+    pass_filter = (&(ObjectClass=user)(sAMAccountName=%u))
+    {{- end }}
+    tls = {{ .Values.ldap.tls }}
+{{- end }}

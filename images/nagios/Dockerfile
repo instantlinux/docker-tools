@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,10 +8,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG NAGIOS_VERSION=4.4.6-r0
+ARG NAGIOS_VERSION=4.4.9-r0
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG PLUGINS_VERSION=2.3.2-r0
+ARG PLUGINS_VERSION=2.4.2-r0
 ARG WWW_UID=33
 ENV AUTHORIZED_USERS=nagiosadmin \
     CONFIG_CHECK=yes \
@@ -25,19 +25,19 @@ ENV AUTHORIZED_USERS=nagiosadmin \
     PERF_ENABLE=yes \
     TZ=UTC
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
-      >>/etc/apk/repositories && \
-    deluser xfs && addgroup -g $NAGIOS_GID nagios && \
+RUN deluser xfs && addgroup -g $NAGIOS_GID nagios && \
     adduser -g www-data -u $WWW_UID -DSH -h /var/www www-data && \
     adduser -G nagios -g "Nagios Server" -DSH -h /var/nagios -u $NAGIOS_UID \
       nagios && \
-    apk add --update --no-cache nagios@edge=$NAGIOS_VERSION \
-      nagios-plugins-all=$PLUGINS_VERSION nagios-web@edge \
-      nrpe-plugin@edge bash curl fcgiwrap file mariadb-client nginx openssl \
+    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
+      >>/etc/apk/repositories && \
+    apk add --update --no-cache nagios=$NAGIOS_VERSION nagios-web \
+      nagios-plugins-all=$PLUGINS_VERSION \
+      nagios-plugins-mysql=$PLUGINS_VERSION \
+      nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \
       perl-crypt-x509 perl-libwww perl-text-glob perl-timedate \
-      php7 php7-fpm py3-pip py3-pymysql@testing python3 ssmtp tzdata && \
+      php8@testing php8-fpm@testing py3-pip python3 ssmtp tzdata && \
+    pip3 install pymysql==1.0.2 && \
     addgroup nginx nagios && \
     chmod u+s /usr/lib/nagios/plugins/check_ping && \
     sed -i -e s/use_syslog=.*/use_syslog=0/ \
@@ -46,12 +46,12 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
     mv /etc/nagios/nagios.cfg /etc/nagios/nagios.cfg.proto && \
     ln -fns /usr/local/bin/mail.sh /usr/sbin/sendmail && \
     ln -s /usr/local/bin/mail.sh /usr/bin/mail && \
-    rm /etc/nginx/conf.d/default.conf
+    rm /etc/nginx/http.d/default.conf
 
 EXPOSE 80
 VOLUME /etc/nagios /opt/nagios/plugins /var/nagios
 
-COPY nginx.conf /etc/nginx/conf.d/nagios.conf
-COPY php-fpm-www.conf /etc/php7/php-fpm.d/www.conf
+COPY nginx.conf /etc/nginx/http.d/nagios.conf
+COPY php-fpm-www.conf /etc/php8/php-fpm.d/www.conf
 COPY entrypoint.sh mail.sh /usr/local/bin/
 ENTRYPOINT /usr/local/bin/entrypoint.sh
