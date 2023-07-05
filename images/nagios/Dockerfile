@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,10 +8,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG NAGIOS_VERSION=4.4.9-r0
+ARG NAGIOS_VERSION=4.4.13-r0
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG PLUGINS_VERSION=2.4.2-r0
+ARG PLUGINS_VERSION=2.4.5-r0
 ARG WWW_UID=33
 ENV AUTHORIZED_USERS=nagiosadmin \
     CONFIG_CHECK=yes \

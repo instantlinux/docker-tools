@@ -105,6 +105,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 
 Thank you to the following contributors!
 
+* [Mike Neir](https://github.com/d0ct0rvenkman)
 * [Chad Hedstrom](https://github.com/Hadlock) - [personal site](http://nearlydeaf.com/)
 * [Sean Mollet](https://github.com/SeanMollet)
 * [Juan Manuel Carrillo Moreno](https://github.com/inetshell) - [personal site](https://wiki.inetshell.mx/)

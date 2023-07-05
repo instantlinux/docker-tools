@@ -15,8 +15,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://hub.docker.com/r/splunk/splunk
 type: application
-version: 0.1.6
-appVersion: "9.0.3"
+version: 0.1.7
+appVersion: "9.0.5"
 dependencies:
 - name: chartlib
   version: 0.1.8

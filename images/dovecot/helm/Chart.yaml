@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/vdukhovni/dovecot
 type: application
-version: 0.1.5
-appVersion: "2.3.20-r6"
+version: 0.1.6
+appVersion: "2.3.20-r10"
 dependencies:
 - name: chartlib
   version: 0.1.8

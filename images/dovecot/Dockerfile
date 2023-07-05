@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:3.7.3-r1
+FROM instantlinux/postfix:3.8.1-r0
 
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
@@ -9,7 +9,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DOVECOT_VERSION=2.3.20-r6
+ARG DOVECOT_VERSION=2.3.20-r10
 ARG MKCERT_SHA=24b6988d1709e71c24dcf94ffce5db93bd2e89dc5cbec1ac3c173de5274b68dd
 
 ENV LDAP_PASSWD_SECRET=ldap-ro-password \

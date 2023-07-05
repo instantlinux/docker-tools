@@ -1,4 +1,4 @@
-FROM haproxy:2.7.1-alpine
+FROM haproxy:2.8.1-alpine
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF

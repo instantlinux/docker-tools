@@ -1,4 +1,4 @@
-ARG POSTFIX_VERSION=3.7.3-r1
+ARG POSTFIX_VERSION=3.8.1-r0
 
 FROM instantlinux/postfix:$POSTFIX_VERSION
 MAINTAINER Rich Braun "docker@instantlinux.net"
@@ -22,7 +22,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
 
 ARG GETPIP_SHA=311afebb7cdd310eb3a3a6bb6fffef53d84493db98c7cebf4008a18d3418c8be
 ARG GETPIP_URI=https://bootstrap.pypa.io/pip/3.5/get-pip.py
-ARG PYTHON_PIP_VERSION=21.1.3
+ARG PYTHON_PIP_VERSION=23.1.2
 
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/

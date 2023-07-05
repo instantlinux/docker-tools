@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -18,7 +18,7 @@ ENV API_TOKEN_SECRET= \
     USERNAME=git-dump \
     TZ=UTC
 
-ARG GIT_VERSION=2.38.4-r1
+ARG GIT_VERSION=2.40.1-r0
 ARG GROUP=care
 ARG GID=505
 ARG UID=212
