@@ -35,7 +35,7 @@ ENV DHCP_BOOT=pxelinux.0 \
     TFTP_SERVER=self \
     TZ=UTC
 
-RUN apk add --no-cache --update dhcp=$DHCP_VERSION dnsmasq=$DNSMASQ_VERSION &&
+RUN apk add --no-cache --update dhcp=$DHCP_VERSION dnsmasq=$DNSMASQ_VERSION && \
     mkdir -m 755 /run/dhcp && chown dhcp /run/dhcp
 
 EXPOSE 53/udp 67/udp 69/udp
