@@ -142,7 +142,8 @@ configmap:
       batch  = true
       confirmbigdel = true
       copythreshold = 10000
-      copyquoterem = false
+      # copyquoterem feature seems to be gone as of 2.53.3
+      ## copyquoterem = false
       # SYS-400 overall performance is absolutely awful without this
       fastercheckUNSAFE = true
 

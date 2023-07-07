@@ -75,6 +75,8 @@ make mythfrontend-setup
 
 This ansible script is prone to configuration glitches so you will likely have to make adjustments in order to complete the process.
 
+Note that the [Kodi](https://kodi.tv/download/) frontend also provides limited support for the MythTV backend.
+ 
 ### Secrets
 
 Add these as Kubernetes secrets, or if you're running standalone specify these with source type "file". See the above volume mounts or the sample docker-compose.yml.
