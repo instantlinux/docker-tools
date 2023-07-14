@@ -24,7 +24,7 @@ RUN apt-get -yq update && \
     apt-get -y --no-install-recommends install \
      ca-certificates cron curl gcc libc6-dev libdbd-mysql-perl \
      libmail-dkim-perl libnet-ident-perl make pyzor razor gpg gpg-agent \
-     procps spamassassin=$SPAMD_VERSION && \
+     procps spamd=$SPAMD_VERSION && \
      usermod --uid $SPAMD_UID $USERNAME && \
      chsh -s /bin/sh $USERNAME && \
      mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
