@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DB_NAME=blacklist \
     DB_HOST=dbhost
 
-ARG RBLDNSD_VERSION=0.999~20180516-3
+ARG RBLDNSD_VERSION=1.0~20210120-2
 
 COPY src/ /root/
 RUN apt-get -yq update && \

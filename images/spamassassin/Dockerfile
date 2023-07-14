@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
@@ -16,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYZOR_SITE=public.pyzor.org:24441
 
 ARG DCC_VERSION=2.3.168
-ARG SPAMD_VERSION=3.4.6-1
+ARG SPAMD_VERSION=4.0.0-6
 ARG DCC_SHA=3fc932325b36a46a93258bdaa483d00ee3a826bea1d00de04f6e84cfbea63bc2
 ARG SPAMD_UID=2022
 
@@ -41,7 +41,7 @@ RUN apt-get -yq update && \
      /etc/razor/razor-agent.conf && \
     sed -i 's/DCCIFD_ENABLE=off/DCCIFD_ENABLE=on/' /var/dcc/dcc_conf && \
     sed -i '/^#\s*loadplugin .\+::DCC/s/^#\s*//g' /etc/spamassassin/v310.pre && \
-    apt-get purge -yq binutils cpp-10 libc6-dev libgcc-10-dev \
+    apt-get purge -yq binutils cpp-11 libc6-dev libgcc-11-dev \
      linux-libc-dev make && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
 

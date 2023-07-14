@@ -23,7 +23,7 @@ cd docker-tools/k8s
 make vsftpd
 ~~~
 
-Status: There's a recent fix for segfault crashes with vsftpd version 3.0.3 under Alpine that will come out in a future version. This one has a workaround that may work for you. [Wikipedia|https://en.wikipedia.org/wiki/Vsftpd] has a brief history of how vsftpd met its demise after 2011, with resurrection a few years later. I've switched to [proftpd](https://hub.docker.com/r/instantlinux/proftpd) (see that image).
+Status: [Wikipedia|https://en.wikipedia.org/wiki/Vsftpd] has a brief history of how vsftpd met its demise after 2011, with resurrection a few years later. I've switched to [proftpd](https://hub.docker.com/r/instantlinux/proftpd) (see that image). This image is still maintained.
 
 ### Variables
 

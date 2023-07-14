@@ -52,13 +52,11 @@ RUN \
   usermod -u $MYTHTV_UID -s /bin/bash mythtv && \
   mkdir -p /var/lib/mythtv $APACHE_LOG_DIR && \
   echo "mythtv:mythtv" | chpasswd && \
-  chown $MYTHTV_UID:$MYTHTV_GID /var/lib/mythtv
-RUN \
-  cat /etc/apache2/ports.conf
-RUN \
+  chown $MYTHTV_UID:$MYTHTV_GID /var/lib/mythtv && \
   wget -O /usr/bin/mythlink.pl -q \
     https://raw.githubusercontent.com/MythTV/mythtv/fixes/${PPA_BRANCH}/mythtv/contrib/user_jobs/mythlink.pl && \
-  echo "$MYTHLINK_SHA  /usr/bin/mythlink.pl" | sha256sum -c
+  echo "$MYTHLINK_SHA  /usr/bin/mythlink.pl" | sha256sum -c && \
+  chmod 755 /usr/bin/mythlink.pl
 
 EXPOSE $MYTHWEB_PORT $SSH_PORT 5000/udp 5002/udp 5004/udp 6543 6544 6549 \
   65001 65001/udp 

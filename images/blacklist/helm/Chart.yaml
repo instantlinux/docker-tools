@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/spamhaus/rbldnsd
 type: application
-version: 0.1.4
-appVersion: "0.999"
+version: 0.1.5
+appVersion: "1.0"
 dependencies:
 - name: chartlib
   version: 0.1.8

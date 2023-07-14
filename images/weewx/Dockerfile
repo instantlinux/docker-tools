@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -46,8 +46,8 @@ ENV AIRLINK_HOST= \
     WX_USER=weewx \
     XTIDE_LOCATION=unset
 
-ARG WEEWX_VERSION=4.9.1
-ARG WEEWX_SHA=a5b4f8410b15ee4827f53272acb6daa91fb605c558f6ae1c9c5541aebdae14c7
+ARG WEEWX_VERSION=4.10.2
+ARG WEEWX_SHA=d7f445560ac5be6424d4b81995109dcf05bd564a3b2fce201bf58ab46dda43fc
 ARG WEEGREEN_VERSION=v0.12
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
@@ -68,7 +68,6 @@ RUN apk add --no-cache --update \
       file freetype-dev g++ gawk gcc git jpeg-dev libpng-dev make musl-dev \
       py3-pip py3-wheel python3-dev zlib-dev && \
     pip install -r /root/requirements.txt && \
-    ln -s python3 /usr/bin/python && \
     tar xf weewx.tar.gz --strip-components=1 && \
     cd /build && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
