@@ -15,7 +15,8 @@ ENV DEST=. \
     GIT_REPO=uri \
     INTERVAL=0
 
-RUN apk add --no-cache --update git=$GIT_VERSION openssh-client
+RUN apk add --no-cache --update git=$GIT_VERSION openssh-client && \
+    apk upgrade libcrypto3 libssl3
 VOLUME /git
 
 COPY entrypoint.sh /root/

@@ -9,9 +9,10 @@ stages:
   - Static Code Analysis
   - Create Image
   - Functional Tests
+  - Security Scan
   - Promote Image
 
-image: docker:19.03.8
+image: docker:24.0.5
 
 .registry_template: &registry_login
   before_script:
@@ -34,10 +35,47 @@ test:
   stage: Functional Tests
   script: apk add make && cd images/$IMAGE && make test_functional
 
+security_scan_trivy:
+  services: [ "docker:dind" ]
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  stage: Security Scan
+  variables:
+    GIT_STRATEGY: none
+    TRIVY_CACHE_DIR: .trivycache/
+    TRIVY_DEBUG: "true"
+    TRIVY_EXIT_CODE: 1
+    TRIVY_FORMAT: json
+    TRIVY_OUTPUT: gl-container-scanning-report.json
+    TRIVY_SEVERITY: HIGH,CRITICAL
+    TRIVY_VULN_TYPE: os,library
+  script:
+  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
+  - trivy image --clear-cache
+  - trivy image --download-db-only --no-progress
+  - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
+      --exit-code 0 --format table --output medium-vulns.txt
+  - cat medium-vulns.txt
+  - trivy image "${REGISTRY}/${IMAGE}:${TAG}"
+  cache:
+    paths: [ .trivycache ]
+  interruptible: true
+  retry:
+    max: 2
+    when: [ runner_system_failure, stuck_or_timeout_failure ]
+  timeout: 5m
+  artifacts:
+    reports:
+      container_scanning: gl-container-scanning-report.json
+    expire_in: 30 days
+    paths: [ medium-vulns.txt ]
+
 promote_image:
   stage: Promote Image
   <<: *registry_login
   script: apk add curl jq make && cd images/$IMAGE && make promote_image
+  interruptible: true
   only:
     refs: [ main, tags ]
     variables: [ $REGISTRY_URI == "registry.gitlab.com" ]
