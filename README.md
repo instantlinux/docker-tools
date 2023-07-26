@@ -17,7 +17,8 @@ easy. Contents:
 | ssl | PKI certificate tools (deprecated by k8s) |
 | stacks | container resources in docker-compose format |
 
-Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/).
+Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/). Each image is scanned for published CVE vulnerabilities by (trivy)[https://trivy.dev/] before promotion to Docker Hub.
+
 Find a lot more details about the Kubernetes bare-metal installer in [k8s/README](k8s/README.md).
 
 ### Kubernetes capabilities

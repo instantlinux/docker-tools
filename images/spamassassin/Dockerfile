@@ -20,7 +20,7 @@ ARG SPAMD_VERSION=4.0.0-6
 ARG DCC_SHA=3fc932325b36a46a93258bdaa483d00ee3a826bea1d00de04f6e84cfbea63bc2
 ARG SPAMD_UID=2022
 
-RUN apt-get -yq update && \
+RUN apt-get -yq update && apt-get -y upgrade && \
     apt-get -y --no-install-recommends install \
      ca-certificates cron curl gcc libc6-dev libdbd-mysql-perl \
      libmail-dkim-perl libnet-ident-perl make pyzor razor gpg gpg-agent \

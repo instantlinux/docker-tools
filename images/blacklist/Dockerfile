@@ -20,7 +20,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 ARG RBLDNSD_VERSION=1.0~20210120-2
 
 COPY src/ /root/
-RUN apt-get -yq update && \
+RUN apt-get -yq update && apt-get -y upgrade && \
     apt-get -yq --no-install-recommends install \
       cron curl rbldnsd=$RBLDNSD_VERSION perl libdbd-mysql-perl \
       mariadb-client && \

@@ -29,7 +29,8 @@ ARG PPA_BRANCH=32
 ARG MYTHLINK_SHA=459cb8b60adae4b631a95a9cfb1b41dcb959cc4a0b9053582a711d58b8d8a0d2
 
 RUN \
-  apt-get -yq update && apt-get install -yq gnupg locales wget && \
+  apt-get -yq update && apt-get -y upgrade && \
+  apt-get install -yq gnupg locales wget && \
   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
   echo "deb $MYTHTV_PPA/ubuntu jammy main" \
     > /etc/apt/sources.list.d/mythbuntu.list && \
