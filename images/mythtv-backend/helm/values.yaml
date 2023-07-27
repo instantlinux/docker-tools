@@ -26,6 +26,8 @@ deployment:
 volumeMounts:
 - name: apache-log
   mountPath: /var/log/apache2
+- name: ssh-config
+  mountPath: /etc/ssh
 - name: data
   mountPath: /var/mythdata
 - name: share
@@ -49,6 +51,8 @@ volumeMounts:
   subPath: mythtv-user-password
 volumes:
 - name: apache-log
+  emptyDir: {}
+- name: ssh-config
   emptyDir: {}
 - name: data
   hostPath: { path: $MYTHTV_VOL_PATH }

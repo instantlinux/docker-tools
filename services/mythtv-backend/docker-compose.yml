@@ -15,6 +15,7 @@ services:
     - apache2:/var/log/apache2
     - data:/var/mythdata
     - home:/home/mythtv
+    - ssh-config:/etc/ssh
     - /var/mythtv:/var/mythtv
     - /var/mythtv/arch1:/var/mythtv/arch1
     - /var/mythtv/arch2:/var/mythtv/arch2
@@ -36,3 +37,4 @@ volumes:
   apache2:
   data:
   home:
+  ssh-config:

@@ -77,6 +77,15 @@ This ansible script is prone to configuration glitches so you will likely have t
 
 Note that the [Kodi](https://kodi.tv/download/) frontend also provides limited support for the MythTV backend.
  
+### Volumes
+
+Optionally, mount these path names to persistent storage:
+
+Path | Description
+---- | -----------
+/var/log/apache2 | Apache logs
+/etc/ssh | Host keys and configs for ssh
+
 ### Secrets
 
 Add these as Kubernetes secrets, or if you're running standalone specify these with source type "file". See the above volume mounts or the sample docker-compose.yml.
