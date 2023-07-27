@@ -15,6 +15,7 @@ services:
     - apache2:/var/log/apache2
     - data:/var/mythdata
     - home:/home/mythtv
+    - ssh-config:/etc/ssh
     - /var/mythtv:/var/mythtv
     secrets:
     - mythtv-db-password
@@ -30,3 +31,4 @@ volumes:
   apache2:
   data:
   home:
+  ssh-config:

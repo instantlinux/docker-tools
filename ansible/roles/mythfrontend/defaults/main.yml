@@ -227,7 +227,7 @@ ir_device:
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"
 
-mythtv_version: 32
+mythtv_version: 33
 
 opensuse_packages:
   - ImageMagick-devel
