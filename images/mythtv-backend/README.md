@@ -98,7 +98,7 @@ mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 ### Upgrade Notes
 
-Version 31:
+(This section applies only if you're running version 30, from 2020 or earlier.)
 
 You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from [Schedules Direct](https://www.schedulesdirect.org/). See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
 
