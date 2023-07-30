@@ -35,7 +35,6 @@ ARG COMPOSE_SHA=b9385dabb7931636a3afc0aee94625ebff3bb29584493a87804afb6ebaf2d916
 ARG KUBECTL_SHA=4685bfcf732260f72fce58379e812e091557ef1dfc1bc8084226c7891dd6028f
 
 COPY Pipfile* /root/
-
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \

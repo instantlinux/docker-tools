@@ -25,9 +25,10 @@ endif
 ifeq ($(IMAGE),nagiosql)
   PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
 endif
-ifeq ($(IMAGE),python-builder)
+ifeq ($(IMAGE),$(filter $(IMAGE),python-builder python-wsgi))
   # helm package on arm/v6 isn't supported as of Aug 2021
-  PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
+  #  others had issues with pipenv hashes Jul 2023
+  PLATFORMS = linux/amd64
 endif
 ifeq ($(IMAGE),spamassassin)
   PLATFORMS = linux/amd64,linux/arm64

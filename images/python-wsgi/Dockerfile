@@ -17,6 +17,7 @@ ARG PYPILLOW_VERSION=9.5.0-r1
 ARG UWSGI_VERSION=2.0.21-r3
 
 COPY Pipfile* uwsgi.ini /usr/src/
+
 RUN apk add --virtual .fetch-deps gcc git jpeg-dev linux-headers make \
       musl-dev libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
