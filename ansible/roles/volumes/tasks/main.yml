@@ -32,8 +32,8 @@
   - Cryptsetup resize
   - Filesystem resize
 
-- include: encrypted.yml
-- include: cifs.yml
+- import_tasks: encrypted.yml
+- import_tasks: cifs.yml
 
 - name: Network and local fstab entries
   mount:

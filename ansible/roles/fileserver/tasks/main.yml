@@ -14,8 +14,8 @@
     name: python-pip
   when: ansible_distribution_version < '20.04'
 
-- include: nfs.yml
-- include: instantlinux.yml
-- include: samba.yml
-- include: virtualbox.yml
-- include: vsftpd.yml
+- import_tasks: nfs.yml
+- import_tasks: instantlinux.yml
+- import_tasks: samba.yml
+- import_tasks: virtualbox.yml
+- import_tasks: vsftpd.yml

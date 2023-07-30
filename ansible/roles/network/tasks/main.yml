@@ -3,11 +3,11 @@
   apt:
     name: "{{ ubuntu_packages }}"
 
-- include: network_legacy.yml
+- import_tasks: network_legacy.yml
   when: ansible_distribution_version < '18.04'
 
-- include: netplan.yml
+- import_tasks: netplan.yml
   when: ansible_distribution_version >= '18.04'
 
-- include: kernel.yml
-- include: sshd.yml
+- import_tasks: kernel.yml
+- import_tasks: sshd.yml
