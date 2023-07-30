@@ -4,9 +4,9 @@
 # Set up all packages, volumes, security definitions and services
 #  for a docker swarm node
 
-- include: security.yml
-- include: repos.yml
-- include: kernel.yml
+- import_tasks: security.yml
+- import_tasks: repos.yml
+- include_tasks: kernel.yml
   when: kernel.non_stock
-- include: packages.yml
-- include: docker.yml
+- import_tasks: packages.yml
+- import_tasks: docker.yml

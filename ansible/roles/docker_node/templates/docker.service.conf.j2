@@ -1,0 +1,6 @@
+[Unit]
+RequiresMountsFor={{ docker_volumewait }}
+
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd {{ docker.cli_opts }}

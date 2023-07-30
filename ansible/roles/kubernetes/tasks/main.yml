@@ -50,14 +50,14 @@
   command: hostnamectl --static set-hostname {{ inventory_hostname }}
   when: inventory_hostname != ansible_hostname
 
-- include: cri-dockerd.yml
+- include_tasks: cri-dockerd.yml
 
 - name: Set up master
-  include: master.yml
+  include_tasks: master.yml
   when: k8s.master
 
 - name: Join cluster
-  include: join.yml
+  include_tasks: join.yml
   when: not k8s.master
 
 # TODO bug 1294

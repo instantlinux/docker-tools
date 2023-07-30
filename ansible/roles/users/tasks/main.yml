@@ -3,8 +3,8 @@
 
 # This is heavily customized: replace with your own security policies
 
-- include: packages.yml
-- include: grub.yml
+- import_tasks: packages.yml
+- import_tasks: grub.yml
 
 - name: Define group ids
   group:

@@ -1,7 +1,7 @@
 ---
 # main.yml
 
-- include: packages.yml
+- import_tasks: packages.yml
 
 - name: Local nagios plugins path
   file:
