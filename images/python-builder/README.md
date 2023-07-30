@@ -1,5 +1,5 @@
 ## python-builder
-[![](https://img.shields.io/docker/v/instantlinux/python-builder?sort=date)](https://hub.docker.com/r/instantlinux/python-builder/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/python-builder?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/python-builder "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/python-builder/Dockerfile "dockerfile")
+[![](https://img.shields.io/docker/v/instantlinux/python-builder?sort=date)](https://hub.docker.com/r/instantlinux/python-builder/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/python-builder?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/python-builder "Image badge") ![](https://img.shields.io/badge/platform-amd64-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/python-builder/Dockerfile "dockerfile")
 
 A multi-arch image with basic build tools (python/gcc) for GitLab-CI executors.
 
