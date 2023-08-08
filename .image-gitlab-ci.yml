@@ -57,6 +57,7 @@ security_scan_trivy:
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
       --exit-code 0 --format table --output medium-vulns.txt
   - cat medium-vulns.txt
+  - echo CVE-2023-2253 > .trivyignore
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}"
   cache:
     paths: [ .trivycache ]

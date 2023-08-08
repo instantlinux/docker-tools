@@ -46,7 +46,7 @@ RUN addgroup -g $DOCKER_GID docker && \
       py3-pycryptodomex py3-greenlet \
       py3-itsdangerous py3-jinja2 py3-ldap3 py3-passlib \
       py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
-      py3-werkzeug helm=$HELM_VERSION sqlite tar tzdata wget && \
+      py3-werkzeug helm=$HELM_VERSION sqlite tar tzdata wget libssl1.1 libcrypto1.1 && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ >/etc/timezone && \
     mkdir -p /usr/lib/docker/cli-plugins && \

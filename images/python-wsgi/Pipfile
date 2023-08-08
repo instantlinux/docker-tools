@@ -5,7 +5,8 @@
 
 [packages]
 # alpine provides pre-built wheels for these
-Authlib = "==1.2.0"
+# loads of breaking changes in 1.2
+Authlib = "<1.0.0"
 babel = "==2.12.1"
 boto3 = "==1.26.132"
 botocore = "==1.29.132"
@@ -34,7 +35,7 @@ werkzeug = "==2.2.3"
 alembic = "*"
 b2sdk = "*"
 celery = "*"
-connexion = "==2.7.0"
+connexion = "*"
 "connexion[swagger-ui]" = "*"
 docopt = "*"
 dollar-ref = "*"
@@ -49,3 +50,7 @@ SQLAlchemy = "<1.4.0"
 SQLAlchemy-Utils = "*"
 swagger-ui-bundle = "*"
 urllib3 = "*"
+
+# Transitive dependencies
+# for jsonschema-spec 0.2.3
+referencing = "<0.30.0"
