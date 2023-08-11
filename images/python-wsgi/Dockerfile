@@ -12,17 +12,19 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ENV PYTHONPATH=
 ARG PIP_VERSION=23.2.1
 ARG PYTHON_VERSION=3.11.4-r0
-ARG PYCRYPTOGRAPHY_VERSION=40.0.2-r1
+ARG PYCRYPTOGRAPHY_VERSION=41.0.2-r2
 ARG PYPILLOW_VERSION=9.5.0-r1
 ARG UWSGI_VERSION=2.0.21-r3
 
 COPY Pipfile* uwsgi.ini /usr/src/
 
-RUN apk add --virtual .fetch-deps gcc git jpeg-dev linux-headers make \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
+      >>/etc/apk/repositories && \
+    apk add --virtual .fetch-deps gcc git jpeg-dev linux-headers make \
       musl-dev libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
       proj py3-authlib py3-boto3 py3-botocore py3-cachetools \
-      py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION py3-ldap3 py3-pip \
+      py3-cffi py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION py3-ldap3 py3-pip \
       py3-pycryptodomex py3-greenlet py3-itsdangerous py3-jinja2 \
       py3-passlib py3-pillow=$PYPILLOW_VERSION py3-requests py3-setuptools \
       py3-virtualenv py3-werkzeug python3==$PYTHON_VERSION \
