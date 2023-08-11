@@ -21,7 +21,7 @@ ARG KUBECTL_VERSION=1.26.7
 ARG MUSL_VERSION=1.2.4-r1
 ARG PIP_VERSION=23.2.1
 ARG PYTHON_VERSION=3.11.4-r0
-ARG PYCRYPTOGRAPHY_VERSION=40.0.2-r1
+ARG PYCRYPTOGRAPHY_VERSION=41.0.2-r2
 ARG PYPILLOW_VERSION=9.5.0-r1
 ARG _DOCKER_DOWNLOADS=https://github.com/docker/compose/releases/download
 ARG _KUBECTL_DOWNLOADS=https://storage.googleapis.com/kubernetes-release/release
@@ -38,11 +38,13 @@ COPY Pipfile* /root/
 RUN addgroup -g $DOCKER_GID docker && \
     adduser -D -h $BUILD_DIR -u $BUILD_UID -G docker \
       -s /bin/bash $BUILD_USER && \
+    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
+      >>/etc/apk/repositories && \
     apk add --update --no-cache \
       bash curl docker-cli gcc gettext git gzip jq libffi-dev make \
       musl==$MUSL_VERSION musl-dev==$MUSL_VERSION openssh-client \
       python3==$PYTHON_VERSION python3-dev py3-authlib py3-boto3 py3-botocore \
-      py3-cachetools py3-cffi py3-cryptography==$PYCRYPTOGRAPHY_VERSION \
+      py3-cachetools py3-cffi py3-cryptography@edge==$PYCRYPTOGRAPHY_VERSION \
       py3-pycryptodomex py3-greenlet \
       py3-itsdangerous py3-jinja2 py3-ldap3 py3-passlib \
       py3-pillow=$PYPILLOW_VERSION py3-pip py3-requests py3-virtualenv \
