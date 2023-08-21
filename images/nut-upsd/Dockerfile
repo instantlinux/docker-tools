@@ -22,7 +22,7 @@ ENV API_USER=upsmon \
     SERVER=master \
     USER=nut \
     VENDORID=
-HEALTHCHECK CMD upsc ups@localhost:3493 2>&1|grep -q stale && exit 1 || true
+HEALTHCHECK CMD upsc $$NAME@localhost:3493 2>&1|grep -q stale && exit 1 || true
 
 RUN apk add --update nut=$NUT_VERSION \
       libcrypto1.1 libssl1.1 libusb musl net-snmp-libs
