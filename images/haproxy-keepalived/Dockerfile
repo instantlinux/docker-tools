@@ -19,6 +19,7 @@ ENV KEEPALIVE_CONFIG_ID=main \
     TZ=UTC
 
 USER root
+STOPSIGNAL SIGTERM
 RUN apk add --no-cache --update \
       keepalived=$KEEPALIVED_VERSION rsyslog && \
     getent passwd haproxy || adduser -S -u 99 haproxy && \
