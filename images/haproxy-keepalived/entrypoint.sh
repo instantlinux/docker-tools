@@ -1,5 +1,11 @@
 #!/bin/sh -e
 
+function graceful_stop() {
+    echo "Received SIGTERM"
+    kill -SIGTERM $(cat /run/keepalived/*.pid)
+    exit 0
+}
+
 if [ -s /run/secrets/$STATS_SECRET ]; then
   STATS_PASSWORD=$(cat /run/secrets/$STATS_SECRET)
 else
@@ -60,6 +66,9 @@ rm -f /run/rsyslogd.pid && rsyslogd
 if ! keepalived -i $KEEPALIVE_CONFIG_ID; then
   echo keepalived did not start, needs working /etc/keepalived/keepalived.conf
 fi
+trap graceful_stop SIGTERM
+
 sleep 10
 haproxy -f $HAPROXY_PATH/haproxy.cfg $CMD_OPTS || true
-tail +1 -f /var/log/messages
+tail +1 -f /var/log/messages &
+wait
