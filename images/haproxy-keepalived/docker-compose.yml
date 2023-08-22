@@ -8,6 +8,7 @@ services:
     environment:
       KEEPALIVE_CONFIG_ID: ${KEEPALIVED_CONFIG_ID:-main}
       TZ: ${TZ:-UTC}
+    stop_signal: SIGTERM
     volumes:
     - ${ADMIN_PATH:-/opt}/haproxy/etc:/usr/local/etc/haproxy.d:ro
     - ${ADMIN_PATH:-/opt}/keepalived/etc/keepalived.conf:/etc/keepalived/keepalived.conf:ro
