@@ -3,7 +3,7 @@
 function graceful_stop() {
     echo "Received SIGTERM"
     kill -SIGTERM $(cat /run/keepalived/*.pid)
-    exit 0
+    sleep 1; exit 0
 }
 
 if [ -s /run/secrets/$STATS_SECRET ]; then
