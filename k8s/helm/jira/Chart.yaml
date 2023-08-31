@@ -6,9 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://hub.docker.com/r/atlassian/jira-core
 type: application
-version: 0.1.1
-# Last version through license expiry Dec 2021
-appVersion: "8.20.3"
+version: 0.1.2
+appVersion: "9.7.2"
 dependencies:
 - name: chartlib
   version: 0.1.8
