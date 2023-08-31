@@ -20,6 +20,8 @@ COPY Pipfile* uwsgi.ini /usr/src/
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       >>/etc/apk/repositories && \
+    echo '@edge2 http://dl-cdn.alpinelinux.org/alpine/edge/main' \
+      >>/etc/apk/repositories && \
     apk add --virtual .fetch-deps gcc git jpeg-dev linux-headers make \
       musl-dev libwebp-dev openssl-dev pcre-dev python3-dev zlib-dev && \
     apk add --update --no-cache geos jpeg libjpeg-turbo libwebp \
@@ -28,7 +30,7 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       py3-pycryptodomex py3-greenlet py3-itsdangerous py3-jinja2 \
       py3-passlib py3-pillow=$PYPILLOW_VERSION py3-requests py3-setuptools \
       py3-virtualenv py3-werkzeug python3==$PYTHON_VERSION \
-      uwsgi@edge==$UWSGI_VERSION uwsgi-python3@edge zlib && \
+      uwsgi@edge2==$UWSGI_VERSION uwsgi-python3@edge2 zlib && \
     pip install --upgrade pipenv pip==$PIP_VERSION && \
     cd /usr/src && pipenv install --system --deploy && pip freeze && \
     apk del .fetch-deps && rm -r /var/cache/apk/* /root/.cache
