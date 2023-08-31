@@ -5,6 +5,7 @@
 	netbios name = {{ NETBIOS_NAME }}
 	realm = {{ REALM }}
 	server role = active directory domain controller
+	server string = {{ SERVER_STRING }}
 	workgroup = {{ WORKGROUP }}
 
 	add machine script = /usr/sbin/adduser -D -H -G users -s /bin/false %u
