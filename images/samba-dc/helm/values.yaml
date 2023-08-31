@@ -8,6 +8,7 @@ statefulset:
     interfaces: lo
     netbios_name: samba
     realm: workgroup.example.com
+    server_string: Samba Domain Controller
     tz: UTC
     workgroup: WORKGROUP
   # TODO: this will join with incorrect hostname until the following
