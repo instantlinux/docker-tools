@@ -47,6 +47,9 @@ volumeMounts:
 - mountPath: /opt/atlassian/jira/logs
   name: data
   subPath: logs
+- mountPath: /opt/java/openjdk/lib/security/cacerts
+  name: data
+  subPath: cacerts
 volumes:
 - name: data
   hostPath: { path: /var/lib/docker/k8s-volumes/jira }

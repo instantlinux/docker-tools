@@ -11,10 +11,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/python-wsgi
 ENV PYTHONPATH=
 ARG PIP_VERSION=23.2.1
-ARG PYTHON_VERSION=3.11.4-r0
+ARG PYTHON_VERSION=3.11.5-r0
 ARG PYCRYPTOGRAPHY_VERSION=41.0.3-r0
 ARG PYPILLOW_VERSION=9.5.0-r1
-ARG UWSGI_VERSION=2.0.21-r3
+ARG UWSGI_VERSION=2.0.22-r0
 
 COPY Pipfile* uwsgi.ini /usr/src/
 
@@ -28,7 +28,7 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       py3-pycryptodomex py3-greenlet py3-itsdangerous py3-jinja2 \
       py3-passlib py3-pillow=$PYPILLOW_VERSION py3-requests py3-setuptools \
       py3-virtualenv py3-werkzeug python3==$PYTHON_VERSION \
-      uwsgi==$UWSGI_VERSION uwsgi-python3 zlib && \
+      uwsgi@edge==$UWSGI_VERSION uwsgi-python3@edge zlib && \
     pip install --upgrade pipenv pip==$PIP_VERSION && \
     cd /usr/src && pipenv install --system --deploy && pip freeze && \
     apk del .fetch-deps && rm -r /var/cache/apk/* /root/.cache
