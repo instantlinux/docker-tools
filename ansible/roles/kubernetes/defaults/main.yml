@@ -13,7 +13,7 @@ k8s_defaults:
   admin_config: /etc/kubernetes/admin.conf
   apt_repo:
     # TODO use {{ ansible_distribution_release }}
-    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    repo: deb [signed-by=/etc/apt/keyrings/kubernetes.asc] http://apt.kubernetes.io/ kubernetes-xenial main
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
   kubeadm_opts: ''
   local_vols: /var/lib/docker/k8s-volumes
@@ -25,7 +25,7 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.25.3
+  version: 1.25.4
   cni_version: 1.1.1
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"

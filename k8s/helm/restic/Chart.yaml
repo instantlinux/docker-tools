@@ -9,7 +9,7 @@ type: application
 version: 0.1.5
 # Remember to update restic==<ver> in values.yaml as releases are published;
 #  the values.yaml file is not able to reference .Chart.appVersion
-appVersion: "0.15.2-r1"
+appVersion: "0.15.2-r2"
 dependencies:
 - name: chartlib
   version: 0.1.8

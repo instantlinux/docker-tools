@@ -49,7 +49,7 @@ import os
 import sys
 import yaml
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 STATUS_OK = 0
 STATUS_WARN = 1
@@ -198,7 +198,7 @@ def dot_get(_dict, path, default=None):
     for key in path.split('.'):
         try:
             _dict = _dict[key]
-        except KeyError:
+        except (KeyError, TypeError):
             return default
     return _dict
 
