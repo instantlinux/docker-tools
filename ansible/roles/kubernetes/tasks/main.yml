@@ -1,7 +1,8 @@
 ---
 - name: k8s repo key
-  apt_key:
+  get_url:
     url: "{{ k8s.apt_repo.url }}"
+    dest: /etc/apt/keyrings/kubernetes.asc
 
 - name: k8s repo
   apt_repository:
