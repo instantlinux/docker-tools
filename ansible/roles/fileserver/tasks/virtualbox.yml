@@ -1,14 +1,17 @@
 ---
 
 - name: Virtualbox repo key
-  apt_key:
+  get_url:
     url: "{{ item }}"
+    dest: /etc/apt/keyrings/{{ item | basename }}
   with_items:
   - "{{ virtualbox.apt_repo.key_urls }}"
 
 - name: Virtualbox repository
   apt_repository:
-    repo: deb [arch=amd64] {{ virtualbox.apt_repo.url }} {{ ansible_distribution_release }} contrib
+    repo: >
+      deb [arch=amd64 signed-by=/etc/apt/keyrings/oracle_vbox_2016.asc]
+      {{ virtualbox.apt_repo.url }} {{ ansible_distribution_release }} contrib
     filename: virtualbox
 
 - name: Virtualbox package

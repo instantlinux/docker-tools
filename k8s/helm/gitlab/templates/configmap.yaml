@@ -7,7 +7,6 @@ metadata:
 data:
   gitlab.rb: |
     external_url 'http://{{ .Values.tlsHostname }}'
-    gitaly['logging_level'] = '{{ .Values.gitaly.logging_level }}'
     gitlab_rails['backup_keep_time'] = 2592000
     gitlab_rails['db_adapter'] = 'postgresql'
     gitlab_rails['db_encoding'] = 'utf8'
