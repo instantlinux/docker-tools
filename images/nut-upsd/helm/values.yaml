@@ -29,11 +29,9 @@ volumes:
     secretName: nut-upsd-password
 
 image:
-  # repository: instantlinux/nut-upsd
+  repository: instantlinux/nut-upsd
   pullPolicy: IfNotPresent
   # tag: default
-  repository: nexus.instantlinux.net/nut-upsd
-  tag: testing
 
 nameOverride: ""
 fullnameOverride: ""
