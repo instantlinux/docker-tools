@@ -6,6 +6,13 @@ deployment:
     privileged: true
   strategy:
     type: Recreate
+livenessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - 'upsc ups@localhost:3493 2>&1|grep -q stale && exit 1 || true'
+  periodSeconds: 30
 volumeMounts:
 # TODO make this work with pod security policies instead of securityContext
 # - name: usb
@@ -22,9 +29,11 @@ volumes:
     secretName: nut-upsd-password
 
 image:
-  repository: instantlinux/nut-upsd
+  # repository: instantlinux/nut-upsd
   pullPolicy: IfNotPresent
   # tag: default
+  repository: nexus.instantlinux.net/nut-upsd
+  tag: testing
 
 nameOverride: ""
 fullnameOverride: ""
