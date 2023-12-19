@@ -30,6 +30,9 @@ EOF
       echo "        sdorder = $SDORDER" >> /etc/nut/ups.conf
     fi
   fi
+  if [ "$MAXAGE" -ne 15 ]; then
+      sed -i -e "s/^[# ]*MAXAGE [0-9]\+/MAXAGE $MAXAGE/" /etc/nut/upsd.conf
+  fi
   if [ -e /etc/nut/local/upsd.conf ]; then
     cp /etc/nut/local/upsd.conf /etc/nut/upsd.conf
   else

@@ -13,6 +13,7 @@ ENV API_USER=upsmon \
     DESCRIPTION=UPS \
     DRIVER=usbhid-ups \
     GROUP=nut \
+    MAXAGE=15 \
     NAME=ups \
     POLLINTERVAL= \
     PORT=auto \
@@ -22,7 +23,8 @@ ENV API_USER=upsmon \
     SERVER=master \
     USER=nut \
     VENDORID=
-HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && exit 1 || true
+HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
+    kill -SIGTERM -1 || true
 
 RUN apk add --update nut=$NUT_VERSION \
       libcrypto3 libssl3 libusb musl net-snmp-libs

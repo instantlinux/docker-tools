@@ -1,6 +1,8 @@
 # Default values for nut-upsd.
 deployment:
   env:
+    driver: usbhid-ups
+    maxage: 15
     serial: mustbeset
   securityContext:
     privileged: true
