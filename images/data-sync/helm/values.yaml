@@ -101,7 +101,6 @@ configmap:
     common.prf: |
       # Directives for unison
       ignore = Name .Xauthority
-      ignore = Name atlassian-jira-security.log
       ignore = Name DVRWorkDirectory
       ignore = Name ldapi
       ignore = Name lost+found
@@ -110,27 +109,21 @@ configmap:
       ignore = Name *KubernetesClients.log
       ignore = Name *socket
       ignore = Name .s.PGSQL.5432
+      ignore = Name atlassian-*.log
       ignore = Name pgstat.stat
       ignore = Path data-sync/share/artifactory/data/data/derby/log
       ignore = Path data-sync/share/artifactory/data/logs/request.log
       ignore = Path data-sync/share/nagios/var/rw
+      ignore = Path data-sync/share/rainloop/data/_data_/_default_/cache
       ignore = Path data-sync/dos
-      ignore = Path data-sync/duplicati/config
-      ignore = Path data-sync/gitlab/data/postgresql/data/pg_stat_tmp
-      ignore = Path data-sync/gitlab/data/prometheus/data
-      ignore = Path data-sync/gitlab/data/redis/dump.rdb
       ignore = Path data-sync/gitlab/data/gitaly
-      ignore = Path data-sync/gitlab/logs/sshd/current
+      ignore = Path data-sync/home/*/.kube/cache
       ignore = Path data-sync/jira/home/analytics-logs
-      ignore = Path data-sync/jira/home/log/atlassian-jira.log
-      ignore = Path data-sync/jira/home/log/atlassian-jira-ipd-monitoring.log
-      ignore = Path data-sync/jira/home/log/atlassian-jira-outgoing-mail.log
-      ignore = Path data-sync/jira/home/log/atlassian-jira-perf.log
       ignore = Path data-sync/jira/home/log/automation-jira-performance.csv
       ignore = Path data-sync/jira/home/monitor/ConnectionPoolGraph.rrd4j
       ignore = Path data-sync/jira/home/monitor/DatabaseReadWritesGraph.rrd4j
-      ignore = Path data-sync/jira/home/plugins/.osgi-plugins/felix/felix-cache
-      ignore = Path data-sync/jira/logs
+      ignore = Path data-sync/jira/home/log/jfr
+      ignore = Path data-sync/jira/logs/access_*
       ignore = Path data-sync/nexus/db/accesslog
       ignore = Path redis/current
       ignore = Path data-sync/samba-dc/var/lib/winbindd_privileged/pipe

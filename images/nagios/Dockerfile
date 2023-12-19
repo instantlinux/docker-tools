@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,10 +8,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG NAGIOS_VERSION=4.4.13-r0
+ARG NAGIOS_VERSION=4.4.13-r1
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG PLUGINS_VERSION=2.4.5-r2
+ARG PLUGINS_VERSION=2.4.5-r1
 ARG WWW_UID=33
 ENV AUTHORIZED_USERS=nagiosadmin \
     CONFIG_CHECK=yes \
@@ -29,14 +29,12 @@ RUN deluser xfs && addgroup -g $NAGIOS_GID nagios && \
     adduser -g www-data -u $WWW_UID -DSH -h /var/www www-data && \
     adduser -G nagios -g "Nagios Server" -DSH -h /var/nagios -u $NAGIOS_UID \
       nagios && \
-    echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' \
-      >>/etc/apk/repositories && \
     apk add --update --no-cache nagios=$NAGIOS_VERSION nagios-web \
       nagios-plugins-all=$PLUGINS_VERSION \
       nagios-plugins-mysql=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \
       perl-crypt-x509 perl-libwww perl-text-glob perl-timedate \
-      php8@testing php8-fpm@testing py3-pip python3 ssmtp tzdata && \
+      php81 php81-fpm py3-pip python3 ssmtp tzdata && \
     pip3 install pymysql==1.0.2 && \
     addgroup nginx nagios && \
     chmod u+s /usr/lib/nagios/plugins/check_ping && \
