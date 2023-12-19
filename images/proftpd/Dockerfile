@@ -31,7 +31,7 @@ ENV ALLOW_OVERWRITE=on \
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 RUN chmod 644 /etc/proftpd/proftpd.conf && \
     apk add --update \
-        libcrypto1.1 \
+        libcrypto3 \
         proftpd=$PROFTPD_VERSION \
         tzdata \
         proftpd-mod_sftp \
