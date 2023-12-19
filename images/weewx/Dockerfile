@@ -67,7 +67,7 @@ RUN apk add --no-cache --update \
     apk add --no-cache --virtual .fetch-deps \
       file freetype-dev g++ gawk gcc git jpeg-dev libpng-dev make musl-dev \
       py3-pip py3-wheel python3-dev zlib-dev && \
-    pip install -r /root/requirements.txt && \
+    pip install -r /root/requirements.txt --break-system-packages && \
     tar xf weewx.tar.gz --strip-components=1 && \
     cd /build && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
