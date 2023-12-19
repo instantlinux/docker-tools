@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OPENLDAP_VERSION=2.6.5-r0
+ARG OPENLDAP_VERSION=2.6.6-r1
 ENV SLAPD_DN_ATTR=uid \
     SLAPD_FQDN=example.com \
     SLAPD_LOG_LEVEL=Config,Stats \

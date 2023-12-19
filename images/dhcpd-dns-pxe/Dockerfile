@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,8 +8,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DHCP_VERSION=4.4.3_p1-r2
-ARG DNSMASQ_VERSION=2.89-r5
+ARG DHCP_VERSION=4.4.3_p1-r4
+ARG DNSMASQ_VERSION=2.89-r6
 
 ENV DHCP_BOOT=pxelinux.0 \
     DHCP_ENABLE=yes \

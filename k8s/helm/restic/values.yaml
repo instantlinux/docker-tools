@@ -7,7 +7,7 @@ deployment:
   args:
   - -c
   - >
-    apk add --update restic==0.15.2-r4 tzdata &&
+    apk add --update restic==$APP_VERSION tzdata &&
     ln -s /usr/share/zoneinfo/$TZ /etc/localtime &&
     echo $TZ > /etc/timezone &&
     echo "if [ -r $HOME/.resticrc ]; then . $HOME/.resticrc; fi" \
@@ -15,6 +15,8 @@ deployment:
     touch /var/log/restic.log && /usr/sbin/crond &&
     mkdir -p /var/log/week && tail -f -n 0 /var/log/restic.log
   env:
+    # Edit the version in Chart.yaml to keep consistent
+    app_version: 0.16.2-r0
     env: /etc/profile
     tz: UTC
   nodeSelector:
@@ -92,7 +94,7 @@ volumes:
 image:
   repository: alpine
   pullPolicy: IfNotPresent
-  tag: 3.18
+  tag: 3.19
 
 nameOverride: ""
 fullnameOverride: ""
