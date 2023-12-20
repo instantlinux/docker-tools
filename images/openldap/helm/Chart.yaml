@@ -7,7 +7,7 @@ sources:
 - https://git.openldap.org/openldap/openldap
 type: application
 version: 0.1.5
-appVersion: "2.6.6-r0"
+appVersion: "2.6.6-r1"
 dependencies:
 - name: chartlib
   version: 0.1.8

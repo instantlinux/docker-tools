@@ -30,7 +30,7 @@ COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
 RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION samba-winbind-clients=$SAMBA_VERSION tdb \
       bind bind-libs bind-tools libcrypto3 libxml2 tzdata py3-setuptools py3-pip && \
-    pip install j2cli && \
+    pip install j2cli --break-system-packages && \
     apk del py3-pip && \
     chmod 0755 /usr/local/bin/entrypoint.sh
 

@@ -25,6 +25,10 @@ endif
 ifeq ($(IMAGE),nagiosql)
   PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
 endif
+ifeq ($(IMAGE),postfix-python)
+  # qemu bombs out with cpu_exec assertion since Dec 2023 on arm/v7
+  PLATFORMS = linux/amd64,linux/aarch64,linux/arm64
+endif
 ifeq ($(IMAGE),$(filter $(IMAGE),python-builder python-wsgi))
   # helm package on arm/v6 isn't supported as of Aug 2021
   #  others had issues with pipenv hashes Jul 2023
