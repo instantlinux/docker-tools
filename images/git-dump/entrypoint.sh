@@ -23,7 +23,7 @@ Host *
  Port $SSH_PORT
 EOF
   if [ ! -z "$REPO_PREFIX" ]; then
-    SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d: -f 1)
+    SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d/ -f 1| cut -d: -f 1)
     RETRIES=10
     while [ ! -s /tmp/sshkey ]; do
       sleep 5
