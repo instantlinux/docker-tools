@@ -7,7 +7,16 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://gitlab.com/gitlab-org/gitlab
 type: application
-version: 0.1.9
+version: 0.1.10
+############################
+##
+##
+##
+# Held back - No longer using GitLab - see the gitea helm chart instead
+##
+##
+##
+############################
 appVersion: "16.6.2-ce.0"
 dependencies:
 - name: chartlib

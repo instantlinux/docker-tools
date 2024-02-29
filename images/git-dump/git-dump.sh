@@ -31,8 +31,6 @@ ERROR_STATE=0
 [ -e /etc/opt/git-dump ] && source /etc/opt/git-dump
 log_entry info status=START
 
-API_VERSION=v4
-
 # Dumps will be kept in directories named as day of week or
 # day of month if 31 or less; else combine month+day if longer
 
@@ -47,11 +45,30 @@ else
 fi
 
 if [ ! -z "$API_TOKEN_SECRET" ] && [ -e /run/secrets/$API_TOKEN_SECRET ]; then
-  SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d: -f 1)
+  SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d/ -f 1 | cut -d: -f 1)
   TOKEN=$(cat /run/secrets/$API_TOKEN_SECRET)
-  curl -s -k --header "PRIVATE-TOKEN: $TOKEN" \
-    https://$SSH_HOST/api/$API_VERSION/projects > /tmp/projects.json
-  ITEMS=$(jq -r .[].name /tmp/projects.json | sort)
+  if [ $SCM_TYPE == github ]; then
+    API_VERSION=v3
+    API_PATH=repo
+    AUTH_HEADER='Authorization: token'
+    RESULT_PATH='.[].name'
+    # TODO github not yet working
+  elif [ $SCM_TYPE == gitlab ]; then
+    API_VERSION=v4
+    API_PATH=projects
+    AUTH_HEADER=PRIVATE-TOKEN:
+    RESULT_PATH='.[].name'
+  elif [ $SCM_TYPE == gitea ]; then
+    API_VERSION=v1
+    API_PATH=repos/search
+    AUTH_HEADER='Authorization: token'
+    RESULT_PATH='.data[].full_name'
+    [[ $REPO_PREFIX = git@* ]] && REPO_PREFIX=ssh://$REPO_PREFIX
+  fi
+
+  curl -s -k --header "$AUTH_HEADER $TOKEN" \
+    https://$SSH_HOST/api/$API_VERSION/$API_PATH > /tmp/projects.json
+  ITEMS=$(jq -r $RESULT_PATH /tmp/projects.json | sort)
 else
   ITEMS=$@
 fi

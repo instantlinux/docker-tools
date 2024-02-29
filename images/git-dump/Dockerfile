@@ -11,8 +11,10 @@ ENV API_TOKEN_SECRET= \
     DEST_DIR=/var/backup/git \
     HOUR=0 MINUTE=45 \
     KEEP_DAYS=31 \
+    ORG= \
     REPO_PREFIX=git@github.com:instantlinux/ \
     REPOS= \
+    SCM_TYPE=github \
     SSHKEY_SECRET=git-dump_sshkey \
     SSH_PORT=22 \
     USERNAME=git-dump \

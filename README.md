@@ -48,7 +48,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | Service | Version | Notes |
 | --- | --- | --- |
 | artifactory | ** | binary repo |
-| gitlab | ** | CI server and git repo |
+| gitea | ** | git repo |
 | admin-git | [![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull "Version badge") | sync git repo across swarm |
 | jira | ** | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|

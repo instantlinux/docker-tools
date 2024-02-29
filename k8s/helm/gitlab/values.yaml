@@ -1,4 +1,13 @@
 # Default values for gitlab.
+############################
+##
+##
+##
+# No longer using GitLab - for self-hosted git, see the gitea helm chart
+##
+##
+##
+############################
 gitlab_shell:
   log_level: WARN
 nginx:
