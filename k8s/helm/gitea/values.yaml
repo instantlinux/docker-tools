@@ -1,7 +1,19 @@
-# Default values for gitea.
 tlsHostname: gitea.example.com
 nodeportSSH: 30999
+# TODO - if only there were a way to reference these values within
+#   the configmap definition below, without moving it to a separate
+#   template. Something like {{ tpl .Values.backups.hour . }} but
+#   that doesn't work. Constants are defined here and below.
+# backups:
+#   hour: 7
+#   keepDays: 90
 deployment:
+  command: [/bin/bash]
+  args:
+  - -c
+  - |
+    crond -L /tmp/cron.log -l 8
+    exec /usr/bin/dumb-init -- /usr/local/bin/docker-entrypoint.sh
   env:
     gitea__database__host: "db00:3306"
     gitea__database__name: gitea
@@ -11,7 +23,6 @@ deployment:
     gitea__mailer__smtp_addr: smtp
     gitea__service__disable_registration: "false"
     gitea__service__require_signin_view: "true"
-    tz: UTC
     # runAsUser unsupported - leave these at default
     user_gid: 1000
     user_uid: 1000
@@ -37,7 +48,7 @@ deployment:
     service.gitea: allow
   resources:
     limits:
-      memory: 2048Mi
+      memory: 1024Mi
     requests:
       cpu: 300m
       memory: 128Mi
@@ -48,10 +59,27 @@ volumeMounts:
 - mountPath: /etc/gitea
   name: data
   subPath: etc
-  # readOnly: true
+- mountPath: /etc/crontabs/git
+  name: config
+  subPath: cron
+- mountPath: /etc/crontabs/root
+  name: config
+  subPath: root
+- mountPath: /usr/local/bin/cron-dump
+  name: config
+  subPath: dump
+- mountPath: /var/backups
+  name: backup
+  subPath: gitea
 volumes:
+- name: backup
+  hostPath: { path: /var/lib/docker/k8s-volumes/backup }
 - name: data
   hostPath: { path: /var/lib/docker/k8s-volumes/share/gitea }
+- name: config
+  configMap:
+    name: gitea
+    defaultMode: 0755
 
 image:
   repository: gitea/gitea
@@ -81,3 +109,12 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-access-log: "false"
+
+configmap:
+  data:
+    cron: 0 7 * * * /usr/local/bin/cron-dump
+    root: ""
+    dump: |
+      #!/bin/bash
+      gitea dump -f /var/backups/dump.$(date +%Y-%m-%d_%H-%M) && \
+      rm $(find . -mtime 90 -name '*.zip')
