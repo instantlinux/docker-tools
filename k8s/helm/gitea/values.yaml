@@ -78,10 +78,6 @@ volumes:
   hostPath: { path: /var/lib/docker/k8s-volumes/backup }
 - name: data
   hostPath: { path: /var/lib/docker/k8s-volumes/share/gitea }
-- name: config
-  configMap:
-    name: gitea
-    defaultMode: 0755
 
 image:
   repository: gitea/gitea
