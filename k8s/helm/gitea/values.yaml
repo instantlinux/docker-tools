@@ -1,7 +1,7 @@
 tlsHostname: gitea.example.com
 nodeportSSH: 30999
 # TODO - if only there were a way to reference these values within
-#   the configmap definition below, without moving it to a separate
+#   the backup script below, without moving it to a separate
 #   template. Something like {{ tpl .Values.backups.hour . }} but
 #   that doesn't work. Constants are defined here and below.
 # backups:
@@ -12,7 +12,17 @@ deployment:
   args:
   - -c
   - |
-    crond -L /tmp/cron.log -l 8
+    # This script is a workaround for lack of non-privileged cron
+    # under alpine/busybox
+    while true; do
+      if [ $(date +%H) -eq 7 ]; then
+        gitea dump -f /var/backups/dump.$(date +%Y-%m-%d_%H-%M) && \
+          find /var/backups -mtime 90 -name '*.zip' -delete
+        sleep 3600
+      else
+        sleep 60
+      fi
+    done &
     exec /usr/bin/dumb-init -- /usr/local/bin/docker-entrypoint.sh
   env:
     gitea__database__host: "db00:3306"
@@ -59,15 +69,6 @@ volumeMounts:
 - mountPath: /etc/gitea
   name: data
   subPath: etc
-- mountPath: /etc/crontabs/git
-  name: config
-  subPath: cron
-- mountPath: /etc/crontabs/root
-  name: config
-  subPath: root
-- mountPath: /usr/local/bin/cron-dump
-  name: config
-  subPath: dump
 - mountPath: /var/backups
   name: backup
   subPath: gitea
@@ -109,12 +110,3 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-access-log: "false"
-
-configmap:
-  data:
-    cron: 0 7 * * * /usr/local/bin/cron-dump
-    root: ""
-    dump: |
-      #!/bin/bash
-      gitea dump -f /var/backups/dump.$(date +%Y-%m-%d_%H-%M) && \
-      rm $(find . -mtime 90 -name '*.zip')
