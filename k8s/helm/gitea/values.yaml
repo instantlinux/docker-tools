@@ -1,3 +1,4 @@
+# Default values for gitea.
 tlsHostname: gitea.example.com
 nodeportSSH: 30999
 # TODO - if only there were a way to reference these values within
