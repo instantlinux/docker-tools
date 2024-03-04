@@ -1,7 +1,30 @@
 # Default values for gitea.
 tlsHostname: gitea.example.com
 nodeportSSH: 30999
+# TODO - if only there were a way to reference these values within
+#   the backup script below, without moving it to a separate
+#   template. Something like {{ tpl .Values.backups.hour . }} but
+#   that doesn't work. Constants are defined here and below.
+# backups:
+#   hour: 7
+#   keepDays: 90
 deployment:
+  command: [/bin/bash]
+  args:
+  - -c
+  - |
+    # This script is a workaround for lack of non-privileged cron
+    # under alpine/busybox
+    while true; do
+      if [ $(date +%H) -eq 7 ]; then
+        gitea dump -f /var/backups/dump.$(date +%Y-%m-%d_%H-%M) && \
+          find /var/backups -mtime 90 -name '*.zip' -delete
+        sleep 3600
+      else
+        sleep 60
+      fi
+    done &
+    exec /usr/bin/dumb-init -- /usr/local/bin/docker-entrypoint.sh
   env:
     gitea__database__host: "db00:3306"
     gitea__database__name: gitea
@@ -11,7 +34,6 @@ deployment:
     gitea__mailer__smtp_addr: smtp
     gitea__service__disable_registration: "false"
     gitea__service__require_signin_view: "true"
-    tz: UTC
     # runAsUser unsupported - leave these at default
     user_gid: 1000
     user_uid: 1000
@@ -37,7 +59,7 @@ deployment:
     service.gitea: allow
   resources:
     limits:
-      memory: 2048Mi
+      memory: 1024Mi
     requests:
       cpu: 300m
       memory: 128Mi
@@ -48,8 +70,12 @@ volumeMounts:
 - mountPath: /etc/gitea
   name: data
   subPath: etc
-  # readOnly: true
+- mountPath: /var/backups
+  name: backup
+  subPath: gitea
 volumes:
+- name: backup
+  hostPath: { path: /var/lib/docker/k8s-volumes/backup }
 - name: data
   hostPath: { path: /var/lib/docker/k8s-volumes/share/gitea }
 
