@@ -32,7 +32,8 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       >>/etc/apk/repositories && \
     apk add --no-cache dash@edgemain && \
     apk add --update --no-cache nut@edge=$NUT_VERSION \
-      busybox@edgemain linux-pam@edgemain \
+      busybox@edgemain linux-pam@edgemain util-linux@edgemain \
+      xz-libs@edgemain \
       libcrypto3@edgemain libssl3@edgemain \
       libusb musl net-snmp-libs util-linux
 
