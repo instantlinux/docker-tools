@@ -94,19 +94,10 @@ for item in backup hosts services; do
 done
 start-stop-daemon -u nginx -b --exec /usr/bin/fcgiwrap -- \
   -s unix:/run/fcgiwrap/fcgiwrap.sock
-/usr/sbin/php-fpm8
+/usr/sbin/php-fpm81
 /usr/sbin/nginx
 touch /var/nagios/nagios.log && tail -1 -f /var/nagios/nagios.log &
 find /var/nagios -not -user nagios -exec chown nagios.nagios {} \;
 find /etc/nagios/objects -not -user www-data -exec chown www-data.nagios {} \;
 
-# TODO change this back to exec after fix is published
-#  https://github.com/NagiosEnterprises/nagioscore/issues/861
-if ! /usr/sbin/nagios /etc/nagios/nagios.cfg; then
-  echo Segfault - please set check_for_updates=0 in /etc/nagios/nagios.cfg
-  exit 1
-fi
-
-while [ 1 == 1 ]; do
-  sleep 60
-done
+exec /usr/sbin/nagios /etc/nagios/nagios.cfg
