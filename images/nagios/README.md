@@ -5,7 +5,7 @@ Nagios Core monitoring service built under Alpine for multiple platforms
 
 ### Usage
 
-This is Nagios Core 4.x and the primary plugins, served by nginx in an efficient Alpine image. It exists mainly because the jasonrivers/nagios image hasn't been maintained regularly since about 2018; this one is simpler, easier to keep up-to-date, handles restart properly and runs on your choice of platform. The new version of plugins has quite a few additions and improvements since then. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql/docker-compose.yml) which will launch 3 services: this instantlinux/nagios image, the [NagiosQL image](https://hub.docker.com/repository/docker/instantlinux/nagiosql) and another nginx server which provides SSL termination. To round out the monitoring solution, this setup is compatible with the free [easyNag](https://www.easynag.com/) mobile app.
+This is Nagios Core 4.x and the primary plugins, served by nginx in an efficient Alpine image. Here in this codebase find an example [docker-compose.yml](https://github.com/instantlinux/docker-tools/blob/main/images/nagiosql/docker-compose.yml) which will launch 3 services: this instantlinux/nagios image, the [NagiosQL image](https://hub.docker.com/repository/docker/instantlinux/nagiosql) and another nginx server which provides SSL termination. To round out the monitoring solution, this setup is compatible with the free [easyNag](https://www.easynag.com/) mobile app.
 
 To support plugins that you might want to add as a volume-mount, the image includes bash, the mariadb client, perl, python3, samba client, and sudo.
 
