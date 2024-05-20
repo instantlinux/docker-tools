@@ -114,6 +114,7 @@ configmap:
       ignore = Path data-sync/share/artifactory/data/data/derby/log
       ignore = Path data-sync/share/artifactory/data/logs/request.log
       ignore = Path data-sync/share/nagios/var/rw
+      ignore = Path data-sync/share/openldap/data/lock.mdb
       ignore = Path data-sync/share/rainloop/data/_data_/_default_/cache
       ignore = Path data-sync/dos
       ignore = Path data-sync/gitlab/data/gitaly
@@ -125,6 +126,10 @@ configmap:
       ignore = Path data-sync/jira/home/log/jfr
       ignore = Path data-sync/jira/logs/access_*
       ignore = Path data-sync/nexus/db/accesslog
+      ignore = Path data-sync/nexus/db/analytics/analytics*
+      ignore = Path data-sync/nexus/db/analytics/metrics_log*
+      ignore = Path data-sync/nexus/db/config/quartz_trigger*
+      ignore = Path data-sync/nexus/log/audit/audit.log
       ignore = Path redis/current
       ignore = Path data-sync/samba-dc/var/lib/winbindd_privileged/pipe
       ignore = Path data-sync/syslog/log/messages

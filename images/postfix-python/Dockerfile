@@ -1,4 +1,4 @@
-ARG POSTFIX_VERSION=3.8.3-r1
+ARG POSTFIX_VERSION=3.8.6-r0
 
 FROM instantlinux/postfix:$POSTFIX_VERSION
 MAINTAINER Rich Braun "docker@instantlinux.net"
