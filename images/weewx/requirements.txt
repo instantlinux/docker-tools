@@ -1,6 +1,6 @@
 ephem==3.7.7.1
 # These are alpine packages, we just use latest
-Cheetah3
+CT3
 mysqlclient
 pillow
 pyserial

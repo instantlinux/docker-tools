@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -46,8 +46,8 @@ ENV AIRLINK_HOST= \
     WX_USER=weewx \
     XTIDE_LOCATION=unset
 
-ARG WEEWX_VERSION=4.10.2
-ARG WEEWX_SHA=d7f445560ac5be6424d4b81995109dcf05bd564a3b2fce201bf58ab46dda43fc
+ARG WEEWX_VERSION=5.0.2
+ARG WEEWX_SHA=3e55fdf359b9aa3388a1826f0bfad6665a1a865ddfa521286449bcad036c4262
 ARG WEEGREEN_VERSION=v0.12
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
@@ -60,15 +60,22 @@ RUN apk add --no-cache --update \
       rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mkdir build && cd build && \
-    curl -sLo weewx.tar.gz \
-      http://www.weewx.com/downloads/released_versions/weewx-$WEEWX_VERSION.tar.gz && \
-    echo "$WEEWX_SHA  weewx.tar.gz" >> /build/checksums && \
+    curl -sLo weewx.tgz \
+      http://www.weewx.com/downloads/released_versions/weewx-$WEEWX_VERSION.tgz && \
+    echo "$WEEWX_SHA  weewx.tgz" >> /build/checksums && \
     sha256sum -c /build/checksums && \
     apk add --no-cache --virtual .fetch-deps \
       file freetype-dev g++ gawk gcc git jpeg-dev libpng-dev make musl-dev \
       py3-pip py3-wheel python3-dev zlib-dev && \
+    #
+    # Lots of breaking changes since 4.x, alas: ticket is SYS-623.
+    #   See https://github.com/weewx/weewx/wiki/v5-upgrade
+    #   The setup.py procedure found in 4.x went missing in 5.0
+    #
+    # TODO deal with break-system-packages, no idea what broke
     pip install -r /root/requirements.txt --break-system-packages && \
-    tar xf weewx.tar.gz --strip-components=1 && \
+    tar xf weewx.tgz --strip-components=1 && \
+    ### TODO 5/20/2024 version 5.0 no longer has setup.py. Build is broken.
     cd /build && \
     ./setup.py build && ./setup.py install < /root/install-input.txt && \
     git clone -b $WEEGREEN_VERSION --depth 1 \
