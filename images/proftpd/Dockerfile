@@ -9,6 +9,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG PROFTPD_VERSION=1.3.8b-r1
+
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \
     ANON_UPLOAD_ENABLE=DenyAll \

@@ -7,7 +7,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name=dhcpd-dns-pxe \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-
 ARG DHCP_VERSION=4.4.3_p1-r4
 ARG DNSMASQ_VERSION=2.90-r2
 
