@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.20
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG NAGIOS_VERSION=4.5.1-r0
+ARG NAGIOS_VERSION=4.5.2-r0
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
 ARG PLUGINS_VERSION=2.4.5-r1
@@ -25,7 +25,7 @@ ENV AUTHORIZED_USERS=nagiosadmin \
     PERF_ENABLE=yes \
     TZ=UTC
 
-RUN deluser xfs && addgroup -g $NAGIOS_GID nagios && \
+RUN addgroup -g $NAGIOS_GID nagios && \
     adduser -g www-data -u $WWW_UID -DSH -h /var/www www-data && \
     adduser -G nagios -g "Nagios Server" -DSH -h /var/nagios -u $NAGIOS_UID \
       nagios && \
@@ -36,7 +36,7 @@ RUN deluser xfs && addgroup -g $NAGIOS_GID nagios && \
       nagios-plugins-mysql=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \
       perl-crypt-x509 perl-libwww perl-text-glob perl-timedate \
-      php81 php81-fpm py3-pip py3-pymysql python3 ssmtp tzdata && \
+      php82 php82-fpm py3-pip py3-pymysql python3 ssmtp tzdata && \
     addgroup nginx nagios && \
     chmod u+s /usr/lib/nagios/plugins/check_ping && \
     sed -i -e s/use_syslog=.*/use_syslog=0/ \
@@ -51,6 +51,6 @@ EXPOSE 80
 VOLUME /etc/nagios /opt/nagios/plugins /var/nagios
 
 COPY nginx.conf /etc/nginx/http.d/nagios.conf
-COPY php-fpm-www.conf /etc/php81/php-fpm.d/www.conf
+COPY php-fpm-www.conf /etc/php82/php-fpm.d/www.conf
 COPY entrypoint.sh mail.sh /usr/local/bin/
 ENTRYPOINT /usr/local/bin/entrypoint.sh

@@ -8,6 +8,8 @@
   apt_repository:
     filename: k8s
     repo: "{{ k8s.apt_repo.repo }}"
+    # TODO restore this at next k8s and ubuntu update (24.04)
+    state: absent
 
 - name: Install system packages
   apt:

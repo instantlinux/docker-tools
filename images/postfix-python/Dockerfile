@@ -1,4 +1,4 @@
-ARG POSTFIX_VERSION=3.8.6-r0
+ARG POSTFIX_VERSION=3.9.0-r1
 
 FROM instantlinux/postfix:$POSTFIX_VERSION
 MAINTAINER Rich Braun "docker@instantlinux.net"
@@ -21,7 +21,7 @@ ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
     SPAMC_HOST=spamassassin
 ARG GETPIP_SHA=311afebb7cdd310eb3a3a6bb6fffef53d84493db98c7cebf4008a18d3418c8be
 ARG GETPIP_URI=https://bootstrap.pypa.io/pip/3.5/get-pip.py
-ARG PYTHON_PIP_VERSION=23.3.2
+ARG PYTHON_PIP_VERSION=24.1.1
 
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/

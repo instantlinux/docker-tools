@@ -5,6 +5,14 @@
     filename: ubuntu
   with_items: "{{ ubuntu_repos }}"
 
+
+# TODO remove this at next k8s and ubuntu update (24.04)
+- name: Remove stale k8s repo
+  apt_repository:
+    filename: k8s
+    repo: "{{ k8s.apt_repo.repo }}"
+    state: absent
+
 - name: Docker repo key
   get_url:
     url: "{{ docker.apt_repo.url }}"
