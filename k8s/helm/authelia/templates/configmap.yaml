@@ -6,24 +6,28 @@ metadata:
     {{- include "local.labels" . | nindent 4 }}
 data:
   configuration.yml: |
-    server:
-      port: 80
+    # TODO - resolve env var conflict introduced in 4.30; requires
+    #  enableServiceLinks=false in pod spec
+    # server:
+    #   address: tcp://:80
+
     # set to trace for troubleshooting
     log:
       level: {{ .Values.logLevel }}
 
     authentication_backend:
       ldap:
-        url: ldap://ldap
+        address: ldap://ldap
         base_dn: {{ .Values.baseDN }}
         users_filter: (&({username_attribute}={input})(objectClass=inetOrgPerson))
-        username_attribute: uid
         additional_users_dn: ou=users
         additional_groups_dn: ou=groups
-        display_name_attribute: sn
+        attributes:
+          display_name: sn
+          group_name: cn
+          mail: mail
+          username: uid
         groups_filter: (&(member={dn})(objectclass=groupOfNames))
-        group_name_attribute: cn
-        mail_attribute: mail
         user: cn=admin,{{ .Values.baseDN }}
 
     # Access Control
@@ -49,6 +53,7 @@ data:
     session:
       expiration: {{ .Values.session.expiration }}
       inactivity: {{ .Values.session.inactivity }}
+      # TODO this is deprecated with little info about how to fix it
       domain: {{ .Values.session.domain }}
       redis:
         host: redis
@@ -63,15 +68,13 @@ data:
     # The directory where the DB files will be saved
     storage:
       mysql:
-        host: {{ .Values.mysql.host }}
-        port: {{ .Values.mysql.port }}
+        address: {{ .Values.mysql.address }}
         database: {{ .Values.mysql.database }}
         username: {{ .Values.mysql.username }}
 
     # Configuration of the notification system.
     notifier:
       smtp:
+        address: {{ .Values.smtp.address }}
         username: {{ .Values.smtp.username }}
-        host: {{ .Values.smtp.host }}
-        port: {{ .Values.smtp.port }}
         sender: {{ .Values.smtp.sender }}

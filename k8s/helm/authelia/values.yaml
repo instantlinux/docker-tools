@@ -5,8 +5,7 @@ bypassUser: "user:username"
 domains: [ example.com ]
 logLevel: info
 mysql:
-  host: db00
-  port: 3306
+  address: tcp://db00:3306
   database: authelia
   username: authelia
 session:
@@ -14,8 +13,7 @@ session:
   expiration: 2w
   inactivity: 5m
 smtp:
-  host: smtp.gmail.com
-  port: 587
+  address: submission://smtp.gmail.com:587
   sender: notyetset@example.com
   username: notyetset@gmail.com
 tlsHostname: authelia.example.com
@@ -23,7 +21,7 @@ tlsHostname: authelia.example.com
 deployment:
   containerPorts: [ containerPort: 80 ]
   env:
-    authelia_jwt_secret_file: /config/secrets/jwt_secret
+    authelia_identity_validation_reset_password_jwt_secret_file: /config/secrets/jwt_secret
     authelia_session_secret_file: /config/secrets/session_secret
     authelia_session_redis_password_file: /config/secrets/redis_password
     authelia_storage_mysql_password_file: /config/secrets/mysql_password
