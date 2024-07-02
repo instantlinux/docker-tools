@@ -8,7 +8,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG GIT_VERSION=2.52.2-r0
+ARG GIT_VERSION=2.45.2-r0
 ENV DEST=. \
     GIT_COMMIT=master \
     GIT_HOST=github.com \

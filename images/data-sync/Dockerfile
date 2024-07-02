@@ -34,8 +34,6 @@ RUN apk add --update openssh-client openssh-server perl rsync && \
       https://github.com/bcpierce00/unison/archive/v$UNISON_VERSION.tar.gz && \
     echo "$UNISON_SHA  unison.tar.gz" | sha256sum -c && \
     tar zxf unison.tar.gz --strip-components=1 && \
-    sed -i -e 's/GLIBC_SUPPORT_INOTIFY 0/GLIBC_SUPPORT_INOTIFY 1/' \
-      src/fsmonitor/linux/inotify_stubs.c && \
     make && cp src/unison src/unison-fsmonitor /usr/bin && \
     cd .. && apk del .fetch-deps && \
     rm -fr /build /var/log/* /var/cache/apk/* && \

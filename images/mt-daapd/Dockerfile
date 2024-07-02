@@ -1,3 +1,7 @@
+# TODO: this dockerfile is obsoleted by the code maintainer and will
+# require install-from-source because debian repo no longer includes
+# either forked-daapd or owntone.
+#  https://owntone.github.io/owntone-server/installation/
 FROM debian:buster-slim
 MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE

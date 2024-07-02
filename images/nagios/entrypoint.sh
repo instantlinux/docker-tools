@@ -94,7 +94,7 @@ for item in backup hosts services; do
 done
 start-stop-daemon -u nginx -b --exec /usr/bin/fcgiwrap -- \
   -s unix:/run/fcgiwrap/fcgiwrap.sock
-/usr/sbin/php-fpm81
+/usr/sbin/php-fpm82
 /usr/sbin/nginx
 touch /var/nagios/nagios.log && tail -1 -f /var/nagios/nagios.log &
 find /var/nagios -not -user nagios -exec chown nagios.nagios {} \;
