@@ -4,6 +4,7 @@ variables:
   IMAGE: {{ IMAGE }}
   PLATFORMS: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
   REGISTRY: $REGISTRY_URI/$CI_PROJECT_PATH
+  TRIVY_VERSION: 0.53.0
 
 stages:
   - Static Code Analysis
@@ -38,7 +39,7 @@ test:
 security_scan_trivy:
   services: [ "docker:dind" ]
   image:
-    name: aquasec/trivy:latest
+    name: aquasec/trivy:$TRIVY_VERSION
     entrypoint: [""]
   stage: Security Scan
   variables:
@@ -52,7 +53,7 @@ security_scan_trivy:
     TRIVY_VULN_TYPE: os,library
   script:
   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
-  - trivy image --clear-cache
+  - trivy clean --all
   - trivy image --download-db-only --no-progress
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
       --exit-code 0 --format table --output medium-vulns.txt
