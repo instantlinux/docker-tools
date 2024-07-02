@@ -58,11 +58,6 @@ security_scan_trivy:
       --exit-code 0 --format table --output medium-vulns.txt
   - cat medium-vulns.txt
   - echo CVE-2023-2253 > .trivyignore
-  - echo TODO remove these exceptions when alpine:3.20 arrives
-  - echo CVE-2024-2398 >> .trivyignore
-  - echo CVE-2024-24806 >> .trivyignore
-  - echo CVE-2024-25062 >> .trivyignore
-  - echo CVE-2024-28085 >> .trivyignore
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" || echo Vulnerabilities Found
   cache:
     paths: [ .trivycache ]
