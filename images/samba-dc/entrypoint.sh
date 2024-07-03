@@ -45,7 +45,7 @@ fi
 mkdir -p -m 700 /etc/samba/conf.d
 for file in /etc/samba/smb.conf /etc/samba/conf.d/netlogon.conf \
       /etc/samba/conf.d/sysvol.conf; do
-  j2 /root/$(basename $file).j2 -o $file
+  jinjanate /root/$(basename $file).j2 -o $file
 done
 for file in $(ls -A /etc/samba/conf.d/*.conf); do
   echo "include = $file" >> /etc/samba/smb.conf
