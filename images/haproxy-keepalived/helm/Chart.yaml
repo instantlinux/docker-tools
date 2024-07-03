@@ -7,8 +7,8 @@ sources:
 - https://github.com/haproxy/haproxy
 - https://github.com/acassen/keepalived
 type: application
-version: 0.1.14
-appVersion: "2.8.3-alpine-2.2.8-r0"
+version: 0.1.15
+appVersion: "3.0.2-alpine-2.2.8-r0"
 dependencies:
 - name: chartlib
   version: 0.1.8
