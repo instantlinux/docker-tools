@@ -59,6 +59,11 @@ security_scan_trivy:
       --exit-code 0 --format table --output medium-vulns.txt
   - cat medium-vulns.txt
   - echo CVE-2023-2253 > .trivyignore
+  # These are for blacklist image, there's a won't-fix note for zlib1g
+  - echo CVE-2023-31484 >> .trivyignore
+  - echo CVE-2023-45853 >> .trivyignore
+  # TODO remove this openssh bypass once repo is updated
+  - echo CVE-2024-6387 >> .trivyignore
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}"
   cache:
     paths: [ .trivycache ]
