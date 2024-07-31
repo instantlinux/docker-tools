@@ -30,6 +30,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
 * Keycloak for OpenID / OAuth2 user authentication / authorization
+* Vaultwarden, a self-hosted Bitwarden-compatible password manager
 * Helm3
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd

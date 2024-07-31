@@ -1,0 +1,86 @@
+# Default values for vaultwarden.
+tlsHostname: vaultwarden.example.com
+domain: example.com
+deployment:
+  containerPorts:
+  - containerPort: 80
+  - containerPort: 3012
+  env:
+    emergency_access_allowed: "true"
+    invitation_expiration_hours: 36
+    invitations_allowed: "false"
+    signups_allowed: "true"
+    signups_verify: "true"
+    smtp_from: admin@example.com
+    smtp_host: smtp
+    smtp_port: 587
+    smtp_security: starttls
+    tz: UTC
+  xenv:
+  - name: ADMIN_TOKEN
+    valueFrom:
+      secretKeyRef:
+        key: admin-token
+        name: vaultwarden
+  - name: DATABASE_URL
+    # in form mysql://username:secret@db00:3306/vaultwarden
+    valueFrom:
+      secretKeyRef:
+        key: database-url
+        name: vaultwarden
+  nodeSelector:
+    service.vaultwarden: allow
+  resources:
+    limits:
+      cpu: 2
+      memory: 2048Mi
+    requests:
+      cpu: 200m
+      memory: 1280Mi
+  strategy:
+    type: Recreate
+  terminationGracePeriodSeconds: 120
+livenessProbe:
+  httpGet:
+    path: /alive
+    port: 80
+  initialDelaySeconds: 5
+readinessProbe:
+  httpGet:
+    path: /alive
+    port: 80
+  initialDelaySeconds: 5
+
+volumeMounts:
+- mountPath: /data
+  name: vaultwarden
+volumes:
+- name: vaultwarden
+  hostPath: { path: /var/lib/docker/k8s-volumes/share/vaultwarden }
+
+image:
+  repository: vaultwarden/server
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+service:
+  type: ClusterIP
+  ports:
+  - { port: 80, targetPort: 80, name: http }
+  - { port: 3012, targetPort: 3012, name: websocket }
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+
+autoscaling:
+  enabled: false
