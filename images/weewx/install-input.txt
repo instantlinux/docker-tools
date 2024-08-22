@@ -4,6 +4,7 @@ DESC
 90.0
 n
 us
-5
+6
 serial
 /dev/ttyUSB0
+n
