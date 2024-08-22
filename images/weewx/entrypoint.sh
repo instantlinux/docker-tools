@@ -116,7 +116,7 @@ EOF
   cat /tmp/sshkey >> $HOMEDIR/.ssh/known_hosts && rm /tmp/sshkey
 fi
 
-chown -R $WX_USER $HTML_ROOT /run/$SSHKEY
+chown -R $WX_USER $HOMEDIR/.ssh $HTML_ROOT /run/$SSHKEY
 # Docker 18.02 changes group to root at launch
 #chgrp $WX_GROUP /dev/ttyUSB0
 set +e
