@@ -6,6 +6,7 @@ deployment:
   - containerPort: 80
   - containerPort: 3012
   env:
+    domain: https://vault.example.com
     emergency_access_allowed: "true"
     invitation_expiration_hours: 36
     invitations_allowed: "false"
