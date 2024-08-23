@@ -60,14 +60,14 @@ RUN apk add --no-cache --update \
       py3-requests py3-six py3-usb rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mv /tmp/* /home/$WX_USER && \
-    apk add --no-cache --virtual .fetch-deps gcc git && \
+    apk add --no-cache --virtual .fetch-deps gcc git musl-dev python3-dev && \
     VENV=/home/$WX_USER/weewx-venv && \
     python3 -m venv $VENV --system-site-packages && \
+    source $VENV/bin/activate && \
+    python3 -m pip install weewx && \
     git clone -b $WEEGREEN_VERSION --depth 1 \
       https://github.com/instantlinux/weewx-WeeGreen.git \
       $WX_ROOT/skins/WeeGreen && \
-    source $VENV/bin/activate && \
-    python3 -m pip install weewx && \
     chown $WX_USER $WX_ROOT && \
     chown -R $WX_USER $WX_ROOT/skins && \
     su $WX_USER -c \
