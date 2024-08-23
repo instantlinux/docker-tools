@@ -4,7 +4,7 @@ variables:
   IMAGE: {{ IMAGE }}
   PLATFORMS: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
   REGISTRY: $REGISTRY_URI/$CI_PROJECT_PATH
-  TRIVY_VERSION: 0.53.0
+  TRIVY_VERSION: 0.54.1
 
 stages:
   - Static Code Analysis
