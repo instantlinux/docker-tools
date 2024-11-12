@@ -3,11 +3,13 @@
   copy:
     dest: /etc/kubernetes/kubeadm-config.yaml
     content: |
-      apiVersion: kubeadm.k8s.io/v1beta3
+      apiVersion: kubeadm.k8s.io/v1beta4
       kind: JoinConfiguration
       discovery:
         bootstrapToken:
-          apiServerEndpoint: "{{ k8s.master_ip }}:6443"
+          # Discover host IP rather than service vip, misleading error is:
+          #  "could not find a JWS signature in the cluster-info ConfigMap"
+          apiServerEndpoint: "{{ k8s.cplane_hostip }}:6443"
           token: "{{ vault_k8s.join_token }}"
           unsafeSkipCAVerification: True
       nodeRegistration:

@@ -95,9 +95,7 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = dashboard cert-manager flannel
-#IMPORTS     = metrics  TODO this is busted due to TLS errors
-#IMPORTS     = calico calico-etcd
+IMPORTS      = cert-manager flannel metrics # dashboard
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -106,9 +104,9 @@ install: install/admin-user cluster_network \
 	install/local-storage storage_localdefault imports \
 	install_imports namespace_config install/gitlab-rbac \
 	install/k8s-backup install/logspout remote_volumes \
-	sops data-sync-ssh persistent secrets install/ingress-nginx
+	sops data-sync-ssh persistent secrets install/ingress-nginx \
+	install/cert-manager
  # extend_dashboard_ttl ~/.kube/config.conf 
- # TODO install/cert-manager
 
 namespace_config: install/namespace install/limits install/namespace-user \
 	secrets/regcred
@@ -121,7 +119,7 @@ node_labels:
 	./scripts/node_labels.sh
 
 data-sync-ssh:
-	if ! (kubectl get secrets | grep -q "^$@ "); then \
+	if ! (kubectl get secrets -n $(K8S_NAMESPACE) | grep -q "^$@ "); then \
 	  cd ../images/data-sync && make $@; fi
 
 ~/.kube/config.conf:

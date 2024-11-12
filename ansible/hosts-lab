@@ -1,7 +1,7 @@
 [fileservers]
 k2.ci.net
 
-[k8s_master]
+[k8s_cplane]
 borg1.ci.net
 
 [k8s_nodes]

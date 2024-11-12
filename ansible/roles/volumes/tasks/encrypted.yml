@@ -26,6 +26,7 @@
 
 - name: Master key mount
   mount:
+    boot: False
     fstype: fuse.sshfs
     path: "{{ masterkey.path }}"
     src: "{{ masterkey.user }}@{{ masterkey.host }}:{{ masterkey.path }}"
@@ -117,6 +118,7 @@
     name: crypt-vols
     enabled: yes
     state: restarted
+  changed_when: False
 
 - name: Unmount master key
   mount:

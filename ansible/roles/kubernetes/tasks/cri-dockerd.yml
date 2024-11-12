@@ -3,8 +3,9 @@
   ansible.builtin.unarchive:
     creates: /usr/bin/cri-dockerd
     dest: /usr/bin
+    extra_opts: [ --strip-components=1 ]
     remote_src: yes
-    src: https://github.com/Mirantis/cri-dockerd/releases/download/v{{ cri_dockerd.version }}/cri-dockerd-v{{ cri_dockerd.version }}-linux-amd64.tar.gz
+    src: https://github.com/Mirantis/cri-dockerd/releases/download/v{{ cri_dockerd.version }}/cri-dockerd-{{ cri_dockerd.version }}.amd64.tgz
 
 - name: Get cri-docker service definition
   ansible.builtin.get_url:
@@ -32,7 +33,7 @@
       --cni-bin-dir=/opt/cni/bin \
       --cni-cache-dir=/var/lib/cni/cache \
       --cni-conf-dir=/etc/cni/net.d \
-      --pod-infra-container-image=k8s.gcr.io/pause:3.7
+      --pod-infra-container-image={{ k8s.pod_infra_container_image }}
 
 - name: Enable cri-docker.service
   ansible.builtin.systemd:

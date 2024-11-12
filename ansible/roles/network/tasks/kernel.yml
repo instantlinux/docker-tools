@@ -3,11 +3,12 @@
   modprobe:
     name: "{{ item }}"
   with_items: "{{ kernel_modules }}"
+  changed_when: False
 
 - name: Add kernel modules to /etc/modules-load.d
   copy:
-    content: "{{ kernel_modules | join('\n') | string }}"
-    dest: /etc/modules-load.d/network.conf
+    content: "{{ kernel_modules | join('\n') | string }}\n"
+    dest: /etc/modules-load.d/10-kubernetes.conf
 
 - name: Set sysctl tuning parameters
   sysctl:

@@ -37,15 +37,7 @@
     creates: /usr/local/sbin/smartctl
   when: ansible_distribution_version < '20.04'
 
-- name: Python packages workaround for mixed python2/3
-  command: pip3 install {{ pip_packages|join(' ') }}
+- name: Python packages for monitoring
+  command: pip3 install --break-system-packages {{ pip_packages|join(' ') }}
   args:
-    creates: /usr/local/lib/python3.8/dist-packages/mdstat
-
-# This does not work if ansible is running with python2 (through 20.04)
-#    TODO - adjust once python2 finally and truly goes away, probably 22.04
-# - name: Python packages
-#   pip:
-#     executable: /usr/bin/pip3
-#     name: "{{ pip_packages }}"
-#   when: ansible_distribution_version < '20.04'
+    creates: /usr/local/lib/python3.12/dist-packages/mdstat

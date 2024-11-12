@@ -5,12 +5,12 @@
 #
 #  ansible-playbook k8s-node.yml
 
-# k8s-master and k8s-node are the first and third steps in cluster setup (with
-# single master and as many worker nodes as desired) which runs
+# k8s-cplane and k8s-node are the first and third steps in cluster setup (with
+# single control plane and as many worker nodes as desired) which runs
 # kubeadm to provide initial installation.  See the Makefile in
 # top-level k8s directory to complete the second step of installation.
 
-# Run the k8s-master playbook before this one.
+# Run the k8s-cplane playbook before this one.
 
 - hosts: k8s_nodes
   become: True

@@ -1,0 +1,36 @@
+- name: Thin pool create
+  lvol:
+    lv: thinpool
+    shrink: False
+    size: "{{ docker.thinpool.size }}"
+    vg: "{{ thinpool_vg }}"
+
+- name: Thin pool meta
+  lvol:
+    lv: thinpoolmeta
+    vg: "{{ thinpool_vg }}"
+    size: "{{ docker.thinpool.meta_size }}"
+
+- name: Convert thinpool
+  command: >
+    lvconvert -y --zero n -c 512K --thinpool {{ thinpool_vg }}/thinpool
+      --poolmetadata {{ thinpool_vg }}/thinpoolmeta
+  args:
+    creates: /dev/mapper/{{ thinpool_vg_alt }}-thinpool_tdata
+
+- name: LVM profile path
+  file:
+    path: /etc/lvm/profile
+    state: directory
+
+- name: Define thinpool autoextend
+  template:
+    dest: /etc/lvm/profile/{{ thinpool_vg }}-thinpool.profile
+    src: thinpool.profile.j2
+  notify: Activate thinpool autoextend
+
+- name: Initiate thinpool autoextend
+  shell: >
+    lvchange --metadataprofile {{ thinpool_vg }}-thinpool {{ thinpool_vg }}/thinpool &&
+    lvs -o+seg_monitor
+  changed_when: False
