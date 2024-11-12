@@ -49,42 +49,8 @@
   command: update-ca-certificates
   changed_when: False
 
-- name: Thin pool create
-  lvol:
-    lv: thinpool
-    shrink: False
-    size: "{{ docker.thinpool.size }}"
-    vg: "{{ thinpool_vg }}"
-
-- name: Thin pool meta
-  lvol:
-    lv: thinpoolmeta
-    vg: "{{ thinpool_vg }}"
-    size: "{{ docker.thinpool.meta_size }}"
-
-- name: Convert thinpool
-  command: >
-    lvconvert -y --zero n -c 512K --thinpool {{ thinpool_vg }}/thinpool
-      --poolmetadata {{ thinpool_vg }}/thinpoolmeta
-  args:
-    creates: /dev/mapper/{{ thinpool_vg_alt }}-thinpool_tdata
-
-- name: LVM profile path
-  file:
-    path: /etc/lvm/profile
-    state: directory
-
-- name: Define thinpool autoextend
-  template:
-    dest: /etc/lvm/profile/{{ thinpool_vg }}-thinpool.profile
-    src: thinpool.profile.j2
-  notify: Activate thinpool autoextend
-
-- name: Initiate thinpool autoextend
-  shell: >
-    lvchange --metadataprofile {{ thinpool_vg }}-thinpool {{ thinpool_vg }}/thinpool &&
-    lvs -o+seg_monitor
-  changed_when: False
+- import_tasks: thinpool.yml
+  when: ansible_distribution_version < '24.04'
 
 # The Ubuntu package installer defines ExecStart option that conflicts
 # with our daemon.json. Need to suppress daemon startup until after
@@ -186,6 +152,12 @@
     mode: 0755
     url: https://github.com/docker/compose/releases/download/{{
       docker.compose.version }}/docker-compose-Linux-x86_64
+  when: ansible_distribution_version < '24.04'
+
+- name: Install docker-compose from repo
+  apt:
+    name: docker-compose
+  when: ansible_distribution_version >= '24.04'
 
 - name: Sysctl tuning parameters
   sysctl:

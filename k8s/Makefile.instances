@@ -15,7 +15,7 @@ gitlab-runner::
 gitlab-agent: ../admin/services/values.yaml ./helm/gitlab-runner/Chart.lock
 	@echo Installing service with privileged /var/run/docker.sock access
 	@K8S_NAMESPACE=gitlab make install/limits
-	@helm upgrade --install -f global.yaml -f $< \
+	@helm upgrade --install -f $< \
 	  -f ../admin/services/values/gitlab-runner.yaml $(XARGS) \
 	  gitlab-runner ./helm/gitlab-runner --namespace gitlab \
 	  --kube-context=kubernetes-admin@$(CLUSTER)

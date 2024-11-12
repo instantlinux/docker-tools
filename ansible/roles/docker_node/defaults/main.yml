@@ -9,7 +9,7 @@ docker_defaults:
   apt_repo:
     key: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     package_name: docker-ce
-    package_ver: 5:23.0.1-1~ubuntu.22.04~jammy
+    package_ver: 5:27.3.1-1~ubuntu.24.04~noble
     repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     url: https://download.docker.com/linux/ubuntu/gpg
   certs:
@@ -32,11 +32,11 @@ docker_defaults:
     log-opts:
       max-size: 50m
       max-file: "3"
-    storage-driver: devicemapper
-    storage-opts:
-    - dm.thinpooldev=/dev/mapper/{{ thinpool_vg_alt }}-thinpool
-    - dm.use_deferred_removal=false
-    - dm.use_deferred_deletion=false
+    storage-driver: overlay2
+    # storage-opts:
+    # - dm.thinpooldev=/dev/mapper/{{ thinpool_vg_alt }}-thinpool
+    # - dm.use_deferred_removal=false
+    # - dm.use_deferred_deletion=false
     tls: True
     tlscacert: /root/certs/ca-root.pem
     tlscert: /root/certs/docker-tls-cert.pem

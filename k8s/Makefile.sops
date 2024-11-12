@@ -56,7 +56,10 @@ SECRETS = $(basename $(wildcard secrets/*.yml secrets/*/*.yml))
 secrets: $(SECRETS)
 $(SECRETS):
 	-sops -d $@.yml | envsubst | \
-	 kubectl create -n $(K8S_NAMESPACE) --context=sudo -f -
+	 kubectl create -n $(K8S_NAMESPACE) -f -
+
+# TODO does this need sudo?
+# kubectl create -n $(K8S_NAMESPACE) --context=sudo -f -
 
 secrets/%.yml secrets/*/%yml:
 	@echo Creating secret $(@F)

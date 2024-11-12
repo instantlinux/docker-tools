@@ -1,6 +1,6 @@
 ---
 
-k8s_kernel_modules: {}
+k8s_kernel_modules: [ br_netfilter ]
 
 # Generate your own and put in vault
 #   encryption_key: any 32-byte string
@@ -12,26 +12,29 @@ vault_k8s:
 k8s_defaults:
   admin_config: /etc/kubernetes/admin.conf
   apt_repo:
-    # TODO use {{ ansible_distribution_release }}
-    repo: deb [signed-by=/etc/apt/keyrings/kubernetes.asc] http://apt.kubernetes.io/ kubernetes-xenial main
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    # TODO parameterize hardcoded 1.31 value
+    repo: deb [signed-by=/etc/apt/keyrings/kubernetes.asc] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /
+    url: https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key
+  cplane_hostip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
+  cplane_vip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
   kubeadm_opts: ''
   local_vols: /var/lib/docker/k8s-volumes
-  master: False
-  master_ip: "{{ hostvars[groups['k8s_master'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_master'][0]) }}"
+  cplane: False
   pod_network: 10.244.0.0/16
+  pod_infra_container_image: registry.k8s.io/pause:3.10
   service:
     enabled: yes
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.25.4
-  cni_version: 1.1.1
+  version: 1.31.2
+  coredns_version: v1.11.3
+  cni_version: 1.5.1
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
 
 cri_dockerd:
-  version: 0.2.0
+  version: 0.3.15
 
 oidc:
   client_id: client-not-yet-set
@@ -46,8 +49,8 @@ sysctl:
   vm.swappiness: 0
   
 ubuntu_packages:
-  - kubeadm={{ k8s.version }}-00
-  - kubelet={{ k8s.version }}-00
-  - kubernetes-cni={{ k8s.cni_version }}-00
+  - kubeadm={{ k8s.version }}-*
+  - kubelet={{ k8s.version }}-*
+  - kubernetes-cni={{ k8s.cni_version }}-*
 
 ubuntu_package_additions: []

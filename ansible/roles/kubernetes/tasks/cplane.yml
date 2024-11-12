@@ -6,7 +6,7 @@
 
 # TODO: run_once is not supported with strategy: free
 - name: Init cluster if needed
-  include_tasks: master_init.yml
+  include_tasks: cplane_init.yml
   run_once: yes
   when: not kubeadm_ca.stat.exists
 
@@ -44,6 +44,11 @@
     dest: /home/{{ username.stdout }}/.kube/config
     state: link
 
+- name: Create kubelet service override directory
+  file:
+    dest: /etc/systemd/system/kubelet.service.d
+    state: directory
+
 - name: Enable CPU/memory accounting in kubelet
   copy:
     dest: /etc/systemd/system/kubelet.service.d/11-cgroups.conf
@@ -76,7 +81,8 @@
     name: cron
 
 - name: Backup-pruning crontab
-  cron:
+  ansible.builtin.cron:
+    name: k8s-backup-retention
     job: find /var/backup/k8s -mtime +25 -delete
     hour: 3
     minute: 0

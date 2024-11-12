@@ -53,7 +53,6 @@ vrrp:
     ip: "{{ network.cluster_ip }}"
     interface: "{{ network.vrrp_interface }}"
     priority: "{{ network.address.split('.')[3] }}"
-    # TODO make this work for either swarm or k8s
     unicast_peers: "{{ groups['k8s_nodes'] | map('extract', hostvars,
                        ['ansible_default_ipv4', 'address']) | list |
                        difference([network.address]) }}"

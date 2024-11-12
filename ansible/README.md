@@ -1,7 +1,7 @@
-## Ansible for Kubernetes and Docker Swarm
+## Ansible for Kubernetes
 
-This directory contains playbooks to set up Kubernetes or Docker swarm
-nodes in a secure way, by techniques recommended in Kubernetes and
+This directory contains playbooks to set up Kubernetes nodes
+in a secure way, by techniques recommended in Kubernetes and
 Docker documentation plus numerous 3rd-party best-practices
 recommendations. It also has tools to configure LVM for LUKS encrypted
 disk volumes.
@@ -18,8 +18,7 @@ effort.
   a self-signed API cert by storing the same cert as ca-root.pem.
 * Define variables as listed below, in your group_vars directory.
 * Define host inventory as cluster nodes and managers, in hosts. For
-  kubernetes, use group names k8s_master and k8s_nodes; for swarm,
-  use group swarm_managers and swarm_nodes.
+  kubernetes, use group names k8s_cplane and k8s_nodes.
 * Add any ssh public keys for your user(s) into files/keys/ssh_public_keys,
   with file names <user>-<keyname>.pub; these will be added to
   ~<user>/.ssh/authorized_keys.
@@ -30,16 +29,9 @@ This includes a Makefile with the following targets, to be run in the
 following (approximate) order for kubernetes (see detailed readme in k8s
 directory):
 ```
-make k8s-master
+make k8s-cplane
 cd ../k8s ; make install
 make k8s-node
-```
-
-For swarm, do this:
-```
-make test
-make volume-setup
-make node-setup join-swarm
 ```
 
 ### Variables

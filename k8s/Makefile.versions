@@ -4,16 +4,16 @@ export VERSION_NAGIOS        ?= 4.4.9-2.4.2
 export VERSION_NAGIOSQL      ?= 3.4.1-4.4.6
 
 # Third-party versions - dockerhub
-export VERSION_DASHBOARD     ?= 2.7.0
+export VERSION_DASHBOARD     ?= 7.10.0
 export VERSION_LOGSPOUT      ?= v3.2.14
-export VERSION_NGINX         ?= 1.23.1-alpine
+export VERSION_NGINX         ?= 1.27.2-alpine
 
 # Third-party versions - other (quay.io, k8s.gcr.io, crunchydata.com)
-export VERSION_CERT_MANAGER   ?= 1.9.1
+export VERSION_CERT_MANAGER   ?= 1.16.1
 export VERSION_DEFAULTBACKEND ?= 1.5
-export VERSION_FLANNEL        ?= 0.19.2
-export VERSION_HELM           ?= 3.8.2
-export VERSION_METRICS        ?= 0.6.1
+export VERSION_FLANNEL        ?= 0.26.1
+export VERSION_HELM           ?= 3.16.2
+export VERSION_METRICS        ?= 0.7.2
 
 # Held back versions - more effort to upgrade
 export VERSION_CALICO        ?= 3.16.5

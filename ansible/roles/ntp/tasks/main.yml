@@ -11,14 +11,21 @@
     mode: 0440
     src: ntp.keys.j2
   notify: Restart ntpd
-  when: ntp.service.enabled
+  when: ntp.service.enabled and ansible_distribution_version < '24.04'
 
 - name: NTP config
   template:
     dest: /etc/ntp.conf
     src: ntp.conf.j2
   notify: Restart ntpd
-  when: ntp.service.enabled
+  when: ntp.service.enabled and ansible_distribution_version < '24.04'
+
+- name: NTP config
+  template:
+    dest: /etc/ntpsec/ntp.conf
+    src: ntp.conf.j2
+  notify: Restart ntpd
+  when: ntp.service.enabled and ansible_distribution_version >= '24.04'
 
 - name: NTP service
   service:

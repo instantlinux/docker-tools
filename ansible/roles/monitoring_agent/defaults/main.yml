@@ -63,7 +63,8 @@ opensuse_repos:
     repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
 
 pip_packages:
-  - click>=6.0
+  # outdated -- python3-click system package is already installed
+  # - click>=6.0
   - mdstat>=1.0.4
 
 smartmon_download:

@@ -8,8 +8,6 @@
   apt_repository:
     filename: k8s
     repo: "{{ k8s.apt_repo.repo }}"
-    # TODO restore this at next k8s and ubuntu update (24.04)
-    state: absent
 
 - name: Install system packages
   apt:
@@ -23,12 +21,13 @@
 
 - name: Add kernel modules to /etc/modules-load.d
   copy:
-    content: "{{ k8s_kernel_modules | join('\n') | string }}"
-    dest: /etc/modules-load.d/network.conf
+    content: "{{ k8s_kernel_modules | join('\n') | string }}\n"
+    dest: /etc/modules-load.d/20-network.conf
 
 - name: Look for swap entries
   shell: grep swap /etc/fstab | awk '{ print $1; }'
   register: swapdevs
+  changed_when: False
 
 - name: Disable swap
   mount:
@@ -40,7 +39,7 @@
 
 - name: Turn swap off
   command: swapoff --all
-  changed_when: false
+  changed_when: False
 
 - name: Sysctl tuning parameters
   sysctl:
@@ -52,27 +51,25 @@
 - name: Set static hostname as FQDN
   command: hostnamectl --static set-hostname {{ inventory_hostname }}
   when: inventory_hostname != ansible_hostname
+  changed_when: False
 
 - include_tasks: cri-dockerd.yml
 
-- name: Set up master
-  include_tasks: master.yml
-  when: k8s.master
+- name: Set up control plane
+  include_tasks: cplane.yml
+  when: k8s.cplane
 
 - name: Join cluster
   include_tasks: join.yml
-  when: not k8s.master
+  when: not k8s.cplane
 
-# TODO bug 1294
 - name: Add RequiresMountsFor to kubelet.service
-  replace:
-    dest: /lib/systemd/system/kubelet.service
-    regexp: "^\\[Unit\\]$"
-    replace: >
+  copy:
+    dest: /lib/systemd/system/kubelet.service.d/20-requires.conf
+    content: |
       [Unit] 
-      \n# Added by Ansible
-      \nRequiresMountsFor=/var/lib/kubelet
-  when: False
+      RequiresMountsFor=/var/lib/kubelet
+  when: not k8s.cplane
 
 - name: Add systemd unit file for disabling transparent huge pages
   copy:
@@ -85,7 +82,9 @@
     enabled: yes
     name: disable-thp
     state: started
-  when: not k8s.master
+  when: not k8s.cplane
+  # Resource systemd reports spurious changes even when there are none
+  changed_when: False
 
 - name: Add kubelet service
   systemd:
@@ -93,6 +92,7 @@
     name: "{{ k8s.service.name }}"
     state: "{{ k8s.service.state }}"
     enabled: "{{ k8s.service.enabled }}"
+  changed_when: False
 
 - name: Create local_vols shared directory
   file:
