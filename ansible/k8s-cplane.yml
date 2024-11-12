@@ -1,5 +1,5 @@
 ---
-# Step 1: set up kubernetes controle plane
+# Step 1: set up kubernetes control plane
 #
 # Usage:
 #  Set up hosts inventory and group_vars as suggested below, then:
