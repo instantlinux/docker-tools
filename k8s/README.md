@@ -17,13 +17,12 @@ See [How to use this](#how-to-use-this) below to get started.
 
 ### Features
 
-The ansible playbook deploys master and node instances with kubeadm,
-with full-disk LUKS encryption for local volumes. The Makefile in
-this directory adds these capabilities which aren't part of the
+The ansible playbook deploys control-plane and worker instances with
+kubeadm, with full-disk LUKS encryption for local volumes. The Makefile
+in this directory adds these capabilities which aren't part of the
 kubeadm suite:
 
 * Direct-attached SSD local storage pools
-* Dashboard
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
 * Helm
@@ -45,12 +44,12 @@ Kubernetes-native API syntax.
 
 Set up three or more bare-metal quad-core servers or VMs with at least
 a couple gigabytes of RAM each. At present [kubeadm is limited](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#limitations) to a single
-master node so the recommended configuration to support clustered
+control-plane node so the recommended configuration to support clustered
 services such as etc and MariaDB is 4+ nodes. (An inexpensive node
 similar to mine is an [Intel N6005 Mini PC](https://www.newegg.com/neosmay-ac8-jasper-lake/p/2SW-006Y-00003) with two 8GB DDR4 RAM modules
-and a 500GB to 2TB drive installed in each.) As of Sep 2022 three of these configured with 16GB of RAM and 512GB SSD costs plus a master node of 250GB SSD and 8GB of RAM add up to about $1250USD; you
+and a 500GB to 2TB drive installed in each.) As of Sep 2022 three of these configured with 16GB of RAM and 512GB SSD costs plus a control-plane node of 250GB SSD and 8GB of RAM add up to about $1250USD; you
 can shave maybe $400 off by reducing RAM and storage, and another $250
-by virtualizing the manager on your existing server.
+by virtualizing the manager on your existing server. By Nov 2024, costs of such nodes has plunged: Intel N100 quad-core mini-PCs with 16GB of RAM and 512GB SSD can be had for under $150, so four of these is under $600.
 
 ### Assumptions
 
@@ -58,7 +57,7 @@ by virtualizing the manager on your existing server.
   cloud instances but isn't tested there; if you're already in
   cloud and willing to pay for it you don't need this tool anyway)
 * You want to run a current stable version of docker engine
-* You're running Ubuntu 22.04 LTS on the nodes
+* You're running Ubuntu 24.04 LTS on the nodes
 * You want fastest / most secure direct-attached SSD performance:
   persistent storage will be local LUKS-encrypted directories on
   each node
@@ -86,8 +85,8 @@ by virtualizing the manager on your existing server.
 First create an ansible host inventory with your nodes defined, for
 example:
 ```
-[k8s_master]
-master.domain.com
+[k8s_cplane]
+cp.domain.com
 
 [k8s_nodes]
 kube1.domain.com
@@ -105,13 +104,13 @@ export K8S_NODES="kube1.$DOMAIN kube2.$DOMAIN"
 export TZ=America/Los_Angeles
 ```
 
-Customize the [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/master/k8s/Makefile.vars) file with any additional settings you
+Customize the [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) file with any additional settings you
 desire. (You can override settings in that file without editing,
 if you prefer, with environment variables in a bash .profile.)
 
 Choose a random (~32 bytes) encryption key and put it into an ansible
 vault variable _vault_k8s.encryption_key_ under
-group_vars/all/vault.yml. Create group_vars/k8s_master.yml and
+group_vars/all/vault.yml. Create group_vars/k8s_cplane.yml and
 group_vars/k8s_node files that contains definitions like this:
 
 ```
@@ -137,12 +136,12 @@ directory. To set up the LUKS disk encryption provided by this role:
 * the secure server is only needed by each node at reboot time (so it can be defined "serverless" with a launch trigger at reboot, but that's outside scope of this doc)
 * next step will then generate correct fstab entries for each node
 
-The ansible playbook k8s-master installs docker and configures
-master. The playbook will generate LUKS-encrypted volume mounts for
-your data as above; build the master thus:
+The ansible playbook k8s-cplane installs docker and configures
+the control plane. The playbook will generate LUKS-encrypted volume mounts for
+your data as above; build it thus:
 
 ```
-ansible-playbook k8s-master.yml
+ansible-playbook k8s-cplane.yml
 ```
 Kubernetes should be up and running at this point, with a bare-minimum
 configuration.
@@ -195,9 +194,9 @@ To configure k8s resources, invoke the following in this directory ([k8s](https:
 ```
 make install
 ```
-This will add flannel networking, the dashboard, an nginx ingress
-load-balancer, helm and sops. Create directories for persistent
-volumes for each node, and optionally set node-affinity labels:
+This will add flannel networking, an nginx ingress load-balancer,
+helm and sops. Create directories for persistent volumes for each node,
+and optionally set node-affinity labels:
 ```
 for node in $K8S_NODES; do
   NODE=$node make persistent_dirs
@@ -208,30 +207,27 @@ make node_labels
 This Makefile generates a sudo context and a default context with
 fewer permissions in your ~/.kube directory.
 
-Verify you can reach the dashboard after running _kubectl proxy_ at
-http://localhost:8001. Verify that you can view the core services
-like this:
+Verify that you can view the core services like this:
 ```
 $ kubectl get nodes
-NAME               STATUS   ROLES    AGE   VERSION
-master.domain.com  Ready    master   27m   v1.13.0
-kube1.domain.com   Ready    <none>   16m   v1.13.0
-kube2.domain.com   Ready    <none>   16m   v1.13.0
-$ kubectl get pods --context=sudo
+NAME               STATUS   ROLES          AGE   VERSION
+cp.domain.com      Ready    control-plane  27m   v1.31.2
+kube1.domain.com   Ready    <none>         16m   v1.31.2
+kube2.domain.com   Ready    <none>         16m   v1.31.2
+$ kubectl get pods -n kube-system --context=sudo
 NAME                                    READY   STATUS    RESTARTS   AGE
 coredns-86c58d9df4-7fzf7                1/1     Running   0          16m
 coredns-86c58d9df4-qs8rc                1/1     Running   0          16m
-etcd-master.domain.com                  1/1     Running   0          26m
-kube-apiserver-master.domain.com        1/1     Running   0          26m
-kube-controller-manager-master.domain.com 1/1   Running   0          25m
+etcd-cp.domain.com                      1/1     Running   0          26m
+kube-apiserver-cp.domain.com            1/1     Running   0          26m
+kube-controller-manager-cp.domain.com   1/1     Running   0          25m
 kube-flannel-ds-amd64-24h7l             1/1     Running   0          16m
 kube-flannel-ds-amd64-94fpx             1/1     Running   1          26m
 kube-flannel-ds-amd64-hkmv2             1/1     Running   0          16m
 kube-proxy-2lp59                        1/1     Running   0          16m
 kube-proxy-bxtsm                        1/1     Running   0          16m
 kube-proxy-wk6qw                        1/1     Running   0          26m
-kube-scheduler-master.domain.com        1/1     Running   0          25m
-kubernetes-dashboard-769df7fb6d-qdzjm   1/1     Running   0          26m
+kube-scheduler-cp.domain.com            1/1     Running   0          25m
 logspout-nq95g                          1/1     Running   0          26m
 logspout-tbz65                          1/1     Running   0          16m
 logspout-whmhb                          1/1     Running   0          16m
@@ -261,11 +257,11 @@ Storage management is a mostly-unsolved problem in the container world; indeed t
 
 The solutions I present here in this repo are based on those years of experience, and rely only on free open-source tools. Kubernetes does not support Docker's local named volumes, so I had to develop a new paradigm when switching from Swarm to Kubernetes.
 
-* To generate k8s _pv_ objects for each local nodes' volumes (pools and named volumes), invoke _make persistent_ which triggers a script [persistent.sh](https://github.com/instantlinux/docker-tools/tree/master/k8s/scripts).
-* To create the named LUKS-encrypted volumes, mount points and local directories, configure variables for the Ansible role [volumes](https://github.com/instantlinux/docker-tools/tree/master/ansible/roles/volumes) and invoke the playbook [k8s-node.yml](https://github.com/instantlinux/docker-tools/blob/master/ansible/k8s-node.yml).
-* My customized NFS mount points, which are provided to k8s through _pvc_ objects, are defined in [k8s/volumes](https://github.com/instantlinux/docker-tools/tree/master/k8s/volumes).
+* To generate k8s _pv_ objects for each local nodes' volumes (pools and named volumes), invoke _make persistent_ which triggers a script [persistent.sh](https://github.com/instantlinux/docker-tools/tree/main/k8s/scripts).
+* To create the named LUKS-encrypted volumes, mount points and local directories, configure variables for the Ansible role [volumes](https://github.com/instantlinux/docker-tools/tree/main/ansible/roles/volumes) and invoke the playbook [k8s-node.yml](https://github.com/instantlinux/docker-tools/blob/main/ansible/k8s-node.yml).
+* My customized NFS mount points, which are provided to k8s through _pvc_ objects, are defined in [k8s/volumes](https://github.com/instantlinux/docker-tools/tree/main/k8s/volumes).
 * At present, k8s only supports NFS v3 protocol--which means it's a single point of failure--and it doesn't yet support CIFS. It's unfortunate that I need to use NFS at all; if you can avoid it, do so wherever possible--the kubelet will go unstable if the NFS server's mount points ever go away.
-* To provide resiliency, I created a [data-sync](https://cloud.docker.com/repository/docker/instantlinux/data-sync) container and [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/master/images/data-sync/kubernetes.yaml) deployment to keep multiple copies of a local storage volume in sync. These volumes currently have to be mounted using hostPath (not 100% secure) by the application containers.
+* To provide resiliency, I created a [data-sync](https://cloud.docker.com/repository/docker/instantlinux/data-sync) container and [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/data-sync/kubernetes.yaml) deployment to keep multiple copies of a local storage volume in sync. These volumes currently have to be mounted using hostPath (not 100% secure) by the application containers.
 * The k8s _statefulset_ resource can attach local named volumes or assign them from a pool; it's designed for clustered applications that can run multiple instances in parallel, each with its own data storage
 * The k8s _deployment_ resource can attach to a hostPath or NFS mount point; this resource type is preferred for non-clustered applications that run as a single instance within your k8s cluster
 
@@ -330,7 +326,7 @@ debacles:
   solved any mysteries that prevent this from working (and THIS CAN
   TAKE DAYS on a bare-metal cluster.)
 
-* If you only have a single master that has failed, don't do anything
+* If you only have a single controller that has failed, don't do anything
   intrusive to it (like, say, the obvious--restoring a backup; this
   totally clobbered my setup). If it's been running for more than a
   couple months, chances are it's got some hard-to-replace

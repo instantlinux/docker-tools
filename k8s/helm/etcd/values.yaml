@@ -12,10 +12,15 @@ statefulset:
   - { containerPort: 2380 }
   xenv:
     # To generate the secret:
-    # curl -s https://discovery.etcd.io/new?size=3|cut -d / -f 4|base64
-    # sops secrets/etcd-token.yml
-    # kubectl delete secret etcd-token
-    # make secrets/etcd-token
+    #   curl -s https://discovery.etcd.io/new?size=3|cut -d / -f 4|base64
+    #   make secrets/etcd-token.yml
+    #   # use next command to copy/paste new secret into yml file
+    #   sops secrets/etcd-token.yml
+    #   make secrets/etcd-token
+    # To update the secret, re-run the curl command and then:
+    #   sops secrets/etcd-token.yml
+    #   kubectl delete secret etcd-token
+    #   make secrets/etcd-token
     - name: DISCOVERY_TOKEN
       valueFrom:
         secretKeyRef:

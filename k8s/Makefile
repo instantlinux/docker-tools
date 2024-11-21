@@ -95,7 +95,7 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = cert-manager flannel metrics # dashboard
+IMPORTS      = cert-manager flannel metrics
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -106,7 +106,6 @@ install: install/admin-user cluster_network \
 	install/k8s-backup install/logspout remote_volumes \
 	sops data-sync-ssh persistent secrets install/ingress-nginx \
 	install/cert-manager
- # extend_dashboard_ttl ~/.kube/config.conf 
 
 namespace_config: install/namespace install/limits install/namespace-user \
 	secrets/regcred
@@ -219,21 +218,6 @@ cert-manager-helm: helm_install
 ##########
 imports: $(foreach file,$(IMPORTS),imports/$(file).yaml)
 install_imports: $(foreach file, $(IMPORTS), imports/$(file))
-
-# extend annoying default 15-minute timeout
-# (temporarily) disable metrics healthcheck
-# TODO: re-enable metric-client-check when metrics-server is working
-#  See https://github.com/kubernetes/dashboard/issues/2986
-.PHONY: extend_dashboard_ttl
-extend_dashboard_ttl:
-	kubectl $(ADMIN_CTX) patch deployment kubernetes-dashboard --namespace kube-system \
-	  --patch='$(shell cat install/dashboard-patch.json)'
-
-imports/dashboard.yaml: imports/dashboard-$(VERSION_DASHBOARD).yaml
-	ln -s $(notdir $<) $@
-imports/dashboard-$(VERSION_DASHBOARD).yaml:
-	mkdir -p imports
-	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/dashboard/v$(VERSION_DASHBOARD)/aio/deploy/recommended.yaml
 
 imports/metrics.yaml: imports/metrics-$(VERSION_METRICS).yaml
 	ln -s $(notdir $<) $@

@@ -13,9 +13,8 @@ export VERSION_CERT_MANAGER   ?= 1.16.1
 export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_FLANNEL        ?= 0.26.1
 export VERSION_HELM           ?= 3.16.2
+export VERSION_INGRESS_NGINX  ?= 1.11.2
 export VERSION_METRICS        ?= 0.7.2
 
 # Held back versions - more effort to upgrade
 export VERSION_CALICO        ?= 3.16.5
-# upstream moved from quay to gcr, needs new pod privileges
-export VERSION_INGRESS_NGINX  ?= 1.4.0
