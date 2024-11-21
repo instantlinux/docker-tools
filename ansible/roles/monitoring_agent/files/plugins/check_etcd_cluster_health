@@ -35,7 +35,7 @@ shift $((OPTIND - 1))
 tmpfile=$(mktemp)
 trap 'rm -f "$tmpfile"' EXIT
 
-if etcdctl "$@" cluster-health > "$tmpfile" 2>&1; then
+if etcdctl "$@" endpoint health > "$tmpfile" 2>&1; then
   ret=0
 else
   ret="$?"

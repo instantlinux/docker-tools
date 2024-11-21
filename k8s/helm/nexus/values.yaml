@@ -57,10 +57,6 @@ ingress:
     nginx.ingress.kubernetes.io/enable-access-log: "false"
     nginx.ingress.kubernetes.io/proxy-body-size: 500m
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($http_user_agent ~ docker ) {
-        proxy_pass http://nexus.instantlinux:5001;
-      }
   rules:
   - host: nexus.example.com
     http:
@@ -72,7 +68,7 @@ ingress:
             port:
               number: 80
         pathType: Prefix
-      - path: /
+      - path: /v2/
         backend:
           service:
             name: nexus

@@ -69,6 +69,7 @@ system_certs:
   
 ubuntu_packages:
   - bash-completion
+  - jq
   - libpam-google-authenticator
   - rsync
   - snmpd
