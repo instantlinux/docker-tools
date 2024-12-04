@@ -1,11 +1,17 @@
 ---
+- name: Disable ubuntu's conflicting timesyncd
+  ansible.builtin.package:
+    name: systemd-timesyncd
+    state: absent
+  when: ntp.service.enabled
+
 - name: Install system packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ ubuntu_packages }}"
   when: ansible_os_family == 'Debian'
 
 - name: NTP keys
-  template:
+  ansible.builtin.template:
     dest: /etc/ntp.keys
     group: ntp
     mode: 0440
@@ -14,26 +20,20 @@
   when: ntp.service.enabled and ansible_distribution_version < '24.04'
 
 - name: NTP config
-  template:
+  ansible.builtin.template:
     dest: /etc/ntp.conf
     src: ntp.conf.j2
   notify: Restart ntpd
   when: ntp.service.enabled and ansible_distribution_version < '24.04'
 
 - name: NTP config
-  template:
+  ansible.builtin.template:
     dest: /etc/ntpsec/ntp.conf
     src: ntp.conf.j2
   notify: Restart ntpd
   when: ntp.service.enabled and ansible_distribution_version >= '24.04'
 
 - name: NTP service
-  service:
+  ansible.builtin.service:
     enabled: "{{ ntp.service.enabled }}"
     name: "{{ ntp.service.name }}"
-
-- name: Disable ubuntu's conflicting timesyncd
-  service:
-    enabled: False
-    name: systemd-timesyncd
-  ignore_errors: True

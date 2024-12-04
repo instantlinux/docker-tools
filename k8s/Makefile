@@ -59,7 +59,7 @@
 # 2) Adding a new node
 #   export K8S_WORKER_COUNT=$newcount
 #   make node_labels
-#   NODES=$node make persistent
+#   K8S_NODES=$node make persistent
 #   NODE=$node make persistent_dirs
 #
 # Always use fqdn for NODE names.
@@ -147,7 +147,7 @@ endif
 # Storage
 ##########
 persistent:
-	./scripts/persistent.sh $(NODES)
+	./scripts/persistent.sh $(K8S_NODES)
 
 persistent_dirs:
 	ssh "$(NODE)" sudo 'mkdir -p $$(echo \

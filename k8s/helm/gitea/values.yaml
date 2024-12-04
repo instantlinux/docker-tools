@@ -14,11 +14,13 @@ deployment:
   - -c
   - |
     # This script is a workaround for lack of non-privileged cron
-    # under alpine/busybox
+    # under alpine/busybox - if at least one recent backup is present,
+    # run a daily 7am UTC check to get rid of those over 90 days
     while true; do
-      if [ $(date +%H) -eq 7 ]; then
-        gitea dump -f /var/backups/dump.$(date +%Y-%m-%d_%H-%M) && \
-          find /var/backups -mtime 90 -name '*.zip' -delete
+      if [ $(date +%H) -eq 7 ] && \
+           ! find /var/backups -mtime -7 -exec false {} + ; then
+        gitea dump -f /var/backups/dump.$(date +%y-%m-%d_%H-%M).zip && \
+          find /var/backups -mtime +90 -name '*.zip' -delete
         sleep 3600
       else
         sleep 60

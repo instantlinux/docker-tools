@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/go-gitea/gitea
 type: application
-version: 0.1.1
-appVersion: 1.22.0-rootless
+version: 0.1.2
+appVersion: 1.22.4-rootless
 dependencies:
 - name: chartlib
   version: 0.1.8

@@ -2,43 +2,43 @@
 # docker.yml - configure Docker
 
 - name: Directory for registry certs
-  file:
+  ansible.builtin.file:
     mode: 0700
     path: "{{ docker.certs.path }}"
     state: directory
 
 - name: Docker TLS CA cert
-  copy:
+  ansible.builtin.copy:
     dest: "{{ docker.certs.path }}/{{ docker.certs.ca_root }}"
     mode: 0400
     src: certs/{{ docker.certs.ca_root }}
 
 - name: Docker TLS cert
-  copy:
+  ansible.builtin.copy:
     dest: "{{ docker.certs.path }}/docker-tls-cert.pem"
     mode: 0400
     src: certs/docker-tls-cert.pem
 
 - name: Docker TLS key
-  copy:
+  ansible.builtin.copy:
     content: "{{ vault_cert_keys.docker_tls }}"
     dest: "{{ docker.certs.path }}/docker-tls-key.pem"
     mode: 0400
 
 - name: Registry SSL cert
-  copy:
+  ansible.builtin.copy:
     dest: "{{ docker.certs.path }}/domain.crt"
     mode: 0400
     src: certs/registry-cert.pem
 
 - name: Registry SSL key
-  copy:
+  ansible.builtin.copy:
     dest: "{{ docker.certs.path }}/domain.key"
     content: "{{ vault_cert_keys.registry }}"
     mode: 0400
 
 - name: Add trusted root certificate(s)
-  copy:
+  ansible.builtin.copy:
     dest: "{{ system_paths.ca_certs }}/docker-{{ item.strip('.pem') }}.crt"
     mode: 0400
     src: certs/{{ item }}
@@ -46,11 +46,8 @@
   notify: Update CA certificates
 
 - name: Update CA certs
-  command: update-ca-certificates
+  ansible.builtin.command: update-ca-certificates
   changed_when: False
-
-- import_tasks: thinpool.yml
-  when: ansible_distribution_version < '24.04'
 
 # The Ubuntu package installer defines ExecStart option that conflicts
 # with our daemon.json. Need to suppress daemon startup until after
@@ -59,94 +56,94 @@
 # out of play-recap change list.
 
 - name: Temporarily disable systemctl start - policy-rc
-  copy:
+  ansible.builtin.copy:
     content: "#/bin/sh\necho Disabled by ansible: systemctl start\nexit 101\n"
     dest: /usr/sbin/policy-rc.d
     mode: 0755
   changed_when: False
 
 - name: Temporarily disable systemctl start - mask docker.service
-  file:
+  ansible.builtin.file:
     dest: /etc/systemd/system/docker.service
     src: /dev/null
     state: link
   changed_when: False
 
 - name: Reload systemd
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: yes
   changed_when: False
 
 - name: Docker engine package
-  apt:
+  ansible.builtin.apt:
     name: "{{ docker.apt_repo.package_name }}={{ docker.apt_repo.package_ver }}"
     update_cache: yes
 
 - name: Options directory
-  file:
+  ansible.builtin.file:
     dest: /etc/docker
     state: directory
 
 - name: Docker options
-  copy:
+  ansible.builtin.copy:
     content: "{{ docker.options|to_nice_json }}"
     dest: /etc/docker/daemon.json
   notify: Restart docker
 
 - name: Systemd override path for docker.service
-  file:
+  ansible.builtin.file:
     dest: /lib/systemd/system/docker.service.d
     state: directory
 
 - name: Deal with conflicting systemd-unit option, await vol mount
-  template:
+  ansible.builtin.template:
     dest: /lib/systemd/system/docker.service.d/docker.service.conf
     src: docker.service.conf.j2
   notify: Reload systemd
 
 - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
-  copy:
+  ansible.builtin.copy:
     dest: /etc/systemd/system/docker-permissions.service
     src: docker-permissions.service
 
 # TODO parse fstab seeking last luks line
 
 - name: Reenable systemctl start
-  file:
+  ansible.builtin.file:
     path: /usr/sbin/policy-rc.d
     state: absent
   changed_when: False
 
 - name: Unmask docker.service
-  file:
+  ansible.builtin.file:
     dest: /etc/systemd/system/docker.service
     state: absent
   changed_when: False
 
 - name: Suppress annoying error on subcontainer 'ia_addr' logs
-  replace:
+  ansible.builtin.replace:
     path: /lib/systemd/system/snmpd.service
     regexp: 'snmpd -Lsd'
     replace: 'snmpd -LSid'
   notify: Restart snmpd
 
 - name: Reload systemd again
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: yes
   changed_when: False
 
 - name: Enable docker.service
-  systemd:
+  ansible.builtin.systemd:
     enabled: yes
     name: docker
 
 - name: Enable docker-permissions.service
-  systemd:
+  ansible.builtin.systemd:
     enabled: yes
     name: docker-permissions
 
 - name: Download docker-compose
-  get_url:
+  ansible.builtin.get_url:
     checksum: sha256:{{ docker.compose.sha256 }}
     dest: /usr/local/bin/docker-compose
     mode: 0755
@@ -155,18 +152,18 @@
   when: ansible_distribution_version < '24.04'
 
 - name: Install docker-compose from repo
-  apt:
+  ansible.builtin.apt:
     name: docker-compose
   when: ansible_distribution_version >= '24.04'
 
 - name: Sysctl tuning parameters
-  sysctl:
+  ansible.builtin.sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
     sysctl_set: yes
   with_dict: "{{ sysctl }}"
 
 - name: Docker service
-  service:
+  ansible.builtin.service:
     name: docker
     state: started

@@ -1,6 +1,6 @@
 ---
 - name: Set kubeadm configuration
-  copy:
+  ansible.builtin.copy:
     dest: /etc/kubernetes/kubeadm-config.yaml
     content: |
       apiVersion: kubeadm.k8s.io/v1beta4
@@ -13,15 +13,15 @@
           token: "{{ vault_k8s.join_token }}"
           unsafeSkipCAVerification: True
       nodeRegistration:
-        criSocket: unix:///var/run/cri-dockerd.sock
+        criSocket: {{ k8s.cri_socket }}
 
 - name: Check if kubeadm has already run
-  stat:
+  ansible.builtin.stat:
     path: "/etc/kubernetes/pki/ca.crt"
   register: kubeadm_ca
 
 - name: Reset Kubernetes component
-  command: kubeadm reset --force --cri-socket unix:///var/run/cri-docker.sock
+  command: kubeadm reset --force --cri-socket {{ k8s.cri_socket }}
   register: reset_cluster
   when: not kubeadm_ca.stat.exists
 
