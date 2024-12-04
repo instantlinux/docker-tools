@@ -9,8 +9,25 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  externalName: monitor.$DOMAIN
-  type: ExternalName
+  ports:
+  - name: nagios
+    port: 18980
+  - name: nagiosql
+    port: 19780
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: $SERVICE_NAME
+subsets:
+- addresses:
+  - ip: 192.168.2.43
+  ports:
+  - name: nagios
+    port: 18980
+  - name: nagiosql
+    port: 19780
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -20,8 +37,10 @@ metadata:
     # TODO - letsencrypt (can't deal with these redirects and basic-auth)
     #  Doesn't validate when using type ExternalName
     # cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
+    # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    # nginx.ingress.kubernetes.io/upstream-vhost: monitor.ci.net
 spec:
+  ingressClassName: nginx
   tls:
   - secretName: $SERVICE_NAME.$DOMAIN
     hosts:
@@ -35,7 +54,7 @@ spec:
           service:
             name: $SERVICE_NAME
             port:
-              number: $PORT_MONITOR_HTTP
+              number: 18980
         pathType: Prefix
       - path: /
         backend:
@@ -50,10 +69,12 @@ kind: Ingress
 metadata:
   name: $SERVICE_NAME-totp
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/auth-url: http://$AUTHELIA_IP/api/verify
     nginx.ingress.kubernetes.io/auth-signin: https://authtotp.$DOMAIN
+    # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    # nginx.ingress.kubernetes.io/upstream-vhost: monitor.ci.net
 spec:
+  ingressClassName: nginx
   tls:
   - secretName: $SERVICE_NAME.$DOMAIN
     hosts:
@@ -69,3 +90,10 @@ spec:
             port:
               number: $PORT_NAGIOSQL
         pathType: Prefix
+      # - path: /nagios
+      #   backend:
+      #     service:
+      #       name: $SERVICE_NAME
+      #       port:
+      #         number: 443
+      #   pathType: Prefix
