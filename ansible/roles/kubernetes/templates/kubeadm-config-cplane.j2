@@ -53,7 +53,7 @@ apiServer:
   - name: oidc-username-prefix
     value: {{ oidc.username_prefix }}
   - name: oidc-groups-prefix
-    value : {{ oidc.username_prefix }}
+    value: {{ oidc.group_prefix }}
 dns:
   # Workaround for bug 112131; never got fixed as of k8s 1.31:
   # https://github.com/kubernetes/kubernetes/issues/112131
