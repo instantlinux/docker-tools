@@ -27,6 +27,7 @@
   shell: >
     lvchange --metadataprofile {{ thinpool_vg }}-thinpool {{ thinpool_vg }}/thinpool &&
     lvs -o+seg_monitor
+  when: docker.storage-driver == 'devicemapper'
 
 - name: Update CA certificates
   command: update-ca-certificates

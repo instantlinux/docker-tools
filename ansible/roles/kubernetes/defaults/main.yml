@@ -11,12 +11,17 @@ vault_k8s:
 
 k8s_defaults:
   admin_config: /etc/kubernetes/admin.conf
+  config_fetch_always: false
   apt_repo:
     # TODO parameterize hardcoded 1.31 value
     repo: deb [signed-by=/etc/apt/keyrings/kubernetes.asc] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /
     url: https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key
   cplane_hostip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
   cplane_vip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
+  # TODO: might be able to retire cri-dockerd
+  #  probably need to update /etc/containerd/config.toml
+  # criSocket: unix:///run/containerd/containerd.sock
+  cri_socket: unix:///var/run/cri-dockerd.sock
   kubeadm_opts: ''
   local_vols: /var/lib/docker/k8s-volumes
   cplane: False
@@ -27,7 +32,7 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.31.2
+  version: 1.31.3
   coredns_version: v1.11.3
   cni_version: 1.5.1
 k8s_override: {}

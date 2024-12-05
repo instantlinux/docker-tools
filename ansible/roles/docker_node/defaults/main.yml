@@ -1,10 +1,6 @@
 ---
 # defaults
 
-# If vg has a hyphenated name, double-hyphenate thinpool_vg_alt
-thinpool_vg: data01
-thinpool_vg_alt: "{{ thinpool_vg }}"
-
 docker_defaults:
   apt_repo:
     key: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
@@ -29,6 +25,7 @@ docker_defaults:
     hosts:
     - tcp://0.0.0.0:2376
     - unix:///var/run/docker.sock
+    log-driver: json-file
     log-opts:
       max-size: 50m
       max-file: "3"
