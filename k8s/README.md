@@ -155,6 +155,8 @@ Set a symlink from a directory under this one (k8s/secrets) to a
 subdirectory in your local administrative repo. This is where you will
 store kubernetes secrets, encrypted by a tool called _sops_.
 
+### OpenID
+
 To tighten security by creating API users you will need to set up OpenID / OAuth2. An on-site user directory can be established using the open-source tool [Keycloak](https://www.keycloak.org/) (a docker-compose file is provided under [services/keycloak](https://github.com/instantlinux/docker-tools/tree/main/services/keycloak/docker-compose.yml)) for which a somewhat complicated configuration is required (TODO - I'll write up the procedure in the docs here). Start by downloading [krew](https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz) and adding it to your $PATH. To get a single-user setup working, follow these steps:
 
 * Go to your google account and add client-id k8slogin of type desktop, in [credentials dashboard](https://console.cloud.google.com/apis/credentials);
@@ -189,6 +191,39 @@ kubectl create clusterrolebinding oidc-cluster-admin \
     user: oidc
   name: user@kubernetes
 ```
+Alternatively, you can set up Keycloak on a local container, which provides finer-granularity group permissions. Setting that up is beyond scope of this README (and a warning, Keycloak's documentation is not easy to follow). Once the user and group is set up, verify with:
+```
+PW=<redacted>
+export TOKEN=$(curl -d username=$USER -d "password=$PW" \
+  -d grant_type=password \
+  -d client_id=k8s-access \
+  -d client_secret=$CLIENT_SECRET \
+  https://oidc.instantlinux.net/realms/k8s/protocol/openid-connect/token | \
+  jq -r '.access_token')
+echo $TOKEN
+curl -X GET https://oidc.instantlinux.net/realms/k8s/protocol/openid-connect/userinfo \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $TOKEN" | jq .
+```
+and the response will look similar to this:
+```
+{
+  "sub": "bdeec4c0-5070-4c6a-ac25-1fb0f26ccc1b",
+  "email_verified": true,
+  "name": "Rich Braun",
+  "groups": [
+    "/instantlinux"
+  ],
+  "preferred_username": "richb",
+  "given_name": "Rich",
+  "family_name": "Braun",
+  "email": "richb@pioneer.ci.net",
+  "username": "richb"
+}
+```
+Look in the k8s/install subdirectory for resources in namespace-user.yaml for examples of how to map oidc username from Keycloak to k8s Role and ClusterRole permissions.
+
+### Installation
 
 To configure k8s resources, invoke the following in this directory ([k8s](https://github.com/instantlinux/docker-tools/tree/main/k8s)):
 ```
@@ -243,6 +278,8 @@ _make secrets/keyname.yml_.  Upload them to Kubernetes by invoking
 _make secrets/keyname_. Manage their contents and lifecycle using the
 _sops_ command. This tool also supports cloud key-managers like KMS,
 but gpg is suitable for bare-metal data center setups.
+
+### Certificate Manager
 
 Cert-manager installation is part of the above _make install_; to
 start the issuer invoke:
@@ -341,10 +378,12 @@ debacles:
   flannel and calico installed, a major conflict.
 
 * Installation procedure for cert-manager is 100% different from 5
-  months ago. That took me about 3 hours to resolve. And I'd become
-  over-reliant on cert-manager: without valid TLS certificates, my
-  local Docker registry wouldn't come up. Without the registry, most
-  services wind up in ImagePullBackoff failure state.
+  months ago (in 2022). That took me about 3 hours to resolve. And I'd
+  become over-reliant on cert-manager: without valid TLS certificates,
+  my local Docker registry wouldn't come up. Without the registry,
+  most services wind up in ImagePullBackoff failure state. (Update in
+  2024 -- almost services I run are now on docker hub or
+  registry.k8s.io, so they depend only on Internet and DNS.)
 
 * When restoring cert-manager, get ingress-nginx working first.
 
@@ -354,11 +393,13 @@ debacles:
   the community-supplied installer (kubeadm) finishes, then it's quite
   likely whatever script or resource definition you created to automate
   such manual processes *won't* work next time you need to do disaster-
-  recovery or routine upgrades.
+  recovery or routine upgrades. Make sure your kubeadm-config.yaml
+  defines all the flags required for the control plane under
+  /etc/kubernetes/manifests.
 
 * One thing I'd done that compromised availability in the interest of
-  security was to encrypt etcd key-value storage. If I revisit that in
-  the future, make sure to practice backup/restore a couple times, and
-  make sure to document in an obvious place what the restore procedure
-  is and where to get the decyption codes. I probably won't revisit
-  this until the feature is fully GA.
+  security was to encrypt etcd key-value storage. Make sure to
+  practice backup/restore a couple times, and document in an obvious
+  place what the restore procedure is and where to get the decyption
+  codes. The k8s-cplane ansible playbook here should help.
+

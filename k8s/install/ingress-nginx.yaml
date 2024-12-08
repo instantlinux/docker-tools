@@ -13,7 +13,7 @@ spec:
   ports:
     - { port: 80, targetPort: 80, name: http }
     - { port: 443, targetPort: 443, name: https }
-    - { port: $PORT_GITLAB_SSH, name: git-ssh }
+    - { port: $PORT_GIT_SSH, name: git-ssh }
   sessionAffinity: ClientIP
 ---
 apiVersion: v1
@@ -128,7 +128,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - name: default-http-backend
-        image: gcr.io/google_containers/defaultbackend-amd64:$VERSION_DEFAULTBACKEND
+        image: registry.k8s.io/defaultbackend-amd64:$VERSION_DEFAULTBACKEND
         ports:
         - containerPort: 8080
 ---
@@ -271,9 +271,8 @@ metadata:
   name: ingress-tcp-services
   namespace: $K8S_NAMESPACE
 data:
-  ## TODO document this
-  # $PORT_GITLAB_SSH: $K8S_NAMESPACE/gitlab:$PORT_GITLAB_SSH
-  $PORT_GITLAB_SSH: $K8S_NAMESPACE/gitea:$PORT_GITLAB_SSH
+  # Routing for custom TCP ports served by this ingress
+  $PORT_GIT_SSH: $K8S_NAMESPACE/gitea:$PORT_GIT_SSH
   $PORT_POSTFIX_EXTERNAL: $K8S_NAMESPACE/postfix:$PORT_POSTFIX_EXTERNAL
   $PORT_DOVECOT_IMAPD: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_IMAPD
   $PORT_DOVECOT_IMAPS: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_IMAPS

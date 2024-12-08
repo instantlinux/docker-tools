@@ -48,7 +48,7 @@ NAME | ups | user-assigned config name
 POLLINTERVAL | | Poll Interval for ups.conf
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
 SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
-SECRET | nut-upsd-password | name of secret to use for API user
+SECRETNAME | nut-upsd-password | name of secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
 USER | nut | local user

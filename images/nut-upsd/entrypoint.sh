@@ -1,7 +1,9 @@
 #! /bin/sh -e
 
-if [ -d /run/secrets ] && [ -s /run/secrets/$SECRET ]; then
-  API_PASSWORD=$(cat /run/secrets/$SECRET)
+cat /etc/passwd
+
+if [ -d /run/secrets ] && [ -s /run/secrets/$SECRETNAME ]; then
+  API_PASSWORD=$(cat /run/secrets/$SECRETNAME)
 fi
 
 if [ ! -e /etc/nut/.setup ]; then
@@ -63,10 +65,10 @@ fi
 chgrp $GROUP /etc/nut/*
 chmod 640 /etc/nut/*
 mkdir -p -m 2750 /dev/shm/nut
-chown $USER.$GROUP /dev/shm/nut
+chown $USER:$GROUP /dev/shm/nut
 [ -e /var/run/nut ] || ln -s /dev/shm/nut /var/run
 # Issue #15 - change pid warning message from "No such file" to "Ignoring"
-echo 0 > /var/run/nut/upsd.pid && chown $USER.$GROUP /var/run/nut/upsd.pid
+echo 0 > /var/run/nut/upsd.pid && chown $USER:$GROUP /var/run/nut/upsd.pid
 echo 0 > /var/run/upsmon.pid
 
 /usr/sbin/upsdrvctl -u root start
