@@ -1,13 +1,13 @@
 FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=nut-upsd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-ARG NUT_VERSION=2.8.2-r0
+ARG NUT_VERSION=2.8.2-r2
 ENV API_USER=upsmon \
     API_PASSWORD= \
     DESCRIPTION=UPS \
@@ -18,13 +18,13 @@ ENV API_USER=upsmon \
     POLLINTERVAL= \
     PORT=auto \
     SDORDER= \
-    SECRET=nut-upsd-password \
+    SECRETNAME=nut-upsd-password \
     SERIAL= \
     SERVER=master \
     USER=nut \
     VENDORID=
 HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
-    kill -SIGTERM -1 || true
+    killall -TERM upsmon || true
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       >>/etc/apk/repositories && \
@@ -38,4 +38,4 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/
-ENTRYPOINT /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

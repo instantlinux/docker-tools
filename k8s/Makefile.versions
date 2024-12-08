@@ -1,8 +1,3 @@
-# Versions (images within this repo published to docker hub)
-#  See Chart.yaml appVersion for services defined as helm charts
-export VERSION_NAGIOS        ?= 4.4.9-2.4.2
-export VERSION_NAGIOSQL      ?= 3.4.1-4.4.6
-
 # Third-party versions - dockerhub
 export VERSION_DASHBOARD     ?= 7.10.0
 export VERSION_LOGSPOUT      ?= v3.2.14
