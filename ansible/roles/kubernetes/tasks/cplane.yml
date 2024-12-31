@@ -71,6 +71,12 @@
     dest: /etc/kubernetes/pki/secrets.conf
     mode: 0600
 
+- name: Configure audit log
+  ansible.builtin.template:
+    src: audit-policies.yaml.j2
+    dest: /etc/kubernetes/audit-policies.yaml
+    mode: 0644
+
 - name: Adjust kube-apiserver config - encrypt etcd values
   ansible.builtin.lineinfile:
     path: /etc/kubernetes/manifests/kube-apiserver.yaml
