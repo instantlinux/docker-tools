@@ -1,17 +1,16 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=nagios \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG NAGIOS_VERSION=4.5.2-r0
+ARG NAGIOS_VERSION=4.5.8-r0
 ARG NAGIOS_GID=1000
 ARG NAGIOS_UID=999
-ARG PLUGINS_VERSION=2.4.5-r1
+ARG PLUGINS_VERSION=2.4.10-r0
 ARG WWW_UID=33
 ENV AUTHORIZED_USERS=nagiosadmin \
     CONFIG_CHECK=yes \
@@ -29,9 +28,7 @@ RUN addgroup -g $NAGIOS_GID nagios && \
     adduser -g www-data -u $WWW_UID -DSH -h /var/www www-data && \
     adduser -G nagios -g "Nagios Server" -DSH -h /var/nagios -u $NAGIOS_UID \
       nagios && \
-    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    apk add --update --no-cache nagios@edge=$NAGIOS_VERSION nagios-web \
+    apk add --update --no-cache nagios=$NAGIOS_VERSION nagios-web \
       nagios-plugins-all=$PLUGINS_VERSION \
       nagios-plugins-mysql=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \

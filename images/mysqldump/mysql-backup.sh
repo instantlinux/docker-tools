@@ -12,8 +12,8 @@
 
 USER=bkp
 LOG=/var/log/mysqldump.log
-MYSQL=/usr/bin/mysql
-MYSQLDUMP=/usr/bin/mysqldump
+MYSQL=/usr/bin/mariadb
+MYSQLDUMP=/usr/bin/mariadb-dump
 
 log_entry () {
  IL_PRIORITY=$1
@@ -30,7 +30,7 @@ log_entry info START
 # Grants required for bkp user:
 # GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO '$USER'@'192.168.%' IDENTIFIED BY '$PSWD';
 
-DUMPOPTS="--force --skip-opt --quick --single-transaction \
+DUMPOPTS="--force --skip-opt --skip-ssl --quick --single-transaction \
  $OPT_LOCK_FOR_BACKUP --add-drop-table --set-charset --create-options \
  --no-autocommit --extended-insert --routines"
 SCHEMA_DUMP_OPTS=" --force --no-data --triggers --events --routines" 
@@ -74,8 +74,7 @@ do
     DBNAMES=`$MYSQL $OPTS -se "$DBNAME_QUERY"`
     STATFILE=$DESTDIR/$SERVER/mysqldump-status.txt
     # Grants
-    $MYSQL $OPTS -se "SELECT CONCAT('SHOW GRANTS FOR \'',user,'\'@\'',host,'\';') FROM mysql.user;" | \
-      $MYSQL $OPTS -s | awk '{print $0";"}' >$DESTDIR/$SERVER/$DAY/allgrants.sql
+    $MYSQLDUMP $OPTS --system=users >$DESTDIR/$SERVER/$DAY/allgrants.sql
 
     for DBNAME in $DBNAMES; do
       # Schema only

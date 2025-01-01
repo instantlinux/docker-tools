@@ -9,7 +9,7 @@ fi
 sed -i -e "s/=nagiosadmin/=$AUTHORIZED_USERS/" /etc/nagios/cgi.cfg
 if [ -s /run/secrets/$HTPASSWD_SECRET ]; then
   cp /run/secrets/$HTPASSWD_SECRET /etc/nagios/htpasswd.users
-  chown root.www-data /etc/nagios/htpasswd.users
+  chown root:www-data /etc/nagios/htpasswd.users
   chmod 640 /etc/nagios/htpasswd.users
 fi
 
@@ -81,7 +81,7 @@ AuthUser=$MAIL_AUTH_USER
 EOF
   fi
 fi
-chown root.nagios /etc/ssmtp/ssmtp.conf
+chown root:nagios /etc/ssmtp/ssmtp.conf
 chmod 640 /etc/ssmtp/ssmtp.conf
 
 # Check configuration for errors
@@ -97,7 +97,7 @@ start-stop-daemon -u nginx -b --exec /usr/bin/fcgiwrap -- \
 /usr/sbin/php-fpm82
 /usr/sbin/nginx
 touch /var/nagios/nagios.log && tail -1 -f /var/nagios/nagios.log &
-find /var/nagios -not -user nagios -exec chown nagios.nagios {} \;
-find /etc/nagios/objects -not -user www-data -exec chown www-data.nagios {} \;
+find /var/nagios -not -user nagios -exec chown nagios:nagios {} \;
+find /etc/nagios/objects -not -user www-data -exec chown www-data:nagios {} \;
 
 exec /usr/sbin/nagios /etc/nagios/nagios.cfg
