@@ -41,7 +41,7 @@ chown -R $USERNAME /home/$USERNAME
 [ -e /var/log/git-dump.log ] || touch /var/log/git-dump.log
 [ -e /var/log/git-dump-status.txt ] || touch /var/log/git-dump-status.txt
 mkdir -p -m 750 $DEST_DIR
-chown $USERNAME.$GROUP $DEST_DIR /var/log/git-dump.log /var/log/git-dump-status.txt
+chown $USERNAME:$GROUP $DEST_DIR /var/log/git-dump.log /var/log/git-dump-status.txt
 
 cat <<EOF >/etc/opt/git-dump
 # Options for /usr/local/bin/git-dump

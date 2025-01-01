@@ -18,7 +18,7 @@ ssl=yes
 server=$SERVER, protocol=$SERVICE_TYPE, login=$USER_LOGIN, password=$USER_PASSWORD $HOST
 EOF
 fi
-chown ddclient.ddclient /etc/ddclient/ddclient.conf
+chown ddclient:ddclient /etc/ddclient/ddclient.conf
 chmod 400 /etc/ddclient/ddclient.conf
 mkdir -p /run/ddclient && chown ddclient /run/ddclient
 

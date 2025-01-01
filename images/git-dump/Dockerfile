@@ -9,6 +9,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 ENV API_TOKEN_SECRETNAME= \
     DEST_DIR=/var/backup/git \
+    GROUP=care \
     HOUR=0 MINUTE=45 \
     KEEP_DAYS=31 \
     ORG= \
@@ -21,7 +22,6 @@ ENV API_TOKEN_SECRETNAME= \
     TZ=UTC
 
 ARG GIT_VERSION=2.47.1-r0
-ARG GROUP=care
 ARG GID=505
 ARG UID=212
 
