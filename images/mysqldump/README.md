@@ -51,7 +51,7 @@ make mysqldump
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| DB_CREDS_SECRET | mysql-backup-creds | Name of secret |
+| DB_CREDS_SECRETNAME | mysql-backup-creds | Name of secret |
 | HOUR | 3 |cron-syntax backup hour |
 | KEEP_DAYS | 31 | days of snapshots to keep |
 | LOCK_FOR_BACKUP | | true if using Percona, blank for MariaDB |

@@ -8,7 +8,7 @@ fi
 CNF=/home/$USERNAME/.my.cnf
 LOG=/var/log/mysqldump.log
 echo [client] > $CNF
-cat /run/secrets/$DB_CREDS_SECRET >> $CNF
+cat /run/secrets/$DB_CREDS_SECRETNAME >> $CNF
 
 touch $LOG
 chown $USERNAME /var/backup $LOG $CNF

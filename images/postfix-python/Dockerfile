@@ -1,16 +1,16 @@
-ARG POSTFIX_VERSION=3.9.0-r1
+ARG POSTFIX_VERSION=3.9.1-r0
 
 FROM instantlinux/postfix:$POSTFIX_VERSION
-MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=IPL-1.0 \
     org.label-schema.name=postfix-python \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ENV BLACKLIST_USER_SECRET=mysql-blacklist-user \
+ENV BLACKLIST_USER_SECRETNAME=mysql-blacklist-user \
     CIDR_MIN_SIZE=32 \
     DB_HOST=dbhost \
     DB_NAME=blacklist \

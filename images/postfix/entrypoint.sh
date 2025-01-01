@@ -34,8 +34,8 @@ done
 [ -x users.sh ] && ./users.sh
 newaliases
 cd ..
-if [ -s /run/secrets/$SASL_PASSWD_SECRET ]; then
-  cp /run/secrets/$SASL_PASSWD_SECRET sasl_passwd
+if [ -s /run/secrets/$SASL_SECRETNAME ]; then
+  cp /run/secrets/$SASL_SECRETNAME sasl_passwd
   postmap sasl_passwd
   chmod 600 sasl_passwd*
 fi

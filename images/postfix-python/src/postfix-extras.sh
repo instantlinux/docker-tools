@@ -17,7 +17,7 @@ if [ ! -f $DB_CFG ]; then
 host=$DB_HOST
 database=$DB_NAME
 EOF
-  cat /run/secrets/$BLACKLIST_USER_SECRET >> $DB_CFG
+  cat /run/secrets/$BLACKLIST_USER_SECRETNAME >> $DB_CFG
   cat > /home/spamfilter/.profile <<EOF
 export CIDR_MIN_SIZE=$CIDR_MIN_SIZE
 export DB_USER=$DB_USER

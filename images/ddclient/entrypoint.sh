@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-USER_PASSWORD=$(cat /run/secrets/$USER_SECRET)
+USER_PASSWORD=$(cat /run/secrets/$USER_SECRETNAME)
 
 if [ -z "$HOST" ]; then
     echo "** HOST must be specified **"

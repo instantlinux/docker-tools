@@ -1,8 +1,7 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.license=Apache-2.0 \
     org.label-schema.name=data-sync \
     org.label-schema.vcs-ref=$VCS_REF \
@@ -16,9 +15,9 @@ ENV PEERNAME= \
     SSHKEY1=data-sync-sshkey1 \
     SSHKEY2=data-sync-sshkey2
 
-ARG UNISON_VERSION=2.53.5
+ARG UNISON_VERSION=2.53.7
 ARG OCAML_VERSION=4.14.2-r1
-ARG UNISON_SHA=330418ad130d93d0e13da7e7e30f9b829bd7c0e859355114bd4644c35fe08d23
+ARG UNISON_SHA=a259537cef465c4806d6c1638c382620db2dd395ae42a0dd2efa3ba92712bed5
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 
 COPY src/ /root/src/

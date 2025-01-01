@@ -33,11 +33,11 @@ else
 fi
 if [ -s $ETC/conf.local/dovecot-ldap.conf ]; then
   cp $ETC/conf.local/dovecot-ldap.conf $ETC
-  if [ -s /run/secrets/$LDAP_PASSWD_SECRET ]; then
-    sed -i -e "s/PASSWORD/`cat /run/secrets/$LDAP_PASSWD_SECRET`/" \
+  if [ -s /run/secrets/$LDAP_SECRETNAME ]; then
+    sed -i -e "s/PASSWORD/`cat /run/secrets/$LDAP_SECRETNAME`/" \
       $ETC/dovecot-ldap.conf
   else
-    echo "** Config dovecot-ldap.conf secret $LDAP_PASSWD_SECRET unspecified **"
+    echo "** Config dovecot-ldap.conf secret $LDAP_SECRETNAME unspecified **"
   fi
 fi
 if [ -f /etc/postfix/transport ]; then

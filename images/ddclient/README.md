@@ -20,7 +20,7 @@ Then deploy this service, see the example [helm](https://github.com/instantlinux
 | SERVER | members.easydns.com | remote dynamic-DNS server hostname|
 | SERVICE_TYPE | easydns | DNS vendor, see [available services](https://github.com/ddclient/ddclient/blob/develop/README.md)
 | USER_LOGIN | |Login name|
-| USER_SECRET | ddclient-user |Name of the Docker secret containing password |
+| USER_SECRETNAME | ddclient-user |Name of the Docker secret containing password |
 
 Instead of supplying these variables, if your provider requires more parameters than shown above, you can volume-mount the configuration as `/etc/ddclient/ddclient.conf`.
 

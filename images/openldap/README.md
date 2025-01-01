@@ -35,10 +35,10 @@ make openldap
 | SLAPD_ROOTDN | cn=admin,dc=(suffix)  | Admin user's DN |
 | SLAPD_ROOTPW |  | Plain-text admin password |
 | SLAPD_ROOTPW_HASH |  | Hashed admin password |
-| SLAPD_ROOTPW_SECRET | openldap-ro-password | Name of secret to hold pw |
+| SLAPD_ROOTPW_SECRETNAME | openldap-ro-password | Name of secret to hold pw |
 | SLAPD_SUFFIX | (based on `SLAPD_FQDN`) | Suffix of DN |
 | SLAPD_ULIMIT | 2048 | maximum file size |
-| SLAPD_USERPW_SECRET | openldap-user-passwords | Name of secret to hold pws |
+| SLAPD_USERPW_SECRETNAME | openldap-user-passwords | Name of secret to hold pws |
 
 If overriding default root DN, it should be specified in the form `cn=admin,dc=example,dc=com`.
 

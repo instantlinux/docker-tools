@@ -33,8 +33,8 @@ Variable | Default | Description |
 ALLOW_OVERWRITE | on | allow clients to modify files
 ANONYMOUS_DISABLE | off | anonymous login
 ANON_UPLOAD_ENABLE | DenyAll | anonymous upload
-FTPUSER_PASSWORD_SECRET | ftp-user-password-secret | hashed pw of upload user
 FTPUSER_NAME | ftpuser | upload username
+FTPUSER_SECRETNAME | ftp-user-password-secret | name of hashed pw secret
 FTPUSER_UID | 1001 | upload file ownership UID
 LOCAL_UMASK | 022 | upload umask
 MAX_CLIENTS | 10 | maximum simultaneous logins

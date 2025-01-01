@@ -1,20 +1,20 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=proftpd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG PROFTPD_VERSION=1.3.8b-r2
+ARG PROFTPD_VERSION=1.3.8c-r0
 
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \
     ANON_UPLOAD_ENABLE=DenyAll \
-    FTPUSER_PASSWORD_SECRET=ftp-user-password-secret \
     FTPUSER_NAME=ftpuser \
+    FTPUSER_SECRETNAME=ftp-user-password-secret \
     FTPUSER_UID=1001 \
     LOCAL_UMASK=022 \
     MAX_CLIENTS=10 \

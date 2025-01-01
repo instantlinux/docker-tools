@@ -43,7 +43,7 @@ See the Makefile and Makefile.vars files under k8s directory for default values 
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| LDAP_PASSWD_SECRET | ldap-ro-passwd | name of secret for LDAP credential |
+| LDAP_SECRETNAME | ldap-ro-passwd | name of secret for LDAP credential |
 | SSL_DH |  | Filename (in conf.local) of DH parameters |
 | TZ | UTC | time zone |
 

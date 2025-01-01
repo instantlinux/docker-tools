@@ -17,7 +17,7 @@ Messages flagged with a high spam score are diverted to subdirectories under /va
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| BLACKLIST_USER_SECRET | mysql-blacklist-user | MySQL cred secret name |
+| BLACKLIST_USER_SECRETNAME | mysql-blacklist-user | MySQL cred secret name |
 | CIDR_MIN_SIZE | 32 | size of netblock to blacklist |
 | DB_HOST | dbhost | database host or IP |
 | DB_NAME | blacklist | db name |
