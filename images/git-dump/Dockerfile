@@ -1,13 +1,13 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=git-dump \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-ENV API_TOKEN_SECRET= \
+ENV API_TOKEN_SECRETNAME= \
     DEST_DIR=/var/backup/git \
     HOUR=0 MINUTE=45 \
     KEEP_DAYS=31 \
@@ -15,12 +15,12 @@ ENV API_TOKEN_SECRET= \
     REPO_PREFIX=git@github.com:instantlinux/ \
     REPOS= \
     SCM_TYPE=github \
-    SSHKEY_SECRET=git-dump_sshkey \
+    SSHKEY_SECRETNAME=git-dump_sshkey \
     SSH_PORT=22 \
     USERNAME=git-dump \
     TZ=UTC
 
-ARG GIT_VERSION=2.45.2-r0
+ARG GIT_VERSION=2.47.1-r0
 ARG GROUP=care
 ARG GID=505
 ARG UID=212

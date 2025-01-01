@@ -1,18 +1,17 @@
-FROM instantlinux/postfix:3.8.3-r1
+FROM instantlinux/postfix:3.9.0-r1
 
-MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.license=Apache-2.0 \
     org.label-schema.name=dovecot \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DOVECOT_VERSION=2.3.21-r17
+ARG DOVECOT_VERSION=2.3.21.1-r0
 ARG MKCERT_SHA=24b6988d1709e71c24dcf94ffce5db93bd2e89dc5cbec1ac3c173de5274b68dd
 
-ENV LDAP_PASSWD_SECRET=ldap-ro-password \
+ENV LDAP_SECRETNAME=ldap-ro-password \
     SSL_DH=
 
 # TODO - procmail is missing from 3.12 repo, unsure if support ended

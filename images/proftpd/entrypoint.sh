@@ -12,9 +12,9 @@ if [ -z "$PASV_ADDRESS" ]; then
   exit 1
 fi
 
-if [ -e /run/secrets/$FTPUSER_PASSWORD_SECRET ] && ! id -u "$FTPUSER_NAME"; then
+if [ -e /run/secrets/$FTPUSER_SECRETNAME ] && ! id -u "$FTPUSER_NAME"; then
   adduser -u $FTPUSER_UID -s /bin/sh -g "ftp user" -D $FTPUSER_NAME
-  echo "$FTPUSER_NAME:$(cat /run/secrets/$FTPUSER_PASSWORD_SECRET)" \
+  echo "$FTPUSER_NAME:$(cat /run/secrets/$FTPUSER_SECRETNAME)" \
     | chpasswd -e
 fi
 

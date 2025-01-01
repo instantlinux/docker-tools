@@ -81,4 +81,4 @@ ubuntu_repos:
   - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }}-backports main restricted universe multiverse
   - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }}-security main restricted universe multiverse
 
-local_package_additions: {}
+ubuntu_package_additions: []

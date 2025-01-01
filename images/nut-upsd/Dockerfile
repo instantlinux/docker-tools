@@ -1,4 +1,4 @@
-FROM alpine:3.20
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -26,14 +26,10 @@ ENV API_USER=upsmon \
 HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
     killall -TERM upsmon || true
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
-      >>/etc/apk/repositories && \
-    echo '@edgemain http://dl-cdn.alpinelinux.org/alpine/edge/main' \
-      >>/etc/apk/repositories && \
-    apk add --no-cache dash@edgemain && \
-    apk add --update --no-cache nut@edge=$NUT_VERSION \
-      busybox@edgemain linux-pam@edgemain \
-      libcrypto3@edgemain libssl3@edgemain \
+RUN apk add --no-cache dash && \
+    apk add --update --no-cache nut=$NUT_VERSION \
+      busybox linux-pam \
+      libcrypto3 libssl3 \
       libusb musl net-snmp-libs util-linux
 
 EXPOSE 3493

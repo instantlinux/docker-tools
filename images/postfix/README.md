@@ -24,7 +24,7 @@ See etc-example directory and kubernetes.yaml / docker-compose.yml.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| SASL_PASSWD_SECRET | postfix-sasl-passwd | name of secret for SASL map |
+| SASL_SECRETNAME | postfix-sasl-passwd | name of secret for SASL map |
 | TZ | UTC | time zone |
 
 ### Secrets

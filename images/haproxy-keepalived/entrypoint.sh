@@ -6,8 +6,8 @@ function graceful_stop() {
     sleep 1; exit 0
 }
 
-if [ -s /run/secrets/$STATS_SECRET ]; then
-  STATS_PASSWORD=$(cat /run/secrets/$STATS_SECRET)
+if [ -s /run/secrets/$STATS_SECRETNAME ]; then
+  STATS_PASSWORD=$(cat /run/secrets/$STATS_SECRETNAME)
 else
   STATS_PASSWORD=changeme
 fi

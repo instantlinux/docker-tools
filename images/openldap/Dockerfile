@@ -1,14 +1,14 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-3.0 \
     org.label-schema.name=openldap \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OPENLDAP_VERSION=2.6.7-r0
+ARG OPENLDAP_VERSION=2.6.8-r0
 ENV SLAPD_DN_ATTR=uid \
     SLAPD_FQDN=example.com \
     SLAPD_LOG_LEVEL=Config,Stats \
@@ -22,10 +22,10 @@ ENV SLAPD_DN_ATTR=uid \
     SLAPD_PWD_MIN_LENGTH=8 \
     SLAPD_ROOTDN= \
     SLAPD_ROOTPW_HASH= \
-    SLAPD_ROOTPW_SECRET=openldap-ro-password \
+    SLAPD_ROOTPW_SECRETNAME=openldap-ro-password \
     SLAPD_SUFFIX= \
     SLAPD_ULIMIT=2048 \
-    SLAPD_USERPW_SECRET=openldap-user-passwords
+    SLAPD_USERPW_SECRETNAME=openldap-user-passwords
 
 RUN apk add --update --no-cache gettext gzip openldap=$OPENLDAP_VERSION \
       openldap-clients openldap-back-mdb openldap-passwd-pbkdf2 \
@@ -38,4 +38,4 @@ COPY slapd.conf /root/
 COPY ldif/ /root/ldif/
 COPY entrypoint.sh /usr/local/bin/
 
-ENTRYPOINT /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

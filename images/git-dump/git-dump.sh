@@ -9,7 +9,7 @@
 #  $2 number of files to keep
 #  $3-$ git repo suffixes
 
-# Omit git repo list if a API_TOKEN_SECRET is provided to query project
+# Omit git repo list if a API_TOKEN_SECRETNAME is provided to query project
 # list from gitlab
 
 DESTDIR=$1
@@ -44,9 +44,9 @@ else
  DAY=`date +%m%d`
 fi
 
-if [ ! -z "$API_TOKEN_SECRET" ] && [ -e /run/secrets/$API_TOKEN_SECRET ]; then
+if [ ! -z "$API_TOKEN_SECRETNAME" ] && [ -e /run/secrets/$API_TOKEN_SECRETNAME ]; then
   SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d/ -f 1 | cut -d: -f 1)
-  TOKEN=$(cat /run/secrets/$API_TOKEN_SECRET)
+  TOKEN=$(cat /run/secrets/$API_TOKEN_SECRETNAME)
   if [ $SCM_TYPE == github ]; then
     API_VERSION=v3
     API_PATH=repo

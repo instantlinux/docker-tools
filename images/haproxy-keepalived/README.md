@@ -43,7 +43,7 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 |KEEPALIVE_CONFIG_ID| main | Which configuration to use (usually a hostname) |
 |PORT_HAPROXY_STATS| 8080 | What port to use for stats page |
 |STATS_ENABLE| yes | Whether to include stats | 
-|STATS_SECRET|haproxy-stats-password | Secret to use for stats page |
+|STATS_SECRETNAME|haproxy-stats-password | Secret to use for stats page |
 |STATS_USER|haproxy|Username for stats page basic-auth |
 |STATS_URI|/stats| URI for stats page |
 |TIMEOUT|50000| Timeout for haproxy (ms)|

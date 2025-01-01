@@ -16,12 +16,12 @@ if [ ! -d ${SLAPD_CONF_DIR} ]; then
     if [ ! -z "$SLAPD_ROOTPW" ]; then
         SLAPD_ROOTPW_HASH=$(slappasswd -o module-load=pw-pbkdf2.so \
            -h {PBKDF2-SHA512} -s "$SLAPD_ROOTPW")
-    elif [[ -z "$SLAPD_ROOTPW_HASH" && -s /run/secrets/$SLAPD_ROOTPW_SECRET ]]; then
+    elif [[ -z "$SLAPD_ROOTPW_HASH" && -s /run/secrets/$SLAPD_ROOTPW_SECRETNAME ]]; then
         SLAPD_ROOTPW_HASH=$(slappasswd -o module-load=pw-pbkdf2.so \
-           -h {PBKDF2-SHA512} -s "$(cat /run/secrets/$SLAPD_ROOTPW_SECRET)")
+           -h {PBKDF2-SHA512} -s "$(cat /run/secrets/$SLAPD_ROOTPW_SECRETNAME)")
     fi
     if [ -z "$SLAPD_ROOTPW_HASH" ]; then
-        echo "** Secret SLAPD_ROOTPW_SECRET unspecified **"
+        echo "** Secret SLAPD_ROOTPW_SECRETNAME unspecified **"
         exit 1
     fi
     export SLAPD_DATA_DIR
@@ -72,7 +72,7 @@ tail -f -n0 /var/log/slapd-audit.log |
 (   sleep 10
     # Post-startup actions
     echo 'Setting user passwords'
-    PW_FILE=$(find /run/secrets/$SLAPD_USERPW_SECRET -type f | head -1)
+    PW_FILE=$(find /run/secrets/$SLAPD_USERPW_SECRETNAME -type f | head -1)
     if [[ ! -z "${PW_FILE}" && -s "${PW_FILE}" ]]; then
         awk -F : -v dnattr=${SLAPD_DN_ATTR} \
 	  -v suffix=,${SLAPD_OU}${SLAPD_SUFFIX} \

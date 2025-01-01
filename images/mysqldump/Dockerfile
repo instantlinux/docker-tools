@@ -1,8 +1,7 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.license=Apache-2.0 \
     org.label-schema.name=mysqldump \
     org.label-schema.vcs-ref=$VCS_REF \
@@ -10,7 +9,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 ENV HOUR=3 MINUTE=30 \
     KEEP_DAYS=31 \
-    DB_CREDS_SECRET=mysql-backup-creds \
+    DB_CREDS_SECRETNAME=mysql-backup-creds \
     LOCK_FOR_BACKUP= \
     SERVERS=dbhost \
     SKEW_SECONDS=15 \
@@ -18,7 +17,7 @@ ENV HOUR=3 MINUTE=30 \
     TZ=UTC
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=10.11.8-r0
+ARG CLIENT_VERSION=11.4.4-r1
 
 RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \
