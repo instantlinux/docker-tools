@@ -1,0 +1,35 @@
+{{ ansible_managed | comment }}
+
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+# inhibit these
+- level: None
+  nonResourceURLs: ['/healthz*', '/logs', '/metrics', '/swagger*', '/version']
+
+# exclude auth token material
+- level: Metadata
+  omitStages: [RequestReceived]
+  resources:
+  - group: authentication.k8s.io
+    resources: [tokenreviews]
+
+# extended audit of auth delegation
+- level: RequestResponse
+  omitStages: [RequestReceived]
+  resources:
+  - group: authorization.k8s.io
+    resources: [subjectaccessreviews]
+
+# log changes to pods at RequestResponse level
+- level: RequestResponse
+  omitStages: [RequestReceived]
+  resources:
+  # core API group; add API services as desired
+  - group: ''
+    resources: [pods]
+    verbs: [create, patch, update, delete]
+
+# log everything else at Metadata level
+- level: Metadata
+  omitStages: [RequestReceived]
