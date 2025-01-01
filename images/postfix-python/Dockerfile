@@ -19,7 +19,7 @@ ENV BLACKLIST_USER_SECRETNAME=mysql-blacklist-user \
     INBOUND_RELAY="by mail.mydomain.com" \
     SPAMLIMIT=12 \
     SPAMC_HOST=spamassassin
-ARG GETPIP_SHA=55e89e425e98f7c7fdb68174852cc1302cfc16a3b9f1a105b14621711c5b6e64
+ARG GETPIP_SHA=5b9e2f9bb476ce76f84942bb7247dec8d6c0bb9dbc8c62ba2543b81fd7a4243c
 ARG GETPIP_URI=https://bootstrap.pypa.io/pip/3.7/get-pip.py
 ARG PYTHON_PIP_VERSION=24.0
 
