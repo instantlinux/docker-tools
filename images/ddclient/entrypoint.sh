@@ -19,7 +19,7 @@ server=$SERVER, protocol=$SERVICE_TYPE, login=$USER_LOGIN, password=$USER_PASSWO
 EOF
 fi
 chown ddclient.ddclient /etc/ddclient/ddclient.conf
-chmod 400 /etc/ddclient/ddclient.conf
+chmod 400 /etc/ddclient/ddclient:conf
 mkdir -p /run/ddclient && chown ddclient /run/ddclient
 
 exec su-exec ddclient /usr/bin/ddclient -foreground -verbose
