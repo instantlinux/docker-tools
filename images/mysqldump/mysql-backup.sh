@@ -30,7 +30,7 @@ log_entry info START
 # Grants required for bkp user:
 # GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO '$USER'@'192.168.%' IDENTIFIED BY '$PSWD';
 
-DUMPOPTS="--force --skip-opt --skip-ssl --quick --single-transaction \
+DUMPOPTS="--force --skip-opt --quick --single-transaction \
  $OPT_LOCK_FOR_BACKUP --add-drop-table --set-charset --create-options \
  --no-autocommit --extended-insert --routines"
 SCHEMA_DUMP_OPTS=" --force --no-data --triggers --events --routines" 

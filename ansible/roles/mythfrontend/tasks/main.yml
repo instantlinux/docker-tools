@@ -9,13 +9,7 @@
     state: directory
 
 - include_tasks: "{{ ansible_os_family | lower }}/packages.yml"
-- include_tasks: "{{ ansible_os_family | lower }}/lirc.yml"
-  when: ansible_distribution_version < '18.04'
-- include_tasks: "{{ ansible_os_family | lower }}/network.yml"
-  when: ansible_distribution_version < '18.04'
-
 - include_tasks: "{{ ansible_os_family | lower }}/ir-keytable.yml"
-  when: ansible_distribution_version >= '18.04'
 
 - include_tasks: autosuspend.yml
   when: suspend

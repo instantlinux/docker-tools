@@ -13,6 +13,7 @@ ENV HOUR=3 MINUTE=30 \
     LOCK_FOR_BACKUP= \
     SERVERS=dbhost \
     SKEW_SECONDS=15 \
+    SKIP_SSL=true \
     USERNAME=mysqldump \
     TZ=UTC
 ARG UID=210
