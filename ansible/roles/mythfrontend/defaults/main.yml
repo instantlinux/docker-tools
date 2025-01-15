@@ -10,10 +10,10 @@ display_driver_defaults:
   type: nvidia
   download: False
   nvidia:
-    checksum: d2cf81b5994a1728dc4851cdf0480cde0a34b040c94de0d5265edcfe3b90680a
+    checksum: 0a7aa742c46bcf34d766982402d17b3db1fdb3bc1b89344d70cd123c1cb3147c
     creates: /usr/lib64/xorg/modules/libnvidia-wfb.so.1
     download_uri: http://us.download.nvidia.com/XFree86/Linux-x86_64
-    version: 340.101
+    version: 565.77
   packages:
   - nvidia-304
   screen:
@@ -227,56 +227,7 @@ ir_device:
 mythdb_overrides: {}
 db: "{{ db_defaults | combine(mythdb_overrides) }}"
 
-mythtv_version: 33
-
-opensuse_packages:
-  - ImageMagick-devel
-  - kdm
-  - libdvdcss
-  - liblirc_client0=0.9.0
-  - lirc=0.9.0
-  - lirc-remotes=0.9.0
-  - kernel-default
-  - kernel-devel
-  - kernel-headers
-  - kernel-source
-  - mythtv-frontend
-  - MozillaFirefox
-  - mariadb-client
-  - mythtv-base-themes
-  - mythtv-common
-  - nrpe
-  - nagios-plugins
-  - net-snmp
-  - ntp
-  - patterns-openSUSE-kde4
-  - perl-Crypt-DES
-  - perl-mythtv
-  - perl-Net-CIDR
-  - perl-Net-Server
-  - perl-Net-SNMP
-  - perl-TimeDate
-  - python-mysql
-  - python-mythtv
-  - rsyslog
-  - v4l-utils
-  - xdm
-  - xkeyboard-config
-  - xorg-x11-driver-input
-  - xorg-x11-driver-video
-  - xorg-x11-fonts
-
-opensuse_repo_defaults:
-  - name: oss
-    repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
-  - name: ossupd
-    repo: http://download.opensuse.org/update/leap/42.2/oss/
-  - name: packman
-    repo: http://packman.inode.at/suse/openSUSE_Leap_42.2/
-    flags: -f --keep-packages
-
-opensuse_repo_additions: []
-opensuse_repos: "{{ opensuse_repo_defaults + opensuse_repo_additions }}"
+mythtv_version: 34
 
 network_defaults:
   address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
