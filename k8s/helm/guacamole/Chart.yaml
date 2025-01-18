@@ -7,8 +7,8 @@ sources:
 - https://github.com/apache/guacamole-client
 - https://github.com/apache/guacamole-server
 type: application
-version: 0.1.4
-appVersion: "1.5.4"
+version: 0.1.5
+appVersion: "1.5.5"
 dependencies:
 - name: chartlib
   version: 0.1.8
