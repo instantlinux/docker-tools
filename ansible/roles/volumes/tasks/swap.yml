@@ -1,0 +1,29 @@
+---
+- name: Create logical volume for swap
+  ansible.builtin.lvol:
+    lv: "{{ swap_vol.lv }}"
+    size: "{{ swap_vol.size }}"
+    vg: "{{ swap_vol.vg }}"
+  register: swap_vol_create
+
+- name: Initialize swap volume
+  ansible.builtin.command: mkswap /dev/{{ swap_vol.vg }}/{{ swap_vol.lv }}
+  when: swap_vol_create is changed
+
+- name: Enable swap
+  ansible.builtin.command: swapon /dev/{{ swap_vol.vg }}/{{ swap_vol.lv }}
+  when: swap_vol_create is changed
+
+- name: Add swap device entry to fstab
+  ansible.builtin.mount:
+    name: none
+    src: /dev/{{ swap_vol.vg }}/{{ swap_vol.lv }}
+    fstype: swap
+    opts: sw
+    state: present
+
+- name: Adjust swappiness kernel setting
+  ansible.builtin.sysctl:
+    name: vm.swappiness
+    value: "{{ swap_vol.swappiness }}"
+    sysctl_set: true

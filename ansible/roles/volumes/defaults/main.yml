@@ -21,6 +21,17 @@ local_volumes:
 
 local_k8s_root: /var/lib/docker/k8s-volumes
 
+# Swap
+swap_vol_defaults:
+  enabled: false
+  lv: volswap
+  size: 4G
+  swappiness: 60
+  vg: vg0
+swap_vol_additions: {}
+
+swap_vol: "{{ swap_vol_defaults | combine(swap_vol_additions) }}"
+
 # Network volumes
 network_mounts:
   nfs:/service:
