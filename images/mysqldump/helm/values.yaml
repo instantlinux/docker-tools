@@ -4,6 +4,7 @@ deployment:
     hour: "5"
     servers: db00
     skew_seconds: "30"
+    skip_ssl: "true"
     tz: UTC
   nodeSelector:
     service.mysqldump: allow

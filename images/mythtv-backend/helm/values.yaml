@@ -55,7 +55,7 @@ volumes:
 - name: ssh-config
   emptyDir: {}
 - name: data
-  hostPath: { path: $MYTHTV_VOL_PATH }
+  hostPath: { path: /var/mythtv }
 - name: videos
   persistentVolumeClaim:
     claimName: videos
@@ -132,6 +132,20 @@ data-sync:
       sync_interval: 240
     nodeSelector:
       service.mythtv-backend: allow
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - data-sync
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+              - mythtv-backend
+          topologyKey: kubernetes.io/hostname
     replicas: 2
     resources:
       limits:

@@ -14,7 +14,7 @@ spec:
           containers:
           - name: backup
             # Same image as in /etc/kubernetes/manifests/etcd.yaml
-            image: registry.k8s.io/etcd:3.5.4-0
+            image: registry.k8s.io/etcd:3.5.15-0
             command: ["/bin/sh"]
             args: ["-c", "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save /backup/etcd-snapshot-$(printf '%(%y-%m-%d_%T)T').db"]
             env:

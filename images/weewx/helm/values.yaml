@@ -1,7 +1,7 @@
 # Default values for weewx.
 deployment:
   env:
-    airlink_host: airlink
+    airlink_host: ""
     altitude: 100, foot
     computer_type: Linux x86_64 with Kubernetes
     db_host: db00

@@ -41,3 +41,10 @@
   command: pip3 install --break-system-packages {{ pip_packages|join(' ') }}
   args:
     creates: /usr/local/lib/python3.12/dist-packages/mdstat
+  when: ansible_distribution_version >= '24.04'
+
+- name: Python packages for monitoring
+  command: pip3 install {{ pip_packages|join(' ') }}
+  args:
+    creates: /usr/local/lib/python3.10/dist-packages/mdstat
+  when: ansible_distribution_version < '24.04'
