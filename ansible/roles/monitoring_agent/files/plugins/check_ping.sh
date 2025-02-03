@@ -61,8 +61,8 @@ warn_pct=$(printf %.0f $pct)
 output=$(mktemp)
 /bin/$pingcmd -c $packets -w $crit_sec $host > $output
 ret=$?
-status=$(egrep 'transmitted|round-trip|rtt' $output)
-rta=$(egrep 'round-trip|rtt' $output |cut -d= -f 2|cut -d / -f 2)
+status=$(grep -E 'transmitted|round-trip|rtt' $output)
+rta=$(grep -E 'round-trip|rtt' $output |cut -d= -f 2|cut -d / -f 2)
 loss=$(echo $status | grep -oP '[0-9]{1,3}%'|cut -d% -f 1)
 rm $output
 if [ $ret != 0 ]; then

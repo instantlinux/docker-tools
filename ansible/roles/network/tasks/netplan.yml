@@ -35,4 +35,5 @@
   template:
     dest: /etc/netplan/01-netcfg.yaml
     src: netplan.j2
+    mode: 0600
   notify: Netplan apply

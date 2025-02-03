@@ -70,7 +70,6 @@ netplan_bridged:
     bridges:
       br0:
         addresses: "{{ network.addresses }}"
-        gateway4: "{{ network.gateway }}"
         nameservers:
           search: "{{ ansible_dns.search }}"
           addresses: "{{ network.nameservers }}"

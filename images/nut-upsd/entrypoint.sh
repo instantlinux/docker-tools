@@ -1,7 +1,5 @@
 #! /bin/sh -e
 
-cat /etc/passwd
-
 if [ -d /run/secrets ] && [ -s /run/secrets/$SECRETNAME ]; then
   API_PASSWORD=$(cat /run/secrets/$SECRETNAME)
 fi
