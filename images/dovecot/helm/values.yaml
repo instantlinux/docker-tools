@@ -195,6 +195,18 @@ data-sync:
       sync_interval: 2
     nodeSelector:
       service.dovecot: allow
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values: [ data-sync ]
+            - key: app.kubernetes.io/instance
+              operator: In
+              values: [ dovecot ]
+          topologyKey: kubernetes.io/hostname
     replicas: 3
     resources:
       limits:

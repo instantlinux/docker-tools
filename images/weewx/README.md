@@ -25,7 +25,7 @@ definition, or (even easier) under Kubernetes deploy the
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
-| AIRLINK_HOST | | local hostname or IP of AirLink AQI sensor|
+| AIRLINK_HOST | | local hostname or IP of AirLink AQI sensor, if installed|
 | ALTITUDE | "100, foot" | elevation of station |
 | LATITUDE | 50.00 | coordinates |
 | LONGITUDE | -80.00 | coordinates  |

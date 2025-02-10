@@ -1,8 +1,8 @@
-FROM alpine:3.20
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.21
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-3.0 \
     org.label-schema.name=weewx \
     org.label-schema.vcs-ref=$VCS_REF \
