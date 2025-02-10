@@ -26,6 +26,15 @@ statefulset:
     capabilities:
       add: [ NET_ADMIN ]
   replicas: 3
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values: [ dhcpd-dns-pxe ]
+        topologyKey: kubernetes.io/hostname
 volumeMounts:
 - mountPath: /tftpboot/pxelinux
   name: share

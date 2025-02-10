@@ -101,6 +101,15 @@ statefulset:
   - containerPort: 25
   - containerPort: 3525
   replicas: 2
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values: [ postfix ]
+        topologyKey: kubernetes.io/hostname
 volumeMounts:
 - mountPath: /etc/postfix/postfix.d
   name: config

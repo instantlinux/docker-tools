@@ -70,7 +70,7 @@ if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
     sed -i -e "s/hostname = airlink$/hostname = $AIRLINK_HOST/" \
       $WX_ROOT/weewx.conf
   else
-    sed -i "/[[Sensor1]]/{n;s/.*/        enable = false/}" $WX_ROOT/weewx.conf
+    su $WX_USER -c "weectl extension uninstall --yes airlink"
   fi
   if [ $SKIN != Season ]; then
     sed -i \

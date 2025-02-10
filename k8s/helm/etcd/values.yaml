@@ -47,6 +47,18 @@ statefulset:
     etcd_listen_client_urls: "http://0.0.0.0:2379"
     etcd_listen_peer_urls: "http://0.0.0.0:2380"
   hostNetwork: true
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values: [ etcd ]
+          - key: app.kubernetes.io/instance
+            operator: In
+            values: [ etcd ]
+        topologyKey: kubernetes.io/hostname
   replicas: 3
 volumeMounts:
 - mountPath: /var/lib/etcd
