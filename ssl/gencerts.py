@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Gencerts for docker
 
 created 20-apr-2017 by richb@instantinux.net

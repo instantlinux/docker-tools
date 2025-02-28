@@ -36,6 +36,8 @@ deployment:
       memory: 64Mi
   securityContext:
     privileged: true
+  strategy:
+    type: Recreate
 volumeMounts:
 - name: usb
   mountPath: /dev/ttyUSB0

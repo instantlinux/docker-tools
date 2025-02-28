@@ -38,6 +38,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Calico or flannel networking
 * ingress-nginx
 * Local-volume sync
+* Minio object storage
 * Pod security policies
 * Automatic certificate issuing/renewal with Letsencrypt
 * PostgreSQL-operator from CrunchyData
@@ -117,4 +118,4 @@ Thank you to the following contributors!
 * [Daniel Muller](https://github.com/DanielMuller)
 * [Brian Hechinger](https://github.com/bhechinger)
 
-Contents created 2017-23 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
+Contents created 2017-25 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
