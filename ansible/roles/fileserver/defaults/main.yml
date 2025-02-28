@@ -3,6 +3,7 @@ nfs_exports:
   /var/ftp: "*(ro,root_squash,crossmnt,fsid=0,no_subtree_check)"
 
 samba_defaults:
+  enabled: true
   conf: "{{ lookup('fileglob', 'roles/fileserver/files/etc/*.conf'
     ).split(',') | sort }}"
   hosts_allow: []
@@ -28,13 +29,16 @@ ubuntu_packages:
   - vsftpd
 
 virtualbox:
+  enabled: true
   apt_repo:
     url: http://download.virtualbox.org/virtualbox/debian
     key_urls:
     - https://www.virtualbox.org/download/oracle_vbox_2016.asc
     - https://www.virtualbox.org/download/oracle_vbox.asc
+  version: 7.1
 
 vsftpd:
+  enabled: true
   anonymous_enable: YES
   anon_upload_enable: NO
   anon_world_readable_only: YES

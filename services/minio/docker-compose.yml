@@ -1,0 +1,23 @@
+services:
+  app:
+    image: quay.io/minio/minio:${VERSION_MINIO:-latest}
+    command: >
+      server /data/vol{1...${MINIO_VOL_COUNT:-4}}/
+       --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER:     ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_GID:           ${MINIO_GID:-1000}
+      MINIO_UID:           ${MINIO_UID:-1000}
+      MINIO_GROUPNAME:     ${MINIO_GROUPNAME:-minio}
+      MINIO_USERNAME:      ${MINIO_USERNAME:-minio}
+    ports:
+    - ${PORT_MINIO_API:-9000}:9000
+    - ${PORT_MINIO_CONSOLE:-9001}:9001
+    restart: always
+    volumes:
+    - ${MINIO_ROOT:-/data}:/data
+    - ${MINIO_CERTS_DIR:-~/ssl/minio}:/root/.minio/certs
+volumes:
+  data:
+    driver: local

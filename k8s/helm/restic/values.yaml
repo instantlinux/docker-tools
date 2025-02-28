@@ -16,7 +16,7 @@ deployment:
     mkdir -p /var/log/week && tail -f -n 0 /var/log/restic.log
   env:
     # Edit the version in Chart.yaml to keep consistent
-    app_version: 0.17.3-r0
+    app_version: 0.17.3-r2
     env: /etc/profile
     tz: UTC
   nodeSelector:

@@ -15,7 +15,15 @@
   when: ansible_distribution_version < '20.04'
 
 - import_tasks: nfs.yml
+  when: nfs_exports
+
 - import_tasks: instantlinux.yml
+
 - import_tasks: samba.yml
+  when: samba.enabled
+
 - import_tasks: virtualbox.yml
+  when: virtualbox.enabled
+
 - import_tasks: vsftpd.yml
+  when: vsftpd.enabled

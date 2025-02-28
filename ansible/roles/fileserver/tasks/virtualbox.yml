@@ -21,7 +21,7 @@
 
 - name: Virtualbox package
   package:
-    name: virtualbox-6.1
+    name: virtualbox-{{ virtualbox.version }}
   when: ansible_distribution_version >= '22.04'
 
 - name: Virtualbox systemd unit file

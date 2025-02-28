@@ -1,6 +1,6 @@
 DOM = ci.net
 DOM2 = instantlinux.net
-WEB_HOSTS = monitor.$(DOM) nexus.$(DOM2) oidc.$(DOM2)
+WEB_HOSTS = monitor.$(DOM) nexus.$(DOM2) oidc.$(DOM2) redmond.$(DOM)
 DOCKER_HOSTS = swarm01.$(DOM) mckinley.$(DOM) vinson.$(DOM) denali.$(DOM)
 DOCKER_CLIENTS = administrator portainer
 CERT_INFO = --subj-city='San Francisco' --subj-state=CA \
