@@ -17,13 +17,48 @@
 - import_tasks: nfs.yml
   when: nfs_exports
 
+- name: Disable nfs-server
+  systemd:
+    name: nfs-server
+    state: stopped
+    enabled: no
+  when: not nfs_exports
+
+- name: Disable rpcbind if no network volumes
+  systemd:
+    name: rpcbind
+    state: stopped
+    enabled: no
+  when: not nfs_exports
+
 - import_tasks: instantlinux.yml
 
 - import_tasks: samba.yml
   when: samba.enabled
+
+- name: Disable smbd service
+  systemd:
+    name: smbd
+    state: stopped
+    enabled: no
+  when: not samba.enabled
+
+- name: Disable nmbd service
+  systemd:
+    name: nmbd
+    state: stopped
+    enabled: no
+  when: not samba.enabled
 
 - import_tasks: virtualbox.yml
   when: virtualbox.enabled
 
 - import_tasks: vsftpd.yml
   when: vsftpd.enabled
+
+- name: Disable vsftpd service
+  systemd:
+    name: vsftpd
+    state: stopped
+    enabled: no
+  when: not vsftpd.enabled

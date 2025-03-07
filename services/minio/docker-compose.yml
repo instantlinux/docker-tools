@@ -3,21 +3,63 @@ services:
     image: quay.io/minio/minio:${VERSION_MINIO:-latest}
     command: >
       server /data/vol{1...${MINIO_VOL_COUNT:-4}}/
-       --console-address ":9001"
+       --address "0.0.0.0:9000"
+       --console-address "0.0.0.0:9001"
+       --certs-dir /opt/certs
     environment:
-      MINIO_ROOT_USER:     ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
-      MINIO_GID:           ${MINIO_GID:-1000}
-      MINIO_UID:           ${MINIO_UID:-1000}
-      MINIO_GROUPNAME:     ${MINIO_GROUPNAME:-minio}
-      MINIO_USERNAME:      ${MINIO_USERNAME:-minio}
+      MINIO_ROOT_USER_FILE:     /run/secrets/minio-root-user
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio-root-password
+      MINIO_GID:                ${MINIO_GID:-1000}
+      MINIO_UID:                ${MINIO_UID:-1000}
+      MINIO_GROUPNAME:          ${MINIO_GROUPNAME:-minio}
+      MINIO_USERNAME:           ${MINIO_USERNAME:-minio}
+      MINIO_PROMETHEUS_URL:     ${MINIO_PROMETHEUS_URL:-http://prometheus:9090}
     ports:
     - ${PORT_MINIO_API:-9000}:9000
     - ${PORT_MINIO_CONSOLE:-9001}:9001
     restart: always
+    secrets:
+    - minio-root-user
+    - minio-root-password
     volumes:
     - ${MINIO_ROOT:-/data}:/data
-    - ${MINIO_CERTS_DIR:-~/ssl/minio}:/root/.minio/certs
+    - ${MINIO_CERTS_DIR:-~/ssl/minio}:/opt/certs
+  prometheus:
+    image: prom/prometheus:latest
+    command: --config.file=/etc/prometheus/prometheus.yml
+    configs:
+    - source: prometheus.yml
+      target: /etc/prometheus/prometheus.yml
+    ports:
+    - "9090:9090"
+    secrets:
+    - minio-bearer-token
+    volumes:
+    - prometheus-data:/prometheus
+    - ${MINIO_CERTS_DIR:-~/ssl/minio}:/opt/certs
+secrets:
+  minio-bearer-token:
+    file: /var/adm/secrets/minio-bearer-token
+  minio-root-user:
+    file: /var/adm/secrets/minio-root-user
+  minio-root-password:
+    file: /var/adm/secrets/minio-root-password
 volumes:
   data:
     driver: local
+  prometheus-data:
+configs:
+  prometheus.yml:
+    content: |
+      global:
+        scrape_interval: 2s
+        evaluation_interval: 2s
+      scrape_configs:
+      - job_name: minio-job
+        bearer_token_file: /run/secrets/minio-bearer-token
+        metrics_path: /minio/v2/metrics/cluster
+        scheme: https
+        static_configs:
+        - targets: ['${MINIO_FQDN:-localhost}:${PORT_MINIO_API:-9000}']
+        tls_config:
+          ca_file: /opt/certs/CAs/ca-root.crt
