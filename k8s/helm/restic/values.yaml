@@ -7,9 +7,10 @@ deployment:
   args:
   - -c
   - >
-    apk add --update restic==$APP_VERSION tzdata &&
+    apk add --update restic==$APP_VERSION ca-certificates tzdata &&
     ln -s /usr/share/zoneinfo/$TZ /etc/localtime &&
     echo $TZ > /etc/timezone &&
+    update-ca-certificates &&
     echo "if [ -r $HOME/.resticrc ]; then . $HOME/.resticrc; fi" \
       >>/etc/profile.d/restic.sh &&
     touch /var/log/restic.log && /usr/sbin/crond &&
@@ -40,6 +41,9 @@ volumeMounts:
 - mountPath: /bin/set-key.sh
   name: config
   subPath: set-key.sh
+- mountPath: /usr/local/share/ca-certificates/ca-root.crt
+  name: config
+  subPath: ca-root.crt
 - mountPath: /root/.cache/restic
   name: cache
 
@@ -122,6 +126,9 @@ configmap:
       export REPO_LOCAL=rest:http://bkp:$REPO_LOCAL_PASSWORD@k2.ci.net:8000
       export RESTIC_PROGRESS_FPS=1
       export RETAIN_SCHED="forget --keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75"
+
+    ca-root.crt: |
+      # Add to your overrides if using a private CA root
 
     cron: |
       # Customize as desired

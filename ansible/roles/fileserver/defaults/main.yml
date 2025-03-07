@@ -28,7 +28,7 @@ ubuntu_packages:
   - unison
   - vsftpd
 
-virtualbox:
+virtualbox_defaults:
   enabled: true
   apt_repo:
     url: http://download.virtualbox.org/virtualbox/debian
@@ -36,6 +36,9 @@ virtualbox:
     - https://www.virtualbox.org/download/oracle_vbox_2016.asc
     - https://www.virtualbox.org/download/oracle_vbox.asc
   version: 7.1
+
+virtualbox_override: {}
+virtualbox: "{{ virtualbox_defaults | combine(virtualbox_override) }}"
 
 vsftpd:
   enabled: true

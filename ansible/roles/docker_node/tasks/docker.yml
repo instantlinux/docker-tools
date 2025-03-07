@@ -142,19 +142,14 @@
     enabled: yes
     name: docker-permissions
 
-- name: Download docker-compose
+- name: Download docker-compose (deprecated since V2 release)
   ansible.builtin.get_url:
     checksum: sha256:{{ docker.compose.sha256 }}
     dest: /usr/local/bin/docker-compose
     mode: 0755
     url: https://github.com/docker/compose/releases/download/{{
       docker.compose.version }}/docker-compose-Linux-x86_64
-  when: ansible_distribution_version < '24.04'
-
-- name: Install docker-compose from repo
-  ansible.builtin.apt:
-    name: docker-compose
-  when: ansible_distribution_version >= '24.04'
+  when: ansible_distribution_version < '22.04'
 
 - name: Sysctl tuning parameters
   ansible.builtin.sysctl:
