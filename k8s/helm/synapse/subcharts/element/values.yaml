@@ -1,0 +1,46 @@
+# Default values for element.
+country_code: US
+homeserver_url: https://synapse.example.com
+room_directory_servers: [ "\"matrix.org\"" ]
+server_name: My matrix site
+
+deployment:
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+volumeMounts:
+- mountPath: /app/config.json
+  name: config
+  readOnly: true
+  subPath: config.json
+volumes:
+- name: config
+  configMap:
+    name: synapse-element
+
+image:
+  repository: vectorim/element-web
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 80 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  hosts:
+  - host: element.example.com
+    paths:
+    - path: /
+      pathType: Prefix

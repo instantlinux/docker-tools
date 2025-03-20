@@ -1,0 +1,67 @@
+{{- $fullName := include "local.fullname" . -}}
+{{- $svcPort := .Values.ingress.port | default (index .Values.service.ports 0).port -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+  annotations:
+    {{- if hasKey .Values.ingress "annotations" }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- else }}
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- if hasKey .Values.ingress "tls" }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- else if hasKey .Values "tlsHostname" }}
+  tls:
+    - hosts:
+      - {{ .Values.tlsHostname }}
+      secretName: tls-{{ $fullName }}
+  {{- end }}
+  rules:
+    {{- if hasKey .Values.ingress "rules" }}
+    {{- with .Values.ingress.rules }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- else }}
+    {{- if hasKey .Values.ingress "hosts" }}
+    {{- toYaml .Values.ingress.hosts | nindent 4 }}
+    {{- else if hasKey .Values "tlsHostname" }}
+    - host: {{ .Values.tlsHostname }}
+      http:
+        paths:
+        - path: /_matrix
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ $fullName }}
+              port:
+                number: {{ $svcPort }}
+        - path: /_synapse
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ $fullName }}
+              port:
+                number: {{ $svcPort }}
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ $fullName }}-element
+              port:
+                number: {{ $svcPort }}
+    {{- end }}
+    {{- end }}
