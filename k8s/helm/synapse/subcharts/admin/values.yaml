@@ -23,7 +23,7 @@ autoscaling:
 authelia:
   fqdn: authtotp.example.com
   ip: 10.101.1.5
-  path: '/#/login'
+  path: /_matrix/client/r0/login
 ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
