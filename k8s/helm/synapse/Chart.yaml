@@ -1,0 +1,26 @@
+apiVersion: v2
+name: synapse
+description: Forum software matrix synapse
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/matrix-org/synapse
+- https://hub.docker.com/r/matrixdotorg/synapse
+type: application
+version: 0.1.0
+appVersion: v1.126.0
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools
+- name: admin
+  version: 0.1.0
+  repository: file://subcharts/admin
+  condition: admin.enabled
+- name: element
+  version: 0.1.0
+  repository: file://subcharts/element
+  condition: element.enabled
+- name: postgres
+  version: 0.1.0
+  repository: file://subcharts/postgres
+  condition: postgres.enabled

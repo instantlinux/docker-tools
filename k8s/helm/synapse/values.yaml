@@ -1,0 +1,203 @@
+# Default values for synapse.
+
+  # Before first startup, configure a synapse secret with the
+  #  key .pgpass, in the colon-delimited format defined at
+  #  https://www.postgresql.org/docs/current/libpq-pgpass.html
+  #   such as
+  #  synapse-postgres:5432:homeserver:synapse:AbCs3c3t@
+  # Also add a second key database_password containing just
+  # your chosen postgres password (e.g. AbCs3c3t@). Set an
+  # override for postgres.enabled: true, if you don't have
+  # an existing postgres instance.
+  #
+  # Postgres is optional, so you can skip those items but note
+  # that the synapse_port_db tool provided by the publisher
+  # is fragile and may not work properly if you start with
+  # sqlite3 and later decide to switch to postgres. This helm
+  # chart makes it easy to just start with postgres.
+  #
+  # Specify an override:
+  #   deployment.command: startup.py generate
+  # The synapse pod will then contain a /data/homeserver.yaml
+  # with generated secrets from which you can add three more
+  # keys to your secret:
+  #  form_secret
+  #  macaroon_secret_key
+  #  registration_shared_secret
+  #
+  # Remove the command override, then apply this chart again.
+  # In the container you'll see a generated configuration
+  # from this chart in /config/homeserver.yaml. If satisfied
+  # with it, copy that to /data/homeserver.yaml. You'll have
+  # to repeat this each time you adjust configs overrides; it's
+  # done this way because the pod startup fails whenever there's
+  # the slightest problem with the yaml config.
+
+  # This chart assumes you've got cert-manager set up and a
+  # DNS fqdn chosen, with overrides for tlsHostname and public_baseurl.
+
+tlsHostname: synapse.example.com
+public_baseurl: https://synapse.example.com
+synapse_server_name: synapse
+trusted_key_servers: [ server_name: matrix.org ]
+configs:
+  enable_registration: true
+  registration_requires_token: true
+  experimental:
+    msc3266_enabled: true
+
+database:
+  file: /data/homeserver.db
+  name: sqlite3
+  # To use postgres, override postgres.enabled, add a database_password
+  # to the synapse secret and override database vars as follows:
+  #
+  # name: psycopg2
+  # args:
+  #   cp_max: 10
+  #   cp_min: 5
+  #   dbname: homeserver
+  #   host: synapse-postgres  # add .<namespace>.svc.cluster.local if needed
+  #   password: $database_password
+  #   user: synapse
+  #
+  # If the locale or encoding are wrong, run this in an exec shell
+  # from the postgres instance:
+  #
+  # psql --username synapse --db postgres -W
+  # DROP DATABASE homeserver;
+  # CREATE DATABASE homeserver WITH encoding="UTF8" template=template0 \
+  #  owner=synapse locale="C";
+
+email:
+  enable_notifs: true
+  enable_tls: true
+  force_tls: true
+  notif_for_new_users: true
+  notif_from: Matrix Service
+  smtp_host: smtp.example.com
+  smtp_port: 587
+  validation_token_lifetime: 15m
+
+deployment:
+  env:
+    # These variables are used for initial generate
+    synapse_server_name: synapse
+    synapse_report_stats: 'no'
+    trusted_key_servers: matrix.org
+    uid: 991
+    gid: 991
+  containerPorts:
+  - containerPort: 8008
+  initContainers:
+  - name: config
+    image: alpine:3.21
+    command: [ /bin/sh ]
+    envFrom:
+    - secretRef:
+        name: synapse
+    args:
+    - -c
+    - >
+      apk add envsubst &&
+      env > /config/vars &&
+      for file in $(find /templates -type f -exec basename {} \;); do
+       envsubst < /templates/$file > /config/$file;
+      done
+    volumeMounts:
+    - name: templates
+      mountPath: /templates
+    - name: config
+      mountPath: /config
+  resources:
+    limits:
+      memory: 1024Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+volumeMounts:
+- mountPath: /data
+  name: data
+- mountPath: /config
+  name: config
+volumes:
+- name: data
+  hostPath: { path: /var/lib/docker/k8s-volumes/synapse }
+- name: code
+  configMap:
+    name: synapse
+- name: config
+  emptyDir: {}
+- name: templates
+  configMap:
+    name: synapse
+
+image:
+  repository: matrixdotorg/synapse
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 8008 }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: 30m
+    kubernetes.io/ingress.class: nginx
+  # className: nginx
+
+# Subchart parameters
+admin:
+  tlsHostname: synapse-admin.example.com
+  enabled: true
+  image:
+    tag: 0.10.3
+  deployment:
+    env:
+      react_app_server: http://synapse-admin.example.com
+  ingress:
+    tls:
+    - secretName: tls-synapse-admin
+      hosts:
+      - synapse-admin.example.com
+
+element:
+  enabled: true
+  fullnameOverride: synapse-element
+  image:
+    tag: v1.11.95
+  deployment:
+    env:
+      country_code: US
+      homeserver_url: https://synapse.example.com
+      room_directory_servers: [ matrix.org ]
+      server_name: My matrix instance
+  # No separate ingress; use the top-level synapse ingress
+  ingress:
+    enabled: false
+
+postgres:
+  enabled: false
+  statefulset:
+    env:
+      postgres_user: synapse
+      postgres_db: homeserver
+    xenv:
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: database_password
+          name: synapse
+  image:
+    tag: 17.4-alpine

@@ -1,0 +1,15 @@
+apiVersion: v2
+name: admin
+description: Synapse admin UI
+home: 
+sources:
+- https://github.com/Awesome-Technologies/synapse-admin
+- https://hub.docker.com/r/awesometechnologies/synapse-admin
+type: application
+version: 0.1.0
+# specify version tag from hub.docker.com in top-level values.yaml
+appVersion: 0.0.1
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

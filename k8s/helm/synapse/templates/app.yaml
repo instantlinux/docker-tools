@@ -1,0 +1,9 @@
+{{- include "chartlib.deployment" . }}
+---
+{{- include "chartlib.hpa" . }}
+---
+{{- include "chartlib.service" . }}
+---
+{{- include "chartlib.serviceaccount" . }}
+---
+{{- include "chartlib.statefulset" . }}

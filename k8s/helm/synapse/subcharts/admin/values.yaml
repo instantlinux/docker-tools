@@ -1,0 +1,34 @@
+# Default values for synapse-admin
+tlsHostname: synapse-admin.example.com
+deployment:
+  containerPorts: [ containerPort: 80 ]
+  env:
+    react_app_server: http://synapse-admin.example.com
+image:
+  repository: awesometechnologies/synapse-admin
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  ports: [ port: 80 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: '/#/login'
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    kubernetes.io/ingress.class: nginx
+  # className: nginx
+ingressTOTP:
+  enabled: true

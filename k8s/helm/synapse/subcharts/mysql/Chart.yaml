@@ -1,0 +1,15 @@
+apiVersion: v2
+name: mysql
+description: MySQL database
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://hub.docker.com/_/mysql
+type: application
+version: 0.1.0
+# specify version tag from hub.docker.com in top-level values.yaml
+appVersion: "0.0.1"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

@@ -1,0 +1,53 @@
+# Default values for postgres
+backup:
+  # Min Hour Day Month Weekday
+  timeZone: America/Los_Angeles
+  schedule: "0 5 * * *"
+
+statefulset:
+  containerPorts: [ containerPort: 5432 ]
+  # environment variables defined in parent
+  env:
+    postgres_user: app
+    postgres_db: appdb
+  xenv:
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: database_password
+        name: postgres
+  replicas: 1
+  resources:
+    limits:
+      memory: 2048Mi
+    requests:
+      cpu: 300m
+      memory: 256Mi
+volumeMounts:
+- mountPath: /var/lib/postgresql/data
+  name: pgdata
+volumeClaimTemplates:
+- metadata:
+    name: pgdata
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 8Gi
+
+image:
+  repository: postgres
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  clusterIP: None
+  ports: [ port: 5432 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
