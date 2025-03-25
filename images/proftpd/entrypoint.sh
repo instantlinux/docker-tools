@@ -21,7 +21,6 @@ fi
 if [ "$SFTP_ENABLE" = "on" ]; then
   mkdir -p /etc/ssh
   test -f /etc/ssh/ssh_host_rsa_key   || ssh-keygen -m PEM -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa -b 2048
-  test -f /etc/ssh/ssh_host_dsa_key   || ssh-keygen -m PEM -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa -b 1024
   test -f /etc/ssh/ssh_host_ecdsa_key || ssh-keygen -m PEM -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
 
   sed -i -e "/^Port/s/^/#/" /etc/proftpd/proftpd.conf
