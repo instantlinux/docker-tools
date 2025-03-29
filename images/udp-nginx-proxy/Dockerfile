@@ -1,8 +1,8 @@
-FROM nginx:1.27.0-alpine
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM nginx:1.27.4-alpine
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=Apache-2.0 \
     org.label-schema.name=udp-nginx-proxy \
     org.label-schema.vcs-ref=$VCS_REF \

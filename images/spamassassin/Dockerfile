@@ -1,8 +1,8 @@
 FROM debian:bookworm-slim
-MAINTAINER Rich Braun <docker@instantlinux.net>
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=Apache-2.0 \
     org.label-schema.name=spamassassin \
     org.label-schema.vcs-ref=$VCS_REF \
@@ -15,9 +15,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     EXTRA_OPTIONS=--nouser-config \
     PYZOR_SITE=public.pyzor.org:24441
 
-ARG DCC_VERSION=2.3.168
-ARG SPAMD_VERSION=4.0.0-6
-ARG DCC_SHA=3fc932325b36a46a93258bdaa483d00ee3a826bea1d00de04f6e84cfbea63bc2
+ARG DCC_VERSION=2.3.169
+ARG SPAMD_VERSION=4.0.1-1~deb12u1
+ARG DCC_SHA=3447e655476ac742942daf25fc217236da456dd0f82b7117661b9a70484b7bf6
 ARG SPAMD_UID=2022
 
 RUN apt-get -yq update && apt-get -y upgrade && \

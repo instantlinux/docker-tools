@@ -18,7 +18,7 @@ ENV HOUR=3 MINUTE=30 \
     TZ=UTC
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=11.4.4-r1
+ARG CLIENT_VERSION=11.4.5-r0
 
 RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \

@@ -102,7 +102,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | davite | [![](https://img.shields.io/docker/v/instantlinux/davite?sort=date)](https://hub.docker.com/r/instantlinux/davite "Version badge") | party-invites manager like eVite |
 | mt-daapd | [![](https://img.shields.io/docker/v/instantlinux/mt-daapd?sort=date)](https://hub.docker.com/r/instantlinux/mt-daapd "Version badge") | iTunes server |
 | mythtv-backend | [![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://hub.docker.com/r/instantlinux/mythtv-backend "Version badge") | MythTV backend |
-| weewx | [![](https://img.shields.io/docker/v/instantlinux/weewx?sort=date)](https://hub.docker.com/r/instantlinux/weewx "Version badge") | Weather station software s(Davis VantagePro2 etc.) |
+| weewx | [![](https://img.shields.io/docker/v/instantlinux/weewx?sort=date)](https://hub.docker.com/r/instantlinux/weewx "Version badge") | Weather station software (Davis VantagePro2 etc.) |
 | wxcam-upload | [![](https://img.shields.io/docker/v/instantlinux/wxcam-upload?sort=date)](https://hub.docker.com/r/instantlinux/wxcam-upload "Version badge") | Upload webcam images to Weather Underground |
 
 ### Credits
