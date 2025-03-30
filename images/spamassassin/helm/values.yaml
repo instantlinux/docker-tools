@@ -38,7 +38,9 @@ volumeClaimTemplates:
         storage: 50Mi
 
 image:
-  repository: instantlinux/spamassassin
+  # repository: instantlinux/spamassassin
+  repository: nexus.instantlinux.net/spamassassin
+  tag: testing
   pullPolicy: IfNotPresent
   # tag: default
 

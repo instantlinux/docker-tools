@@ -41,8 +41,8 @@ RUN apt-get -yq update && apt-get -y upgrade && \
      /etc/razor/razor-agent.conf && \
     sed -i 's/DCCIFD_ENABLE=off/DCCIFD_ENABLE=on/' /var/dcc/dcc_conf && \
     sed -i '/^#\s*loadplugin .\+::DCC/s/^#\s*//g' /etc/spamassassin/v310.pre && \
-    apt-get purge -yq binutils cpp-11 libc6-dev libgcc-11-dev \
-     linux-libc-dev make && \
+    apt-get purge -yq binutils libldap-2.5-0 linux-libc-dev make && \
+    apt-get -yq autoremove && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
 
 COPY entrypoint.sh /root/
