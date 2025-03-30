@@ -61,18 +61,9 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
 	-if [ -x hooks/post_build ]; then sh hooks/post_build; fi
 
-	# TODO - this only pushes amd64 manifest; as of May 2020 it seems
-	#  that only "docker buildx create --push" handles multi-platform
-	#  this slows down pipeline big-time
-	# docker pull $(REGISTRY)/$(IMAGE):$(TAG)
-	# docker tag $(REGISTRY)/$(IMAGE):$(TAG) $(REGISTRY)/$(IMAGE):latest
-	# docker push $(REGISTRY)/$(IMAGE):latest
-	# docker tag $(REGISTRY)/$(IMAGE):$(TAG) $(USER_LOGIN)/$(IMAGE):$(TAG)
-	# docker tag $(REGISTRY)/$(IMAGE):$(TAG) $(USER_LOGIN)/$(IMAGE):latest
-	# docker push $(USER_LOGIN)/$(IMAGE):$(TAG)
-	# docker push $(USER_LOGIN)/$(IMAGE):latest
 	# TODO update dockerhub README if/when that is supported,
 	# see https://github.com/docker/hub-feedback/issues/1927
+	# and https://github.com/docker/hub-feedback/issues/2127
 
 flake8: test_requirements
 	@echo "Running flake8 code analysis"

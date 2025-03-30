@@ -48,9 +48,16 @@ security_scan_trivy:
     TRIVY_DEBUG: "true"
     TRIVY_EXIT_CODE: 1
     TRIVY_FORMAT: json
+    TRIVY_IGNORE: >-
+      "CVE-2023-31484,CVE-2023-45853,
+      CVE-2023-52425,CVE-2024-8176"
+      # These are for blacklist image, there's a won't-fix note for zlib1g
+      # CVE-2023-31484,CVE-2023-45853
+      # These are for spamassassin under debian bookworm
+      # CVE-2023-52425,CVE-2024-8176
     TRIVY_OUTPUT: gl-container-scanning-report.json
     TRIVY_SEVERITY: HIGH,CRITICAL
-    TRIVY_VULN_TYPE: os,library
+    TRIVY_PKG_TYPES: os,library
   script:
   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
   - trivy clean --all
@@ -58,12 +65,7 @@ security_scan_trivy:
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
       --exit-code 0 --format table --output medium-vulns.txt
   - cat medium-vulns.txt
-  - echo CVE-2023-2253 > .trivyignore
-  # These are for blacklist image, there's a won't-fix note for zlib1g
-  - echo CVE-2023-31484 >> .trivyignore
-  - echo CVE-2023-45853 >> .trivyignore
-  # TODO remove this openssh bypass once repo is updated
-  - echo CVE-2024-6387 >> .trivyignore
+  - echo $TRIVY_IGNORE | tr , "\n" > .trivyignore
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}"
   cache:
     paths: [ .trivycache ]

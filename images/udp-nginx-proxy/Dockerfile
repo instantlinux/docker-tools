@@ -14,7 +14,9 @@ ENV BACKENDS=self \
     PORT_BACKEND=53 \
     PORT_LISTEN=53
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN apk --update --no-cache upgrade && \
+    rm /etc/nginx/conf.d/default.conf
+
 EXPOSE 53
 VOLUME /usr/local/lib
 COPY entrypoint.sh /usr/local/bin/
