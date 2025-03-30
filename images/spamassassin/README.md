@@ -20,7 +20,6 @@ make spamassassin
 ~~~
 
 ### Notes
-
 At startup, if you've enabled razor2 the following warning is expected:
 ```
 Use of uninitialized value in concatenation (.) or string at /usr/share/perl5/Razor2/Client/Config.pm line 442.
