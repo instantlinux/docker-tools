@@ -307,6 +307,10 @@ I've tried several different approaches to keeping volumes in sync; the most pop
 
 Explore this repo for several different approaches to data backups. Restic is the main off-the-shelf tool that I've found as an alternative to CrashPlan for Home. Another tool called Duplicati works well for small savesets (it chokes on larger ones and doesn't generate log output for monitoring). My [secondshot](https://github.com/instantlinux/secondshot)_ tool adds metadata-indexing and monitoring to the _rsnapshot_ method.
 
+### k8sudo with k8lock
+
+Keeping an unencrypted copy of the key from admin.conf is a security risk. This script provides a convenient toggle mechanism to raise and drop privileges using openssl `aes-256-cbc` on the infrequent occasions when this key is needed. See the script at [scripts/k8sudo](https://github.com/instantlinux/docker-tools/blob/main/k8s/scripts/k8sudo) for usage instructions.
+
 ### Additional notes
 
 I've run into a ton of issues, minor and major, setting up Kubernetes on

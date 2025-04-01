@@ -1,37 +1,5 @@
 #! /bin/sh -e
 # This script encrypts the admin key used for kubectl --context=sudo
-# Add two aliases and the admin keyfile name to .bashrc:
-#  alias k8lock="~/docker/k8s/scripts/k8sudo lock"
-#  alias k8sudo="~/docker/k8s/scripts/k8sudo sudo"
-#  export ADMIN_KEY=~/.kube/myadmin.key
-#
-# Make sure your .kube/config.conf omits the admin client key material
-#  and references it thus:
-#
-#    users:
-#    - name: my-admin
-#      user:
-#        client-certificate: myadmin.crt
-#        client-key: myadmin.key
-#    contexts:
-#    - context:
-#        cluster: mycluster
-#        namespace: kube-system
-#        user: my-admin
-#        name: sudo
-#
-# A check-file-exists Nagios NRPE script (credit: github.com/dnmvisser)
-#  is provided in ansible role 'monitoring'; to get a warning that the
-#  key is decrypted:
-#
-# * define a service K8SUDO as 'check_nrpe -c check_k8sudo'
-# * add this nrpe_command_override entry to the host's ansible
-#   definition:
-#
-#    k8sudo:
-#      local: True
-#      plugin: check-file-exists
-#      options: --absent -w -f /tmp/.k8sadm.txt
 
 CMD=$1
 [ -z "$ADMIN_KEY" ] && ADMIN_KEY=~/.kube/admin-user.key
@@ -53,6 +21,48 @@ elif [ $CMD = lock ]; then
      echo "** Nothing to do **"
      rm -f $ADMIN_KEY
    fi
+elif [ $CMD = "--help" ]; then
+    cat <<EOF
+Usage:
+  k8sudo sudo  -- to decrypt
+  k8sudo lock  -- to drop privilage
+
+Setup:
+
+Add two aliases and the admin keyfile name to .bashrc:
+ alias k8lock="~/docker/k8s/scripts/k8sudo lock"
+ alias k8sudo="~/docker/k8s/scripts/k8sudo sudo"
+ export ADMIN_KEY=~/.kube/myadmin.key
+
+Make sure your .kube/config.conf omits the admin client key material
+ and references it thus:
+
+   users:
+   - name: my-admin
+     user:
+       client-certificate: myadmin.crt
+       client-key: myadmin.key
+   contexts:
+   - context:
+       cluster: mycluster
+       namespace: kube-system
+       user: my-admin
+       name: sudo
+
+A check-file-exists Nagios NRPE script (credit: github.com/dnmvisser)
+ is provided in ansible role 'monitoring'; to get a reminder to drop
+ privileges with k8lock after an admin session:
+
+* define a service K8SUDO as 'check_nrpe -c check_k8sudo'
+* add this nrpe_command_override entry to the host's ansible
+  definition:
+
+   k8sudo:
+     local: True
+     plugin: check-file-exists
+     options: --absent -w -f /tmp/.k8sadm.txt
+
+EOF
 else
-  Unrecognized - $CMD
+  echo $CMD unrecognized, see --help
 fi
