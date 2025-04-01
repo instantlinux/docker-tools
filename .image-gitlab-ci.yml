@@ -65,7 +65,7 @@ security_scan_trivy:
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
       --exit-code 0 --format table --output medium-vulns.txt
   - cat medium-vulns.txt
-  - echo $TRIVY_IGNORE | tr , "\n" | tee > .trivyignore
+  - echo $TRIVY_IGNORE | tr , "\n" | tee .trivyignore
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}"
   cache:
     paths: [ .trivycache ]

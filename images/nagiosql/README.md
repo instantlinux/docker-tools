@@ -36,7 +36,7 @@ DB_HOST | db00 | MySQL database hostname
 DB_NAME | nagiosql | database name
 DB_PORT | 3306 | TCP port number
 DB_USER | nagiosql | database username
-DB_PASSWD_SECRET | nagiosql-db-password | name of secret
+DB_SECRETNAME | nagiosql-db-password | name of secret
 DOMAIN | | used in docker-compose.yml by the nagios server
 NAGIOS_ETC | /opt/nagios/etc | volume mountpoint for nagios.cfg
 NAGIOS_MAIL_RELAY | smtp | DNS name for nagios email sending
