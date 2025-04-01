@@ -23,8 +23,8 @@ ARG SPAMD_UID=2022
 RUN apt-get -yq update && apt-get -y upgrade && \
     apt-get -y --no-install-recommends install \
      ca-certificates cron curl gcc libc6-dev libdbd-mysql-perl \
-     libmail-dkim-perl libnet-ident-perl make pyzor razor gpg gpg-agent \
-     procps spamd=$SPAMD_VERSION && \
+     libmail-dkim-perl libmilter-dev libnet-ident-perl make pyzor razor \
+     gpg gpg-agent procps spamd=$SPAMD_VERSION && \
      usermod --uid $SPAMD_UID $USERNAME && \
      chsh -s /bin/sh $USERNAME && \
      mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
@@ -41,7 +41,7 @@ RUN apt-get -yq update && apt-get -y upgrade && \
      /etc/razor/razor-agent.conf && \
     sed -i 's/DCCIFD_ENABLE=off/DCCIFD_ENABLE=on/' /var/dcc/dcc_conf && \
     sed -i '/^#\s*loadplugin .\+::DCC/s/^#\s*//g' /etc/spamassassin/v310.pre && \
-    apt-get purge -yq binutils libldap-2.5-0 linux-libc-dev make && \
+    apt-get purge -yq binutils libldap-2.5-0 linux-libc-dev libmilter-dev make && \
     apt-get -yq autoremove && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
 

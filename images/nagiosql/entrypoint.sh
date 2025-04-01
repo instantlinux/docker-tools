@@ -8,8 +8,8 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo $TZ >/etc/timezone
 fi
 
-if [ -e /run/secrets/$DB_PASSWD_SECRET ]; then
-  DB_PASS=$(cat /run/secrets/$DB_PASSWD_SECRET)
+if [ -e /run/secrets/$DB_SECRETNAME ]; then
+  DB_PASS=$(cat /run/secrets/$DB_SECRETNAME)
 fi
 
 if [ -s $NAGIOS_ETC/nagios.cfg ]; then
