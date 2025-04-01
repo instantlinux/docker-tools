@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+# https://github.com/dnmvisser/nagios-check-file-exists
+import argparse
+import sys
+import os
+import textwrap
+
+def nagios_exit(message, code):
+    print(message)
+    sys.exit(code)
+
+try:
+    parser = argparse.ArgumentParser(
+            description='Check for the (non) existence of a file',
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            epilog=textwrap.dedent('''\
+                To check for pending reboots on Debian/Ubuntu:
+
+                %(prog)s -f /var/run/reboot-required --absent
+            '''))
+
+    parser.add_argument('-f', '--file',
+            dest='path',
+            help='file to check',
+            required=True)
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--present',
+            default=True,
+            dest='status',
+            help='return OK if file exists, and WARNING or CRITICAL if file does not exist',
+            action='store_true')
+    group.add_argument('--absent',
+            default=False,
+            dest='status',
+            help='return OK if file does not exist, and WARNING or CRITICAL if it exists',
+            action='store_false')
+
+    group2 = parser.add_mutually_exclusive_group()
+    group2.add_argument('--warning', '-w',
+            default='warn',
+            dest='severity',
+            help='Upon failure, return WARNING',
+            action='store_const',
+            const='warn')
+    group2.add_argument('--critical', '-c',
+            dest='severity',
+            help='Upon failure, return CRITICAL',
+            action='store_const',
+            const='crit')
+
+    args = parser.parse_args()
+
+    path = args.path
+    status = args.status
+    severity = args.severity
+
+    # start with clean slate
+    ok_msg = []
+    warn_msg = []
+    crit_msg = []
+
+    found = os.path.isfile(path)
+
+    msg = "File " + path + " " + ("" if found else "not ") + "found"
+
+    if(found == status):
+        ok_msg.append(msg)
+    else:
+        if(severity == 'warn'):
+            warn_msg.append(msg)
+        else:
+            crit_msg.append(msg)
+
+except Exception as e:
+  nagios_exit("UNKNOWN: Unknown error: {0}.".format(e), 3)
+
+# Exit with accumulated message(s)
+if crit_msg:
+    nagios_exit("CRITICAL: " + ' '.join(crit_msg + warn_msg), 2)
+elif warn_msg:
+    nagios_exit("WARNING: " + ' '.join(warn_msg), 1)
+else:
+    nagios_exit("OK: " + ' '.join(ok_msg), 0)
