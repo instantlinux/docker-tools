@@ -29,7 +29,8 @@ if [ "$SFTP_ENABLE" = "on" ]; then
       -e "s/^#\(  SFTPEngine on\)/\1/" \
       -e "s/^#\(  Port 2222.*\)/  Port $SFTP_PORT/" \
       -e "s/^#\(  SFTPCompression delayed\)/\1/" \
-      -e "s/^#\(  SFTPHostKey\)/\1/" \
+      -e "s/^#\(  SFTPHostKey .*ssh_host_rsa_key\)/\1/" \
+      -e "s/dsa_key/ssh_host_dsa_key (NO LONGER SUPPORTED)/" \
       /etc/proftpd/conf.d/sftp.conf
 fi
 
