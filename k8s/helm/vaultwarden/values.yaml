@@ -29,8 +29,6 @@ deployment:
       secretKeyRef:
         key: database-url
         name: vaultwarden
-  nodeSelector:
-    service.vaultwarden: allow
   resources:
     limits:
       cpu: 2
