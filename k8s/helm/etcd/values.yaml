@@ -1,30 +1,27 @@
 # Default values for etcd.
 statefulset:
-  command: [/bin/sh]
-  args:
-  - -c
-  - >
-    apt update && apt install -y ca-certificates &&
-    chmod 700 /var/lib/etcd &&
-    /usr/local/bin/etcd --discovery https://discovery.etcd.io/$(DISCOVERY_TOKEN)
+  command:
+  - /usr/local/bin/etcd
+  - --discovery $(DISCOVERY)
   containerPorts:
   - { containerPort: 2379 }
   - { containerPort: 2380 }
   xenv:
     # To generate the secret:
-    #   curl -s https://discovery.etcd.io/new?size=3|cut -d / -f 4|base64
+    #   curl -s https://discovery.etcd.io/new?size=3|base64
     #   make secrets/etcd-token.yml
-    #   # use next command to copy/paste new secret into yml file
+    #   # use next command to copy/paste new secret into yml file as
+    #   # data key 'discovery'
     #   sops secrets/etcd-token.yml
     #   make secrets/etcd-token
     # To update the secret, re-run the curl command and then:
     #   sops secrets/etcd-token.yml
     #   kubectl delete secret etcd-token
     #   make secrets/etcd-token
-    - name: DISCOVERY_TOKEN
+    - name: DISCOVERY
       valueFrom:
         secretKeyRef:
-          key: etcd-token
+          key: discovery
           name: etcd-token
     - name: ETCD_NAME
       valueFrom:
