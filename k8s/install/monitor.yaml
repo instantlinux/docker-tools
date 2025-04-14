@@ -1,6 +1,5 @@
 # This is an example where https://monitor.$domain is hosted outside
-#  kubernetes, on pair of vhosts serving a monitoring dashboard at
-#  $PORT_NAGIOSQL and nagios at port 80.
+#  kubernetes. Specify its IP address in env var MONITOR_EXT_IP.
 ---
 apiVersion: v1
 kind: Service
@@ -9,40 +8,43 @@ metadata:
     app.kubernetes.io/name: $SERVICE_NAME
   name: $SERVICE_NAME
 spec:
-  externalName: monitor.$DOMAIN
-  type: ExternalName
+  ports:
+  - { port: 80, targetPort: 80 }
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: $SERVICE_NAME
+subsets:
+  - addresses:
+    - ip: $MONITOR_EXT_IP
+    ports:
+    - { port: 80, name: monitor, protocol: TCP }
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: $SERVICE_NAME-ingress
+  labels:
+    app.kubernetes.io/name: $SERVICE_NAME
+  name: $SERVICE_NAME
   annotations:
-    # TODO - letsencrypt (can't deal with these redirects and basic-auth)
-    #  Doesn't validate when using type ExternalName
-    # cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
 spec:
   tls:
-  - secretName: $SERVICE_NAME.$DOMAIN
+  - secretName: tls-$SERVICE_NAME
     hosts:
     - $SERVICE_NAME.$DOMAIN
   rules:
   - host: $SERVICE_NAME.$DOMAIN
     http:
       paths:
-      - path: /nagios/
-        backend:
-          service:
-            name: $SERVICE_NAME
-            port:
-              number: $PORT_MONITOR_HTTP
-        pathType: Prefix
       - path: /
         backend:
           service:
             name: $SERVICE_NAME
             port:
-              number: $PORT_NAGIOSQL
+              number: 80
         pathType: Prefix
 ---
 apiVersion: networking.k8s.io/v1
@@ -50,12 +52,13 @@ kind: Ingress
 metadata:
   name: $SERVICE_NAME-totp
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/auth-url: http://$AUTHELIA_IP/api/verify
     nginx.ingress.kubernetes.io/auth-signin: https://authtotp.$DOMAIN
 spec:
   tls:
-  - secretName: $SERVICE_NAME.$DOMAIN
+  - secretName: tls-$SERVICE_NAME
     hosts:
     - $SERVICE_NAME.$DOMAIN
   rules:
