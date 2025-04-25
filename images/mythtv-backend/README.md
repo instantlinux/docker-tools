@@ -34,21 +34,11 @@ docker run -d --name mythtv \
   instantlinux/mythtv-backend:latest
 ~~~
 
-Reach mythtv-setup in the usual way after starting sshd on port 2022; default password is mythtv:
-~~~
-docker exec mythtvbackend_app_1 /usr/sbin/sshd
-ssh -p 2022 -X mythtv@<host-ip>
-mythtv-setup
-~~~
-
-If you're performing setup from a multi monitor system, the fullscreen mythtv-setup might not be entirely visible. In this case, use the following to limit the resolution
-~~~
-mythtv-setup -w -geometry 1280x720
-~~~
-
 Change the password by generating a new hashed password and setting mythtv-user-password secret.
 
-Look for MythTV status pages on port 6544, and MythWeb is serviced on 6760.
+Look for MythTV status pages and configuration UI on port 6544.
+
+Starting with v34, mythtv-setup is accessed via <pod-ip>:6544/setupwizard. Use that to define video sources, storage groups, and set up channels.
 
 ### Variables
 Variable | Default | Description
@@ -102,7 +92,7 @@ mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from [Schedules Direct](https://www.schedulesdirect.org/). See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
 
-* Go into mythtv-setup, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
+* Go into setupwizard, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
 * Invoke a channel-scan
 * Have your Schedules Direct username and password ready and invoke from a command shell inside the container:
 ```
