@@ -2,20 +2,21 @@
 # This script encrypts the admin key used for kubectl --context=sudo
 
 CMD=$1
+[ -z "$STATUS_FILE" ] && STATUS_FILE=/var/adm/admin/secrets/.k8sadm.txt
 [ -z "$ADMIN_KEY" ] && ADMIN_KEY=~/.kube/admin-user.key
 umask 077
 if [ $CMD = sudo ]; then
  openssl enc -d -pbkdf2 -md md5 -aes-256-cbc \
    -out $ADMIN_KEY -in ${ADMIN_KEY}.enc
- date > /tmp/.k8sadm.txt
+ date > $STATUS_FILE
 elif [ $CMD = lock ]; then
  if [ ! -f ${ADMIN_KEY}.enc ]; then
    openssl enc -e -pbkdf2 -md md5 -aes-256-cbc -salt \
      -in $ADMIN_KEY -out ${ADMIN_KEY}.enc
    fi
-   if [ -s /tmp/.k8sadm.txt ]; then
+   if [ -s $STATUS_FILE ]; then
      rm $ADMIN_KEY
-     rm /tmp/.k8sadm.txt
+     rm $STATUS_FILE
      echo "** Privileges dropped **"
    else
      echo "** Nothing to do **"
@@ -60,7 +61,7 @@ A check-file-exists Nagios NRPE script (credit: github.com/dnmvisser)
    k8sudo:
      local: True
      plugin: check-file-exists
-     options: --absent -w -f /tmp/.k8sadm.txt
+     options: --absent -w -f /var/adm/admin/secrets/.k8sadm.txt
 
 EOF
 else

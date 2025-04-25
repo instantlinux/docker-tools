@@ -10,7 +10,6 @@ deployment:
   - containerPort: 6543
   - containerPort: 6544
   - containerPort: 6549
-  - containerPort: 6760
   hostAliases:
   - ip: 127.0.1.1
     hostnames: [ pvr01 ]
@@ -24,10 +23,6 @@ deployment:
       cpu: 500m
       memory: 512Mi
 volumeMounts:
-- name: apache-log
-  mountPath: /var/log/apache2
-- name: ssh-config
-  mountPath: /etc/ssh
 - name: data
   mountPath: /var/mythdata
 - name: share
@@ -50,10 +45,6 @@ volumeMounts:
   readOnly: true
   subPath: mythtv-user-password
 volumes:
-- name: apache-log
-  emptyDir: {}
-- name: ssh-config
-  emptyDir: {}
 - name: data
   hostPath: { path: /var/mythtv }
 - name: videos
@@ -88,8 +79,7 @@ serviceAccount:
 service:
   clusterIP: None
   ports:
-  - { port: 6760, targetPort: 6760, name: mythweb }
-  - { port: 6544, targetPort: 6544, name: status }
+  - { port: 6544, targetPort: 6544, name: ui }
   type: ClusterIP
 autoscaling:
   enabled: false

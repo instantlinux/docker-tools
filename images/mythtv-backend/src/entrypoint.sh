@@ -5,10 +5,11 @@ OSTYPE=`grep ^ID= /etc/os-release|cut -f 2 -d=`
 
 localedef -i $(cut -d. -f1 <<< $LANGUAGE) -f $(cut -d. -f2 <<< $LANGUAGE) $LANG
 
+# TODO - clean out dangling references to apache2, which is no longer used
+
 if [ "$OSTYPE" == "opensuse" ]; then
   ln -fns /usr/share/zoneinfo/$TZ /etc/localtime
   CONF_DIR=/etc/apache2/conf.d
-  DOCUMENT_ROOT=/srv/www/htdocs/mythweb
 elif [ "$OSTYPE" == "ubuntu" ]; then
   if [[ $(cat /etc/timezone) != $TZ ]]; then
     echo $TZ > /etc/timezone
@@ -18,7 +19,6 @@ elif [ "$OSTYPE" == "ubuntu" ]; then
     dpkg-reconfigure -f noninteractive tzdata
   fi
   CONF_DIR=/etc/apache2/sites-available
-  DOCUMENT_ROOT=/var/www/html/mythweb
 fi
 
 if [ -e /run/secrets/mythtv-db-password ]; then
@@ -36,30 +36,7 @@ fi
 cp /root/config.xml /etc/mythtv/
 chmod 600 /etc/mythtv/config.xml && chown mythtv /etc/mythtv/config.xml
 
-for file in $CONF_DIR/mythweb.conf $CONF_DIR/mythweb-settings.conf \
-    /etc/mythtv/config.xml; do
-  sed -i -e "s+{{ APACHE_LOG_DIR }}+$APACHE_LOG_DIR+" \
-      -e "s/{{ DBNAME }}/$DBNAME/" \
-      -e "s/{{ DBPASSWORD }}/$DBPASSWORD/" \
-      -e "s/{{ DBSERVER }}/$DBSERVER/" \
-      -e "s+{{ DOCUMENT_ROOT }}+$DOCUMENT_ROOT+" \
-      -e "s/{{ LOCALHOSTNAME }}/$LOCALHOSTNAME/" $file
-done
-
-if [ ! -f /etc/ssh/ssh_host_rsa_key ] && \
-     ! grep -q '^[[:space:]]*HostKey[[:space:]]' /etc/ssh/sshd_config; then
-  rm -f /etc/ssh/ssh_host*
-  dpkg-reconfigure openssh-server
-fi
-mkdir -p /var/run/sshd
-
-for mod in deflate filter headers rewrite; do a2enmod $mod; done
-a2ensite mythweb mythweb-settings
-a2dissite 000-default-mythbuntu
-apache2ctl start
-
 for retry in $(seq 1 10); do
-  while killall -0 mythtv-setup; do sleep 5; done
   su mythtv -c /usr/bin/mythbackend || echo Unexpected exit retry=$retry
   sleep 60
 done
