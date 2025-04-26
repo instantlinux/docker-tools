@@ -91,7 +91,6 @@ fullnameOverride: ""
 
 serviceAccount: {}
 service:
-service:
   clusterIP: None
   ports:
   - { port: 80, targetPort: 3000, name: gitea }
