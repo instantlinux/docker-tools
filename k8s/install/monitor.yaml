@@ -70,5 +70,5 @@ spec:
           service:
             name: $SERVICE_NAME
             port:
-              number: $PORT_NAGIOSQL
+              number: 80
         pathType: Prefix
