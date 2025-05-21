@@ -1,0 +1,97 @@
+# Default values for grafana.
+tlsHostname: grafana.example.com
+deployment:
+  env:
+    gf_analytics_reporting_enabled: false
+    gf_analytics_check_for_updates: false
+    gf_database_type: mysql
+    gf_database_host: db00
+    gf_database_name: grafana
+    gf_database_password__file: /run/secrets/grafana-db-password
+    gf_database_user: grafana
+    gf_remote_cache_type: redis
+    gf_remote_cache_connstr: addr=grafana-redis:6379,pool_size=100,db=0,ssl=false
+    # See note in volumeMounts below
+    # gf_security_admin_password__file: /run/secrets/admin_password
+    gf_security_admin_email: admin@example.com
+    gf_server_domain: grafana.example.com
+    gf_server_root_url: https://grafana.example.com
+    gf_smtp_enabled: true
+    gf_smtp_host: smtp:25
+    gf_users_allow_sign_up: false
+    tz: America/Los_Angeles
+    uid: 472
+  containerPorts:
+  - containerPort: 3000
+  livenessProbe:
+    httpGet:
+      path: /api/health
+      port: 3000
+    initialDelaySeconds: 60
+    timeoutSeconds: 30
+    failureThreshold: 10
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+volumeMounts:
+- mountPath: /var/lib/grafana
+  name: data
+  subPath: data
+- mountPath: /run/secrets/grafana-db-password
+  name: grafana-db-password
+  readOnly: true
+  subPath: grafana-db-password
+# Add an admin_password key in the secret and override volumeMounts to
+# include this mountPath at first run if you want to set the admin pw
+# automatically. This value is not used after initial setup.
+#
+# - mountPath: /run/secrets/admin_password
+#   name: grafana-db-password
+#   readOnly: true
+#   subPath: admin_password
+volumes:
+- name: data
+  hostPath: { path: /var/lib/docker/k8s-volumes/share/grafana }
+- name: grafana-db-password
+  secret:
+    secretName: grafana-db-password
+
+image:
+  repository: grafana/grafana-enterprise
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 3000, name: grafana }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+authelia:
+  fqdn: authtotp.example.com
+  ip: 10.101.1.5
+  path: /login
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+ingressTOTP:
+  enabled: true
+
+# Subchart parameters
+prometheus:
+  enabled: true
+alertmanager:
+  enabled: true
+redis:
+  enabled: false

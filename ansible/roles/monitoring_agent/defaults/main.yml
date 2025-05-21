@@ -83,6 +83,7 @@ syslog: "{{ syslog_defaults | combine(syslog_override) }}"
 ubuntu_packages:
   - bc
   - nagios-nrpe-server
+  - prometheus-node-exporter
   - python3-pip
   - rsyslog
   - smartmontools

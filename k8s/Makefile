@@ -95,14 +95,14 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = cert-manager flannel metrics
+IMPORTS      = cert-manager flannel
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
 install: install/admin-user cluster_network \
 	install/local-storage storage_localdefault imports \
-	install_imports namespace_config install/gitlab-rbac \
+	install_imports namespace_config install/prometheus-rbac \
 	install/k8s-backup install/logspout remote_volumes \
 	sops data-sync-ssh persistent secrets install/ingress-nginx \
 	install/cert-manager
@@ -219,10 +219,14 @@ cert-manager-helm: helm_install
 imports: $(foreach file,$(IMPORTS),imports/$(file).yaml)
 install_imports: $(foreach file, $(IMPORTS), imports/$(file))
 
-imports/metrics.yaml: imports/metrics-$(VERSION_METRICS).yaml
+imports/kube-state-metrics: imports/kube-state-metrics-$(VERSION_METRICS)
 	ln -s $(notdir $<) $@
-imports/metrics-$(VERSION_METRICS).yaml:
-	curl -sLo $@ https://github.com/kubernetes-sigs/metrics-server/releases/download/v$(VERSION_METRICS)/components.yaml
+imports/kube-state-metrics-$(VERSION_METRICS):
+	git clone --dept 1 --branch v$(VERSION_METRICS) \
+	 https://github.com/kubernetes/kube-state-metrics \
+	 imports/kube-state-metrics-$(VERSION_METRICS)
+install_metrics: imports/kube-state-metrics
+	kubectl apply --context=sudo -k $</examples/standard
 
 imports/traefik-prom.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml

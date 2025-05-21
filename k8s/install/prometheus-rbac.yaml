@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: $K8S_NAMESPACE:prometheus-scraper-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: $K8S_NAMESPACE:prometheus-scraper
+subjects:
+- kind: ServiceAccount
+  name: grafana-prometheus
+  namespace: $K8S_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: $K8S_NAMESPACE:prometheus-scraper
+rules:
+- apiGroups: [""]
+  resources:
+  - endpoints
+  - nodes
+  - pods
+  - services
+  verbs: [get, list, watch]
+- apiGroups: [extensions]
+  resources:
+  - ingresses
+  verbs: [get, list, watch]
+- nonResourceURLs: ["/metrics"]
+  verbs: [get]
