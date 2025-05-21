@@ -20,7 +20,3 @@ dependencies:
   version: 0.1.0
   repository: file://subcharts/alertmanager
   condition: alertmanager.enabled
-- name: redis
-  version: 0.1.0
-  repository: file://subcharts/redis
-  condition: redis.enabled
