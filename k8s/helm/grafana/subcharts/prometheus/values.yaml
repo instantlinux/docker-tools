@@ -1,0 +1,152 @@
+# Default values for prometheus.
+deployment:
+  command:
+  - /bin/prometheus
+  - --config.file=/etc/prometheus/prometheus.yml
+  - --storage.tsdb.path=/prometheus
+  - --storage.tsdb.retention.time=90d
+  - --web.external-url=http://10.101.1.21:9090
+  containerPorts: [ containerPort: 9090 ]
+  nodeSelector:
+    service.prometheus: allow
+volumeMounts:
+- mountPath: /etc/prometheus/prometheus.yml
+  name: config
+  readOnly: true
+  subPath: prometheus.yml
+- mountPath: /etc/prometheus/alert-rules.yml
+  name: config
+  readOnly: true
+  subPath: alert-rules.yml
+- mountPath: /etc/prometheus/targets.json
+  name: config
+  readOnly: true
+  subPath: targets.json
+- mountPath: /prometheus
+  name: data
+volumes:
+- name: config
+  configMap:
+    name: grafana-prometheus
+- name: data
+  hostPath: { path: /var/lib/docker/k8s-volumes/prometheus }
+image:
+  repository: prom/prometheus
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  create: true
+service:
+  clusterIP: 10.101.1.21
+  ports: [ port: 9090 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  data:
+    prometheus.yml: |
+      global:
+        scrape_interval: 1m
+        evaluation_interval: 1m
+      alerting:
+        alertmanagers:
+        - static_configs:
+          - targets:
+            - grafana-alertmanager:9093
+      rule_files: [ alert-rules.yml ]
+      scrape_configs:
+      - job_name: prometheus
+        static_configs:
+        - targets: [ localhost:9090 ]
+    # - job_name: kubernetes-api
+    #   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    #   kubernetes_sd_configs:
+    #   - role: endpoints
+    #   relabel_configs:
+    #   - action: keep
+    #     regex: default;kubernetes;https
+    #     source_labels:
+    #     - __meta_kubernetes_namespace
+    #     - __meta_kubernetes_service_name
+    #     - __meta_kubernetes_endpoint_port_name
+    #   scheme: https
+    #   tls_config:
+    #     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      - job_name: hw-nodes
+        file_sd_configs:
+        - files: [ targets.json ]
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: instance
+        - source_labels: [ __address__ ]
+          target_label: __address__
+          replacement: '${1}:9100'
+        # Next two directives define label alertSuppress and apply
+        # it to nodes with a specified hostname prefix
+        - source_labels: [ instance ]
+          target_label: alertSuppress
+          replacement: false
+        - source_labels: [ instance ]
+          regex: ^myth.*
+          target_label: alertSuppress
+          replacement: true
+    targets.json: |
+      # Override the targets with your nodes list, comma-separated
+      [
+        {
+          "labels": {
+            "job": "hw-nodes"
+          },
+          "targets": [
+            "localhost"
+          ]
+        }
+      ]
+    alert-rules.yml: |
+      groups:
+      - name: systems
+        rules:
+        - alert: InstanceDown
+          expr: up{alertSuppress="false"} == 0
+          for: 15s
+          labels:
+            severity: critical
+          annotations:
+            summary: "Instance [{{ $labels.instance }}] down"
+            description: "[{{ $labels.instance }}] of {{ $labels.job }} is down"
+
+        - alert: DiskSpaceLow
+          # To skip volumes on a monitored node, add to that node's config
+          #   /etc/defaults/prometheus-node-exporter
+          # ARGS="--collector.filesystem.ignored-mount-points=<pattern>"
+          expr: (node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < .10 and on (instance, device, mountpoint) node_filesystem_readonly == 0)
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Low disk space (instance {{ $labels.instance }})
+            description: "Disk is almost full (> 90%)  Value = {{ $value }}"
+
+        - alert: CPULoadHigh
+          expr: sum by (instance) (node_load1) > node:cpu_core:count
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Host high CPU load (instance {{ $labels.instance }})
+            description: "CPU load average is high  Value = {{ $value }}"
+
+        - alert: NTPClockSkew
+          expr: ((node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0))
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Host clock skew (instance {{ $labels.instance }})
+            description: "Clock is out of sync, ensure NTP is configured correctly on this host.  Value = {{ $value }}"

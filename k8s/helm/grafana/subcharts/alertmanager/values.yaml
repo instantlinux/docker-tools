@@ -1,0 +1,65 @@
+# Default values for alertmanager.
+deployment:
+  command:
+  - /bin/alertmanager
+  - --config.file=/etc/alertmanager/alertmanager.yml
+  - --storage.path=/alertmanager
+  - --web.external-url=http://10.101.1.22:9093
+  containerPorts: [ containerPort: 9093 ]
+  env:
+    smtp_from: alertmanager@example.com
+    smtp_smarthost: smtp:25
+volumeMounts:
+- mountPath: /etc/alertmanager/alertmanager.yml
+  name: config
+  readOnly: true
+  subPath: alertmanager.yml
+- mountPath: /alertmanager
+  name: data
+volumes:
+- name: config
+  configMap:
+    name: grafana-alertmanager
+- name: data
+  hostPath: { path: /var/lib/docker/k8s-volumes/prometheus/alertmanager }
+image:
+  repository: prom/alertmanager
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  clusterIP: 10.101.1.22
+  ports: [ port: 9093 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+configmap:
+  data:
+    alertmanager.yml: |
+      global:
+        smtp_from: Prometheus Notifications <alertmanager@noreply.example.com>
+        smtp_smarthost: smtp:587
+      route:
+        group_by: [ alertname ]
+        group_wait: 10s
+        group_interval: 1m
+        repeat_interval: 1d
+        receiver: SMTP
+      receivers:
+      - name: SMTP
+        email_configs:
+        - require_tls: true
+          send_resolved: true
+          to: monitor@example.com
+      inhibit_rules:
+      - source_match:
+          severity: critical
+        target_match:
+          severity: warning
+        equal: [ alertname, dev, instance ]

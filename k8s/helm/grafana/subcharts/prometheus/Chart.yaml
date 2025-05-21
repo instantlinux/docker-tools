@@ -1,0 +1,14 @@
+apiVersion: v2
+name: prometheus
+description: Prometheus metrics and alerting
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://hub.docker.com/r/prom/prometheus
+type: application
+version: 0.1.0
+appVersion: "v3.3.1"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

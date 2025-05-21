@@ -9,7 +9,7 @@ export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_FLANNEL        ?= 0.26.1
 export VERSION_HELM           ?= 3.16.2
 export VERSION_INGRESS_NGINX  ?= 1.11.2
-export VERSION_METRICS        ?= 0.7.2
+export VERSION_METRICS        ?= 2.15.0
 
 # Held back versions - more effort to upgrade
 export VERSION_CALICO        ?= 3.16.5

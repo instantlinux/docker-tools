@@ -42,6 +42,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Pod security policies
 * Automatic certificate issuing/renewal with Letsencrypt
 * PostgreSQL-operator from CrunchyData
+* Grafana with prometheus-based alerting
 
 ### Resource definitions
 
@@ -70,6 +71,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | duplicati | [![](https://img.shields.io/docker/v/instantlinux/duplicati?sort=date)](https://hub.docker.com/r/instantlinux/duplicati "Version badge") | backups |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
+| grafana | ** | monitoring dashboard with prometheus-based alerting |
 | guacamole | ** | authenticated remote-desktop server |
 | logspout | ** | central logging for Docker |
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
