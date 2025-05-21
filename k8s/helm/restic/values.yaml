@@ -25,11 +25,9 @@ deployment:
   resources:
     limits:
       memory: 2048Mi
-      ephemeral-storage: 50Mi
     requests:
       cpu: 200m
       memory: 512Mi
-      ephemeral-storage: 10Mi
 volumeMounts:
 - mountPath: /var/spool/cron/crontabs/root
   name: config

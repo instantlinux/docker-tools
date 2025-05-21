@@ -1,6 +1,10 @@
 ---
 - name: Cryptsetup resize
-  command: cryptsetup resize luks-{{ item.key }}
+  ansible.builtin.shell: |
+    mount /masterlock
+    cryptsetup resize luks-{{ item.key }} \
+        --key-file /masterlock/keys/{{ inventory_hostname_short }}/{{ item.key }}
+    umount /masterlock
   with_dict: "{{ luks_volumes }}"
 
 - name: Filesystem resize

@@ -93,5 +93,3 @@ prometheus:
   enabled: true
 alertmanager:
   enabled: true
-redis:
-  enabled: false
