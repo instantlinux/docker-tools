@@ -21,8 +21,8 @@ bind9_defaults:
     G: { A: 192.112.36.4, AAAA: '2001:500:12::d0d', org: NS.NIC.DDN.MIL }
     H: { A: 198.97.190.53, AAAA: '2001:500:1::53', org: AOS.ARL.ARMY.MIL }
     I: { A: 192.36.148.17, AAAA: '2001:7fe::53', org: NIC.NORDU.NET }
-    J: { A: 192.58.128.30, AAAA: '2001:503:c27::2:30', org: VERISIGN }
-    K: { A: 193.0.14.129, AAAA: '2001:7fd::1', org: RIPE }
+    J: { A: 192.58.128.30, AAAA: '2001:503:c27::2:30', org: 'VERISIGN, INC.' }
+    K: { A: 193.0.14.129, AAAA: '2001:7fd::1', org: RIPE NCC }
     L: { A: 199.7.83.42, AAAA: '2001:500:9f::42', org: ICANN }
     M: { A: 202.12.27.33, AAAA: '2001:dc3::35', org: WIDE }
   server_ips: []
