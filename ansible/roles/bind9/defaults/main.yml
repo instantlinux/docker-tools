@@ -8,6 +8,23 @@ bind9_defaults:
   - 127.0.0.1
   dump_file: /var/cache/bind/named_dump.db
   managed_keys_directory: /var/cache/bind
+  root_params:
+    ttl: 3600000
+    updated: May 22, 2025
+  root_servers:
+    A: { A: 198.41.0.4, AAAA: '2001:503:ba3e::2:30', org: NS.INTERNIC.NET }
+    B: { A: 170.247.170.2, AAAA: '2801:1b8:10::b', org: NS1.ISI.EDU }
+    C: { A: 192.33.4.12, AAAA: '2001:500:2::c', org: C.PSI.NET }
+    D: { A: 199.7.91.13, AAAA: '2001:500:2d::d', org: TERP.UMD.EDU }
+    E: { A: 192.203.230.10, AAAA: '2001:500:a8::e', org: NS.NASA.GOV }
+    F: { A: 192.5.5.241, AAAA: '2001:500:2f::f', org: NS.ISC.ORG }
+    G: { A: 192.112.36.4, AAAA: '2001:500:12::d0d', org: NS.NIC.DDN.MIL }
+    H: { A: 198.97.190.53, AAAA: '2001:500:1::53', org: AOS.ARL.ARMY.MIL }
+    I: { A: 192.36.148.17, AAAA: '2001:7fe::53', org: NIC.NORDU.NET }
+    J: { A: 192.58.128.30, AAAA: '2001:503:c27::2:30', org: 'VERISIGN, INC.' }
+    K: { A: 193.0.14.129, AAAA: '2001:7fd::1', org: RIPE NCC }
+    L: { A: 199.7.83.42, AAAA: '2001:500:9f::42', org: ICANN }
+    M: { A: 202.12.27.33, AAAA: '2001:dc3::35', org: WIDE }
   server_ips: []
   statistics_file: /var/cache/bind/named.stats
   transfer_secret: "{{ vault_bind9_secret }}"
