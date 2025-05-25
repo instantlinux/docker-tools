@@ -21,6 +21,7 @@
   template:
     dest: /etc/bind/root.hint
     src: root.hint.j2
+  notify: Restart bind9
 
 - name: bind9 service
   service:
