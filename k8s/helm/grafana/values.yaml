@@ -9,10 +9,15 @@ deployment:
     gf_database_name: grafana
     gf_database_password__file: /run/secrets/grafana-db-password
     gf_database_user: grafana
-    gf_remote_cache_type: redis
-    gf_remote_cache_connstr: addr=grafana-redis:6379,pool_size=100,db=0,ssl=false
+
+    # If a redis subchart is added, define remote-cache here; it's overkill
+    #   for most use-cases:
+    # gf_remote_cache_type: redis
+    # gf_remote_cache_connstr: addr=grafana-redis:6379,pool_size=100,db=0,ssl=false
+
     # See note in volumeMounts below
     # gf_security_admin_password__file: /run/secrets/admin_password
+
     gf_security_admin_email: admin@example.com
     gf_server_domain: grafana.example.com
     gf_server_root_url: https://grafana.example.com

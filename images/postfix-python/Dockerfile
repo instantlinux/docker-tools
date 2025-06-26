@@ -19,9 +19,9 @@ ENV BLACKLIST_USER_SECRETNAME=mysql-blacklist-user \
     INBOUND_RELAY="by mail.mydomain.com" \
     SPAMLIMIT=12 \
     SPAMC_HOST=spamassassin
-ARG GETPIP_SHA=5b9e2f9bb476ce76f84942bb7247dec8d6c0bb9dbc8c62ba2543b81fd7a4243c
-ARG GETPIP_URI=https://bootstrap.pypa.io/pip/3.7/get-pip.py
-ARG PYTHON_PIP_VERSION=25.1.1
+ARG GETPIP_SHA=6ed6e98282a504ee0a6632856e16c39f222d313fc38be33de216d4afb6ac12f7
+ARG GETPIP_URI=https://bootstrap.pypa.io/pip/3.8/get-pip.py
+ARG PYTHON_PIP_VERSION=25.0.1
 
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/
@@ -31,8 +31,8 @@ RUN apk add --no-cache --update \
     mkdir build && cd build && \
     wget -q -O get-pip.py $GETPIP_URI && \
     echo "$GETPIP_SHA  get-pip.py" | sha256sum -c && \
-    python3 get-pip.py --disable-pip-version-check --no-cache-dir \
-      pip==$PYTHON_PIP_VERSION --break-system-packages && \
+    python3 get-pip.py --no-cache-dir pip==$PYTHON_PIP_VERSION \
+      --break-system-packages && \
     apk add --no-cache --virtual .fetch-deps \
       gcc git freetype-dev jpeg-dev musl-dev zlib-dev && \
     pip install -r /root/requirements.txt --break-system-packages && \

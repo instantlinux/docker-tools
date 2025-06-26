@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/grafana/grafana
 type: application
-version: 0.1.0
-appVersion: 12.0.0
+version: 0.1.1
+appVersion: 12.0.2
 dependencies:
 - name: chartlib
   version: 0.1.8

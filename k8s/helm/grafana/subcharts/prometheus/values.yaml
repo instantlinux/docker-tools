@@ -64,6 +64,20 @@ configmap:
       - job_name: prometheus
         static_configs:
         - targets: [ localhost:9090 ]
+      - job_name: kubernetes-api
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+        - role: endpoints
+        relabel_configs:
+        - action: keep
+          regex: default;kubernetes;https
+          source_labels:
+          - __meta_kubernetes_namespace
+          - __meta_kubernetes_service_name
+          - __meta_kubernetes_endpoint_port_name
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       - job_name: hw-nodes
         file_sd_configs:
         - files: [ targets.json ]

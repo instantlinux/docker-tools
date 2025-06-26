@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - ttps://gitlab.com/samba-team/samba
 type: application
-version: 0.1.14
-appVersion: "4.20.6-r1"
+version: 0.1.15
+appVersion: "4.21.4-r4"
 dependencies:
 - name: chartlib
   version: 0.1.8
