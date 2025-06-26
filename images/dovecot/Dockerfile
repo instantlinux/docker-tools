@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:3.9.0-r1
+FROM instantlinux/postfix:3.10.2-r0
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DOVECOT_VERSION=2.3.21.1-r0
+ARG DOVECOT_VERSION=2.4.1-r2
 ARG MKCERT_SHA=24b6988d1709e71c24dcf94ffce5db93bd2e89dc5cbec1ac3c173de5274b68dd
 
 ENV LDAP_SECRETNAME=ldap-ro-password \
@@ -20,7 +20,7 @@ RUN echo '@old http://dl-cdn.alpinelinux.org/alpine/v3.11/main' \
     apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION \
       procmail@old && \
     rm /etc/ssl/dovecot/server.* && cd /usr/local/bin && \
-    wget -q https://raw.githubusercontent.com/dovecot/core/release-2.3.21/doc/mkcert.sh && \
+    wget -q https://raw.githubusercontent.com/dovecot/core/release-2.4.1/doc/mkcert.sh && \
     echo "$MKCERT_SHA  mkcert.sh" | sha256sum -c && \
     chmod 755 /usr/local/bin/mkcert.sh
     

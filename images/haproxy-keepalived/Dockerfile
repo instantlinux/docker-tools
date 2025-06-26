@@ -1,4 +1,4 @@
-FROM haproxy:3.1.6-alpine
+FROM haproxy:3.2.1-alpine
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \

@@ -7,17 +7,17 @@ sources:
 - https://github.com/apache/guacamole-client
 - https://github.com/apache/guacamole-server
 type: application
-version: 0.1.5
+version: 0.1.6
 # When updating appVersion, also update subcharts, and the dependencies
 #  for guacamole-server and guacd below
-appVersion: "1.5.5"
+appVersion: "1.6.0"
 dependencies:
 - name: chartlib
   version: 0.1.8
   repository: https://instantlinux.github.io/docker-tools
 - name: guacamole-server
-  version: 0.1.4
+  version: 0.1.5
   repository: file://subcharts/guacamole-server
 - name: guacd
-  version: 0.1.4
+  version: 0.1.5
   repository: file://subcharts/guacd
