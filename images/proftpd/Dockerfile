@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG PROFTPD_VERSION=1.3.8d-r0
+ARG PROFTPD_VERSION=1.3.9-r1
 
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \

@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DDCLIENT_VERSION=3.11.2-r0
+ARG DDCLIENT_VERSION=4.0.0-r1
 ENV HOST= \
     INTERVAL=3600 \
     IPLOOKUP_URI=http://ipinfo.io/ip \

@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 MAINTAINER Rich Braun "docker@instantlinux.net"
 ARG BUILD_DATE
 ARG VCS_REF

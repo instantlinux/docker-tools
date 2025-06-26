@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -18,7 +18,7 @@ ENV HOUR=3 MINUTE=30 \
     TZ=UTC
 ARG UID=210
 ARG BACKUP_GID=34
-ARG CLIENT_VERSION=11.4.5-r0
+ARG CLIENT_VERSION=11.4.5-r2
 
 RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \
