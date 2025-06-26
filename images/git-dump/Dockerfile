@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -21,7 +21,7 @@ ENV API_TOKEN_SECRETNAME= \
     USERNAME=git-dump \
     TZ=UTC
 
-ARG GIT_VERSION=2.47.2-r0
+ARG GIT_VERSION=2.49.0-r0
 ARG GID=505
 ARG UID=212
 

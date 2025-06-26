@@ -1,4 +1,4 @@
-ARG POSTFIX_VERSION=3.9.3-r0
+ARG POSTFIX_VERSION=3.10.2-r0
 
 FROM instantlinux/postfix:$POSTFIX_VERSION
 ARG BUILD_DATE
@@ -21,7 +21,7 @@ ENV BLACKLIST_USER_SECRETNAME=mysql-blacklist-user \
     SPAMC_HOST=spamassassin
 ARG GETPIP_SHA=5b9e2f9bb476ce76f84942bb7247dec8d6c0bb9dbc8c62ba2543b81fd7a4243c
 ARG GETPIP_URI=https://bootstrap.pypa.io/pip/3.7/get-pip.py
-ARG PYTHON_PIP_VERSION=24.0
+ARG PYTHON_PIP_VERSION=25.1.1
 
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/
