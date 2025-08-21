@@ -24,7 +24,7 @@ Then deploy this service, see the example [helm](https://github.com/instantlinux
 
 Instead of supplying these variables, if your provider requires more parameters than shown above, you can volume-mount the configuration as `/etc/ddclient/ddclient.conf`.
 
-Logging is set to `verbose` in order to have any logging at all; it's not possible to reduce verbosity to a lower level than about 18 lines of output per interval without modifying source code.
+Logging is set to `verbose` in order to have any logging at all.
 
 This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/ddclient/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/ddclient/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:

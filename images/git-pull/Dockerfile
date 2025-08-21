@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG GIT_VERSION=2.49.0-r0
+ARG GIT_VERSION=2.49.1-r0
 ENV DEST=. \
     GIT_COMMIT=master \
     GIT_HOST=github.com \
