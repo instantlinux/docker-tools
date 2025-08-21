@@ -21,6 +21,9 @@ display_driver_defaults:
     - 1280x720
     - 1920x1080
     - 1980x1080i
+  xorg:
+    video_intel: false
+
 display_driver: "{{ display_driver_defaults | combine(display_driver_overrides) }}"
 
 ir_device:
