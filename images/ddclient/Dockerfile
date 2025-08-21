@@ -19,6 +19,7 @@ ENV HOST= \
 
 RUN apk add --no-cache --update curl ddclient=$DDCLIENT_VERSION \
       su-exec && \
+    mv /etc/ddclient/ddclient.conf /etc/ddclient/ddclient.conf-dist && \
     chown ddclient /var/cache/ddclient
 
 COPY entrypoint.sh /usr/local/bin/
