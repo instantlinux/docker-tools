@@ -2,11 +2,17 @@
 # intel.yml
 
 - name: Load intel driver at startup
-  template:
+  ansible.builtin.template:
     dest: "{{ x11_config_path }}/20-{{ display_driver.type }}.conf"
     src: 20-{{ display_driver.type }}.conf.j2
 
 - name: Limit screen resolution to specified list
-  template:
+  ansible.builtin.template:
     dest: "{{ x11_config_path }}/20-screen.conf"
     src: 20-screen.conf.j2
+
+- name: Disable obsolete xorg driver for Intel GPU
+  ansible.builtin.package:
+    name: xserver-xorg-video-intel
+    state: absent
+  when: not display_driver.xorg.video_intel
