@@ -12,8 +12,8 @@ guacamole-server:
   deployment:
     env:
       # TODO: enable the BAN extension introduced in 1.6.0; for now
-      #   the ingress-nginx proxy is continuously blocked by spurious
-      #   auth failures, and break-in attempts are blocked by TOTP
+      #   break-in attempts are blocked by TOTP because BAN requires
+      #   more ingress-nginx directives to provide proxy IP address
       ban_enabled: "false"
       guacd_hostname: guacamole-guacd
       guacd_port: 4822
