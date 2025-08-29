@@ -196,22 +196,14 @@ include Makefile.sops
 # cert-manager
 ##########
 
+# Note - need both, to define the CRD and the ClusterIssuer resources
+#   make imports/cert-manager
+#   make install/cert-manager
+
 imports/cert-manager.yaml: imports/cert-manager-$(VERSION_CERT_MANAGER).yaml
 	ln -s $(notdir $<) $@
 imports/cert-manager-$(VERSION_CERT_MANAGER).yaml:
 	curl -sLo $@ https://github.com/jetstack/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
-
-# TODO: remove this once it's clear the above works without helm
-# When updating, do "helm delete --purge cert-manager" first
-cert-manager-helm: helm_install
-	helm install stable/cert-manager \
-	 --name cert-manager --namespace cert-manager \
-	 --set ingressShim.defaultIssuerName=letsencrypt-prod \
-	 --set ingressShim.defaultIssuerKind=ClusterIssuer \
-	 --set webhook.enabled=false \
-	 --kube-context=sudo
-	kubectl label namespace cert-manager --context=sudo \
-	 certmanager.k8s.io/disable-validation=true
 
 ##########
 # Add-ons
