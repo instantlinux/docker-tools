@@ -23,11 +23,6 @@ service:
   type: ClusterIP
 autoscaling:
   enabled: false
-
-authelia:
-  fqdn: authtotp.example.com
-  ip: 10.101.1.5
-  path: /guacamole/\#/login
 ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -38,5 +33,3 @@ ingress:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header Connection $http_connection;
       proxy_set_header Upgrade $http_upgrade;
-ingressTOTP:
-  enabled: true

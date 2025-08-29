@@ -11,11 +11,18 @@ guacamole-server:
   tlsHostname: guacamole.example.com
   deployment:
     env:
+      # TODO: enable the BAN extension introduced in 1.6.0; for now
+      #   the ingress-nginx proxy is continuously blocked by spurious
+      #   auth failures, and break-in attempts are blocked by TOTP
+      ban_enabled: "false"
       guacd_hostname: guacamole-guacd
       guacd_port: 4822
+      ldap_enabled: "false"
       mysql_database: guacamole
       mysql_hostname: db00
-      mysql_user: guacamole_user
+      mysql_username: guacamole_user
+      skip_if_unavailable: ldap
+      totp_enabled: "true"
     xenv:
     - name: MYSQL_PASSWORD
       valueFrom:
