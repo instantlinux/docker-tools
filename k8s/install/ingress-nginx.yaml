@@ -71,6 +71,7 @@ spec:
               fieldPath: metadata.namespace
         args:
         - /nginx-ingress-controller
+        - --configmap=$K8S_NAMESPACE/nginx-ingress-controller
         - --ingress-class=nginx
         - --election-id=ingress-controller-leader-external
         - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
@@ -241,7 +242,7 @@ rules:
       - "discovery.k8s.io"
     resources:
       - endpointslices
-    verbs: [get, list]
+    verbs: [get, list, watch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -277,3 +278,14 @@ data:
   $PORT_DOVECOT_IMAPD: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_IMAPD
   $PORT_DOVECOT_IMAPS: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_IMAPS
   $PORT_DOVECOT_SMTP: $K8S_NAMESPACE/dovecot:$PORT_DOVECOT_SMTP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-ingress-controller
+  namespace: $K8S_NAMESPACE
+data:
+  # needed for some services that use config snippets, e.g. for
+  #  adjusting fastcgi_buffers
+  annotations-risk-level: Critical
+  allowSnippetAnnotations: "true"

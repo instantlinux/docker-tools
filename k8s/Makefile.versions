@@ -4,11 +4,11 @@ export VERSION_LOGSPOUT      ?= v3.2.14
 export VERSION_NGINX         ?= 1.27.2-alpine
 
 # Third-party versions - other (quay.io, k8s.gcr.io, crunchydata.com)
-export VERSION_CERT_MANAGER   ?= 1.16.1
+export VERSION_CERT_MANAGER   ?= 1.16.5
 export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_FLANNEL        ?= 0.26.1
 export VERSION_HELM           ?= 3.16.2
-export VERSION_INGRESS_NGINX  ?= 1.11.2
+export VERSION_INGRESS_NGINX  ?= 1.13.1
 export VERSION_METRICS        ?= 2.15.0
 
 # Held back versions - more effort to upgrade
