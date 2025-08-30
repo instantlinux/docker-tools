@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.name=nut-upsd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-ARG NUT_VERSION=2.8.2-r2
+ARG NUT_VERSION=2.8.3-r2
 ENV API_USER=upsmon \
     API_PASSWORD= \
     DESCRIPTION=UPS \
@@ -21,13 +21,16 @@ ENV API_USER=upsmon \
     SECRETNAME=nut-upsd-password \
     SERIAL= \
     SERVER=master \
+    ULIMIT=2048 \
     USER=nut \
     VENDORID=
 HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
     killall -TERM upsmon || true
 
-RUN apk add --no-cache dash && \
-    apk add --update --no-cache nut=$NUT_VERSION \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
+      >>/etc/apk/repositories && \
+    apk add --no-cache dash && \
+    apk add --update --no-cache nut@edge=$NUT_VERSION \
       busybox linux-pam \
       libcrypto3 libssl3 \
       libusb musl net-snmp-libs util-linux
