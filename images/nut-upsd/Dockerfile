@@ -28,10 +28,10 @@ HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
 
 RUN apk add --no-cache dash && \
     apk add --update --no-cache nut=$NUT_VERSION \
-      busybox linux-pam \
+      busybox tini linux-pam \
       libcrypto3 libssl3 \
       libusb musl net-snmp-libs util-linux
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/entrypoint.sh"]
