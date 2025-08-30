@@ -51,6 +51,7 @@ SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
 SECRETNAME | nut-upsd-password | name of secret to use for API user
 SERIAL | | hardware serial number of UPS
 SERVER | master | master or slave priority for scripts
+ULIMIT | 2048 | open-files ulimit
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
 ### Notes
@@ -114,6 +115,8 @@ ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}==“09ae”, ATTRS{idProduct}==
 EOF
 udevadm control --reload-rules && udevadm trigger
 ```
+
+When starting up under Debian trixie, an out-of-memory error can be prevented by setting the nofile ulimit to a smaller value than system default: see [issue #1672](https://github.com/networkupstools/nut/issues/1672). The default is set here to 2048.
 
 ### Secrets
 

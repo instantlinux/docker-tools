@@ -69,6 +69,7 @@ chown $USER:$GROUP /dev/shm/nut
 echo 0 > /var/run/nut/upsd.pid && chown $USER:$GROUP /var/run/nut/upsd.pid
 echo 0 > /var/run/upsmon.pid
 
+ulimit -n $ULIMIT
 /usr/sbin/upsdrvctl -u root start
 /usr/sbin/upsd -u $USER
 exec /usr/sbin/upsmon -D
