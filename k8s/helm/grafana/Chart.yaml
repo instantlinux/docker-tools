@@ -13,7 +13,7 @@ dependencies:
   version: 0.1.8
   repository: https://instantlinux.github.io/docker-tools
 - name: prometheus
-  version: 0.1.0
+  version: 0.1.1
   repository: file://subcharts/prometheus
   condition: prometheus.enabled
 - name: alertmanager
