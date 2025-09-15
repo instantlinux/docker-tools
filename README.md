@@ -77,6 +77,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
+| node-local-dns | ** | caching resolver for reliable pod DNS |
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | restic | ** | backups |
