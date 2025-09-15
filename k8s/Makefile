@@ -95,7 +95,7 @@ $(STACKS)::
 .PHONY: envsubst imports install namespace_config node_labels \
 	persistent remote_volumes secrets sops untaint_master
 
-IMPORTS      = cert-manager flannel
+IMPORTS      = cert-manager flannel nodelocaldns
 INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
@@ -204,6 +204,15 @@ imports/cert-manager.yaml: imports/cert-manager-$(VERSION_CERT_MANAGER).yaml
 	ln -s $(notdir $<) $@
 imports/cert-manager-$(VERSION_CERT_MANAGER).yaml:
 	curl -sLo $@ https://github.com/jetstack/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
+
+##########
+# node-local-dns
+##########
+imports/nodelocaldns.yaml: imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml
+	ln -s $(notdir $<) $@
+imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml:
+	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/kubernetes/refs/tags/v$(VERSION_NODE_LOCAL_DNS)/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml
+	sed -i -e "s/__PILLAR__LOCAL__DNS__/$(NODE_LOCAL_DNS_IP)/g; s/__PILLAR__DNS__DOMAIN__/cluster.local/g; s/__PILLAR__DNS__SERVER__/$(COREDNS_IP)/g" $@
 
 ##########
 # Add-ons
