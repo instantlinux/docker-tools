@@ -3,6 +3,7 @@ deployment:
   env:
     driver: usbhid-ups
     maxage: 15
+    nut_debug_level: 0
     serial: mustbeset
   securityContext:
     privileged: true
