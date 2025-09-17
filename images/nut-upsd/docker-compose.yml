@@ -5,6 +5,7 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/nut-upsd:latest
     restart: always
     environment:
+      NUT_DEBUG_LEVEL: 0
       SERIAL: ${UPS_1_SERIAL}
     ports:
     - ${PORT_UPSD_1:-3493}:3493

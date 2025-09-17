@@ -72,4 +72,4 @@ echo 0 > /var/run/upsmon.pid
 ulimit -n $ULIMIT
 /usr/sbin/upsdrvctl -u root start
 /usr/sbin/upsd -u $USER
-exec /usr/sbin/upsmon -D
+exec /usr/sbin/upsmon -F

@@ -45,12 +45,15 @@ DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.or
 GROUP | nut | local group
 MAXAGE | 15 | seconds before declaring driver non-responsive
 NAME | ups | user-assigned config name
+NUT_DEBUG_LEVEL | 0 | verbosity of debug messages
+NUT_QUIET_INIT_SSL | true | inhibit superfluous startup warning
+NUT_QUIET_INIT_UPSNOTIFY | true | inhibit superfluous startup warning
 POLLINTERVAL | | Poll Interval for ups.conf
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
 SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
 SECRETNAME | nut-upsd-password | name of secret to use for API user
 SERIAL | | hardware serial number of UPS
-SERVER | master | master or slave priority for scripts
+SERVER | primary | primary instance shuts down after secondaries
 ULIMIT | 2048 | open-files ulimit
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
