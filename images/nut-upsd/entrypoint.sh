@@ -47,6 +47,7 @@ EOF
 [$API_USER]
         password = $API_PASSWORD
         upsmon $SERVER
+        instcmds = ALL
 EOF
   fi
   if [ -e /etc/nut/local/upsmon.conf ]; then
