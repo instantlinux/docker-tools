@@ -47,8 +47,13 @@ EOF
 [$API_USER]
         password = $API_PASSWORD
         upsmon $SERVER
-        instcmds = ALL
 EOF
+    for ACTION in ${ACTIONS//,/ }; do
+      echo "        actions = $ACTION" >> /etc/nut/upsd.users
+    done
+    for CMD in ${INSTCMDS//,/ }; do
+      echo "        instcmds = $CMD" >> /etc/nut/upsd.users
+    done
   fi
   if [ -e /etc/nut/local/upsmon.conf ]; then
     cp /etc/nut/local/upsmon.conf /etc/nut/upsmon.conf
@@ -57,6 +62,7 @@ EOF
 MONITOR $NAME@localhost 1 $API_USER $API_PASSWORD $SERVER
 RUN_AS_USER $USER
 EOF
+    [ -z "$NOTIFYCMD" ] || echo "NOTIFYCMD \"$NOTIFYCMD\"" >> /etc/nut/upsmon.conf
   fi
   touch /etc/nut/.setup
 fi

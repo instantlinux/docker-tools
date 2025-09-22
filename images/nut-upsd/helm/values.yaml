@@ -1,8 +1,11 @@
 # Default values for nut-upsd.
 deployment:
   env:
+    actions:
     driver: usbhid-ups
+    instcmds: 
     maxage: 15
+    notifycmd: 
     nut_debug_level: 0
     serial: mustbeset
   securityContext:
@@ -20,6 +23,13 @@ volumeMounts:
 # TODO make this work with pod security policies instead of securityContext
 # - name: usb
 #   mountpath: /dev/ttyUSB0
+
+# To define a notify script, add this in your value overrides, set
+#    configmap.enabled, and add script under configmap.data.notify
+# - name: notifycmd
+#   mountPath: /usr/local/bin/notify
+#   readOnly: true
+#   subPath: notify
 - name: secret
   mountPath: /run/secrets/nut-upsd-password
   readOnly: true
@@ -27,6 +37,11 @@ volumeMounts:
 volumes:
 # - name: usb
 #   hostPath: { path: /dev/ttyUSB0 }
+
+# - name: notifycmd
+#   configMap:
+#     name: nut-upsd
+#     defaultMode: 0555
 - name: secret
   secret:
     secretName: nut-upsd-password
@@ -50,3 +65,11 @@ service:
     targetPort: 3493
 autoscaling:
   enabled: false
+
+configmap:
+  enabled: false
+  name: nut-upsd
+  data: {}
+# data:
+#   notify: |
+#     your script here
