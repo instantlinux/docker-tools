@@ -8,13 +8,16 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 ARG NUT_VERSION=2.8.3-r2
-ENV API_USER=upsmon \
+ENV ACTIONS= \
+    API_USER=upsmon \
     API_PASSWORD= \
     DESCRIPTION=UPS \
     DRIVER=usbhid-ups \
     GROUP=nut \
+    INSTCMDS= \
     MAXAGE=15 \
     NAME=ups \
+    NOTIFYCMD= \
     NUT_DEBUG_LEVEL=0 \
     NUT_QUIET_INIT_SSL=true \
     NUT_QUIET_INIT_UPSNOTIFY=true \
@@ -34,7 +37,7 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       >>/etc/apk/repositories && \
     apk add --no-cache dash && \
     apk add --update --no-cache nut@edge=$NUT_VERSION \
-      busybox linux-pam \
+      busybox curl linux-pam \
       libcrypto3 libssl3 \
       libusb musl net-snmp-libs util-linux
 

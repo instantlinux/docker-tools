@@ -38,13 +38,16 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 
 Variable | Default | Description |
 -------- | ------- | ----------- |
+ACTIONS | | One or more user actions allowed (`set`, `fsd`)
 API_USER | upsmon| API user
 API_PASSWORD | | API password, if not using secret
 DESCRIPTION | UPS | user-assigned description
 DRIVER | usbhid-ups | driver (see [compatibility list](http://networkupstools.org/stable-hcl.html))
 GROUP | nut | local group
+INSTCMDS | | `all` or list of allowed commands, see [cmdvartab](https://github.com/networkupstools/nut/blob/master/data/cmdvartab) `CMDDESC` values
 MAXAGE | 15 | seconds before declaring driver non-responsive
 NAME | ups | user-assigned config name
+NOTIFYCMD | | full path of script to run upon notification
 NUT_DEBUG_LEVEL | 0 | verbosity of debug messages
 NUT_QUIET_INIT_SSL | true | inhibit superfluous startup warning
 NUT_QUIET_INIT_UPSNOTIFY | true | inhibit superfluous startup warning
@@ -58,6 +61,8 @@ ULIMIT | 2048 | open-files ulimit
 USER | nut | local user
 VENDORID | | vendor ID for ups.conf
 ### Notes
+
+To define a notify script, volume-mount it via your docker-compose file under /usr/local/bin and set the NOTIFYCMD environment variable. (*Don't* mount any executable scripts under /etc/nut, put them under /usr/local).
 
 If you need a driver other than `usbhid-ups`, the full list of supported drivers can be listed as follows:
 ```
@@ -121,9 +126,16 @@ udevadm control --reload-rules && udevadm trigger
 
 When starting up under Debian trixie, an out-of-memory error can be prevented by setting the nofile ulimit to a smaller value than system default: see [issue #1672](https://github.com/networkupstools/nut/issues/1672). The default is set here to 2048.
 
+If you see this error message on startup:
+```
+Unable to use old-style MONITOR line without a username
+Convert it and add a username to upsd.users - see the documentation
+```
+the most likely cause is a missing or empty secret (`nut-upsd-password`).
+
 ### Secrets
 
-If the API user needs a password, you have two ways to specify it: pass the value itself as environment variable API_PASSWORD, or define a Docker secret as follows:
+If the API user needs a password, you have two ways to specify it: pass the value itself as environment variable API_PASSWORD (which isn't secure), or define a Docker secret as follows:
 
 | Secret | Description |
 | ------ | ----------- |

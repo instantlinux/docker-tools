@@ -121,5 +121,6 @@ Thank you to the following contributors!
 * [Devin Bayer](https://github.com/akvadrako)
 * [Daniel Muller](https://github.com/DanielMuller)
 * [Brian Hechinger](https://github.com/bhechinger)
+* [David Powers](https://github.com/dapowers87)
 
 Contents created 2017-25 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
