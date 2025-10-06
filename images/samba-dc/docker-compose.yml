@@ -9,6 +9,7 @@ services:
       - CAP_SYS_ADMIN
     hostname: ${SAMBADC_HOSTNAME:-dc.example.com}
     environment:
+      # Change this to 'provision' upon first run if no existing domain controller
       DOMAIN_ACTION: join
       INTERFACES: ${SAMBADC_INTERFACES:-lo eth0}
       REALM: ${SAMBA_REALM:-ad.example.com}

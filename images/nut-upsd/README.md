@@ -62,7 +62,7 @@ USER | nut | local user
 VENDORID | | vendor ID for ups.conf
 ### Notes
 
-To define a notify script, volume-mount it via your docker-compose file under /usr/local/bin and set the NOTIFYCMD environment variable. (*Don't* mount any executable scripts under /etc/nut, put them under /usr/local).
+To define a notify script, volume-mount it via your docker-compose file under /usr/local/bin or in your helm values overrides and set the NOTIFYCMD environment variable. (*Don't* mount any executable scripts under /etc/nut, put them under /usr/local).
 
 If you need a driver other than `usbhid-ups`, the full list of supported drivers can be listed as follows:
 ```
