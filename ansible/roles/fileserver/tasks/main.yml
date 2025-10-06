@@ -15,21 +15,21 @@
   when: ansible_distribution_version < '20.04'
 
 - import_tasks: nfs.yml
-  when: nfs_exports
+  when: nfs_exports | length > 0
 
 - name: Disable nfs-server
   systemd:
     name: nfs-server
     state: stopped
     enabled: no
-  when: not nfs_exports
+  when: nfs_exports | length == 0
 
 - name: Disable rpcbind if no network volumes
   systemd:
     name: rpcbind
     state: stopped
     enabled: no
-  when: not nfs_exports
+  when: nfs_exports | length == 0
 
 - import_tasks: instantlinux.yml
 

@@ -56,8 +56,6 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | jira | ** | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
 | nexus | ** | binary repo with docker registry |
-| python-builder | [![](https://img.shields.io/docker/v/instantlinux/python-builder?sort=date)](https://hub.docker.com/r/instantlinux/python-builder "Version badge") | CI testing for python|
-| python-wsgi | [![](https://img.shields.io/docker/v/instantlinux/python-wsgi?sort=date)](https://hub.docker.com/r/instantlinux/python-wsgi "Version badge") | WSGI runtime for python flask apps|
 | synapse | ** | self-hosted team chat |
 | wordpress | ** | |
 

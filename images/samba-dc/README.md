@@ -47,7 +47,7 @@ INTERFACES | lo eth0 | list of IP addresses or interfaces
 LOG_LEVEL | 1 | log verbosity
 MODEL | standard | process model: single, standard, thread
 NETBIOS_NAME | (hostname -s) | the NETBIOS name
-REALM | ad.example.com | active-directory DNS realm
+REALM | ad.example.com | active-directory DNS realm (use lowercase)
 SERVER_STRING | Samba Domain Controller | server identity
 TZ | UTC | local timezone
 WINBIND_USE_DEFAULT_DOMAIN | yes | allow username without domain component

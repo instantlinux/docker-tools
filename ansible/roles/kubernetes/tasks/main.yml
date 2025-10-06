@@ -57,11 +57,11 @@
 
 - name: Set up control plane
   include_tasks: cplane.yml
-  when: k8s.cplane
+  when: k8s.cplane | length > 0
 
 - name: Join cluster
   include_tasks: join.yml
-  when: not k8s.cplane
+  when: k8s.cplane | length == 0
 
 - name: Add RequiresMountsFor to kubelet.service
   copy:
