@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # MariaDB cluster startup
 #  This script upon startup waits for a specified number of nodes
@@ -22,7 +22,7 @@ import subprocess
 import sys
 import time
 
-import etcd
+import etcd3
 
 
 class Constants(object):
@@ -30,6 +30,9 @@ class Constants(object):
     DEFAULT_CLUSTER_SIZE = 3
     ETCD_PREFIX = '/galera'
     LOG_DIR = '/var/log/mysql'
+
+    ETCD_RETRIES = 2
+    ETCD_RETRY_WAIT = 5
 
     KEY_CLUSTER_UPDATE_TIMER = 'update_timer'
     KEY_HEALTH = 'health'
@@ -82,10 +85,9 @@ class MariaDBCluster(object):
         self.my_hostname = socket.gethostname()
         self.my_ipv4 = socket.gethostbyname(self.my_hostname)
         self.data_dir = self._invoke(
-            'mysqld --verbose --help --wsrep-cluster-address=none '
+            'mariadbd --verbose --help --wsrep-cluster-address=none '
             '| grep ^datadir').split()[1].strip()
         self.root_password = self._get_root_password()
-        self.sst_password = self._get_sst_password()
         self.prev_address = None
 
     def share_initial_state(self, discovery):
@@ -108,7 +110,7 @@ class MariaDBCluster(object):
                               ttl=self.ttl_stack_up)
             try:
                 discovery.set_key(Constants.KEY_SAFE_TO_BOOTSTRAP,
-                                  self._is_safe_to_boot(),
+                                  str(self._is_safe_to_boot()),
                                   ttl=self.ttl_stack_up)
             except AssertionError:
                 pass
@@ -155,12 +157,10 @@ class MariaDBCluster(object):
     def start_database(self, cluster_address='', wsrep_new_cluster=False,
                        cmdarg=None):
         command = (
-            'exec /usr/sbin/mysqld --wsrep_cluster_name=%(cluster_name)s '
-            '--wsrep-cluster-address="gcomm://%(address)s" '
-            '--wsrep_sst_auth="sst:%(sst_password)s"' % {
+            'exec /usr/sbin/mariadbd --wsrep_cluster_name=%(cluster_name)s '
+            '--wsrep-cluster-address="gcomm://%(address)s"' % {
                 'cluster_name': self.name,
-                'address': cluster_address,
-                'sst_password': self.sst_password})
+                'address': cluster_address})
         if wsrep_new_cluster:
             command += ' --wsrep-new-cluster'
         if cmdarg:
@@ -172,10 +172,11 @@ class MariaDBCluster(object):
                 'Network connectivity problem for %s' % cluster_address)
         while True:
             # skew startup of concurrent launches by self.ttl_lock seconds
-            try:
-                self.discovery.acquire_lock('bootstrap', ttl=self.ttl_lock)
-            except etcd.EtcdLockExpired:
-                pass
+            ret = self.discovery.acquire_lock('bootstrap', ttl=self.ttl_lock)
+            if not ret:
+                logging.info({'action': 'acquire_lock',
+                              'lock_name': 'bootstrap',
+                              'message': 'ttl expired'})
             if Constants.STATUS_DONOR in self._cluster_health():
                 # perform only one SST join at a time, loop until others done
                 time.sleep(5)
@@ -245,6 +246,9 @@ class MariaDBCluster(object):
                 recovered_position = int(val)
                 addr_highest_pos = ipv4
 
+        logging.debug({'action': 'restart',
+                       'safe_to_bootstrap': safe_to_bootstrap,
+                       'recoverable_nodes': recoverable_nodes})
         if safe_to_bootstrap == 1:
             # Cluster was shut down normally
             logging.info({'action': 'restart_database',
@@ -277,7 +281,7 @@ class MariaDBCluster(object):
 
         def _set_wsrep_key(key):
             val = self._invoke(
-                'mysql -u root -p%(pw)s -Bse '
+                'mariadb -u root -p%(pw)s -Bse '
                 '"SHOW STATUS LIKE \'%(key)s\';"' % {
                     'pw': self.root_password, 'key': key}).split()[1]
             self.discovery.set_key(key, val, ttl=self.discovery.ttl)
@@ -287,7 +291,7 @@ class MariaDBCluster(object):
 
         try:
             self.discovery.set_key(Constants.KEY_HOSTNAME, self.my_hostname)
-        except etcd.EtcdException as ex:
+        except etcd3.Etcd3Exception as ex:
             logging.warn(dict(log_info, **{'message': str(ex)}))
         try:
             status = _set_wsrep_key(Constants.KEY_WSREP_LOCAL_STATE_COMMENT)
@@ -304,7 +308,7 @@ class MariaDBCluster(object):
                                        Constants.STATUS_DEGRADED)
         except IndexError:
             pass
-        except etcd.EtcdException as ex:
+        except etcd3.Etcd3Exception as ex:
             logging.warn(dict(log_info, **{'message': str(ex)}))
 
     def _get_root_password(self):
@@ -318,7 +322,7 @@ class MariaDBCluster(object):
             return os.environ['MYSQL_ROOT_PASSWORD']
         try:
             with open(os.path.join('/run/secrets',
-                                   os.environ['ROOT_PASSWORD_SECRET']),
+                                   os.environ['ROOT_SECNAME']),
                       'r') as f:
                 pw = f.read()
             return pw
@@ -328,18 +332,6 @@ class MariaDBCluster(object):
             return '%020x' % random.randrange(16**20)
         else:
             raise AssertionError('Root password must be specified')
-
-    def _get_sst_password(self):
-        if 'SST_PASSWORD' in os.environ:
-            return os.environ['SST_PASSWORD']
-        try:
-            with open(os.path.join('/run/secrets',
-                                   os.environ['SST_AUTH_SECRET']), 'r') as f:
-                pw = f.read()
-            return pw
-        except IOError:
-            pass
-        return ''
 
     def _is_new_install(self):
         return (not os.path.exists(os.path.join(self.data_dir, 'ibdata1')) and
@@ -381,15 +373,16 @@ class MariaDBCluster(object):
         returns: int
         raises: AssertionError if not found
         """
-        uuid_pat = re.compile('[a-z0-9]*-[a-z0-9]*:-*[0-9]', re.I)
+        uuid_pat = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-"
+                              "[0-9a-f]{4}-[0-9a-f]{12}:[0-9]*")
         filename = os.path.join(self.data_dir, '%s.err' % self.my_hostname)
-        self._invoke('mysqld_safe --wsrep-cluster-address=gcomm:// '
+        self._invoke('mariadbd-safe --wsrep-cluster-address=gcomm:// '
                      '--wsrep-recover --skip-syslog', ignore_errors=False)
         with open(filename, 'r') as f:
             for line in f:
-                match = re.match(uuid_pat, line)
+                match = re.search(uuid_pat, line)
                 if match:
-                    return int(match.split(':')[1])
+                    return int(match.group(0).split(':')[1])
         os.unlink(filename)
         raise AssertionError('No recovery position identified')
 
@@ -409,28 +402,24 @@ class MariaDBCluster(object):
         return None
 
     def _install_new_database(self, timeout=30):
-        """run the mysql_install_db installer and set up system users"""
+        """run the mariadb-install-db installer and set up system users"""
 
         script_setusers = r"""
         SET @@SESSION.SQL_LOG_BIN=0;
-        DELETE FROM mysql.user WHERE user='root' AND host!='localhost';
         DELETE FROM mysql.user WHERE user='';
-        UPDATE mysql.user set host='%%' where user='root' and host='localhost';
-        CREATE USER 'sst'@'localhost' IDENTIFIED BY '%(sst_password)s';
-        GRANT RELOAD,PROCESS,LOCK TABLES,REPLICATION CLIENT ON *.* TO
-          'sst'@'localhost';
+        RENAME USER 'root'@'localhost' TO 'root'@'%';
         DROP DATABASE IF EXISTS test;
         FLUSH PRIVILEGES;
         """
 
         logging.info({'action': '_install_new_database', 'status': 'start'})
         opts = '--user=mysql --datadir=%s --wsrep_on=OFF' % self.data_dir
-        mysql_client = '/usr/bin/mysql --protocol=socket -u root'
-        sys.stdout.write(self._invoke('mysql_install_db %s --rpm' %
+        mysql_client = '/usr/bin/mariadb --protocol=socket -u root'
+        sys.stdout.write(self._invoke('mariadb-install-db %s --rpm' %
                                       opts + ' --no-defaults'))
         start_time = time.time()
         proc = self._run_background(
-            'exec /usr/sbin/mysqld %s --skip-networking' % opts)
+            'exec /usr/sbin/mariadbd %s --skip-networking' % opts)
         while time.time() - start_time < timeout:
             time.sleep(1)
             if self._invoke('%s -e "SELECT 1;"' % mysql_client
@@ -444,10 +433,10 @@ class MariaDBCluster(object):
             exit(1)
         logging.info({'action': '_install_new_database', 'step': '0'})
         sys.stdout.write(self._invoke(
-            'mysqladmin password "%s"' % self.root_password,
+            'mariadb-admin password "%s"' % self.root_password,
             ignore_errors=False, suppress_log=True))
         sys.stdout.write(self._invoke(
-            'mysql_tzinfo_to_sql /usr/share/zoneinfo | '
+            'mariadb-tzinfo-to-sql /usr/share/zoneinfo | '
             'sed "s/Local time zone must be set--see zic manual page/FCTY/" | '
             '%s mysql -u root -p%s' % (mysql_client, self.root_password),
             ignore_errors=False))
@@ -456,9 +445,8 @@ class MariaDBCluster(object):
             '%(mysql)s -u root -p%(mysql_root_password)s -e "%(script)s"' % {
                 'mysql': mysql_client,
                 'mysql_root_password': self.root_password,
-                'script': script_setusers % {
-                    'sst_password': self.sst_password
-                }}, ignore_errors=False, suppress_log=False))
+                'script': script_setusers},
+            ignore_errors=False, suppress_log=False))
         logging.info({'action': '_install_new_database', 'step': '2'})
         time.sleep(60)
         proc.terminate()
@@ -507,7 +495,7 @@ class MariaDBCluster(object):
             else:
                 self.update_timer_active = False
                 self._invoke(
-                    'mysql -u root -p%(pw)s -e '
+                    'mariadb -u root -p%(pw)s -e '
                     '"SET GLOBAL wsrep_cluster_address=\'%(address)s\'";' %
                     {'pw': self.root_password, 'address': address})
                 self.prev_address = address
@@ -559,33 +547,41 @@ class DiscoveryService(object):
 
     def __init__(self, nodes, cluster):
         self.ipv4 = socket.gethostbyname(socket.gethostname())
-        self.etcd = etcd.Client(host=nodes, allow_reconnect=True,
-                                lock_prefix='/%s/_locks' % cluster)
+        host, port = nodes[0]
+        try:
+            self.etcd = etcd3.client(host=host, port=port,
+                                     timeout=Constants.ETCD_RETRY_WAIT)
+            self.etcd.status()
+        except Exception as exc:
+            print(f"Etcd client failed: {exc}")
+            raise
         self.prefix = Constants.ETCD_PREFIX + '/' + cluster
+        self.lock_prefix = '/%s/_locks' % cluster
         try:
             self.ttl = int(os.environ['TTL'])
         except KeyError:
             self.ttl = Constants.DEFAULT_TTL
         self.ttl_dir = Constants.TTL_DIR
         self.locks = {}
+        self.cluster = cluster
+        logging.info({'action': 'etcd3_init', 'host': host, 'port': port,
+                      'prefix': self.prefix, 'cluster': cluster})
 
     def __del__(self):
         self.delete_key(self.ipv4)
 
     def set_key(self, keyname, value, my_host=True, ttl=None):
-        """set a key under /galera/<cluster>/<my_host>"""
+        """set a key under /galera/<cluster>/<my_host>, with a
+        lease duration as specified by ttl"""
 
+        ttl = ttl if ttl else Constants.DEFAULT_TTL
         logging.debug({'action': 'set_key', 'keyname': keyname,
-                       'value': value})
+                       'value': value, 'ttl': ttl})
         key_path = self.prefix + '/' + self.ipv4 if my_host else self.prefix
-        try:
-            self.etcd.write(key_path, None, dir=True, ttl=self.ttl_dir)
-        except etcd.EtcdNotFile:
-            pass
-        self.etcd.write('%(key_path)s/%(keyname)s' % {
-                            'key_path': key_path, 'keyname': keyname
-                        },
-                        value, ttl=ttl if ttl else Constants.DEFAULT_TTL)
+        self.etcd.put(key_path, '', lease=self.etcd.lease(ttl))
+        self.etcd.put('%(key_path)s/%(keyname)s' %
+                      {'key_path': key_path, 'keyname': keyname},
+                      str(value), lease=self.etcd.lease(ttl))
 
     def get_key(self, keyname, ipv4=None):
         """Fetch the key for a given ipv4 node
@@ -596,58 +592,63 @@ class DiscoveryService(object):
         log_info = {'action': 'get_key', 'keyname': keyname, 'ipv4': ipv4}
         key_path = self.prefix + '/' + ipv4 if ipv4 else self.prefix
         key_path += '/' + keyname if keyname else ''
-        try:
-            item = self.etcd.read(key_path, timeout=10)
-        except (etcd.EtcdKeyNotFound, etcd.EtcdNotDir):
-            logging.debug(dict(log_info, **{
-                'status': 'error',
-                'message': 'not_found'}))
-            return None
+        item = self.etcd.get(key_path)
+        if item[1]:
+            log_info['status'] = 'ok'
+            logging.debug(dict(log_info, **{'value': item[0].decode("utf-8")}))
+            return item[0].decode("utf-8")
+        children = self.etcd.get_prefix(key_path, keys_only=True)
+        if children:
+            log_info['status'] = 'ok'
+            retval = [child[1].key.decode("utf-8").removeprefix(
+                self.prefix + '/') for child in children]
+            if len(retval) > 0:
+                logging.debug(dict(log_info, **{'values': retval}))
+                return retval
 
-        log_info['status'] = 'ok'
-        if item.dir:
-            retval = [child.key[len(key_path) + 1:]
-                      for child in item.children]
-            return retval
-        else:
-            logging.debug(dict(log_info, **{'value': item.value}))
-            return item.value
+        logging.debug(dict(log_info, **{
+            'status': 'error',
+            'message': 'not_found'}))
+        return None
 
     def delete_key(self, keyname, ipv4=None):
         log_info = {'action': 'delete_key', 'keyname': keyname, 'ipv4': ipv4}
         key_path = self.prefix + '/' + ipv4 if ipv4 else self.prefix
         key_path += '/' + keyname if keyname else ''
-        try:
-            self.etcd.delete(key_path, recursive=True)
+        ret = self.etcd.delete_prefix(key_path)
+        if ret:
             logging.debug(dict(log_info, **{'status': 'ok'}))
-        except etcd.EtcdKeyNotFound:
+        else:
             logging.debug(dict(log_info, **{
                 'status': 'error',
                 'message': 'not_found'}))
 
-    def get_key_recursive(self, keyname, ipv4=None, nest_level=0):
+    def get_key_recursive(self, keyname, ipv4=None):
         """Fetch all keys under the given node """
 
-        assert nest_level < 10, 'Recursion too deep'
-        retval = self.get_key(keyname, ipv4=ipv4)
-        if type(retval) is list:
-            return {key: self.get_key_recursive(key, ipv4=ipv4,
-                                                nest_level=nest_level + 1)
-                    for key in retval}
-        else:
-            return retval
+        retval = {meta.key.decode('utf-8').removeprefix(
+            self.prefix + '/' + (ipv4 + '/' if ipv4 else '')):
+                val.decode('utf-8')
+                for val, meta in self.etcd.get_prefix(
+                        self.prefix + '/' + ipv4 +
+                        ('/' + keyname if keyname else ''))}
+        logging.debug({'action': 'get_key_recursive',
+                       'keyname': keyname, 'ipv4': ipv4,
+                       'retval': retval})
+        return retval
 
     def acquire_lock(self, lock_name, ttl=Constants.DEFAULT_TTL):
         """acquire cluster lock - used upon electing leader"""
 
         logging.info({'action': 'acquire_lock',
                       'lock_name': lock_name, 'ttl': ttl})
-        self.locks[lock_name] = etcd.Lock(self.etcd, lock_name)
-        # TODO: make this an atomic mutex with etcd3 (currently using etcd2)
+        self.locks[lock_name] = self.etcd.lock(self.lock_prefix + lock_name,
+                                               ttl=ttl)
+        # TODO: make this an atomic mutex with etcd3
         while self.get_key('lock-%s' % lock_name):
             time.sleep(0.25)
         self.set_key('lock-%s' % lock_name, self.ipv4, my_host=False, ttl=ttl)
-        self.locks[lock_name].acquire(lock_ttl=2)
+        self.locks[lock_name].acquire(timeout=2)
 
     def release_lock(self, lock_name):
         """release cluster lock"""
@@ -682,7 +683,15 @@ def setup_logging(level=logging.INFO, output=sys.stdout):
 
 
 def main():
-    setup_logging()
+    level = logging.INFO
+    if 'LOG_LEVEL' in os.environ:
+        if os.environ['LOG_LEVEL'].lower() == 'debug':
+            level = logging.DEBUG
+        elif os.environ['LOG_LEVEL'].lower() != 'info':
+            logging.error({'action': 'main',
+                           'level': os.environ['LOG_LEVEL'],
+                           'message': 'invalid log_level'})
+    setup_logging(level=level)
     cluster = MariaDBCluster()
     logging.info({'action': 'main', 'status': 'start',
                   'my_ipv4': cluster.my_ipv4})

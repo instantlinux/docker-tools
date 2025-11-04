@@ -3,7 +3,6 @@ ipReadOnly: 10.101.1.101
 nodePort: 30306
 character_set_server: utf8
 ft_min_word_len: 3
-innodb_buffer_pool_instances: 1
 innodb_buffer_pool_size: 1024M
 innodb_log_file_size: 32M
 interactive_timeout: 28800
@@ -26,8 +25,9 @@ statefulset:
   containerPorts: [ containerPort: 3306 ]
   env:
     cluster_name: mariadb
-    discovery_service: "10.101.1.19:2379"
     cluster_size: 3
+    discovery_service: "10.101.1.19:2379"
+    log_level: info
   replicas: 3
   resources:
     limits:
@@ -48,9 +48,6 @@ volumeMounts:
 - name: mysql-root-password
   mountPath: /run/secrets/mysql-root-password
   subPath: mysql-root-password
-- name: sst-auth-password
-  mountPath: /run/secrets/sst-auth-password
-  subPath: sst-auth-password
 volumes:
 - name: etc
   configMap:
@@ -58,9 +55,6 @@ volumes:
 - name: mysql-root-password
   secret:
     secretName: mysql-root-password
-- name: sst-auth-password
-  secret:
-    secretName: sst-auth-password
 volumeClaimTemplates:
 - metadata:
     name: data

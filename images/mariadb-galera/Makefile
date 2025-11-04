@@ -27,7 +27,7 @@ test_requirements: python_env
 
 $(VDIR)/bin/python:
 	@echo "Creating virtual environment"
-	virtualenv --system-site-packages $(VDIR)
+	python3 -m venv --system-site-packages $(VDIR)
 
 pytest: test_requirements
 	@echo "Running pytest unit tests"

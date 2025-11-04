@@ -1,11 +1,11 @@
 ## mariadb-galera
 [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mariadb-galera?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/mariadb-galera "Image badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mariadb-galera/Dockerfile "dockerfile")
 
-MariaDB 10.4 with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations.
+MariaDB 12.x with automatic cluster generation under kubernetes / swarm using named volumes for data persistence. This has robust bootstrap logic based on MariaDB / Galera documentation for automated cluster create / join operations. Requires an etcd instance for sharing instance-health data across the cluster.
 
 ### Usage - kubernetes
 
-Define the following dependencies before launching the cluster: passwords for root and SST, network load balancer, and a dedicated etcd key-value store. Here's how:
+Define the following dependencies before launching the cluster: password for root, network load balancer, and a dedicated etcd key-value store. Here's how:
 
 Create a random root password:
 ```
@@ -25,7 +25,7 @@ EOT
 sekret enc /dev/shm/new.yaml >secrets/$SECRET
 rm /dev/shm/new.yaml
 ```
-You can use a tool like [sops](https://github.com/mozilla/sops) or [sekret](https://github.com/nownabe/sekret) to generate the secrets file. Do the same for an sst-auth-password.
+You can use a tool like [sops](https://github.com/mozilla/sops) or [sekret](https://github.com/nownabe/sekret) to generate the secrets file.
 
 Set any local my.cnf values in files under a volume mount for
 /etc/mysql/my.cnf.d (mapped as $ADMIN_PATH/mariadb/etc/). Use
@@ -90,9 +90,19 @@ cd docker-tools/k8s
 make db00
 ~~~
 
+### Restarting
+
+When taking the database down, wait for all pods to stop, and then clear etcd entries for the cluster:
+```
+CLUSTER=db00
+ETCD_HOST=10.101.1.19
+etcdctl --endpoints=$ETCD_HOST:2379 del --prefix /galera/$CLUSTER
+```
+Then launch with the helm chart or docker-compose.
+
 ### Usage - swarm
 
-This was originally developed under docker Swarm. A [docker-compose](https://github.com/instantlinux/docker-tools/blob/main/images/mariadb-galera/docker.compose) file is a legacy of that original work. Before stack-deploying it, invoke _docker secret create_ to generate the two secrets _mysql-root-password_ and _sst-auth-password-, and define an ADMIN_PATH environment variable pointing to your my.cnf (it has to be in the same location on each docker node).
+This was originally developed under docker Swarm. A [docker-compose](https://github.com/instantlinux/docker-tools/blob/main/images/mariadb-galera/docker.compose) file is a legacy of that original work. Before stack-deploying it, invoke _docker secret create_ to generate the secret _mysql-root-password_, and define an ADMIN_PATH environment variable pointing to your my.cnf (it has to be in the same location on each docker node).
 
 ### Variables
 
@@ -102,11 +112,11 @@ This was originally developed under docker Swarm. A [docker-compose](https://git
 | CLUSTER_NAME | cluster01 | cluster name |
 | CLUSTER_SIZE | 3 | expected number of nodes |
 | DISCOVERY_SERVICE | etcd:2379 | etcd host list, e.g. etcd1:2379,etcd2:2379 |
+| LOG_LEVEL | info | set to debug for additional logging |
 | REINSTALL_OK | | set to any value to enable reinstall over old volume |
-| ROOT_PASSWORD_SECRET | mysql-root-password | name of secret for password |
+| ROOT_SECNAME | mysql-root-password | name of secret for password |
 | TTL | 10 | longevity (in seconds) of keys posted to etcd |
 | TZ | UTC | timezone |
-| SST_AUTH_SECRET | sst-auth-password | name of secret for password |
 
 ### Notes
 
@@ -128,6 +138,8 @@ This container image is intended to be run in a 3-, 5-node, or larger
 configuration.  It requires a stable etcd configuration for node
 discovery and master election at restart. A single instance can
 be invoked without HA resources using kubernetes-single.yaml.
+
+There is no supported etcd3 library for python3 (as of Oct 2025). For now, this is using python-etcd3 0.12.0, last updated in 2020, with PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION set for compatibility.
 
 ### Credits
 
