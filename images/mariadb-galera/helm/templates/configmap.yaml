@@ -57,7 +57,6 @@ data:
     # * InnoDB
     #
     innodb_data_file_path        = ibdata1:10M:autoextend
-    innodb_buffer_pool_instances = {{ .Values.innodb_buffer_pool_instances }}
     innodb_buffer_pool_size      = {{ .Values.innodb_buffer_pool_size }}
     innodb_log_file_size         = {{ .Values.innodb_log_file_size }}
 

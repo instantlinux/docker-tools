@@ -1,1 +1,1 @@
-python-etcd==0.4.5
+etcd3==0.12.0

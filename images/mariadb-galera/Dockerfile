@@ -1,8 +1,8 @@
-FROM python:3.8.10-slim-buster
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM mariadb:12.0.2
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=mariadb-galera \
     org.label-schema.vcs-ref=$VCS_REF \
@@ -12,41 +12,26 @@ ENV DEBIAN_FRONTEND=noninteractive \
     CLUSTER_NAME=cluster01 \
     CLUSTER_SIZE=3 \
     DISCOVERY_SERVICE=etcd:2379 \
-    ROOT_PASSWORD_SECRET=mysql-root-password \
+    ROOT_SECNAME=mysql-root-password \
     TTL=10 \
-    TZ=UTC \
-    SST_AUTH_SECRET=sst-auth-password
-
-ARG MARIADB_MAJOR=10.4
-ARG MARIADB_VERSION=10.4.20
-ARG APT_KEY=F1656F24C74CD1D8
-ARG DEB_REL=buster
+    TZ=UTC
 ARG UID=212
 ARG GID=212
 
 COPY requirements/ /root/
-
-RUN apt-get -yq update && apt-get install -yq gnupg && \
-    apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_KEY && \
-    echo "deb [arch=amd64] \
-     http://nyc2.mirrors.digitalocean.com/mariadb/repo/$MARIADB_MAJOR/debian $DEB_REL main" \
-     > /etc/apt/sources.list.d/mariadb.list && \
-    groupadd -g $GID mysql && \
-    useradd -u $UID -g $GID -s /bin/false -c "MariaDB" -d /none mysql && \
-    apt-get -yq update && apt-get -yq install --no-install-recommends \
-     curl iputils-ping jq mariadb-server=1:$MARIADB_VERSION+maria~$DEB_REL \
-     mariadb-backup=1:$MARIADB_MAJOR_$MARIADB_VERSION+maria~$DEB_REL \
-     mariadb-client=1:$MARIADB_MAJOR_$MARIADB_VERSION+maria~$DEB_REL \
-     net-tools netcat procps && \
-    apt-get clean && rm -fr /var/log/* /var/lib/mysql/* && \
-    rm -fr /root/.cache /usr/share/zoneinfo/leap-seconds.list
-RUN pip install -r /root/common.txt && \
+RUN groupmod -g $GID mysql && \
+    usermod -u $UID -s /bin/false -c "MariaDB" -d /none mysql && \
+    apt -yq update && apt -yq install --no-install-recommends \
+     curl iputils-ping jq net-tools netcat-openbsd procps \
+     python3 python3-pip python3-etcd3 && \
+    apt-get clean && rm -fr /var/log/* /var/lib/mysql/* \
+      /var/lib/apt/lists /var/cache/debconf/*old /root/.cache
+RUN pip install -r /root/common.txt --break-system-packages && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
     dpkg-reconfigure dash || true
 
 EXPOSE 3306 4444 4567/udp 4567 4568
 VOLUME /var/lib/mysql
-
 HEALTHCHECK --interval=10s --timeout=3s --retries=30 \
     CMD /bin/sh /usr/local/bin/healthcheck.sh || exit 1
 

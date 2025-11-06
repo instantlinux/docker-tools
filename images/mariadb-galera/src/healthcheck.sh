@@ -15,7 +15,7 @@ MYSQL_OPTS="-N -q -A --connect-timeout=10"
 TMP_FILE="/dev/shm/mysqlchk.$$.out"
 ERR_FILE="/dev/shm/mysqlchk.$$.err"
 FORCE_FAIL="/dev/shm/proxyoff"
-MYSQL_BIN='/usr/bin/mysql'
+MYSQL_BIN='/usr/bin/mariadb'
 CHECK_QUERY="show global status where variable_name='wsrep_local_state'"
 CHECK_QUERY2="show global variables where variable_name='wsrep_sst_method'"
 CHECK_QUERY3="show global variables where variable_name='read_only'"
