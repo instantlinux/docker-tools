@@ -28,6 +28,8 @@ RUN groupmod -g $GID mysql && \
       /var/lib/apt/lists /var/cache/debconf/*old /root/.cache
 RUN pip install -r /root/common.txt --break-system-packages && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
+    # 'gosu' in MariaDB official image is incompatible with trivy scanner
+    rm /usr/local/bin/gosu && \
     dpkg-reconfigure dash || true
 
 EXPOSE 3306 4444 4567/udp 4567 4568
