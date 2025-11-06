@@ -22,8 +22,6 @@ stages:
   - postfix
   - postfix-python
   - proftpd
-  - python-builder
-  - python-wsgi
   - rsyslogd
   - samba
   - samba-dc
@@ -238,24 +236,6 @@ proftpd:
       job: prepare
   only:
     changes: [ images/proftpd/**, lib/**, .image-gitlab-ci.yml ]
-
-python-builder:
-  stage: python-builder
-  trigger:
-    include:
-    - artifact: .child-python-builder.yml
-      job: prepare
-  only:
-    changes: [ images/python-builder/**, lib/**, .image-gitlab-ci.yml ]
-
-python-wsgi:
-  stage: python-wsgi
-  trigger:
-    include:
-    - artifact: .child-python-wsgi.yml
-      job: prepare
-  only:
-    changes: [ images/python-wsgi/**, lib/**, .image-gitlab-ci.yml ]
 
 rsyslogd:
   stage: rsyslogd
