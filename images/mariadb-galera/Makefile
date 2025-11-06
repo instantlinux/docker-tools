@@ -1,18 +1,74 @@
-# Standard Makefile for python application
-#   created by rbraun @ splunk 7-Apr-2017
+# Standard Makefile for Docker image
+#   created by richb@instantlinux.net 20-Apr-2017
 
-SRC  ?= src
-VENV ?= python_env
-VDIR ?= $(PWD)/$(VENV)
+BUILDX      = https://github.com/docker/buildx/releases/download/v0.4.1/buildx-v0.4.1.linux-amd64
+PLATFORMS  ?= linux/amd64
+PUSH       ?= --push
+USER_LOGIN ?= instantlinux
+VENV        = python_env
+VDIR        = $(PWD)/$(VENV)
+
+export IMAGE_NAME  = $(REGISTRY)/$(IMAGE):$(TAG)
+export DOCKER_REPO = $(USER_LOGIN)/$(IMAGE)
+
+ifneq ($(CI_COMMIT_TAG),)
+  TAG_OPT   = --tag $(USER_LOGIN)$(IMAGE):$(CI_COMMIT_TAG)      
+endif
+
+# Exceptions
+ifeq ($(IMAGE),data-sync)
+  PLATFORMS = linux/amd64,linux/aarch64
+endif
+ifeq ($(IMAGE),mariadb-galera)
+  PLATFORMS = linux/amd64
+endif
+ifeq ($(IMAGE),mythtv-backend)
+  PLATFORMS = linux/amd64
+endif
+ifeq ($(IMAGE),nagiosql)
+  PLATFORMS = linux/amd64,linux/arm64,linux/arm/v7
+endif
+ifeq ($(IMAGE),postfix-python)
+  # qemu bombs out with cpu_exec assertion since Dec 2023 on arm/v7
+  PLATFORMS = linux/amd64,linux/aarch64,linux/arm64
+endif
+ifeq ($(IMAGE),$(filter $(IMAGE),python-builder python-wsgi))
+  # helm package on arm/v6 isn't supported as of Aug 2021
+  #  others had issues with pipenv hashes Jul 2023
+  PLATFORMS = linux/amd64,linux/arm64
+endif
+ifeq ($(IMAGE),spamassassin)
+  PLATFORMS = linux/amd64,linux/arm64
+endif
 
 analysis: flake8
-	@echo "Running static analysis"
+	  @echo "Running static analysis"
 
 test: pytest
 
 test_functional:
 	@echo "Running functional verification of running image"
-	@echo "--TODO not yet implemented--"
+
+create_image: $(HOME)/.docker/cli-plugins/docker-buildx
+	docker buildx build --tag $(REGISTRY)/$(IMAGE):$(TAG) --platform $(PLATFORMS) \
+	  $(PUSH) --file Dockerfile . \
+	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
+	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
+
+promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
+	# Log into dockerhub
+	docker login -u $(USER_LOGIN) -p $(DOCKER_TOKEN)
+	docker buildx build $(TAG_OPT) \
+	  `[ -e hooks/add_tags ] && hooks/add_tags` \
+	  --tag $(USER_LOGIN)/$(IMAGE):latest --platform $(PLATFORMS) \
+	  --push --file Dockerfile . \
+	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
+	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
+	-if [ -x hooks/post_build ]; then sh hooks/post_build; fi
+
+	# TODO update dockerhub README if/when that is supported,
+	# see https://github.com/docker/hub-feedback/issues/1927
+	# and https://github.com/docker/hub-feedback/issues/2127
 
 flake8: test_requirements
 	@echo "Running flake8 code analysis"
@@ -22,12 +78,22 @@ python_env: $(VDIR)/bin/python
 
 test_requirements: python_env
 	@echo "Installing test requirements"
-	(. $(VDIR)/bin/activate && \
-	 pip install -r requirements/test.txt -r requirements/common.txt)
+	(if [ -f requirements/test.txt ]; then \
+	  . $(VDIR)/bin/activate && \
+	  pip install -r requirements/test.txt -r requirements/common.txt; \
+	 fi)
 
 $(VDIR)/bin/python:
 	@echo "Creating virtual environment"
-	python3 -m venv --system-site-packages $(VDIR)
+	virtualenv --system-site-packages $(VENV)
+
+$(HOME)/.docker/cli-plugins/docker-buildx:
+	mkdir -p $(HOME)/.docker/cli-plugins/
+	wget -O $(HOME)/.docker/cli-plugins/docker-buildx $(BUILDX)
+	chmod +x $(HOME)/.docker/cli-plugins/docker-buildx
+	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+	docker buildx create --name multibuild
+	docker buildx use multibuild
 
 pytest: test_requirements
 	@echo "Running pytest unit tests"
@@ -43,7 +109,7 @@ pytest: test_requirements
 
 clean:
 	@echo "Cleaning out generated files"
-	@rm -rf ./$(SRC)/{.coverage,htmlcov,coverage.xml}
+	@rm -rf ./app/{.coverage,htmlcov,coverage.xml}
 	@find . -name \*.pyc -exec rm {} \;
 	@find . -name \*.log -exec rm {} \;
 	@find . -name \*~ -exec rm {} \;
