@@ -26,7 +26,7 @@ RUN groupmod -g $GID mysql && \
      python3 python3-pip python3-etcd3 && \
     apt-get clean && rm -fr /var/log/* /var/lib/mysql/* \
       /var/lib/apt/lists /var/cache/debconf/*old /root/.cache
-RUN pip install -r /root/common.txt && \
+RUN pip install -r /root/common.txt --break-system-packages && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
     dpkg-reconfigure dash || true
 
