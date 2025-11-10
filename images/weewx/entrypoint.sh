@@ -79,8 +79,12 @@ if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
       "/skin = Standard/,/enable = false/c skin = $SKIN\n enable = true" $WX_ROOT/weewx.conf
   fi
 
-  # Change the 5th "enable = false" which is Wunderground StdRESTful toggle
-  awk '/enable = false/{c++;if(c==5){sub("enable = false","enable = true");c=0}}1' \
+  # Enable rsync
+  sed -i \
+    "/user has write permissions/,/enable = false/c # enabled by entrypoint\n\tenable = true" $WX_ROOT/weewx.conf
+
+  # Change the 6th "enable = false" which is Wunderground StdRESTful toggle
+  awk '/enable = false/{c++;if(c==6){sub("enable = false","enable = true");c=0}}1' \
     $WX_ROOT/weewx.conf > $WX_ROOT/weewx.conf.new
   mv $WX_ROOT/weewx.conf $WX_ROOT/weewx.conf.awk
   mv $WX_ROOT/weewx.conf.new $WX_ROOT/weewx.conf
