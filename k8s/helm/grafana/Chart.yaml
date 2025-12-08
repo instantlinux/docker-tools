@@ -6,14 +6,14 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/grafana/grafana
 type: application
-version: 0.1.1
-appVersion: 12.0.2
+version: 0.1.2
+appVersion: 12.4.0
 dependencies:
 - name: chartlib
   version: 0.1.8
   repository: https://instantlinux.github.io/docker-tools
 - name: prometheus
-  version: 0.1.1
+  version: 0.1.2
   repository: file://subcharts/prometheus
   condition: prometheus.enabled
 - name: alertmanager
