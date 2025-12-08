@@ -1,7 +1,7 @@
 # Standard Makefile for Docker image
 #   created by richb@instantlinux.net 20-Apr-2017
 
-BUILDX      = https://github.com/docker/buildx/releases/download/v0.4.1/buildx-v0.4.1.linux-amd64
+BUILDX      = https://github.com/docker/buildx/releases/download/v0.30.1/buildx-v0.30.1.linux-amd64
 PLATFORMS  ?= linux/amd64
 PUSH       ?= --push
 USER_LOGIN ?= instantlinux
