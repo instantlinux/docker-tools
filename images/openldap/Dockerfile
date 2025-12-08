@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM alpine:3.23
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG OPENLDAP_VERSION=2.6.8-r0
+ARG OPENLDAP_VERSION=2.6.10-r0
 ENV SLAPD_DN_ATTR=uid \
     SLAPD_FQDN=example.com \
     SLAPD_LOG_LEVEL=Config,Stats \

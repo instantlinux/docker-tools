@@ -57,6 +57,12 @@ statefulset:
             values: [ etcd ]
         topologyKey: kubernetes.io/hostname
   replicas: 3
+  resources:
+    limits:
+      memory: 768Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 volumeMounts:
 - mountPath: /var/lib/etcd
   name: data
