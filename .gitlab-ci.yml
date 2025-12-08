@@ -35,7 +35,7 @@ workflow:
   - { if: $CI_COMMIT_TAG =~ /^chart-.*/, when: never }
   - when: always
 
-image: docker:19.03.8
+image: docker:29.1.2
 
 prepare:
   stage: prepare
