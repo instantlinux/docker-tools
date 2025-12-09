@@ -33,7 +33,7 @@ RUN addgroup -g $NAGIOS_GID nagios && \
       nagios-plugins-mysql=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \
       perl-crypt-x509 perl-libwww perl-text-glob perl-timedate \
-      php82 php82-fpm py3-pip py3-pymysql python3 ssmtp tzdata && \
+      php83 php83-fpm py3-pip py3-pymysql python3 ssmtp tzdata && \
     addgroup nginx nagios && \
     chmod u+s /usr/lib/nagios/plugins/check_ping && \
     sed -i -e s/use_syslog=.*/use_syslog=0/ \
@@ -48,6 +48,6 @@ EXPOSE 80
 VOLUME /etc/nagios /opt/nagios/plugins /var/nagios
 
 COPY nginx.conf /etc/nginx/http.d/nagios.conf
-COPY php-fpm-www.conf /etc/php82/php-fpm.d/www.conf
+COPY php-fpm-www.conf /etc/php83/php-fpm.d/www.conf
 COPY entrypoint.sh mail.sh /usr/local/bin/
 ENTRYPOINT /usr/local/bin/entrypoint.sh
