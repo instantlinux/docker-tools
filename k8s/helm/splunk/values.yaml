@@ -18,6 +18,7 @@ statefulset:
   env:
     splunk_add: tcp 1514
     splunk_enable_listen: "9997"
+    splunk_general_terms: --accept-sgt-current-at-splunk-com
     splunk_password: changeme
     splunk_start_args: --accept-license --answer-yes
   containerPorts:
