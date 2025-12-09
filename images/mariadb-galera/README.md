@@ -41,7 +41,6 @@ troubleshooting, if you're running a recent version of Docker you can override
 its ingress load-balancer thus:
 
 ~~~
-    version: "3.2"
     services:
       db:
         ...
