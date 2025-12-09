@@ -30,13 +30,13 @@ COPY html /var/www/html
 RUN addgroup -g $NAGIOS_GID nagios && \
     adduser -u $APACHE_UID -g Apache -DSH -h /var/www apache && \
     adduser -u $NAGIOS_UID -g "Nagios Server" -DSH -h /var/nagios nagios && \
-    apk add --update --no-cache apache2 curl nagios=$NAGIOS_VERSION php82 \
-      php82-apache2 php82-ftp php82-gettext php82-mysqli php82-pear php82-session \
-      php82-pecl-ssh2 tzdata && \
+    apk add --update --no-cache apache2 curl nagios=$NAGIOS_VERSION php83 \
+      php83-apache2 php83-ftp php83-gettext php83-mysqli php83-pear php83-session \
+      php83-pecl-ssh2 tzdata && \
     addgroup apache nagios && \
-    echo 'date.timezone = UTC' > /etc/php82/conf.d/50-tz.ini && \
+    echo 'date.timezone = UTC' > /etc/php83/conf.d/50-tz.ini && \
     echo 'include_path = ".:/var/www/nagiosql/libraries/pear"' \
-      > /etc/php82/conf.d/50-include.ini && \
+      > /etc/php83/conf.d/50-include.ini && \
     cd /tmp && \
     curl -sLo $NAGIOSQL_DOWNLOAD \
       https://sourceforge.net/projects/nagiosql/files/nagiosql/NagiosQL%20${NAGIOSQL_VERSION}/${NAGIOSQL_DOWNLOAD} && \
