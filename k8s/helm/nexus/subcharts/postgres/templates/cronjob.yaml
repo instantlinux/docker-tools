@@ -1,0 +1,46 @@
+{{- $fullName := include "local.fullname" . -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "local.fullname" . }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.backup.schedule }}"
+  timeZone: {{ .Values.backup.timeZone }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ $fullName }}-backup
+            image:  alpine/psql:{{ (split "-" .Values.image.tag)._0 }}
+            env:
+            - name: PGPASSFILE
+              value: /.pgpass
+            command:
+            - /bin/sh
+            - -c
+            - "pg_dump 
+               -U synapse
+               -h {{ $fullName }}
+               -p 5432
+               -d homeserver | gzip > /mnt/postgres/homeserver-$(date '+%Y-%m-%d-%H-%M').sql.gz 2>> /mnt/postgres/backup_error.log"
+            resources:
+              requests:
+                cpu: 500m
+                memory: 256Mi
+            volumeMounts:
+            - name: backup
+              mountPath: /mnt
+            - name: pgpass-secret
+              mountPath: /.pgpass
+              subPath: .pgpass
+          volumes:
+          - name: backup
+            hostPath: { path: /var/lib/docker/k8s-volumes/backup }
+          - name: pgpass-secret
+            secret:
+              secretName: synapse
+              defaultMode: 0600
+          restartPolicy: Never

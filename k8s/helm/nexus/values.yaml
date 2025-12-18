@@ -4,13 +4,25 @@ autheliaIP: 10.0.10.10
 domain: example.com
 deployment:
   containerPorts:
+  - containerPort: 1234
   - containerPort: 5000
   - containerPort: 8081
   env:
     install4j_add_vm_params: >
       -Xms2048m -Xmx4096m -XX:MaxDirectMemorySize=3g
       -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs
+    # Set database to postgres instead of H2 (yes, this works in
+    # Community Edition as of 2025 -- ignore online statements to
+    # the contrary)
+    nexus_datastore_nexus_jdbcurl: jdbc:postgresql://nexus-postgres:5432/nexus
+    nexus_datastore_nexus_username: nexus
     tz: UTC
+  xenv:
+  - name: NEXUS_DATASTORE_NEXUS_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: database_password
+        name: nexus
   nodeSelector:
     service.nexus: allow
   resources:
@@ -82,3 +94,37 @@ ingress:
 
 autoscaling:
   enabled: false
+
+configmap:
+  name: nexus
+  data:
+    trigram.sql: |
+      CREATE SCHEMA nexus;
+      GRANT ALL PRIVILEGES ON DATABASE nexus TO nexus;
+      GRANT ALL PRIVILEGES ON SCHEMA nexus TO nexus;
+      CREATE EXTENSION pg_trgm SCHEMA nexus;
+
+postgres:
+  enabled: true
+  statefulset:
+    env:
+      postgres_user: nexus
+      postgres_db: nexus
+    xenv:
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: database_password
+          name: nexus
+  volumeMounts:
+  - mountPath: /var/lib/postgresql/data
+    name: pgdata
+  - mountPath: /docker-entrypoint-initdb.d/trigram.sql
+    name: nexus-config
+    subPath: trigram.sql
+  volumes:
+  - name: nexus-config
+    configMap:
+      name: nexus
+  image:
+    tag: 17.7-alpine

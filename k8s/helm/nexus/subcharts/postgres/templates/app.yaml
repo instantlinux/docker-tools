@@ -11,3 +11,5 @@
 {{- include "chartlib.service" . }}
 ---
 {{- include "chartlib.serviceaccount" . }}
+---
+{{- include "chartlib.statefulset" . }}
