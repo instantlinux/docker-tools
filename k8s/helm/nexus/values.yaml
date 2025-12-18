@@ -3,6 +3,10 @@
 autheliaIP: 10.0.10.10
 domain: example.com
 deployment:
+  # Notes:
+  #   port 1234 provides an h2 console, if configured
+  #   port 5000 provides docker registry, if http port connector is added
+  #    for that port
   containerPorts:
   - containerPort: 1234
   - containerPort: 5000
