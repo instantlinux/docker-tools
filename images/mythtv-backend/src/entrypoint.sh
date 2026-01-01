@@ -34,6 +34,14 @@ if [ ! -f $MYTHHOME/.Xauthority ]; then
 fi
 
 cp /root/config.xml /etc/mythtv/
+
+# Substitute environment variables in config.xml
+sed -i -e "s/{{ DBNAME }}/$DBNAME/" \
+    -e "s/{{ DBPASSWORD }}/$DBPASSWORD/" \
+    -e "s/{{ DBSERVER }}/$DBSERVER/" \
+    -e "s/{{ LOCALHOSTNAME }}/$LOCALHOSTNAME/" \
+    /etc/mythtv/config.xml
+
 chmod 600 /etc/mythtv/config.xml && chown mythtv /etc/mythtv/config.xml
 
 for retry in $(seq 1 10); do
