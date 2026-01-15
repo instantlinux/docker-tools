@@ -7,8 +7,8 @@ sources:
 - https://source.isc.org/git/dhcp.git
 - http://thekelleys.org.uk/gitweb/?p=dnsmasq.git
 type: application
-version: 0.1.12
-appVersion: "4.4.3_p1-r4-2.90-r3"
+version: 0.2.1
+appVersion: "3.0.2-r0-2.91-r0"
 dependencies:
 - name: chartlib
   version: 0.1.8

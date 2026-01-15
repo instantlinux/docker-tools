@@ -1,9 +1,0 @@
-# Default dhcpd options: can modify them here, add new ones to
-# separate .conf files which will be included from /etc/dhcpd.conf
-allow unknown-clients;
-ddns-update-style none;
-ignore client-updates;
-option mask-supplier false;
-option netbios-node-type 8;
-option tcode code 101 = text;
-option tcode "{{ TZ }}";

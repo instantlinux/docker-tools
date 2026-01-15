@@ -1,4 +1,4 @@
 #!/bin/sh
-VER1=$(grep "ARG DHCP_VERSION" Dockerfile | cut -d= -f 2)
+VER1=$(grep "ARG KEA_VERSION" Dockerfile | cut -d= -f 2)
 VER2=$(grep "ARG DNSMASQ_VERSION" Dockerfile | cut -d= -f 2)
 echo "--tag $DOCKER_REPO:$VER1-$VER2"

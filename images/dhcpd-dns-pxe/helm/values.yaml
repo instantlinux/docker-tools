@@ -1,13 +1,13 @@
 # Default values for dhcpd-dns-pxe.
-dhcpPoolRanges:
-  dhcpd-dns-pxe-0: 192.168.1.8 192.168.1.15
-  dhcpd-dns-pxe-1: 192.168.1.16 192.168.1.31
-  dhcpd-dns-pxe-2: ""
-
-statefulset:
+deployment:
   env:
+    db_initialize: yes
+    db_host: db00
+    db_name: kea
+    db_user: kea
     dhcp_netbios_name_servers: 192.168.1.50,192.168.1.60
     dhcp_subnet1: 192.168.1.0
+    dhcp_subnet1_pool: 192.168.1.8 - 192.168.1.31
     domain: example.com
     dns_server: 192.168.1.40,192.168.1.45
     dns_upstream: 8.8.8.8
@@ -22,10 +22,15 @@ statefulset:
       fieldRef:
         fieldPath: metadata.name
   hostNetwork: true
-  securityContext:
-    capabilities:
-      add: [ NET_ADMIN ]
-  replicas: 3
+  containerPorts:
+  - containerPort: 67
+    protocol: UDP
+  - containerPort: 68
+    protocol: UDP
+  - containerPort: 8000
+  nodeSelector:
+    service.dhcpd-dns-pxe: allow
+  replicas: 2
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -40,33 +45,24 @@ volumeMounts:
   name: share
   readOnly: true
   subPath: dhcpd-dns-pxe/pxelinux
-- mountPath: /etc/dhcpd.d/ranges
-  name: ranges
-- mountPath: /etc/dhcpd.d/local/reservations.conf
+- mountPath: /etc/kea.d/local/reservations.conf
   name: config
   subPath: reservations
 - mountPath: /etc/dnsmasq.d/local/hosts
   name: config
   subPath: hosts
-- mountPath: /var/lib/misc
-  name: leases
+- mountPath: /run/secrets/kea-db-password
+  name: kea-db-password
+  subPath: kea-db-password
 volumes:
 - name: config
   configMap:
     name: dhcpd-dns-pxe
-- name: ranges
-  configMap:
-    name: dhcpd-dns-pxe-ranges
+- name: kea-db-password
+  secret:
+    secretName: kea-db-password
 - name: share
   hostPath: { path: /var/lib/docker/k8s-volumes/share }
-volumeClaimTemplates:
-- metadata:
-    name: leases
-  spec:
-    accessModes: [ ReadWriteOnce ]
-    resources:
-      requests:
-        storage: 500Mi
 
 image:
   repository: instantlinux/dhcpd-dns-pxe

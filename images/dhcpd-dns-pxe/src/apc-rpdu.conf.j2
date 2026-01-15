@@ -1,8 +1,41 @@
-# For network-attached UPS units
-option space APC;
-option APC.cookie code 1 = string;
-class "apc-rpdu" {
-        match if substring (option vendor-class-identifier,0,3) = "APC";
-        vendor-option-space APC;
-        option APC.cookie "1APC";
-}
+// For network-attached UPS units
+    "option-def": [
+      {
+        "space": "APC",
+        "name": "cookie",
+        "code": 1,
+        "type": "string"
+      }
+    ],
+    "client-classes": [
+      {
+        "name": "apc-rpdu",
+        "test": "substring(option[60].hex,0,3) == 'APC'",
+        "option-def": [
+          {
+            "name": "vendor-encapsulated-options",
+            "code": 43,
+            "type": "empty",
+            "encapsulate": "APC"
+          }
+        ],
+        "option-data": [
+          {
+            "name": "vendor-encapsulated-options",
+            "code": 43
+          },
+          {
+            "space": "APC",
+            "name": "cookie",
+            "code": 1,
+            "data": "1APC"
+          }
+        ]
+      },
+      {
+        "name": "pxeclients",
+        "test": "substring(option[60].hex,0,9) == 'PXEClient'",
+        "next-server": "{{ TFTP_SERVER }}",
+        "boot-file-name": "{{ DHCP_BOOT }}"
+      }
+    ],
