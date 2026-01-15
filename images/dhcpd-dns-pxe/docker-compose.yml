@@ -5,9 +5,10 @@ services:
     image: ${REGISTRY_URI:-instantlinux}/dhcpd-dns-pxe:latest
     restart: always
     environment:
+      DB_HOST: ${DB_HOST:-db00}
       DHCP_NETBIOS_NAME_SERVERS: ${DHCP_NETBIOS_NAME_SERVERS}
-      DHCP_RANGE: ${DHCP_RANGE}
-      DHCP_SUBNET1: ${DHCP_SUBNET1:-192.168.1.0}
+      DHCP_SUBNET1: ${DHCP_SUBNET1:-192.168.1.0/24}
+      DHCP_SUBNET1_POOL: ${DHCP_SUBNET1_POOL}
       DOMAIN: ${DOMAIN:-example.com}
       DNS_SERVER: ${DNS_SERVERS:-8.8.8.8}
       DNS_UPSTREAM: ${DNS_UPSTREAM:-8.8.8.8}
@@ -20,14 +21,13 @@ services:
     - ${PORT_DNSMASQ_DNS:-53}:53/udp
     - 67:67/udp
     - 69:69/udp
+    - 8000:8000/tcp
     volumes:
     - ${SHARE_PATH}/dhcpd-dns-pxe/pxelinux:/tftpboot/pxelinux:ro
-    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dhcpd.d:/etc/dhcpd.d/local:ro
+    - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/kea.d:/etc/dhcpd.d/local:ro
     - ${ADMIN_PATH}/dhcpd-dns-pxe/etc/dnsmasq.d:/etc/dnsmasq.d/local:ro
     - leases:/var/lib/misc
     network_mode: host
-    cap_add:
-    - NET_ADMIN
 
 volumes:
   leases:

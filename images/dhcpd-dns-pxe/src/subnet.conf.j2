@@ -1,9 +1,35 @@
-subnet {{ DHCP_SUBNET1 }} netmask {{ SUBNET1_NETMASK }} {
-  allow unknown-clients;
-  authoritative;
-  default-lease-time {{ DHCP_LEASE_TIME }};
-  max-lease-time {{ MAX_LEASE_TIME }};
-  {{ RANGE_OPTION }}
-  option routers {{ SUBNET1_GATEWAY }};
-  option subnet-mask {{ SUBNET1_NETMASK }};
-}
+    "subnet4": [
+      {
+        "id": 1,
+        "subnet": "{{ DHCP_SUBNET1 }}",
+//      "statement": {
+//        "config": {
+//          "value": "allow",
+//          "name": "boot-unknown-clients",
+//          "code": 6
+//        }
+//      },
+        "authoritative": true,
+        "valid-lifetime": {{ DHCP_LEASE_TIME }},
+        "max-valid-lifetime": {{ MAX_LEASE_TIME }},
+	"reservations-global": false,
+	"reservations-in-subnet": true,
+	"reservations-out-of-pool": true,
+	{{ POOL_OPTION }}
+        "option-data": [
+          {
+            "space": "dhcp4",
+            "name": "routers",
+            "code": 3,
+            "data": "{{ SUBNET1_GATEWAY }}"
+          },
+          {
+            "space": "dhcp4",
+            "name": "subnet-mask",
+            "code": 1,
+            "data": "{{ SUBNET1_NETMASK }}"
+          }
+        ],
+        <?include "/etc/kea.d/local/reservations.conf"?>
+      }
+    ]
