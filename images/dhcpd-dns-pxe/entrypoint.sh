@@ -58,12 +58,6 @@ if [ "$DHCP_ENABLE" == yes ]; then
     fi
   fi
   kea-dhcp4 -c /etc/kea/kea.conf &
-  # TODO: remove or make work
-  # for file in /etc/kea.d/*.conf /etc/kea.d/local/*.conf; do
-  #   if ! grep -q "$file" /etc/dhcpd.conf; then
-  #     echo "include \"$file\";" >>/etc/dhcpd.conf
-  #   fi
-  # done
 fi
 
 if [ "$TFTP_ENABLE" == yes ]; then
