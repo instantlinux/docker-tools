@@ -7,19 +7,23 @@ metadata:
     {{- include "local.labels" . | nindent 4 }}
 data:
   dovecot.conf: |
+    dovecot_config_version = 2.4
     auth_mechanisms = plain login
-    disable_plaintext_auth = yes
+    auth_allow_cleartext = no
     mail_access_groups = mail
     protocols = imap
-    mail_location = mbox:~/Mail:INBOX=/var/spool/mail/%u
+    # mail_location = mbox:~/Mail:INBOX=/var/spool/mail/%u
+    mail_driver = mbox
+    mail_path = ~/Mail
+    mail_inbox_path = /var/spool/mail/%{user}
     mail_debug = no
 
     first_valid_uid = 300
-    passdb {
+    passdb dovecot {
       driver = ldap
       args = /etc/dovecot/dovecot-ldap.conf
     }
-    userdb {
+    userdb dovecot {
       driver = passwd
     }
     service auth {
@@ -37,9 +41,11 @@ data:
         ssl = yes
       }
     }
-    ssl_cert = </etc/ssl/certs/smtpd-cert.pem
-    ssl_key = </etc/ssl/private/smtpd-key.pem
-    ssl_min_protocol = TLSv1.1
+    # ssl_cert = </etc/ssl/certs/smtpd-cert.pem
+    # ssl_key = </etc/ssl/private/smtpd-key.pem
+    ssl_min_protocol = TLSv1.2
+    ssl_server_cert_file = /etc/ssl/certs/smtpd-cert.pem
+    ssl_server_key_file = /etc/ssl/private/smtpd-key.pem
     syslog_facility = "local1"
   dovecot-ldap.conf: |
     hosts = {{ .Values.ldap.hosts }}

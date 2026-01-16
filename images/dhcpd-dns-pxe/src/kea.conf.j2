@@ -12,11 +12,15 @@
     "allocator": "random",
     "host-reservation-identifiers": [ "hw-address" ],
     "lease-database": {
-	"type": "mysql",
-	"host": "{{ DB_HOST }}",
-	"name": "{{ DB_NAME }}",
-	"user": "{{ DB_USER }}",
-	"password": "{{ DB_PASS }}"
+      "type": "mysql",
+      "host": "{{ DB_HOST }}",
+      "name": "{{ DB_NAME }}",
+      "user": "{{ DB_USER }}",
+      "password": "{{ DB_PASS }}",
+      "max-reconnect-tries": 200,
+      "on-fail": "stop-retry-exit",
+      "reconnect-wait-time": 3000,
+      "retry-on-startup": true
     },
     "max-valid-lifetime": 14400,
     "valid-lifetime": 3600,
