@@ -17,7 +17,11 @@
   # chart makes it easy to just start with postgres.
   #
   # Specify an override:
-  #   deployment.command: startup.py generate
+  #   deployment.command:
+  #   - /bin/sh -c
+  #   - >
+  #     cp /config/homeserver.yaml /data/homeserver.yaml &&
+  #     /start.py generate
   # The synapse pod will then contain a /data/homeserver.yaml
   # with generated secrets from which you can add three more
   # keys to your secret:
@@ -100,7 +104,6 @@ deployment:
     - -c
     - >
       apk add envsubst &&
-      env > /config/vars &&
       for file in $(find /templates -type f -exec basename {} \;); do
        envsubst < /templates/$file > /config/$file;
       done
@@ -186,6 +189,18 @@ element:
   # No separate ingress; use the top-level synapse ingress
   ingress:
     enabled: false
+
+nginx:
+  # Enable this to serve .well-known service discovery on top-level
+  # FQDN if Synapse runs on a subdomain like matrix.example.com
+  enabled: false
+  tlsHostname: example.com
+  deployment:
+    env:
+      country_code: US
+      homeserver_url: https://synapse.example.com
+      room_directory_servers: [ matrix.org ]
+      server_name: My matrix instance
 
 postgres:
   enabled: false

@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://hub.docker.com/r/prom/alertmanager
 type: application
-version: 0.1.0
-appVersion: "v0.28.1"
+version: 0.1.1
+appVersion: "v0.30.1"
 dependencies:
 - name: chartlib
   version: 0.1.8

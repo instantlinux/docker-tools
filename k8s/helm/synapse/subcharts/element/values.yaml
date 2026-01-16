@@ -1,4 +1,7 @@
 # Default values for element.
+call:
+  livekit_service_url: https://livekit.example.com
+  widget_url: https://call.element.io
 country_code: US
 homeserver_url: https://synapse.example.com
 room_directory_servers: [ "\"matrix.org\"" ]
@@ -16,6 +19,14 @@ volumeMounts:
   name: config
   readOnly: true
   subPath: config.json
+- mountPath: /app/.well-known/matrix/client
+  name: config
+  readOnly: true
+  subPath: client
+- mountPath: /app/.well-known/element/element.json
+  name: config
+  readOnly: true
+  subPath: element.json
 volumes:
 - name: config
   configMap:

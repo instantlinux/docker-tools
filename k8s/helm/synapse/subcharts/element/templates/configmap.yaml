@@ -33,7 +33,13 @@ data:
         "bug_report_endpoint_url": "https://element.io/bugreports/submit",
         "defaultCountryCode": "{{ .Values.country_code }}",
         "show_labs_settings": false,
-        "features": { },
+        "features": {
+            "feature_video_rooms": false,
+            "feature_new_room_decoration_ui": true,
+            "feature_group_calls": false,
+            "feature_element_call_video_rooms": false,
+            "feature_use_device_session_member_events": true
+        },
         "default_federate": true,
         "default_theme": "light",
         "room_directory": {
@@ -48,5 +54,29 @@ data:
         },
         "jitsi": {
             "preferred_domain": "meet.element.io"
+        },
+        "element_call": {
+            "url": "{{ .Values.call.widget_url }}",
+            "participant_limit": 8,
+            "brand": "Element Call",
+            "use_exclusively": true
         }
     }
+  client: |
+    {
+        "default_server_config": {
+            "m.homeserver": {
+                "base_url": "{{ .Values.homeserver_url }}",
+                "server_name": "{{ .Values.server_name }}"
+            },
+            "m.identity_server": {
+                "base_url": "https://vector.im"
+            }
+        },
+        "org.matrix.msc4143.rtc_foci": [{
+            "type": "livekit",
+            "livekit_service_url": "{{ .Values.call.livekit_service_url }}"
+        }]
+    }
+  element.json: |
+    {"call": {"widget_url": "{{ .Values.call.widget_url }}" }}

@@ -5,7 +5,7 @@ Serve DNS and DHCP from one or more small Alpine Linux container(s). This suppli
 
 ### Usage
 
-In kubernetes.yaml / docker-compose.yml, set the environment variables for your environment.
+In docker-compose.yml or helm, set the environment variables for your environment.
 
 Mount these under /etc:
 
@@ -19,7 +19,7 @@ GRANT USAGE ON *.* TO `kea`@`%` IDENTIFIED BY '<password>';
 GRANT ALL PRIVILEGES ON `kea`.* TO `kea`@`%`;
 ```
 
-See the kubernetes.yaml provided here. If you're using Swarm, see the docker-compose.yml file provided here in the source directory. This repo has complete instructions for
+If you're using Swarm, see the docker-compose.yml file provided here in the source directory. This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/dhcpd-dns-pxe/helm), or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/dhcpd-dns-pxe/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
@@ -27,7 +27,7 @@ cd docker-tools/k8s
 make dhcpd-dns-pxe
 ~~~
 
-You can build a failsafe cluster of DHCP servers under kubernetes using the helm chart included here. Define a ConfigMap with your reservations defined as shown in kea documentation, and hosts defined as in the dnsmasq documentation. If a replica goes down, the others will continue to assign addresses. They won't conflict thanks to the way DHCP protocol works; a client will use the first address offered and ignore any additional offers from the server pool. Subsequent requests will be checked against the reservations database.
+This builds a failsafe cluster of DHCP servers under kubernetes using the helm chart. Define a ConfigMap with your reservations defined as shown in kea documentation, and hosts defined as in the dnsmasq documentation. If a replica goes down, the others will continue to assign addresses. They won't conflict thanks to the way DHCP protocol works; a client will use the first address offered and ignore any additional offers from the server pool. Subsequent requests will be checked against the reservations database.
 
 Verified to work with a single subnet and with the limited set of DHCP/DNS options supported in environment vars defined here. Additional options as defined in the [dnsmasq man page](https://linux.die.net/man/8/dnsmasq) can be specified as any .conf file under /etc/dnsmasq.d/local volume mount, and for dhcpd as any .conf file under /etc/dhcpd.d/local.
 
