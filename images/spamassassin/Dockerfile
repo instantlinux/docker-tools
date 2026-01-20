@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -16,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYZOR_SITE=public.pyzor.org:24441
 
 ARG DCC_VERSION=2.3.169
-ARG SPAMD_VERSION=4.0.1-1~deb12u1
+ARG SPAMD_VERSION=4.0.1-5
 ARG DCC_SHA=3447e655476ac742942daf25fc217236da456dd0f82b7117661b9a70484b7bf6
 ARG SPAMD_UID=2022
 
