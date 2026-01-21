@@ -16,7 +16,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DB_USER=blacklister \
     DB_NAME=blacklist \
     DB_HOST=dbhost
-
 ARG RBLDNSD_VERSION=1.0~20210120-3
 
 COPY src/ /root/
