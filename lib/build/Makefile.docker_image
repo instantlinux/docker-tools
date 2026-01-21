@@ -17,7 +17,7 @@ endif
 
 # Exceptions
 ifeq ($(IMAGE),blacklist)
-  PLATFORMS = linux/amd64,linux/aarch64,linux/arm/v7
+  PLATFORMS = linux/amd64
 endif
 ifeq ($(IMAGE),data-sync)
   PLATFORMS = linux/amd64,linux/aarch64
