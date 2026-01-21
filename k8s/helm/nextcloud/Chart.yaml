@@ -5,9 +5,9 @@ home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
 type: application
-version: 0.1.5
+version: 0.1.6
 # Upon changes: override versionPrev (values.yaml) to the old value.
-appVersion: "31.0.2"
+appVersion: "32.0.5"
 dependencies:
 - name: chartlib
   version: 0.1.8

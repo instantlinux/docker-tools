@@ -50,11 +50,12 @@ security_scan_trivy:
     TRIVY_FORMAT: json
     TRIVY_IGNORE: >-
       CVE-2023-31484,CVE-2023-45853,
-      CVE-2023-52425,CVE-2024-8176
+      CVE-2023-52425,CVE-2024-8176,
       # These are for blacklist image, there's a won't-fix note for zlib1g
       # CVE-2023-31484,CVE-2023-45853
-      # These are for spamassassin under debian bookworm
-      # CVE-2023-52425,CVE-2024-8176
+      # These are for spamassassin under debian trixie
+      CVE-2026-0861, CVE-2025-8194, CVE-2025-13699,
+      CVE-2025-13836, CVE-2025-40914
     TRIVY_OUTPUT: gl-container-scanning-report.json
     TRIVY_SEVERITY: HIGH,CRITICAL
     TRIVY_PKG_TYPES: os,library

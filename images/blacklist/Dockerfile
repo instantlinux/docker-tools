@@ -1,8 +1,8 @@
-FROM debian:bookworm-slim
-MAINTAINER Rich Braun <docker@instantlinux.net>
+FROM debian:trixie-slim
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=Apache-2.0 \
     org.label-schema.name=blacklist \
     org.label-schema.vcs-ref=$VCS_REF \
@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DB_NAME=blacklist \
     DB_HOST=dbhost
 
-ARG RBLDNSD_VERSION=1.0~20210120-2
+ARG RBLDNSD_VERSION=1.0~20210120-3
 
 COPY src/ /root/
 RUN apt-get -yq update && apt-get -y upgrade && \
