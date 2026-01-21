@@ -16,6 +16,9 @@ ifneq ($(CI_COMMIT_TAG),)
 endif
 
 # Exceptions
+ifeq ($(IMAGE),blacklist)
+  PLATFORMS = linux/amd64
+endif
 ifeq ($(IMAGE),data-sync)
   PLATFORMS = linux/amd64,linux/aarch64
 endif

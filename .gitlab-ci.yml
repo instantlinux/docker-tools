@@ -12,7 +12,6 @@ stages:
   - git-pull
   - haproxy-keepalived
   - mariadb-galera
-  - mt-daapd
   - mysqldump
   - mythtv-backend
   - nagios
@@ -29,7 +28,6 @@ stages:
   - udp-nginx-proxy
   - vsftpd
   - weewx
-  - wxcam-upload
 workflow:
   rules:
   - { if: $CI_COMMIT_TAG =~ /^chart-.*/, when: never }
@@ -146,15 +144,6 @@ mariadb-galera:
       job: prepare
   only:
     changes: [ images/mariadb-galera/**, lib/**, .image-gitlab-ci.yml ]
-
-mt-daapd:
-  stage: mt-daapd
-  trigger:
-    include:
-    - artifact: .child-mt-daapd.yml
-      job: prepare
-  only:
-    changes: [ images/mt-daapd/**, lib/**, .image-gitlab-ci.yml ]
 
 mysqldump:
   stage: mysqldump
@@ -299,12 +288,3 @@ weewx:
       job: prepare
   only:
     changes: [ images/weewx/**, lib/**, .image-gitlab-ci.yml ]
-
-wxcam-upload:
-  stage: wxcam-upload
-  trigger:
-    include:
-    - artifact: .child-wxcam-upload.yml
-      job: prepare
-  only:
-    changes: [ images/wxcam-upload/**, lib/**, .image-gitlab-ci.yml ]

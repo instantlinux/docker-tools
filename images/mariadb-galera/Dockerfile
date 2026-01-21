@@ -1,4 +1,4 @@
-FROM mariadb:12.0.2
+FROM mariadb:12.1.2
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -21,7 +21,8 @@ ARG GID=212
 COPY requirements/ /root/
 RUN groupmod -g $GID mysql && \
     usermod -u $UID -s /bin/false -c "MariaDB" -d /none mysql && \
-    apt -yq update && apt -yq install --no-install-recommends \
+    apt -yq update && apt -yq upgrade && \
+    apt -yq install --no-install-recommends \
      curl iputils-ping jq net-tools netcat-openbsd procps \
      python3 python3-pip python3-etcd3 && \
     apt-get clean && rm -fr /var/log/* /var/lib/mysql/* \

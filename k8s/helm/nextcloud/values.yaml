@@ -13,9 +13,7 @@ passwordSalt: CkEFy/t4IpPhjJoem3NRdPt/UD8gOS
 redis:
   port: 6379
   tag: 6.2.4-alpine
-# To prevent the update detector logic from triggering upon every
-# restart, get the value written to /var/www/html/config/config.php
-# after last upgrade as 'version' and set this value to match:
+# TODO: remove, versionPrev is (finally!) unneeded
 versionPrev: 25.0.3.2
 
 deployment:
@@ -31,9 +29,8 @@ deployment:
     chown www-data /var/www/html/config/config.php &&
     exec /entrypoint.sh apache2-foreground
   env:
-    # NOTE - when updating, set this to 1 and set prev version
-    # (makefile var VERSION_NEXTCLOUD_PREV) to the old version
-    # to be upgraded
+    # Note - since v30.0, updates finally happen automatically upon image-tag
+    # up-rev, without having to fiddle with this stupid variable
     nextcloud_update: "0"
     redis_host: nextcloud-redis
     tz: UTC
