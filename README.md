@@ -52,6 +52,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | artifactory | ** | binary repo |
 | gitea | ** | git repo |
 | admin-git | [![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull "Version badge") | sync git repo across swarm |
+| gitea | ** | self-hosted git repo with many github features |
 | jira | ** | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
 | nexus | ** | binary repo with docker registry |
@@ -65,6 +66,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | authelia | ** | single-signon multi-factor auth |
 | cloud | ** | nextcloud, private sync like Apple iCloud |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
+| ddclient | [![](https://img.shields.io/docker/v/instantlinux/ddclient?sort=date)](https://hub.docker.com/r/instantlinux/ddclient "Version badge") | Dynamic DNS client |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
 | grafana | ** | monitoring dashboard with prometheus-based alerting |
@@ -76,6 +78,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | node-local-dns | ** | caching resolver for reliable pod DNS |
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
+| proftpd | [![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd "Version badge") | FTP server |
 | restic | ** | backups |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
 | samba | [![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba "Version badge") | file server |
