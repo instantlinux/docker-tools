@@ -104,9 +104,8 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | Service | Version | Notes |
 | --- | --- | --- |
 | davite | [![](https://img.shields.io/docker/v/instantlinux/davite?sort=date)](https://hub.docker.com/r/instantlinux/davite "Version badge") | party-invites manager like eVite |
-| mt-daapd | [![](https://img.shields.io/docker/v/instantlinux/mt-daapd?sort=date)](https://hub.docker.com/r/instantlinux/mt-daapd "Version badge") | iTunes server |
 | mythtv-backend | [![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://hub.docker.com/r/instantlinux/mythtv-backend "Version badge") | MythTV backend |
-| owntone | ** | iTunes server (formerly forked-daapd) |
+| OwnTone | ** | iTunes server (formerly forked-daapd) |
 | weewx | [![](https://img.shields.io/docker/v/instantlinux/weewx?sort=date)](https://hub.docker.com/r/instantlinux/weewx "Version badge") | Weather station software (Davis VantagePro2 etc.) |
 
 ### Credits

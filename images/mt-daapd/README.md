@@ -1,6 +1,10 @@
 ## mt-daapd
 [![](https://img.shields.io/docker/v/instantlinux/mt-daapd?sort=date)](https://hub.docker.com/r/instantlinux/mt-daapd/tags "Version badge") [![](https://img.shields.io/docker/image-size/instantlinux/mt-daapd?sort=date)](https://github.com/instantlinux/docker-tools/tree/main/images/mt-daapd "Image badge") ![](https://img.shields.io/badge/platform-amd64%20arm64%20arm%2Fv6%20arm%2Fv7-blue "Platform badge") [![](https://img.shields.io/badge/dockerfile-latest-blue)](https://gitlab.com/instantlinux/docker-tools/-/blob/main/images/mt-daapd/Dockerfile "dockerfile")
 
+### Status
+This is a legacy image, discontinued after 0.26.4+dfsg1 in 2020. A compatible replacement is at [owntone/owntone](https://hub.docker.com/r/owntone/owntone). You can launch that image using the helm chart provided [here](https://github.com/instantlinux/docker-tools/tree/main/k8s/helm/owntone).
+
+### Introduction
 This is Ron Pedde's [Firefly Media server](https://en.wikipedia.org/wiki/Firefly_Media_Server) which implements the Digital Audio Access Protocol for serving MP3 and other audio media formats from a directory mounted to this container onto a LAN.
 
 Devices such as Roku, Sonos and other brands of audio players or applications such as the Amarok music play for Linux will be able to connect to this service using mDNS/DNS-SD (Avahi).

@@ -1,0 +1,57 @@
+# Default values for owntone.
+deployment:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - owntone
+        topologyKey: "kubernetes.io/hostname"
+  env:
+    gid: 1000
+    uid: 1000
+  # The (unprotected) UI lives at <node-ip>:3689. Add a password and set
+  #  trusted_network=none in /etc/owntone/owntone.conf after first launch
+  hostNetwork: true
+  nodeSelector:
+    service.owntone: allow
+  replicas: 2
+  securityContext:
+    fsGroup: 1000
+volumeMounts:
+- name: cache
+  mountPath: /var/cache/owntone
+- name: share
+  mountPath: /etc/owntone
+  subPath: owntone/etc
+- name: music
+  mountPath: /srv/media
+  readOnly: true
+- name: run
+  mountPath: /run
+volumes:
+- name: cache
+  emptyDir: {}
+- name: music
+  persistentVolumeClaim:
+    claimName: mp3
+- name: run
+  emptyDir:
+    medium: Memory
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: owntone/owntone
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+autoscaling:
+  enabled: false
