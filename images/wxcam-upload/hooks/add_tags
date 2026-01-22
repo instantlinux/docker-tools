@@ -1,3 +1,0 @@
-#!/bin/sh
-TAG=$(grep "^FROM " Dockerfile | cut -d: -f 2)
-echo "--tag $DOCKER_REPO:$TAG"
