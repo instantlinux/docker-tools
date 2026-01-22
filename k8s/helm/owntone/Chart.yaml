@@ -1,14 +1,13 @@
 apiVersion: v2
-name: mariadb-galera
-description: MariaDB with Galera clustering
+name: owntone
+description: iTunes / Roku-compatible media server
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
-- https://github.com/MariaDB/server
-- https://github.com/MariaDB/galera
+- https://github.com/owntone/owntone-server
 type: application
-version: 0.1.2
-appVersion: "12.1.2"
+version: 0.1.0
+appVersion: "29.0"
 dependencies:
 - name: chartlib
   version: 0.1.8
