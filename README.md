@@ -26,12 +26,11 @@ Find a lot more details about the Kubernetes bare-metal installer in [k8s/README
 The cluster-deployment tools here include helm charts and ansible playbooks to spin up bare-metal or VM master/worker nodes, and a Makefile to add several additional features.
 
 * Direct-attached SSD local storage pools
-* Dashboard
 * Non-default namespace with its own service account (full permissions
   within namespace, limited read-only in kube-system namespaces)
 * Keycloak for OpenID / OAuth2 user authentication / authorization
 * Vaultwarden, a self-hosted Bitwarden-compatible password manager
-* Helm3
+* Helm4
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
