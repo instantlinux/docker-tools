@@ -45,7 +45,6 @@ endif
 /usr/local/bin/helm:
 	wget -O /tmp/$(TARBALL) https://get.helm.sh/$(TARBALL)
 	wget -O /tmp/$(TARBALL).sha256 https://get.helm.sh/$(TARBALL).sha256sum
-	# cd /tmp && echo "$(shell cat /tmp/$(TARBALL).sha256)" | sha256sum -c
 	cd /tmp && sha256sum -c $(TARBALL).sha256
 	tar xf /tmp/$(TARBALL) -C /tmp
 	sudo mv /tmp/linux-amd64/helm /usr/local/bin
