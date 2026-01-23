@@ -9,13 +9,12 @@ easy. Contents:
 
 | Directory | Description |
 | --------- | ----------- |
-| ansible | build your own cluster (Kubernetes or Swarm) |
+| ansible | build your own Kubernetes cluster |
 | images | images which are published to Docker Hub |
 | k8s | container resources in kubernetes yaml format |
 | lib/build | build makefile and tools |
 | services | non-clustered docker-compose services |
 | ssl | PKI certificate tools (deprecated by k8s) |
-| stacks | container resources in docker-compose format |
 
 Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/). Each image is scanned by [trivy](https://trivy.dev/) to ensure they contain no known CVE vulnerabilities before promotion to Docker Hub.
 
@@ -48,9 +47,8 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 
 | Service | Version | Notes |
 | --- | --- | --- |
-| artifactory | ** | binary repo |
 | gitea | ** | git repo |
-| admin-git | [![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull "Version badge") | sync git repo across swarm |
+| admin-git | [![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull "Version badge") | sync git repo across cluster |
 | gitea | ** | self-hosted git repo with many github features |
 | jira | ** | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
@@ -63,7 +61,6 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | Service | Version | Notes |
 | --- | --- | --- |
 | authelia | ** | single-signon multi-factor auth |
-| cloud | ** | nextcloud, private sync like Apple iCloud |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | ddclient | [![](https://img.shields.io/docker/v/instantlinux/ddclient?sort=date)](https://hub.docker.com/r/instantlinux/ddclient "Version badge") | Dynamic DNS client |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
@@ -74,6 +71,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
+| nextcloud | ** | mobile device sync, like Apple iCloud |
 | node-local-dns | ** | caching resolver for reliable pod DNS |
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
@@ -94,7 +92,6 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | dovecot | [![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://hub.docker.com/r/instantlinux/dovecot "Version badge") | imapd server |
 | postfix | [![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://hub.docker.com/r/instantlinux/postfix "Version badge") | compact general-purpose image in 11MB |
 | postfix-python | [![](https://img.shields.io/docker/v/instantlinux/postfix-python?sort=date)](https://hub.docker.com/r/instantlinux/postfix-python "Version badge") | postfix with spam-control scripts |
-| rainloop | ** | webmail imapd-client server |
 | snappymail | ** | webmail, forked from rainloop imapd-client server |
 | spamassassin | [![](https://img.shields.io/docker/v/instantlinux/spamassassin?sort=date)](https://hub.docker.com/r/instantlinux/spamassassin "Version badge") | spam control daemon |
 

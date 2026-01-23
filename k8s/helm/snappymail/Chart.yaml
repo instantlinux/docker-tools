@@ -1,0 +1,14 @@
+apiVersion: v2
+name: snappymail
+description: Snappymail webmail server
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://github.com/the-djmaze/snappymail
+type: application
+version: 0.1.0
+appVersion: "v2.38.2"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools
