@@ -139,7 +139,7 @@ volumes:
     secretName: postfix-sasl-passwd
 - name: ssl-cert
   secret:
-    secretName: tls-rainloop
+    secretName: tls-snappymail
 volumeClaimTemplates:
 - metadata:
     name: spool

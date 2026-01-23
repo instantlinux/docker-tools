@@ -156,7 +156,7 @@ volumes:
     secretName: postfix-sasl-passwd
 - name: ssl-cert
   secret:
-    secretName: tls-rainloop
+    secretName: tls-snappymail
 image:
   repository: instantlinux/dovecot
   pullPolicy: IfNotPresent

@@ -115,7 +115,7 @@ configmap:
       ignore = Path data-sync/share/artifactory/data/logs/request.log
       ignore = Path data-sync/share/nagios/var/rw
       ignore = Path data-sync/share/openldap/data/lock.mdb
-      ignore = Path data-sync/share/rainloop/data/_data_/_default_/cache
+      ignore = Path data-sync/share/snappymail/data/_data_/_default_/cache
       ignore = Path data-sync/dos
       ignore = Path data-sync/gitlab/data/gitaly
       ignore = Path data-sync/home/*/.kube/cache
