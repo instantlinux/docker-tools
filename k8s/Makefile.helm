@@ -12,33 +12,27 @@ helm_list:
 	@helm list --time-format="Mon Jan 2 15:04" --all-namespaces \
 	  --kube-context=sudo
 
-# TODO get rid of global.yaml and values.yaml, the idea made sense before
-#  adopting helm when values were from environment variables but makes no
-#  sense with per-instance yaml override files; helm's developers explicitly
-#  exclude the possibility of reading env vars from the shell enviroment
-#  in which helm is running - so global is leftover from my decade-earlier
-#  LXC-era designs
-$(CHARTS):: %: ../admin/services/values.yaml helm/%/Chart.lock
+$(CHARTS):: %: helm/%/Chart.lock
 	@echo --$(NOTICE) $@--
 ifeq ($(ACTION), delete)
 	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
 else
 	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
 	  && echo "-f ../admin/services/values/$@.yaml"))
-	helm upgrade --install -f global.yaml -f $< $(OVERRIDE) $(XARGS) $@ ./helm/$@
+	helm upgrade --install -f $< $(OVERRIDE) $(XARGS) $@ ./helm/$@
 endif
 	@helm list --time-format="Mon Jan 2 15:04" --selector name=$@
 
 # TODO this is identical to above but for subdir, DRY it out
 #   the helmify project is just too exhausting
-$(INSTANCES):: %: ../admin/services/values.yaml helm/instances/%/Chart.lock
+$(INSTANCES):: %: helm/instances/%/Chart.lock
 	@echo --$(NOTICE) $@--
 ifeq ($(ACTION), delete)
 	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
 else
 	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
 	  && echo "-f ../admin/services/values/$@.yaml"))
-	helm upgrade --install -f global.yaml -f $< $(OVERRIDE) $(XARGS) $@ ./helm/instances/$@
+	helm upgrade --install -f $< $(OVERRIDE) $(XARGS) $@ ./helm/instances/$@
 endif
 	@helm list --time-format="Mon Jan 2 15:04" --selector name=$@
 
