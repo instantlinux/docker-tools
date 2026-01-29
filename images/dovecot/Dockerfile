@@ -12,21 +12,22 @@ ARG DOVECOT_VERSION=2.4.1-r2
 ARG PROCMAIL_VERSION=3.22-r4
 ARG MKCERT_SHA=d1efad065f9ef34da372847ff4a4d5ffd86b97410b303d8a43ea25aa2119c86d
 ARG PROCMAIL_SHA=4ac9f21c3d7dbed5b32e7547da39f4d429de480679b4c856026caea39ca842f9
-ARG TARGETARCH
+ARG TARGETPLATFORM
 ENV LDAP_SECRETNAME=ldap-ro-password \
     SSL_DH=
 
 RUN cd /tmp && \
-    case ${TARGETARCH} in \
-    amd64) \
+    case ${TARGETPLATFORM} in \
+    linux/amd64) \
       wget -q https://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/procmail-$PROCMAIL_VERSION.apk && \
       echo "$PROCMAIL_SHA  procmail-$PROCMAIL_VERSION.apk" | sha256sum -c ;; \
-    arm64) \
+    linux/arm64) \
       wget -q https://dl-cdn.alpinelinux.org/alpine/v3.11/main/aarch64/procmail-$PROCMAIL_VERSION.apk ;; \
-    arm/v6) \
+    linux/arm/v6) \
       wget -q https://dl-cdn.alpinelinux.org/alpine/v3.11/main/armhf/procmail-$PROCMAIL_VERSION.apk ;; \
-    arm/v7) \
+    linux/arm/v7) \
       wget -q https://dl-cdn.alpinelinux.org/alpine/v3.11/main/armv7/procmail-$PROCMAIL_VERSION.apk ;; \
+    *) echo Unrecognized ${TARGETPLATFORM} ;; \
     esac && \
     apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION && \
     apk add --allow-untrusted procmail-$PROCMAIL_VERSION.apk && \
