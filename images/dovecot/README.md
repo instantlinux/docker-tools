@@ -64,30 +64,32 @@ Need more configurability? Edit the ConfigMap defined in the helm chart.
 | ldap-ro-passwd | password for looking up LDAP users |
 | *key.pem | keyfile specified for ssl_dh certificate |
 
-### Contributing
-
-If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
-
-[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")
-
 ### Upgrade Notes
 
 * When upgrading to 2.3.14+, replace any references to `hash:` with `lmdb:` in your config files.
 
 * When upgrading to 2.4+, there are a lot of gratuitous [config-directive changes](https://doc.dovecot.org/main/installation/upgrade/2.3-to-2.4.html). The Docker image doesn't contain configs but the helm chart provided here has a configmap template that contains the following changes:
 
-|Helm var|2.3|2.4|Notes|
-|uris|hosts | ldap_uris | <host> becomes ldap://<host>:389 |
-| |ldap_version| (unchanged)| |
-|base|base| ldap_base| |
-|bind|auth_bind| ldap_bind | |
-|bind_userdn|auth_bind_userdn|ldap_bind_userdn | |
-|tls|tls|ldap_starttls | |
-| | |dovecot_config_version|new|
-| | |dovecot_storage_version|new|
-|filter| |ldap_filter|now required|
-| |args|(removed)|directives moved to passdb config|
-| |address|listen| |
-| |ssl_cert|ssl_server_cert_file|angle bracket removed|
-| |ssl_dh|ssl_server_dh_file|angle bracket removed|
-| |ssl_key|ssl_server_key_file|angle bracket removed|
+| Helm var | 2.3 | 2.4 | Notes |
+| -------- | --- | --- | ----- |
+| uris | hosts | ldap_uris | <host> becomes ldap://<host>:389 |
+|  | ldap_version | (unchanged) |  |
+| base | base | ldap_base |  |
+| bind | auth_bind | ldap_bind |  |
+| bind_userdn | auth_bind_userdn | ldap_bind_userdn | |
+| tls | tls | ldap_starttls |  |
+|  |  | dovecot_config_version | new |
+|  |  | dovecot_storage_version | new |
+| filter |  | ldap_filter | now required |
+|  | args | (removed) | directives moved to passdb config |
+|  | address | listen |  |
+|  | ssl_cert | ssl_server_cert_file | angle bracket removed |
+|  | ssl_dh | ssl_server_dh_file | angle bracket removed |
+|  | ssl_key | ssl_server_key_file | angle bracket removed |
+
+### Contributing
+
+If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
+
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-dovecot%2Fcore-blue.svg)](https://github.com/dovecot/core "Code repo")
+
