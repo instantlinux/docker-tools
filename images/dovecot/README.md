@@ -11,7 +11,7 @@ Configuration is defined as files in a volume mounted as
 
 * Define your local settings as dovecot.conf.
 
-* If you have an LDAP server, put its settings in dovecot-ldap.conf. The helm chart provided here can support either Active Directory or openldap.
+* If you have an LDAP server, put its settings in passdb section of dovecot.conf. The helm chart provided here can support either Active Directory or openldap.
 
 * (Optional, to save startup time) generate a dh.pem file for TLS:
   ```
@@ -39,6 +39,14 @@ make dovecot
 
 See the Makefile and Makefile.vars files under k8s directory for default values referenced within kubernetes.yaml.
 
+To provide high availability across the cluster, the helm chart here includes an optional data-sync service to keep the inbox, mail and spool directories synchronized across 2 or more worker nodes. Minor data loss can occur when the service shifts from one worker to another, so this feature isn't recommended for large production deployments (when running on a cloud provider, simply use their block storage capabilities). That said, unison-based data-sync service has been rock-solid on a bare-metal cluster for years.
+
+Auth is the most challenging aspect of implementing dovecot. Use the following command from with the container to verify user authentication:
+```
+doveadm auth login <user>
+```
+If using openldap, turn on log setting `BER` to view raw packet contents as you troubleshoot login from dovecot.
+
 ### Variables
 
 | Variable | Default | Description |
@@ -47,7 +55,7 @@ See the Makefile and Makefile.vars files under k8s directory for default values 
 | SSL_DH |  | Filename (in conf.local) of DH parameters |
 | TZ | UTC | time zone |
 
-Need more configurability? Edit the ConfigMap defined in kubernetes.yaml.
+Need more configurability? Edit the ConfigMap defined in the helm chart.
 
 ### Secrets
 
@@ -65,3 +73,21 @@ If you want to make improvements to this image, see [CONTRIBUTING](https://githu
 ### Upgrade Notes
 
 * When upgrading to 2.3.14+, replace any references to `hash:` with `lmdb:` in your config files.
+
+* When upgrading to 2.4+, there are a lot of gratuitous [config-directive changes](https://doc.dovecot.org/main/installation/upgrade/2.3-to-2.4.html). The Docker image doesn't contain configs but the helm chart provided here has a configmap template that contains the following changes:
+
+|Helm var|2.3|2.4|Notes|
+|uris|hosts | ldap_uris | <host> becomes ldap://<host>:389 |
+| |ldap_version| (unchanged)| |
+|base|base| ldap_base| |
+|bind|auth_bind| ldap_bind | |
+|bind_userdn|auth_bind_userdn|ldap_bind_userdn | |
+|tls|tls|ldap_starttls | |
+| | |dovecot_config_version|new|
+| | |dovecot_storage_version|new|
+|filter| |ldap_filter|now required|
+| |args|(removed)|directives moved to passdb config|
+| |address|listen| |
+| |ssl_cert|ssl_server_cert_file|angle bracket removed|
+| |ssl_dh|ssl_server_dh_file|angle bracket removed|
+| |ssl_key|ssl_server_key_file|angle bracket removed|

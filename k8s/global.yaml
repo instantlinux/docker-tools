@@ -1,8 +1,0 @@
-# TODO: remove this outdated file
-# authelia:
-#   fqdn: authtotp.example.com
-#   ip: 10.101.1.5
-# domain: example.com
-# serviceAccount:
-#   enabled: false
-# tz: UTC

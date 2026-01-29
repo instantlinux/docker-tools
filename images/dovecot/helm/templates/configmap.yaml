@@ -7,7 +7,8 @@ metadata:
     {{- include "local.labels" . | nindent 4 }}
 data:
   dovecot.conf: |
-    dovecot_config_version = 2.4
+    dovecot_config_version = {{ .Values.version.config }}
+    dovecot_storage_version = {{ .Values.version.storage }}
     auth_mechanisms = plain login
     auth_allow_cleartext = no
     mail_access_groups = mail
@@ -19,12 +20,29 @@ data:
     mail_debug = no
 
     first_valid_uid = 300
-    passdb dovecot {
+    passdb ldap {
       driver = ldap
-      args = /etc/dovecot/dovecot-ldap.conf
+      ldap_uris = {{ .Values.ldap.uris }}
+      {{- if .Values.ldap.dn }}
+      ldap_dn = {{ .Values.ldap.dn }}
+      ldap_dnpass = PASSWORD
+      {{- end }}
+      ldap_version = {{ .Values.ldap.version }}
+      ldap_base = {{ .Values.ldap.base }}
+      ldap_bind = {{ .Values.ldap.bind }}
+      ldap_filter = {{ .Values.ldap.filter }}
+      {{- if .Values.ldap.bind_userdn }}
+      ldap_bind_userdn = {{ .Values.ldap.bind_userdn }}
+      {{- end }}
+      {{- if .Values.ldap.active_directory }}
+      ldap_user_attrs = sAMAccountName=home=/home/%$
+      ldap_user_filter = (&(ObjectClass=user)(sAMAccountName=%{user}))
+      ldap_pass_filter = (&(ObjectClass=user)(sAMAccountName=%{user}))
+      {{- end }}
+      ldap_starttls = {{ .Values.ldap.tls }}
     }
-    userdb dovecot {
-      driver = passwd
+    userdb passwd {
+      use_worker = yes
     }
     service auth {
       user = root
@@ -36,33 +54,13 @@ data:
     }
     service imap-login {
       inet_listener imaps {
-        address = 0.0.0.0
+        listen = 0.0.0.0
         port = 993
         ssl = yes
       }
     }
-    # ssl_cert = </etc/ssl/certs/smtpd-cert.pem
-    # ssl_key = </etc/ssl/private/smtpd-key.pem
     ssl_min_protocol = TLSv1.2
     ssl_server_cert_file = /etc/ssl/certs/smtpd-cert.pem
     ssl_server_key_file = /etc/ssl/private/smtpd-key.pem
     syslog_facility = "local1"
-  dovecot-ldap.conf: |
-    hosts = {{ .Values.ldap.hosts }}
-    {{- if .Values.ldap.dn }}
-    dn = {{ .Values.ldap.dn }}
-    dnpass = PASSWORD
-    {{- end }}
-    ldap_version = {{ .Values.ldap.version }}
-    base = {{ .Values.ldap.base }}
-    auth_bind = {{ .Values.ldap.auth_bind }}
-    {{- if .Values.ldap.auth_bind_userdn }}
-    auth_bind_userdn = {{ .Values.ldap.auth_bind_userdn }}
-    {{- end }}
-    {{- if .Values.ldap.active_directory }}
-    user_attrs = sAMAccountName=home=/home/%$
-    user_filter = (&(ObjectClass=user)(sAMAccountName=%u))
-    pass_filter = (&(ObjectClass=user)(sAMAccountName=%u))
-    {{- end }}
-    tls = {{ .Values.ldap.tls }}
 {{- end }}

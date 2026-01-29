@@ -64,17 +64,19 @@ aliases: |
   gnats-admin:	root
   mailman:	root
   mailman-owner:	mailman
+configVersion: 2.4.1
 dhcpSubnet1: 192.168.2.0/24
 domain: example.com
 hostnameEmail: example.com
 ldap:
   active_directory: false
-  auth_bind: "yes"
-  auth_bind_userdn: ""
   base: cn=Users,DC=workgroup,DC=example,DC=com
+  bind: "yes"
+  bind_userdn: ""
   dn: ""
-  hosts: dc01 dc02
+  filter: (&(objectClass=inetOrgPerson)(uid=%{user}))
   tls: "no"
+  uris: ldap://dc01:389
   version: 3
 # Force reload of certs at least every 30 days
 livenessProbe:
@@ -96,6 +98,9 @@ users: {}
   # - username: user2
   #   name: John Doe
   #   uid: 301
+version:
+  config: 2.4.1
+  storage: 2.4.1
 
 deployment:
   command: [/bin/sh]
@@ -189,6 +194,7 @@ configmapPostfix:
 
 # Subchart data-sync, maintains persistent data across nodes
 data-sync:
+  enabled: false
   statefulset:
     containerPorts: [ containerPort: 22 ]
     env:

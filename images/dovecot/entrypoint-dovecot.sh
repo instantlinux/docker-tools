@@ -27,9 +27,9 @@ if [ -s $ETC/conf.local/dovecot.conf ]; then
 fi
 if [ -z "$SSH_DH" ]; then
   openssl dhparam -dsaparam -out $ETC/dh.pem 4096
-  echo "ssl_dh = <$ETC/dh.pem" >> $ETC/dovecot.conf
+  echo "ssl_server_dh_file = $ETC/dh.pem" >> $ETC/dovecot.conf
 else
-  echo "ssl_dh = <$ETC/conf.local/$SSH_DH" >> $ETC/dovecot.conf
+  echo "ssl_server_dh_file = $ETC/conf.local/$SSH_DH" >> $ETC/dovecot.conf
 fi
 if [ -s $ETC/conf.local/dovecot-ldap.conf ]; then
   cp $ETC/conf.local/dovecot-ldap.conf $ETC
