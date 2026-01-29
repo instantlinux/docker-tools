@@ -18,8 +18,8 @@ ENV LDAP_SECRETNAME=ldap-ro-password \
 RUN cd /tmp && \
     wget -q https://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/procmail-$PROCMAIL_VERSION.apk && \
     echo "$PROCMAIL_SHA  procmail-$PROCMAIL_VERSION.apk" | sha256sum -c && \
-    apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION \
-      procmail-$PROCMAIL_VERSION.apk openldap-clients && \
+    apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION && \
+    apk add --allow-untrusted procmail-$PROCMAIL_VERSION.apk && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/dovecot/core/release-2.4.1/doc/mkcert.sh && \
     echo "$MKCERT_SHA  mkcert.sh" | sha256sum -c && \
