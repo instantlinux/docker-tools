@@ -7,7 +7,7 @@ sources:
 - https://github.com/vdukhovni/dovecot
 type: application
 version: 0.1.13
-appVersion: "2.4.2-r1"
+appVersion: "2.4.1-r2"
 dependencies:
 - name: chartlib
   version: 0.1.8
