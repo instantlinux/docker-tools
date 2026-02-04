@@ -32,6 +32,7 @@ kubeadm suite:
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Calico or flannel networking
+* Fluent Bit for container-log aggregation
 * ingress-nginx
 * Local-volume sync
 * Automatic certificate issuing/renewal with Letsencrypt
@@ -289,6 +290,23 @@ CERT_MGR_EMAIL=<my email> make install/cert-manager
 ```
 A lot of things have to be functioning before letsencrypt will issue certs: the [Let's Encrypt troubleshooting guide](https://cert-manager.io/docs/troubleshooting/acme/) is super-helpful.
 
+### Container logs
+
+The former standard way to funnel logs to a central log server (e.g. logstash, Splunk) was logspout; Fluent Bit is the newer way. See the [k8s/Makefile](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile) which has a `fluent-bit` target to launch current version of the vendor-supplied helm chart. Set the `SPLUNK_OPT` environment variable to `yes` to apply config overrides suitable for a HEC forwarder. Your forwarder token should first be stored as key `splunk_token` in a `fluent-bit` secret stored in the `logging` namespace. The installation override yaml files provided under the k8s/install directory here work as-is for simple use-cases; add any additional overrides in the same directory where you keep helm override files for other services here (i.e. ../admin/services/values/fluent-bit.yaml).
+
+As Fluent Bit still has not implemented a way to edit out unwanted storage-consuming items in the kubernetes metadata json blob, if you use Splunk as your log aggregator you can add these two entries to files in /opt/splunk/etc/system/local:
+
+transforms.conf
+```
+INGEST_EVAL = _raw=json_delete(_raw, "kubernetes.annotations",
+  "kubernetes.container_hash", "kubernetes.docker_id", 
+  "kubernetes.labels", "kubernetes.pod_id", "kubernetes.pod_name")
+```
+props.conf
+```
+[httpevent]
+TRANSFORMS-removeJsonKeys = removeJsonKeys1
+```
 ### Network and local storage
 
 Storage management is a mostly-unsolved problem in the container world; indeed there are startup companies raising cash to try to solve this in ways that will be affordable only to big enterprises (a blogger at StorageOS has [this to say](https://medium.com/@saliloquy/storage-is-the-achilles-heel-of-containers-97d0341e8d87)). Long before Swarm and Kubernetes came out, I was using LVM snapshots to quickly clone LXC containers, and grew accustomed to the speedy performance of direct-attached SSD storage. At a former employer, in order to provide resiliency for database masters, I used [drbd](http://www.drbd.org) to sync volumes at the block level across the network.

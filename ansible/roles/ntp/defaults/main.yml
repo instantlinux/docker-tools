@@ -1,6 +1,8 @@
 ---
 
 ntp_defaults:
+  driftfile: /var/lib/ntpsec/ntp.drift
+  leapfile: /usr/share/zoneinfo/leap-seconds.list
   query_ok:
   - localhost
   - ::1

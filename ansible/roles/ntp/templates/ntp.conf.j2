@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
-driftfile /var/lib/ntp/ntp.drift
-
+driftfile {{ ntp.driftfile }}
+leapfile {{ ntp.leapfile }}
 {% if 'symmetric_key' in ntp %}
 keys /etc/ntp.keys              # path for keys file
 trustedkey 1                    # define trusted keys

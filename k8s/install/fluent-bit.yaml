@@ -1,0 +1,30 @@
+# Overrides for vendor-supplied fluent-bit helm chart
+config:
+  filters: |
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Merge_Log           On
+        K8S-Logging.Parser  On
+        K8S-Logging.Exclude On
+    [FILTER]
+        Name                nest
+        Match               kube.*
+        Operation           lift
+        Nested_under        kubernetes
+        Add_prefix          k8s_
+  outputs: |
+    [OUTPUT]
+        Name                syslog
+        Match               kube.*
+        Host                $RSYSLOGD_IP
+        Port                514
+        Mode                tcp
+        Syslog_Format       rfc5424
+        Syslog_MaxSize      16384
+        Syslog_Hostname_Key k8s_container_name
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+

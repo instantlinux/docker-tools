@@ -103,7 +103,7 @@ VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 install: install/admin-user cluster_network \
 	install/local-storage storage_localdefault imports \
 	install_imports namespace_config install/prometheus-rbac \
-	install/k8s-backup install/logspout remote_volumes \
+	install/k8s-backup fluent-bit remote_volumes \
 	sops data-sync-ssh persistent secrets install/ingress-nginx \
 	install/cert-manager
 
@@ -167,17 +167,6 @@ storage_localdefault:
 	  '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
 ##########
-# etcd
-##########
-imports/etcd-token:
-	@-kubectl delete secret $(@F)
-	(cd imports && \
-	 basename \
-	  `curl -s 'https://discovery.etcd.io/new?size=$(ETCD_NUM_NODES)'` \
-	  > $(@F) && \
-	 kubectl create secret generic $(@F) --from-file $(@F))
-
-##########
 # Helm
 ##########
 include Makefile.helm
@@ -232,11 +221,13 @@ install_metrics: imports/kube-state-metrics
 imports/traefik-prom.yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml
 
-# As of Jan-2019, the helm chart for etcd doesn't reliably construct multi-node
-# cluster, just use 'make etcd' rather than 'make etcd_chart'
-etcd_chart:
-	helm install --name etcd --namespace $(K8S_NAMESPACE) \
-	  --kube-context=kubernetes-admin@$(CLUSTER) \
-	  bitnami/etcd --set auth.rbac.enabled=false
-	sleep 30
-	kubectl scale statefulset etcd-etcd --namespace=$(K8S_NAMESPACE) --replicas=3
+SPLUNK_OPT = $(if $(LOG_TO_SPLUNK), -f install/fluent-bit-splunk.yaml, )
+fluent-bit: install/namespace.yaml
+	K8S_NAMESPACE=logging envsubst < $< | kubectl apply --context=sudo -f -
+	helm repo add fluent https://fluent.github.io/helm-charts
+	helm repo update
+	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
+	  && echo "-f ../admin/services/values/$@.yaml"))
+	envsubst < install/fluent-bit.yaml | \
+	  helm install -f - $(SPLUNK_OPT) $(OVERRIDE) \
+	  --kube-context=sudo --namespace=logging $@ fluent/fluent-bit 
