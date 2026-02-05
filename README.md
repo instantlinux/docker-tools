@@ -121,4 +121,4 @@ Thank you to the following contributors!
 * [Alberto Galera](https://github.com/agalera)
 * [Andrew Eacott](https://github.com/andreweacott)
 
-Contents created 2017-25 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
+Contents created 2017-26 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.
