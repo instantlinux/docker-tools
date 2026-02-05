@@ -10,7 +10,7 @@ enterprise market.
 This repo is an attempt to make Kubernetes more approachable for any
 user who wants to get started easily, with a real cluster (not just
 a single-instance minikube setup) on bare-metal. Most of this will
-probably work in IaaS providers like Google or AWS but the purpose
+probably work on cloud providers like Google or AWS but the purpose
 of this repo is to set up production-grade K8S with your own servers / VMs.
 
 See [How to use this](#how-to-use-this) below to get started.
@@ -32,14 +32,12 @@ kubeadm suite:
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Calico or flannel networking
+* Fluent Bit for container-log aggregation
 * ingress-nginx
 * Local-volume sync
 * Automatic certificate issuing/renewal with Letsencrypt
 
-Resource yaml files are in standard k8s format, parameterized by simple
-environment-variable substitution. Helm is provided only to enable
-access to published helm charts; resources herein are defined using the
-Kubernetes-native API syntax.
+Helm has become the standard mechanism for deploying kubernetes resources. This repo provides a library, chartlib, which handles almost all of the logic and tedium of golang templating. Look in the values.yaml file of each of the helm charts published here for parameters that you can override by supplying a helm overrides yaml file.
 
 ### Requirements and cost
 
@@ -50,15 +48,12 @@ services such as etc and MariaDB is 4+ nodes. (An inexpensive node
 similar to mine is an [Intel N6005 Mini PC](https://www.newegg.com/neosmay-ac8-jasper-lake/p/2SW-006Y-00003) with two 8GB DDR4 RAM modules
 and a 500GB to 2TB drive installed in each.) As of Sep 2022 three of these configured with 16GB of RAM and 512GB SSD costs plus a control-plane node of 250GB SSD and 8GB of RAM add up to about $1250USD; you
 can shave maybe $400 off by reducing RAM and storage, and another $250
-by virtualizing the manager on your existing server. By Nov 2024, costs of such nodes has plunged: Intel N100 quad-core mini-PCs with 16GB of RAM and 512GB SSD can be had for under $150, so four of these is under $600.
+by virtualizing the manager on your existing server. By Nov 2024, costs of such nodes has plunged: Intel N100 quad-core mini-PCs with 16GB of RAM and 512GB SSD can be had for under $150, so four of these is under $600. (Inflation has picked up since, but this hardware remains relatively inexpensive.)
 
 ### Assumptions
 
-* You're not running in a cloud provider (this probably works in
-  cloud instances but isn't tested there; if you're already in
-  cloud and willing to pay for it you don't need this tool anyway)
 * You want to run a current stable version of docker engine
-* You're running Ubuntu 24.04 LTS on the nodes
+* You're running Ubuntu LTS on the nodes
 * You want fastest / most secure direct-attached SSD performance:
   persistent storage will be local LUKS-encrypted directories on
   each node
@@ -68,6 +63,9 @@ by virtualizing the manager on your existing server. By Nov 2024, costs of such 
   _make_ and _helm_ rather than ksonnet / ansible (I independently opted
   to learn kubernetes this way, as described in [Using Makefiles and
   envsubst as an Alternative to Helm and Ksonnet](https://vadosware.io/post/using-makefiles-and-envsubst-as-an-alternative-to-helm-and-ksonnet/) by vados.
+* You're not running in a cloud provider (this probably works in
+  cloud instances but isn't tested there; if you're already in
+  cloud and willing to pay for it you don't need this tool anyway)
 
 ### Repo layout
 
@@ -79,7 +77,6 @@ by virtualizing the manager on your existing server. By Nov 2024, costs of such 
 | secrets/ | symlink to private directory of encrypted secrets |
 | volumes/ | (deprecated) persistent volume claims |
 | Makefile | resource deployer |
-| *.yaml | applications as noted in top-level README |
 
 ### How to use this
 
@@ -289,6 +286,23 @@ CERT_MGR_EMAIL=<my email> make install/cert-manager
 ```
 A lot of things have to be functioning before letsencrypt will issue certs: the [Let's Encrypt troubleshooting guide](https://cert-manager.io/docs/troubleshooting/acme/) is super-helpful.
 
+### Container logs
+
+The former standard way to funnel logs to a central log server (e.g. logstash, Splunk) was logspout; Fluent Bit is the newer way. See the [k8s/Makefile](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile) which has a `fluent-bit` target to launch current version of the vendor-supplied helm chart. Set the `SPLUNK_OPT` environment variable to `yes` to apply config overrides suitable for a HEC forwarder. Your forwarder token should first be stored as key `splunk_token` in a `fluent-bit` secret stored in the `logging` namespace. The installation override yaml files provided under the k8s/install directory here work as-is for simple use-cases; add any additional overrides in the same directory where you keep helm override files for other services here (i.e. ../admin/services/values/fluent-bit.yaml).
+
+As Fluent Bit still has not implemented a way (see [issue #4651](https://github.com/fluent/fluent-bit/issues/4651) and related reports) to edit out unwanted storage-consuming items in the kubernetes metadata json blob, if you use Splunk as your log aggregator you can add these two entries to files in /opt/splunk/etc/system/local to reduce logging storage:
+
+transforms.conf
+```
+INGEST_EVAL = _raw=json_delete(_raw, "kubernetes.annotations",
+  "kubernetes.container_hash", "kubernetes.docker_id", 
+  "kubernetes.labels", "kubernetes.pod_id", "kubernetes.pod_name")
+```
+props.conf
+```
+[httpevent]
+TRANSFORMS-removeJsonKeys = removeJsonKeys1
+```
 ### Network and local storage
 
 Storage management is a mostly-unsolved problem in the container world; indeed there are startup companies raising cash to try to solve this in ways that will be affordable only to big enterprises (a blogger at StorageOS has [this to say](https://medium.com/@saliloquy/storage-is-the-achilles-heel-of-containers-97d0341e8d87)). Long before Swarm and Kubernetes came out, I was using LVM snapshots to quickly clone LXC containers, and grew accustomed to the speedy performance of direct-attached SSD storage. At a former employer, in order to provide resiliency for database masters, I used [drbd](http://www.drbd.org) to sync volumes at the block level across the network.
@@ -353,57 +367,8 @@ notes are as of Jan 2019 on version 1.13.1:
   cluster isn't fully supported at this time, there are race conditions
   which create performance problems).
 
-### The version 1.15.0 upgrade fiasco
-
-The kubeadm update procedure didn't work for 1.13->1.14 upgrade so
-when an unknown fault took down my single master, I opted to do a
-fresh install of 1.15.0. That led to a multiple-day total outage of
-all services. Here are notes that might help others prevent similar
-debacles:
-
-* Networking and DNS are fundamental, and can fail silently on a newly
-  built cluster. Use a busybox container to ensure you can do DNS
-  lookups against the nameserver listed in /etc/resolv.conf after
-  generating a new master and worker(s). Do not proceed until you've
-  solved any mysteries that prevent this from working (and THIS CAN
-  TAKE DAYS on a bare-metal cluster.)
-
-* If you only have a single controller that has failed, don't do anything
-  intrusive to it (like, say, the obvious--restoring a backup; this
-  totally clobbered my setup). If it's been running for more than a
-  couple months, chances are it's got some hard-to-replace
-  configurations and the currently available backup/restore procedures
-  may not (or probably won't) save you. Build a new one and use the
-  old server as reference.
-
-* Switching from flannel to calico 3.8 was fraught with
-  problems. Hours into things, I couldn't figure out why coredns
-  wouldn't resolve any names from any pod: wound up sticking with
-  flannel for the foreseeable future. Also, it's easy to get both
-  flannel and calico installed, a major conflict.
-
-* Installation procedure for cert-manager is 100% different from 5
-  months ago (in 2022). That took me about 3 hours to resolve. And I'd
-  become over-reliant on cert-manager: without valid TLS certificates,
-  my local Docker registry wouldn't come up. Without the registry,
-  most services wind up in ImagePullBackoff failure state. (Update in
-  2024 -- almost services I run are now on docker hub or
-  registry.k8s.io, so they depend only on Internet and DNS.)
-
-* When restoring cert-manager, get ingress-nginx working first.
-
-* My efforts to lock down kubernetes security (based mostly on tutorial-
-  style procedures found online) backfired big-time: bottom line is that
-  if you have to do something manual to get your setup running after
-  the community-supplied installer (kubeadm) finishes, then it's quite
-  likely whatever script or resource definition you created to automate
-  such manual processes *won't* work next time you need to do disaster-
-  recovery or routine upgrades. Make sure your kubeadm-config.yaml
-  defines all the flags required for the control plane under
-  /etc/kubernetes/manifests.
-
-* One thing I'd done that compromised availability in the interest of
-  security was to encrypt etcd key-value storage. Make sure to
+* One thing I'd done that initially compromised availability in the interest
+  of security was to encrypt etcd key-value storage. Make sure to
   practice backup/restore a couple times, and document in an obvious
   place what the restore procedure is and where to get the decyption
   codes. The k8s-cplane ansible playbook here should help.

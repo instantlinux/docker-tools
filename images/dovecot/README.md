@@ -25,19 +25,17 @@ Configuration is defined as files in a volume mounted as
   ./mkcert.sh
   ```
 
-For settings, see etc-example directory and [helm]((https://github.com/instantlinux/docker-tools/tree/main/images/dovecot/helm) / kubernetes.yaml / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) file defines default values.
+For settings, see etc-example directory and [helm](https://github.com/instantlinux/docker-tools/tree/main/images/dovecot/helm) / docker-compose.yml. The [k8s/Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) file defines default values.
 
 Also configure postfix as described in the postfix image.
 
 This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/dovecot/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/dovecot/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/dovecot/helm) using _make_ after customizing overrides of [values.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/dovecot/helm/values.yaml) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
 make dovecot
 ~~~
-
-See the Makefile and Makefile.vars files under k8s directory for default values referenced within kubernetes.yaml.
 
 To provide high availability across the cluster, the helm chart here includes an optional data-sync service to keep the inbox, mail and spool directories synchronized across 2 or more worker nodes. Minor data loss can occur when the service shifts from one worker to another, so this feature isn't recommended for large production deployments (when running on a cloud provider, simply use their block storage capabilities). That said, unison-based data-sync service has been rock-solid on a bare-metal cluster for years.
 
@@ -45,7 +43,7 @@ Auth is the most challenging aspect of implementing dovecot. Use the following c
 ```
 doveadm auth login <user>
 ```
-If using openldap, turn on log setting `BER` to view raw packet contents as you troubleshoot login from dovecot.
+If using openldap, turn on openldap's log setting `BER` to view raw packet contents as you troubleshoot login from dovecot.
 
 ### Variables
 
@@ -72,7 +70,7 @@ Need more configurability? Edit the ConfigMap defined in the helm chart.
 
 | Helm var | 2.3 | 2.4 | Notes |
 | -------- | --- | --- | ----- |
-| uris | hosts | ldap_uris | <host> becomes ldap://<host>:389 |
+| uris | hosts | ldap_uris | host becomes ldap://host:389 |
 |  | ldap_version | (unchanged) |  |
 | base | base | ldap_base |  |
 | bind | auth_bind | ldap_bind |  |

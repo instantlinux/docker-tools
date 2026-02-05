@@ -1,28 +1,33 @@
 # Default values for etcd.
 statefulset:
-  command:
-  - /usr/local/bin/etcd
-  - --discovery $(DISCOVERY)
+  # Starting with version 3.5, public discovery service isn't available
+  # You must set a value for etcd_initial_cluster using an
+  # overrides file, with the fqdn hostname of each worker node
+  #
+  #    statefulset:
+  #      env:
+  #        etcd_initial_cluster: >
+  #          etcd-0=http://<fqdn-1>:2380,
+  #          etcd-1=http://<fqdn-2>:2380,
+  #          etcd-2=http://<fqdn-3>:2380
+  command: [ /usr/local/bin/etcd ]
   containerPorts:
   - { containerPort: 2379 }
   - { containerPort: 2380 }
   xenv:
-    # To generate the secret:
-    #   curl -s https://discovery.etcd.io/new?size=3|base64
+    # If you have a private discovery service, generate the secret:
+    #   curl -s https://<discovery server>/new?size=3|base64
     #   make secrets/etcd-token.yml
     #   # use next command to copy/paste new secret into yml file as
     #   # data key 'discovery'
     #   sops secrets/etcd-token.yml
     #   make secrets/etcd-token
+    # Override xenv to include the DISCOVERY secret (as below)
     # To update the secret, re-run the curl command and then:
     #   sops secrets/etcd-token.yml
     #   kubectl delete secret etcd-token
     #   make secrets/etcd-token
-    - name: DISCOVERY
-      valueFrom:
-        secretKeyRef:
-          key: discovery
-          name: etcd-token
+
     - name: ETCD_NAME
       valueFrom:
         fieldRef:
@@ -37,10 +42,17 @@ statefulset:
       value: "http://$(NODENAME):2379"
     - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
       value: "http://$(NODENAME):2380"
+
+    # - name: DISCOVERY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       key: discovery
+    #       name: etcd-token
   env:
     etcdctl_api: "2"
     etcd_data_dir: /var/lib/etcd
     etcd_enable_v2: "true"
+    etcd_initial_cluster: ""
     etcd_listen_client_urls: "http://0.0.0.0:2379"
     etcd_listen_peer_urls: "http://0.0.0.0:2380"
   hostNetwork: true

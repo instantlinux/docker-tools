@@ -12,7 +12,7 @@
 - include_tasks: "{{ ansible_os_family | lower }}/ir-keytable.yml"
 
 - include_tasks: autosuspend.yml
-  when: suspend
+  when: suspend | length > 0
 
 - include_tasks: drivers/{{ display_driver.type }}.yml
 

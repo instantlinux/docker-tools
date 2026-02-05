@@ -1,0 +1,28 @@
+config:
+  filters: |
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Merge_Log           On
+        Keep_Log            Off
+        K8S-Logging.Parser  On
+        K8S-Logging.Exclude Off
+    [FILTER]
+        Name                modify
+        Match               kube.*
+        Remove              stream
+  outputs: |
+    [OUTPUT]
+        name         splunk
+        match        *
+        host         splunk.instantlinux.svc.cluster.local
+        splunk_token ${SPLUNK_HEC_TOKEN}
+        tls          On
+        tls.verify   Off
+        event_host   $kubernetes['container_name'].$kubernetes['namespace_name']
+env:
+  - name: SPLUNK_HEC_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: fluent-bit
+        key: splunk_token
