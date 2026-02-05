@@ -223,11 +223,12 @@ imports/traefik-prom.yaml:
 
 SPLUNK_OPT = $(if $(LOG_TO_SPLUNK), -f install/fluent-bit-splunk.yaml, )
 fluent-bit: install/namespace.yaml
-	K8S_NAMESPACE=logging envsubst < $< | kubectl apply --context=sudo -f -
+	K8S_NAMESPACE=$(LOG_NAMESPACE) envsubst < $< | \
+	  kubectl apply --context=sudo -f -
 	helm repo add fluent https://fluent.github.io/helm-charts
 	helm repo update
 	@$(eval OVERRIDE := $(shell [ -s ../admin/services/values/$@.yaml ] \
 	  && echo "-f ../admin/services/values/$@.yaml"))
 	envsubst < install/fluent-bit.yaml | \
 	  helm install -f - $(SPLUNK_OPT) $(OVERRIDE) \
-	  --kube-context=sudo --namespace=logging $@ fluent/fluent-bit 
+	  --kube-context=sudo --namespace=$(LOG_NAMESPACE) $@ fluent/fluent-bit 
