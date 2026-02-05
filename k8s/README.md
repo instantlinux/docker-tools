@@ -290,7 +290,7 @@ A lot of things have to be functioning before letsencrypt will issue certs: the 
 
 The former standard way to funnel logs to a central log server (e.g. logstash, Splunk) was logspout; Fluent Bit is the newer way. See the [k8s/Makefile](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile) which has a `fluent-bit` target to launch current version of the vendor-supplied helm chart. Set the `SPLUNK_OPT` environment variable to `yes` to apply config overrides suitable for a HEC forwarder. Your forwarder token should first be stored as key `splunk_token` in a `fluent-bit` secret stored in the `logging` namespace. The installation override yaml files provided under the k8s/install directory here work as-is for simple use-cases; add any additional overrides in the same directory where you keep helm override files for other services here (i.e. ../admin/services/values/fluent-bit.yaml).
 
-As Fluent Bit still has not implemented a way to edit out unwanted storage-consuming items in the kubernetes metadata json blob, if you use Splunk as your log aggregator you can add these two entries to files in /opt/splunk/etc/system/local:
+As Fluent Bit still has not implemented a way (see [issue #4651](https://github.com/fluent/fluent-bit/issues/4651) and related reports) to edit out unwanted storage-consuming items in the kubernetes metadata json blob, if you use Splunk as your log aggregator you can add these two entries to files in /opt/splunk/etc/system/local to reduce logging storage:
 
 transforms.conf
 ```
