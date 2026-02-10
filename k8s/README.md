@@ -373,3 +373,6 @@ notes are as of Jan 2019 on version 1.13.1:
   place what the restore procedure is and where to get the decyption
   codes. The k8s-cplane ansible playbook here should help.
 
+### Contributing
+
+If you want to make improvements to this software, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).

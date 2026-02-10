@@ -12,7 +12,7 @@ a subdirectory "mysql" in volume "backup".
 ### Usage
 Before running it, grant access to a mysql user thus:
 ~~~
-    mysql> GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO
+    mysql> GRANT SELECT,RELOAD,REPLICATION CLIENT ON *.* TO
       '$USER'@'10.%' IDENTIFIED BY '$PSWD';
 ~~~
 Make sure the named volume "backup" exists, and that
