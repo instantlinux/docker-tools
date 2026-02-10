@@ -11,7 +11,7 @@ easy. Contents:
 | --------- | ----------- |
 | ansible | build your own Kubernetes cluster |
 | images | images which are published to Docker Hub |
-| k8s | container resources in kubernetes yaml format |
+| k8s | kubernetes resources and helm charts |
 | lib/build | build makefile and tools |
 | services | non-clustered docker-compose services |
 | ssl | PKI certificate tools (deprecated by k8s) |
@@ -120,5 +120,9 @@ Thank you to the following contributors!
 * [David Powers](https://github.com/dapowers87)
 * [Alberto Galera](https://github.com/agalera)
 * [Andrew Eacott](https://github.com/andreweacott)
+
+### Contributing
+
+If you want to make improvements to this software, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
 Contents created 2017-26 under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) by Rich Braun.

@@ -54,9 +54,12 @@ volumeMounts:
 - mountPath: /usr/local/etc/php/conf.d/local-php.ini
   name: init
   subPath: local-php.ini
-- mountPath: /var/www/html
+- mountPath: /var/www/html/wp-config.php
   name: share
-  subPath: wordpress/html
+  subPath: wordpress-ci/html/wp-config.php
+- mountPath: /var/www/html/wp-content
+  name: share
+  subPath: wordpress/html/wp-content
 volumes:
 - name: init
   configMap:

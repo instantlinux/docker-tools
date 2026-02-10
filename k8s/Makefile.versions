@@ -1,10 +1,4 @@
-# Third-party versions - dockerhub
-export VERSION_DASHBOARD     ?= 7.10.0
-export VERSION_NGINX         ?= 1.29.3-alpine
-# deprecated
-export VERSION_LOGSPOUT      ?= v3.2.14
-
-# Third-party versions - other (quay.io, k8s.gcr.io, crunchydata.com)
+# Third-party versions
 export VERSION_CERT_MANAGER   ?= 1.19.2
 export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_FLANNEL        ?= 0.28.0
