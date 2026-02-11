@@ -5,8 +5,6 @@ OSTYPE=`grep ^ID= /etc/os-release|cut -f 2 -d=`
 
 localedef -i $(cut -d. -f1 <<< $LANGUAGE) -f $(cut -d. -f2 <<< $LANGUAGE) $LANG
 
-# TODO - clean out dangling references to apache2, which is no longer used
-
 if [ "$OSTYPE" == "opensuse" ]; then
   ln -fns /usr/share/zoneinfo/$TZ /etc/localtime
   CONF_DIR=/etc/apache2/conf.d
@@ -14,11 +12,9 @@ elif [ "$OSTYPE" == "ubuntu" ]; then
   if [[ $(cat /etc/timezone) != $TZ ]]; then
     echo $TZ > /etc/timezone
     DIR=/etc/php/$(php -v|grep PHP | grep -oP "\\d+\.\\d+" | head -1)
-    echo "date.timezone = $TZ" > $DIR/apache2/conf.d/50-tz.ini
     echo "date.timezone = $TZ" > $DIR/cli/conf.d/50-tz.ini
     dpkg-reconfigure -f noninteractive tzdata
   fi
-  CONF_DIR=/etc/apache2/sites-available
 fi
 
 if [ -e /run/secrets/mythtv-db-password ]; then
