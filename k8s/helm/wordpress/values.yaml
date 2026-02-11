@@ -49,6 +49,8 @@ deployment:
       secretKeyRef:
         name: wordpress
         key: WORDPRESS_NONCE_SALT
+  securityContext:
+    runAsUser: 33
 
 volumeMounts:
 - mountPath: /usr/local/etc/php/conf.d/local-php.ini

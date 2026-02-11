@@ -17,19 +17,16 @@ ENV APACHE_LOG_DIR=/var/log/apache2 \
     LOCALHOSTNAME= \
     TZ=UTC
 
-ARG APT_SIG=13551B881504888C
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
-ARG MYTHTV_PPA=http://ppa.launchpad.net/mythbuntu/35
-ARG MYTHTV_VERSION=2:35.0+fixes.202512301852.805e05b76a~ubuntu24.04.1
+ARG MYTHTV_PPA=ppa:mythbuntu/36
+ARG MYTHTV_VERSION=2:36.0+fixes.202602100833.1385cbfc60~ubuntu24.04.1
 ARG MYTHLINK_SHA=459cb8b60adae4b631a95a9cfb1b41dcb959cc4a0b9053582a711d58b8d8a0d2
 
 RUN \
   apt-get -yq update && \
-  apt-get install -yq gnupg locales wget && \
-  apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $APT_SIG && \
-  echo "deb $MYTHTV_PPA/ubuntu noble main" \
-    > /etc/apt/sources.list.d/mythbuntu.list && \
+  apt-get install -yq gnupg locales software-properties-common wget && \
+  add-apt-repository $MYTHTV_PPA && \
   apt-get -yq update && \
   locale-gen $LANG && \
   echo "# added via Dockerfile\npath-include=/usr/share/doc/mythtv-backend/contrib/*" > \
