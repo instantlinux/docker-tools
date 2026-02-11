@@ -7,7 +7,7 @@ sources:
 - https://github.com/mythtv/mythtv
 type: application
 version: 0.1.18
-appVersion: "36.0-fixes.202602100833.1385cbfc60"
+appVersion: "36.0-fixes.202602111500.0bcc85b590
 dependencies:
 - name: chartlib
   version: 0.1.8
