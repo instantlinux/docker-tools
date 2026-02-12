@@ -260,9 +260,11 @@ ubuntu_apt_keys:
   #  and in /etc/apt/sources.list.d/google-chrome.list:
   #    deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
   #
+  # An alternative approach, until Ansible docs explain a better way, is
+  #  described here: https://peateasea.de/avoiding-ansible-apt-key-on-debian/
+  #
   # chrome: 78BD65473CB3BD13
   graphics: FCAE110B1118213C
-  mythbuntu: 13551B881504888C
 
 ubuntu_packages:
   - cron
@@ -275,6 +277,7 @@ ubuntu_packages:
   - mythtv-common
   - mythtv-frontend
   - kde-plasma-desktop
+  - software-properties-common
   - xserver-xorg-core
   - xserver-xorg-input-all
   - xterm
@@ -293,8 +296,6 @@ ubuntu_repo_defaults:
 
 ubuntu_repo_additions:
   - deb http://ppa.launchpad.net/graphics-drivers/ppa/ubuntu {{
-    ansible_distribution_release }} main
-  - deb http://ppa.launchpad.net/mythbuntu/{{ mythtv_version }}/ubuntu {{
     ansible_distribution_release }} main
   - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 

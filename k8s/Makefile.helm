@@ -12,7 +12,8 @@ helm_list:
 	@helm list --time-format="Mon Jan 2 15:04" --all-namespaces \
 	  --kube-context=sudo
 
-$(CHARTS):: %: helm/%/Chart.lock
+# TODO retire values.yaml
+$(CHARTS):: %: ../admin/services/values.yaml helm/%/Chart.lock
 	@echo --$(NOTICE) $@--
 ifeq ($(ACTION), delete)
 	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
@@ -25,7 +26,7 @@ endif
 
 # TODO this is identical to above but for subdir, DRY it out
 #   the helmify project is just too exhausting
-$(INSTANCES):: %: helm/instances/%/Chart.lock
+$(INSTANCES):: %: ../admin/services/values.yaml helm/instances/%/Chart.lock
 	@echo --$(NOTICE) $@--
 ifeq ($(ACTION), delete)
 	@helm uninstall --kube-context=sudo -n $(K8S_NAMESPACE) $@
