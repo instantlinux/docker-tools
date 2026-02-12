@@ -144,10 +144,16 @@ ansible-playbook k8s-cplane.yml
 Kubernetes should be up and running at this point, with a bare-minimum
 configuration.
 
-Set up a local repo to define environment variables. Kubernetes resources
-here are defined in the native YAML format but with one extension: they
-are parameterized by the use of _envsubst_ which allows values to be
-passed in as shell environment variables in the form $VARIABLE_NAME.
+Set up a local admin repo to define helm overrides and environment variables, git-cloned under the path ~/docker/k8s/admin. Within the admin repo, create a subdirectory `services` with a file `values.yaml` containing any site-specific overrides, such as:
+```
+authelia
+  fqdn: authtotp.mydomain.com
+domain: mydomain.com
+serviceAccount:
+  name: instantlinux-privileged
+tz: America/Los_Angeles
+```
+Under a `services/values` subdirectory, put each of your chartname.yaml files with the override settings you need.
 
 Set a symlink from a directory under this one (k8s/secrets) to a
 subdirectory in your local administrative repo. This is where you will

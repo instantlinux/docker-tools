@@ -1,7 +1,11 @@
 ---
 # packages-ubuntu.yml
 
-- name: Import repository keys
+- name: Add the mythtv repo
+  ansible.builtin.apt_repository:
+    repo: ppa:mythbuntu/{{ mythtv_version }}
+
+- name: Import repository keys for additional repos
   apt_key:
     id: "{{ item.value }}"
     keyserver: keyserver.ubuntu.com

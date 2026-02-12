@@ -51,10 +51,12 @@ security_scan_trivy:
     TRIVY_IGNORE: >-
       CVE-2023-31484,CVE-2023-45853,
       CVE-2023-52425,CVE-2024-8176,
+      CVE-2025-9900,
       CVE-2026-0861,CVE-2025-8194,CVE-2025-13699,
       CVE-2025-13836,CVE-2025-40914
       # Above two rows are for spamassassin under debian trixie
-      # Below were for blacklist image, there's a won't-fix note for zlib1g
+      # CVE-2025-9900 is for MythTV 36
+      # Below are for blacklist image, there's a won't-fix note for zlib1g
       # CVE-2023-31484,CVE-2023-45853
     TRIVY_OUTPUT: gl-container-scanning-report.json
     TRIVY_SEVERITY: HIGH,CRITICAL
