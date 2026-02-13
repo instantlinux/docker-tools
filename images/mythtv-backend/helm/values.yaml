@@ -85,40 +85,27 @@ autoscaling:
   enabled: false
 
 authelia:
+  # To override, use tlsHostname at top level
   fqdn: authtotp.example.com
   ip: 10.101.1.5
+  path: /Myth/LoginUser
 ingress:
   # This ingress exposes your MythTV schedule and operational controls to
-  #  the public Internet.
-  # TODO: change default back to true once the setup wizard screens
-  #  are secured by the authentication framework.
+  #  the public Internet. Set up the admin user before enabling. See
+  #  https://github.com/instantlinux/docker-tools/blob/main/images/mythtv-backend/README.md#upgrade-notes
   enabled: false
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/auth-type: basic
-    nginx.ingress.kubernetes.io/auth-secret: mythweb-auth
-  hosts:
-  - host: mythweb.example.com
-    paths:
-    - path: /
-      pathType: Prefix
-  tls:
-  - secretName: tls-mythtv-backend
-    hosts:
-    - mythweb.example.com
 ingressTOTP:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-  hosts:
-  - host: mythweb.example.com
-    paths:
-    - path: /settings
-      pathType: Prefix
-  tls:
-  - secretName: tls-mythtv-backend
-    hosts: [ mythweb.example.com ]
+  # Enable this ingress for TOTP if you have Authelia installed,
+  #   along with an external DNS name.
+  # TODO: this helm chart does trigger TOTP, but Authelia's login
+  #   splash page doesn't come up. The http-post operation to
+  #   /Myth/LoginUser fails to redirect. But you can manually
+  #   bring it up (e.g. https://authtotp.example.com) and authenticate
+  #   there, then come back to the MythTV dashboard's login link.
+  # Fixing that is a low-priority, as ingress-nginx is deprecated
+  #   and there may be an easier way to implement TOTP under envoy
+  #   gateway.
+  enabled: false
 
 # Subchart data-sync, maintains persistent data across nodes
 data-sync:

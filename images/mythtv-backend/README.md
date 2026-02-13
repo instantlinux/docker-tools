@@ -7,18 +7,15 @@ The MythTV backend built under Ubuntu noble (24.04).
 
 This image must be run in network_mode:host in order to communicate with HD Homerun tuners; assign a new IP address and hostname for this application, and define it as a secondary IP address on your Docker host's primary interface.
 
-For configuration, see the example docker-compose.yml (for swarm or standalone docker) or [helm](https://github.com/instantlinux/docker-tools/blob/main/images/helm) or kubernetes.yaml to run on bare-metal Kubernetes. Set environment variables and secrets as defined here, and customize volume mounts as desired. This repo has complete instructions for
-[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/mythtv-backend/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/mythtv-backend/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
+For configuration, see the example docker-compose.yml (for swarm or standalone docker) or [helm](https://github.com/instantlinux/docker-tools/blob/main/images/helm). Set variables and secrets as defined here, and customize volume mounts as desired. This repo has complete instructions for
+[building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can launch with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/mythtv-backend/helm) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~
 git clone https://github.com/instantlinux/docker-tools.git
 cd docker-tools/k8s
 make mythtv-backend
 ~~~
 
-If you have two Kubernetes nodes set up, run the kubernetes-ha.yaml to set up data sync between two identical drives across the nodes, and define a floating IP address. One copy of mythbackend will be running on one of the nodes at any given time, providing a simple high-availability configuration. See more details in the Makefile in k8s directory. The kubernetes.yaml sample provided here can also set up the mythweb virtual-host https://mythweb.yourdomain.com so you can schedule recordings when you're not home; create an htpasswd file with name _auth_ and then:
-~~~
-kubectl create secret generic mythweb-auth --from-file=auth
-~~~
+If you have two Kubernetes nodes set up, run the kubernetes-ha.yaml to set up data sync between two identical drives across the nodes, and define a floating IP address. One copy of mythbackend will be running on one of the nodes at any given time, providing a simple high-availability configuration. See more details in the Makefile in k8s directory. The kubernetes.yaml sample provided here can also set up the mythweb virtual-host https://mythweb.yourdomain.com so you can schedule recordings when you're not home.
 
 You can also run this image directly (without compose or kubernetes) using environment variables and secrets files.
 
@@ -43,7 +40,6 @@ Starting with v34, mythtv-setup is accessed via <pod-ip>:6544/setupwizard. Use t
 ### Variables
 Variable | Default | Description
 -------- | ------- | -----------
-APACHE_LOG_DIR | /var/log/apache2 | Apache logs
 DBNAME | mythtv | Database name
 DBSERVER | db00 | Database server hostname
 LANG | en_US.UTF-8 | 
@@ -69,11 +65,10 @@ Note that the [Kodi](https://kodi.tv/download/) frontend also provides limited s
  
 ### Volumes
 
-Optionally, mount these path names to persistent storage:
+Optionally, mount this path name to persistent storage:
 
 Path | Description
 ---- | -----------
-/var/log/apache2 | Apache logs
 /etc/ssh | Host keys and configs for ssh
 
 ### Secrets
@@ -84,15 +79,16 @@ Secret | Description
 ------ | -----------
 mythtv-db-password | Password of MythTV db user
 mythtv-user-password | Hashed password of MythTV ssh user
-mythweb-auth | htpasswd for mythweb user(s) under k8s
 
 ### Upgrade Notes
 
-(This section applies only if you're running version 30, from 2020 or earlier.)
+When upgrading to 36.0, the setup wizard is served on port 6544 without any auth protection. In upstream [MythTV issue #1077](https://github.com/MythTV/mythtv/issues/1077), I asked for a way to protect this sensitive management console in order to schedule recordings while away from home. As of Feb 2026, the [documentation](https://wiki.mythtv.org/wiki/Web_Application#API_and_Web_App_Authentication) states that upon this upgrade, it "comes with the admin user preinstalled". I couldn't login, but I could invoke _Settings -> Users -> New User_ to add the user `admin` with a password of my own choosing, and could then use admin to activate _Authentication Required for All IP Addresses_ user setting.
+
+(Below may apply only if you're running version 30, from 2020 or earlier.)
 
 You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from [Schedules Direct](https://www.schedulesdirect.org/). See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
 
-* Go into setupwizard, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
+* Go into dashboard setup wizard, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
 * Invoke a channel-scan
 * Have your Schedules Direct username and password ready and invoke from a command shell inside the container:
 ```
