@@ -91,7 +91,8 @@ authelia:
   path: /Myth/LoginUser
 ingress:
   # This ingress exposes your MythTV schedule and operational controls to
-  #  the public Internet. Set up the admin user before enabling.
+  #  the public Internet. Set up the admin user before enabling. See
+  #  https://github.com/instantlinux/docker-tools/blob/main/images/mythtv-backend/README.md#upgrade-notes
   enabled: false
 ingressTOTP:
   # Enable this ingress for TOTP if you have Authelia installed,

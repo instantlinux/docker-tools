@@ -82,11 +82,13 @@ mythtv-user-password | Hashed password of MythTV ssh user
 
 ### Upgrade Notes
 
-(This section applies only if you're running version 30, from 2020 or earlier.)
+When upgrading to 36.0, the setup wizard is served on port 6544 without any auth protection. In upstream [MythTV issue #1077](https://github.com/MythTV/mythtv/issues/1077), I asked for a way to protect this sensitive management console in order to schedule recordings while away from home. As of Feb 2026, the [documentation](https://wiki.mythtv.org/wiki/Web_Application#API_and_Web_App_Authentication) states that upon this upgrade, it "comes with the admin user preinstalled". I couldn't login, but I could invoke _Settings -> Users -> New User_ to add the user `admin` with a password of my own choosing, and could then use admin to activate _Authentication Required for All IP Addresses_ user setting.
+
+(Below may apply only if you're running version 30, from 2020 or earlier.)
 
 You probably need to configure XMLTV in place of the old mythfilldatabase method used to fetch listings from [Schedules Direct](https://www.schedulesdirect.org/). See the documentation [Setup Video Sources](https://www.mythtv.org/wiki/Setup_Video_Sources). This image includes the required packages but does not automate setup. It's beyond scope of this document to describe the process fully but here are some of the required steps:
 
-* Go into setupwizard, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
+* Go into dashboard setup wizard, find your video source(s) and change the listings grabber to the new Schedules Direct xmltv setting for your location; make note of the video source name you're using and set a variable FILENAME to match 
 * Invoke a channel-scan
 * Have your Schedules Direct username and password ready and invoke from a command shell inside the container:
 ```
