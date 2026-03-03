@@ -52,6 +52,7 @@ NUT_DEBUG_LEVEL | 0 | verbosity of debug messages
 NUT_QUIET_INIT_SSL | true | inhibit superfluous startup warning
 NUT_QUIET_INIT_UPSNOTIFY | true | inhibit superfluous startup warning
 POLLINTERVAL | | Poll Interval for ups.conf
+POLLONLY | | Disable USB interrupt reads
 PORT | auto | device port (e.g. /dev/ttyUSB0) on host
 SDORDER | | UPS shutdown sequence, set to -1 to disable shutdown
 SECRETNAME | nut-upsd-password | name of secret to use for API user

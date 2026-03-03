@@ -15,6 +15,7 @@ ENV API_USER=upsmon \
     GROUP=nut \
     NAME=ups \
     POLLINTERVAL= \
+    POLLONLY= \
     PORT=auto \
     SDORDER= \
     SECRET=nut-upsd-password \
