@@ -69,56 +69,59 @@
     state: link
   changed_when: False
 
-- name: Reload systemd
-  ansible.builtin.systemd:
-    daemon_reload: yes
-  changed_when: False
+- name: Configure docker service
+  block:
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      changed_when: False
 
-- name: Docker engine package
-  ansible.builtin.apt:
-    name: "{{ docker.apt_repo.package_name }}={{ docker.apt_repo.package_ver }}"
-    update_cache: yes
+    - name: Docker engine package
+      ansible.builtin.apt:
+        name: "{{ docker.apt_repo.package_name }}={{ docker.apt_repo.package_ver }}"
+        update_cache: yes
 
-- name: Options directory
-  ansible.builtin.file:
-    dest: /etc/docker
-    state: directory
+    - name: Options directory
+      ansible.builtin.file:
+        dest: /etc/docker
+        state: directory
 
-- name: Docker options
-  ansible.builtin.copy:
-    content: "{{ docker.options|to_nice_json }}"
-    dest: /etc/docker/daemon.json
-  notify: Restart docker
+    - name: Docker options
+      ansible.builtin.copy:
+        content: "{{ docker.options|to_nice_json }}"
+        dest: /etc/docker/daemon.json
+      notify: Restart docker
 
-- name: Systemd override path for docker.service
-  ansible.builtin.file:
-    dest: /lib/systemd/system/docker.service.d
-    state: directory
+    - name: Systemd override path for docker.service
+      ansible.builtin.file:
+        dest: /lib/systemd/system/docker.service.d
+        state: directory
 
-- name: Deal with conflicting systemd-unit option, await vol mount
-  ansible.builtin.template:
-    dest: /lib/systemd/system/docker.service.d/docker.service.conf
-    src: docker.service.conf.j2
-  notify: Reload systemd
+    - name: Deal with conflicting systemd-unit option, await vol mount
+      ansible.builtin.template:
+        dest: /lib/systemd/system/docker.service.d/docker.service.conf
+        src: docker.service.conf.j2
+      notify: Reload systemd
 
-- name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
-  ansible.builtin.copy:
-    dest: /etc/systemd/system/docker-permissions.service
-    src: docker-permissions.service
+    - name: Systemd unit file for enabling /var/lib/docker/volumes monitoring
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/docker-permissions.service
+        src: docker-permissions.service
 
-# TODO parse fstab seeking last luks line
+    # TODO parse fstab seeking last luks line
 
-- name: Reenable systemctl start
-  ansible.builtin.file:
-    path: /usr/sbin/policy-rc.d
-    state: absent
-  changed_when: False
+  always:
+    - name: Reenable systemctl start
+      ansible.builtin.file:
+        path: /usr/sbin/policy-rc.d
+        state: absent
+      changed_when: False
 
-- name: Unmask docker.service
-  ansible.builtin.file:
-    dest: /etc/systemd/system/docker.service
-    state: absent
-  changed_when: False
+    - name: Unmask docker.service
+      ansible.builtin.file:
+        dest: /etc/systemd/system/docker.service
+        state: absent
+      changed_when: False
 
 - name: Suppress annoying error on subcontainer 'ia_addr' logs
   ansible.builtin.replace:

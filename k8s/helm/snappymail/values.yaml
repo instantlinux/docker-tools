@@ -4,10 +4,16 @@ deployment:
   env:
     debug: "false"
     log_to_stdout: "true"
-    memory_limit: 128M
+    memory_limit: 256M
     upload_max_size: 25M
   containerPorts:
   - containerPort: 8888
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
 volumeMounts:
 - mountPath: /var/lib/snappymail/_data_
   name: share

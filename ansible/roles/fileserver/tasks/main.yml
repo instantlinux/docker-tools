@@ -32,6 +32,7 @@
   when: nfs_exports | length == 0
 
 - import_tasks: instantlinux.yml
+  when: instantlinux_legacy.enabled
 
 - import_tasks: samba.yml
   when: samba.enabled
