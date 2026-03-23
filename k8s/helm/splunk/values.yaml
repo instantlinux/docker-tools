@@ -31,10 +31,10 @@ statefulset:
     service.splunk: allow
   resources:
     limits:
-      memory: 4096Mi
+      memory: 8Gi
     requests:
       cpu: 200m
-      memory: 384Mi
+      memory: 1Gi
 volumeMounts:
 - mountPath: /opt/splunk/etc
   name: splunk

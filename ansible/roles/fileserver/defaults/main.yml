@@ -1,4 +1,7 @@
 ---
+instantlinux_legacy:
+  enabled: false
+
 nfs_exports:
   /var/ftp: "*(ro,root_squash,crossmnt,fsid=0,no_subtree_check)"
 
