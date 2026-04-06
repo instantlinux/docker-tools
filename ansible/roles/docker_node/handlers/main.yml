@@ -15,7 +15,7 @@
 
 - name: Restart sshd
   service:
-    name: sshd
+    name: ssh
     state: restarted
 
 - name: Reload systemd

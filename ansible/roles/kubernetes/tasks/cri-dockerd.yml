@@ -32,8 +32,7 @@
       --network-plugin=cni \
       --cni-bin-dir=/opt/cni/bin \
       --cni-cache-dir=/var/lib/cni/cache \
-      --cni-conf-dir=/etc/cni/net.d \
-      --pod-infra-container-image={{ k8s.pod_infra_container_image }}
+      --cni-conf-dir=/etc/cni/net.d
 
 - name: Enable cri-docker.service
   ansible.builtin.systemd:
