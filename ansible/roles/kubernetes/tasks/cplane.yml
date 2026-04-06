@@ -37,19 +37,19 @@
 # TODO - sed s/kubernetes/{{hostname -s}}/g
 
 - name: Symlink .kube/admin.conf
-  local_action:
-    module: file
+  ansible.builtin.file:
     src:  "{{ admin_conf_dest }}"
     dest: /home/{{ username.stdout }}/.kube/admin.conf
     state: link
+  delegate_to: localhost
   when: not kubeadm_ca.stat.exists or k8s.config_fetch_always
 
 - name: Symlink .kube/config
-  local_action:
-    module: file
+  ansible.builtin.file:
     src:  "{{ admin_conf_dest }}"
     dest: /home/{{ username.stdout }}/.kube/config
     state: link
+  delegate_to: localhost
   when: not kubeadm_ca.stat.exists or k8s.config_fetch_always
 
 - name: Create kubelet service override directory
