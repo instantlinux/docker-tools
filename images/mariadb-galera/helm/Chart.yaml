@@ -8,7 +8,7 @@ sources:
 - https://github.com/MariaDB/galera
 type: application
 version: 0.1.3
-appVersion: "12.3.1"
+appVersion: "12.2.2"
 dependencies:
 - name: chartlib
   version: 0.1.8

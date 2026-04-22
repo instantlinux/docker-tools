@@ -1,4 +1,4 @@
-FROM mariadb:12.3.1
+FROM mariadb:12.2.2
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
