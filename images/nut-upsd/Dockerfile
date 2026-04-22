@@ -36,10 +36,11 @@ HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
       >>/etc/apk/repositories && \
     apk add --no-cache dash && \
-    apk add --update --no-cache nut@edge=$NUT_VERSION \
+    apk add --update --no-cache nut=$NUT_VERSION \
       busybox curl linux-pam \
       libcrypto3 libssl3 \
-      libusb musl net-snmp-libs util-linux
+      libusb musl@edge net-snmp-libs util-linux \
+      musl-utils@edge nghttp2-libs@edge
 
 EXPOSE 3493
 COPY entrypoint.sh /usr/local/bin/
