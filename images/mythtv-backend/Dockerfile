@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:resolute
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -19,7 +19,7 @@ ENV DBNAME=mythtv \
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
 ARG MYTHTV_PPA=ppa:mythbuntu/36
-ARG MYTHTV_VERSION=2:36.0+fixes.202602111500.0bcc85b590~ubuntu24.04.1
+ARG MYTHTV_VERSION=2:36.0+fixes.202604171138.4a9097b492~ubuntu26.04.1
 ARG MYTHLINK_SHA=459cb8b60adae4b631a95a9cfb1b41dcb959cc4a0b9053582a711d58b8d8a0d2
 
 RUN \
@@ -34,7 +34,8 @@ RUN \
     curl iputils-ping less lsb-release mariadb-client net-tools \
     mythtv-backend=$MYTHTV_VERSION \
     mythtv-common=$MYTHTV_VERSION mythtv-transcode-utils=$MYTHTV_VERSION \
-    libmyth-python libmythtv-perl psmisc sudo tzdata v4l-utils vim xmltv
+    libmyth-python libmythtv-perl libjson-xs-perl psmisc sudo tzdata v4l-utils \
+    vim xmltv
 
 COPY src/ /root/
 
