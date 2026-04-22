@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:3.10.5-r0
+FROM instantlinux/postfix:3.10.8-r0
 
 ARG BUILD_DATE
 ARG VCS_REF
