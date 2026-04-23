@@ -2,7 +2,10 @@
 baseDN: dc=example,dc=com
 bypassDomain: monitor.example.com
 bypassUser: "user:username"
+display_name: Authelia Service
 domains: [ example.com ]
+enable_passkey: true
+enable_webauthn: false
 logLevel: info
 mysql:
   address: tcp://db00:3306

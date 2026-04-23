@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/authelia/authelia
 type: application
-version: 0.1.10
-appVersion: "4.39.15"
+version: 0.1.11
+appVersion: "4.39.19"
 dependencies:
 - name: chartlib
   version: 0.1.8

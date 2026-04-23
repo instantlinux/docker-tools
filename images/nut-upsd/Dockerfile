@@ -33,7 +33,7 @@ ENV ACTIONS= \
 HEALTHCHECK CMD upsc $NAME@localhost:3493 2>&1|grep -q stale && \
     killall -TERM upsmon || true
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' \
+RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' \
       >>/etc/apk/repositories && \
     apk add --no-cache dash && \
     apk add --update --no-cache nut=$NUT_VERSION \
