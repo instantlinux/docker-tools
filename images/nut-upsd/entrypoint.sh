@@ -23,6 +23,9 @@ EOF
     if [ ! -z "$POLLINTERVAL" ]; then
       echo "        pollinterval = $POLLINTERVAL" >> /etc/nut/ups.conf
     fi
+    if [ ! -z "$POLLONLY" ]; then
+      echo "        pollonly" >> /etc/nut/ups.conf
+    fi
     if [ ! -z "$VENDORID" ]; then
       echo "        vendorid = $VENDORID" >> /etc/nut/ups.conf
     fi

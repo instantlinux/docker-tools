@@ -22,6 +22,7 @@ ENV ACTIONS= \
     NUT_QUIET_INIT_SSL=true \
     NUT_QUIET_INIT_UPSNOTIFY=true \
     POLLINTERVAL= \
+    POLLONLY= \
     PORT=auto \
     SDORDER= \
     SECRETNAME=nut-upsd-password \
