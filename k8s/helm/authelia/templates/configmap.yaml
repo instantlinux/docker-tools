@@ -49,6 +49,12 @@ data:
         {{- end }}
         policy: two_factor
 
+    # Webauthn / passkeys
+    webauthn:
+      disable: {{ not .Values.enable_webauthn }}
+      display_name: {{ .Values.display_name }}
+      enable_passkey_login: {{ .Values.enable_passkey }}
+
     # Configuration of session cookies
     session:
       expiration: {{ .Values.session.expiration }}
