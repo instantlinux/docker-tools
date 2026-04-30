@@ -1,9 +1,7 @@
 {{ ansible_managed | comment }}
 [global]
         bind interfaces only = yes
-        domain logons = No
         domain master = No
-        encrypt passwords = Yes
         interfaces = {{ samba.interfaces | join(' ') }}
         log level = {{ samba.log_level }}
         logon drive = {{ samba.logon_drive }}:

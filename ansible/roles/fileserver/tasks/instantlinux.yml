@@ -4,6 +4,7 @@
     repo: 'https://git.instantlinux.net/richb/instantlinux.git/'
     dest: /opt/instantlinux
     update: no
+  ignore_errors: true
 
 - name: Link to usr/lib/ilinux
   file:

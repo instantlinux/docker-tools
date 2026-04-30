@@ -2,32 +2,60 @@
 # packages-ubuntu.yml
 
 - name: Add the mythtv repo
-  ansible.builtin.apt_repository:
-    repo: ppa:mythbuntu/{{ mythtv_version }}
+  ansible.builtin.deb822_repository:
+    name: mythbuntu
+    components: [ main ]
+    suites: "{{ ansible_distribution_release }}"
+    types: [ deb ]
+    uris: https://ppa.launchpadcontent.net/mythbuntu/{{ mythtv_version }}/ubuntu
+    signed_by: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x517f4b7559621884dcd9c61960af0ee633670609
+  register: repo1
 
-- name: Import repository keys for additional repos
-  apt_key:
-    id: "{{ item.value }}"
-    keyserver: keyserver.ubuntu.com
-  with_dict: "{{ ubuntu_apt_keys }}"
+- name: Add the graphics drivers repo
+  ansible.builtin.deb822_repository:
+    name: graphics
+    components: [ main ]
+    suites: "{{ ansible_distribution_release }}"
+    types: [ deb ]
+    uris: https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu
+    signed_by: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2388FF3BE10A76F638F80723FCAE110B1118213C
+  register: repo2
 
-- name: Ensure repositories available
-  apt_repository:
-    repo: "{{ item }}"
-    filename: ubuntu
-  with_items: "{{ ubuntu_repos }}"
+- name: Add the google chrome repo
+  ansible.builtin.deb822_repository:
+    name: chrome
+    components: [ main ]
+    suites: stable
+    types: [ deb ]
+    uris: https://dl.google.com/linux/chrome/deb/
+    signed_by: https://dl.google.com/linux/linux_signing_key.pub
+  register: repo3
+
+- name: Ensure ubuntu distro sources are available
+  ansible.builtin.deb822_repository:
+    name: ubuntu
+    components: [ main, restricted, universe, multiverse ]
+    suites:
+    - "{{ansible_distribution_release }}"
+    - "{{ansible_distribution_release }}-updates"
+    - "{{ansible_distribution_release }}-backports"
+    - "{{ansible_distribution_release }}-security"
+    types: [ deb ]
+    uris: http://mirrors.accretive-networks.net/ubuntu/
+    signed_by: /etc/apt/trusted.gpg.d/ubuntu-keyring-2018-archive.gpg
+  register: repo4
 
 - name: Update repository sources
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
-    cache_valid_time: 86400
+  when: repo1.changed or repo2.changed or repo3.changed or repo4.changed
 
 - name: Install system packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ ubuntu_packages }}"
 
 - name: Remove akonadi-dependent packages
-  apt:
+  ansible.builtin.apt:
     autoremove: yes
     name:
     - akonadi-server

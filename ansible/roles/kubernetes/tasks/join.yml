@@ -1,4 +1,6 @@
 ---
+# TODO: invoke token create on master to generate token and cert hash
+
 - name: Set kubeadm configuration
   ansible.builtin.copy:
     dest: /etc/kubernetes/kubeadm-config.yaml
@@ -10,6 +12,8 @@
           # Discover host IP rather than service vip, misleading error is:
           #  "could not find a JWS signature in the cluster-info ConfigMap"
           apiServerEndpoint: "{{ k8s.cplane_hostip }}:6443"
+          caCertHashes:
+          - "manually copy from token create --print-join-command"
           token: "{{ vault_k8s.join_token }}"
           unsafeSkipCAVerification: True
       nodeRegistration:
@@ -25,6 +29,7 @@
   register: reset_cluster
   when: not kubeadm_ca.stat.exists
 
+# This will fail because of stale token and hash values
 - name: Join to Kubernetes cluster
   command: kubeadm join --config /etc/kubernetes/kubeadm-config.yaml
   register: join_cluster

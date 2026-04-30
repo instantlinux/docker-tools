@@ -31,9 +31,31 @@
     dest: /etc/ntpsec/ntp.conf
     src: ntp.conf.j2
   notify: Restart ntpd
-  when: ntp.service.enabled and ansible_distribution_version >= '24.04'
+  when: ntp.service.enabled and ansible_distribution_version == '24.04'
+
+- name: Override directory for ntp-rs systemd unit file
+  file:
+    dest: /etc/systemd/system/ntpd-rs.service.d
+    state: directory
+  when: ntp.service.enabled and ansible_distribution_version >= '26.04'
+
+- name: Allow ntp-rs to bind on port 123
+  copy:
+    dest: /etc/systemd/system/ntpd-rs.service.d/override.conf
+    content: |
+      [Service]
+      AmbientCapabilities=CAP_SYS_TIME CAP_NET_BIND_SERVICE
+  when: ntp.service.enabled and ansible_distribution_version >= '26.04'
+
+- name: ntp-rs config
+  ansible.builtin.template:
+    dest: /etc/ntpd-rs/ntp.toml
+    src: ntp.toml.j2
+  notify: Restart ntpd
+  when: ntp.service.enabled and ansible_distribution_version >= '26.04'
 
 - name: NTP service
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     enabled: "{{ ntp.service.enabled }}"
     name: "{{ ntp.service.name }}"
+    daemon_reload: yes
