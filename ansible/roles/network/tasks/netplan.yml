@@ -5,7 +5,8 @@
         {'network': {'ethernets': {network.interface: {
          'addresses': network.addresses,
          'dhcp4': False,
-         'gateway4': network.gateway,
+         'optional': network.optional,
+         'routes': network.routes,
          'nameservers': {
             'search': ansible_dns.search,
             'addresses': network.nameservers}}}}},

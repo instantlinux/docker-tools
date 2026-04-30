@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+[observability]
+log-level = "info"
+observation-path = "/var/run/ntpd-rs/observe"
+
+{% if 'servers' in ntp %}
+{% for server in ntp.servers %}
+[[source]]
+mode = "server"
+address = "{{ server }}"
+{% endfor %}
+{% endif %}
+{% if 'pool' in ntp %}
+{% for server in ntp.pool %}
+[[source]]
+mode = "pool"
+address = "{{ server }}"
+count = 4
+{% endfor %}
+{% endif %}
+
+[[server]]
+listen = "0.0.0.0:123"
+
+[synchronization]
+single-step-panic-threshold = 1800
