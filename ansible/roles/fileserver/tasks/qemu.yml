@@ -1,6 +1,6 @@
 ---
 - name: QEMU virt-manager package
-  ansbile.builtin.package:
+  ansible.builtin.package:
     name: virt-manager
 
 - name: DBUS package to support virt-manager dconf under X11
