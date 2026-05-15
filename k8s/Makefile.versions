@@ -1,11 +1,14 @@
 # Third-party versions
 export VERSION_CERT_MANAGER   ?= 1.19.2
 export VERSION_DEFAULTBACKEND ?= 1.5
-export VERSION_FLANNEL        ?= 0.28.0
+export VERSION_FLANNEL        ?= 0.28.4
 export VERSION_HELM           ?= 4.1.0
 export VERSION_INGRESS_NGINX  ?= 1.14.1
 export VERSION_METRICS        ?= 2.18.0
-export VERSION_NODE_LOCAL_DNS ?= 1.34.3
+export VERSION_NODE_LOCAL_DNS ?= 1.35.4
+VERSION_SOPS                  ?= 3.13.0
+SOPS_SHA                      ?= f2e5ed5e57376789b0e12793adc848e54c2338906e51392246dd03461b320157
 
 # Held back versions - more effort to upgrade
-export VERSION_CALICO        ?= 3.16.5
+export VERSION_CALICO         ?= 3.16.5
+export VERSION_ETCD           ?= 3.5.15-0

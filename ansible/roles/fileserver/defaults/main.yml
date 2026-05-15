@@ -31,8 +31,11 @@ ubuntu_packages:
   - unison
   - vsftpd
 
-virtualbox_defaults:
+# Virtualization technology: QEMU (default) and/or VirtualBox
+qemu:
   enabled: true
+virtualbox_defaults:
+  enabled: false
   apt_repo:
     url: http://download.virtualbox.org/virtualbox/debian
     key_urls:

@@ -1,0 +1,16 @@
+---
+- name: QEMU virt-manager package
+  ansbile.builtin.package:
+    name: virt-manager
+
+- name: DBUS package to support virt-manager dconf under X11
+  ansible.builtin.package:
+    name: dbus-x11
+
+- name: Set up udev permissions for libvirt group members
+  ansible.builtin.copy:
+    content: |
+      # Managed by ansible
+      ENV{DM_VG_NAME}=="virt", OWNER="libvirt-qemu", GROUP="libvirt", MODE="0660"
+    dest: /etc/udev/rules.d/65-libvirt.rules
+  notify: Reload udev rules

@@ -18,11 +18,10 @@ sops: /usr/local/bin/sops
 ifeq ($(shell uname -s),Darwin)
 	brew install sops
 else
-	curl -sLo /tmp/sops.deb \
-	  https://github.com/mozilla/sops/releases/download/$(VERSION_SOPS)/sops_$(VERSION_SOPS)_amd64.deb
-	@cd /tmp && echo "$(SOPS_SHA)  sops.deb" | sha256sum -c
-	@sudo dpkg -i /tmp/sops.deb
-	@rm /tmp/sops.deb
+	curl -sLo /tmp/sops \
+	  https://github.com/getsops/sops/releases/download/v$(VERSION_SOPS)/sops-v$(VERSION_SOPS).linux.amd64
+	@cd /tmp && echo "$(SOPS_SHA)  sops" | sha256sum -c
+	@sudo mv /tmp/sops /usr/local/bin && chmod +x $@
 endif
 
 gen_sops_gpg:

@@ -9,7 +9,6 @@ ntp_defaults:
   pool:
   - 0.pool.ntp.org
   - 1.pool.ntp.org
-  - 2.pool.ntp.org
   service:
     enabled: yes
     name: "{{ 'ntpd-rs' if ansible_os_family == 'Debian' else 'ntpd' }}"

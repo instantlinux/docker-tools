@@ -27,3 +27,8 @@
     mode: 0600
     owner: mythtv
     src: config.xml.j2
+
+- name: MythTV command-line settings (fix for 4K resolution)
+  ansible.builtin.template:
+    dest: /etc/mythtv/session-settings
+    src: session-settings.j2

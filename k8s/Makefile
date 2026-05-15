@@ -67,9 +67,6 @@
 ACTION          ?= apply
 CLUSTER         ?= kubernetes
 ADMIN_CTX       ?= --context=kubernetes-admin@$(CLUSTER)
-VERSION_SOPS    ?= 3.2.0
-SOPS_SHA        ?= dd12ccaeef8ed72692023fb081d63538e4a0e458e29dc21b421b38ff3e320a74
-STACKS = $(basename $(wildcard *.yaml))
 
 include Makefile.vars
 include Makefile.versions
@@ -81,13 +78,7 @@ else
   NOTICE=Deploying
 endif
 
-all: imports $(INSTALL_YAML) $(STACKS)
-
-$(STACKS)::
-	@echo --$(NOTICE) $@--
-	@SERVICE_NAME=$(@F) \
-	  envsubst < $@.yaml | kubectl $(ACTION) --context=sudo \
-	  --namespace $(K8S_NAMESPACE) -f -
+all: imports $(INSTALL_YAML)
 
 ##########
 # Installation
