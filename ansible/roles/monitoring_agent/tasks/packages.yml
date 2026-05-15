@@ -1,50 +1,19 @@
 ---
 # packages.yml
 
-- name: Zypper repositories
-  command: zypper addrepo {{ item.repo }} {{ item.name }}
-  args:
-    creates: /etc/zypp/repos.d/{{ item.name}}.repo
-  with_items: "{{ opensuse_repos }}"
-  when: ansible_os_family == 'Suse'
-
 - name: Install system packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ ubuntu_packages }}"
-  when: ansible_os_family == 'Debian'
 
 - name: Install extra packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ ubuntu_packages_extra }}"
   when: ansible_distribution_version >= '18.04'
 
-- name: Install system packages
-  zypper:
-    name: "{{ opensuse_packages }}"
-  when: ansible_os_family == 'Suse'
-
-- name: Minimum version 7.x smartmontools
-  shell: |
-    set -e
-    wget -O /tmp/smart.tar.gz https://downloads.sourceforge.net/project/smartmontools/smartmontools/{{
-      smartmon_download.version}}/smartmontools-{{smartmon_download.version}}.tar.gz
-    echo "{{ smartmon_download.checksum }}  /tmp/smart.tar.gz" | shasum -c
-    tar xf /tmp/smart.tar.gz -C /tmp
-    chdir /tmp/smartmontools-{{ smartmon_download.version }}
-    ./configure && make install
-    rm -r /tmp/smart.tar.gz /tmp/smartmontools-{{ smartmon_download.version }}
-  args:
-    creates: /usr/local/sbin/smartctl
-  when: ansible_distribution_version < '20.04'
-
 - name: Python packages for monitoring
-  command: pip3 install --break-system-packages {{ pip_packages|join(' ') }}
+  ansible.builtin.command: pip3 install --break-system-packages {{
+    pip_packages|join(' ') }}
   args:
-    creates: /usr/local/lib/python3.12/dist-packages/mdstat
-  when: ansible_distribution_version >= '24.04'
-
-- name: Python packages for monitoring
-  command: pip3 install {{ pip_packages|join(' ') }}
-  args:
-    creates: /usr/local/lib/python3.10/dist-packages/mdstat
-  when: ansible_distribution_version < '24.04'
+    creates: /usr/local/lib/python{{
+      ansible_python.version.major }}.{{ ansible_python.version.minor
+      }}/dist-packages/mdstat

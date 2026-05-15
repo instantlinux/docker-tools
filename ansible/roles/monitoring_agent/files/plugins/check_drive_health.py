@@ -73,6 +73,9 @@ SMART_ATTR_CHECKS = {
                    'device serial number, in YAML format')
 @click.option('--raid/--no-raid', default=True,
               help='Examine RAID devices found in /proc/mdstat [true]')
+@click.option('--exclude', '-x',
+              type=str, multiple=True,
+              help='Exclude device')
 @click.option('--warn-temp', '-w', default=50,
               type=int,
               help='Temperature warning threshold [50]')
@@ -82,11 +85,13 @@ SMART_ATTR_CHECKS = {
 @click.option('--warn-spare', default=50,
               type=int,
               help='Spare-percentage warning threshold for nvme [50]')
-def main(device, error_list, raid, warn_temp, crit_temp, warn_spare):
+def main(device, error_list, raid, exclude, warn_temp, crit_temp, warn_spare):
     if 'all' in device:
         # Get all block storage devices except loopback (major=7)
         device = [item['name'] for item in
                   json.load(os.popen('lsblk -dJ -e 7'))['blockdevices']]
+    exclude = [item.removeprefix('/dev/') for item in exclude]
+    device = [item for item in device if item not in exclude]
     error_items = yaml.safe_load(error_list) if error_list else {}
     retval, messages = STATUS_OK, ([], [], [], [])
     for drive in device:
