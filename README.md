@@ -83,6 +83,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | [secondshot](https://github.com/instantlinux/secondshot) | [![](https://img.shields.io/docker/v/instantlinux/secondshot?sort=date)](https://hub.docker.com/r/instantlinux/secondshot "Version badge") | rsnapshot-based backups |
 | splunk | ** | the free version |
 | vaultwarden | ** | BitWarden-compatible self-hosted backend |
+| virt-manager | ** | GUI and CLI for QEMU/KVM virtual machines |
 
 **Email**
 

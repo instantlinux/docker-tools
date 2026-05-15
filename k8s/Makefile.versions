@@ -11,4 +11,4 @@ SOPS_SHA                      ?= f2e5ed5e57376789b0e12793adc848e54c2338906e51392
 
 # Held back versions - more effort to upgrade
 export VERSION_CALICO         ?= 3.16.5
-export VERSION_ETCD           ?= 3.5.15-0
+export VERSION_ETCD           ?= 3.5.15-0  # for install/k8s-backup cron
