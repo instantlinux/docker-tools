@@ -4,6 +4,13 @@
     name: smbd
     state: restarted
 
+- name: Reload udev rules
+  ansible.builtin.command: "{{ item }}"
+  loop:
+    - udevadm control --reload-rules
+    - udevadm trigger
+  become: yes
+
 - name: Restart vsftpd
   service:
     name: vsftpd

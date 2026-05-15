@@ -51,6 +51,9 @@
     enabled: no
   when: not samba.enabled
 
+- import_tasks: qemu.yml
+  when: qemu.enabled
+
 - import_tasks: virtualbox.yml
   when: virtualbox.enabled
 

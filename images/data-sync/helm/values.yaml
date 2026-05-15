@@ -123,6 +123,7 @@ configmap:
       ignore = Path data-sync/jira/home/monitor/ConnectionPoolGraph.rrd4j
       ignore = Path data-sync/jira/home/monitor/DatabaseReadWritesGraph.rrd4j
       ignore = Path data-sync/jira/home/log/jfr
+      ignore = Path data-sync/jira/home/plugins/.osgi-plugins
       ignore = Path data-sync/jira/logs/access_*
       ignore = Path data-sync/nexus/db/accesslog
       ignore = Path data-sync/nexus/db/analytics/analytics*

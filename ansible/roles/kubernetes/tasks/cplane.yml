@@ -9,6 +9,19 @@
     src: kubeadm-config-cplane.j2
     dest: /etc/kubernetes/kubeadm-config.yaml
 
+- name: Directory for locally defined k8s objects
+  ansible.builtin.file:
+    mode: 0700
+    path: /etc/kubernetes/local
+    state: directory
+
+- name: Set up encryption config in path available to kube-apiserver
+  ansible.builtin.template:
+    src: api-crypt.conf.j2
+    dest: /etc/kubernetes/local/api-crypt.conf
+    mode: 0600
+  when: "'encryption_key' in vault_k8s"
+
 # TODO: run_once is not supported with strategy: free
 - name: Init cluster if needed
   include_tasks: cplane_init.yml
@@ -64,18 +77,6 @@
       [Service]
       CPUAccounting=true
       MemoryAccounting=true
-
-- name: Set up encryption config in path available to kube-apiserver
-  ansible.builtin.template:
-    src: secrets.conf.j2
-    dest: /etc/kubernetes/pki/secrets.conf
-    mode: 0600
-
-- name: Adjust kube-apiserver config - encrypt etcd values
-  ansible.builtin.lineinfile:
-    path: /etc/kubernetes/manifests/kube-apiserver.yaml
-    insertafter: etcd-servers=https://127.0.0.1:2379
-    line: '    - --encryption-provider-config=/etc/kubernetes/pki/secrets.conf'
 
 - name: Create / restrict directory for etcd backups
   ansible.builtin.file:

@@ -12,7 +12,7 @@ bootstrapTokens:
   groups:
   - system:bootstrappers:kubeadm:default-node-token
 localAPIEndpoint:
-  advertiseAddress: {{ k8s.cplane_vip }}
+  advertiseAddress: {{ k8s.cplane_hostip }}
   bindPort: 6443
 nodeRegistration:
   criSocket: {{ k8s.cri_socket }}
@@ -41,7 +41,7 @@ apiServer:
   - {{ k8s.cplane_vip }}
   extraArgs:
   - name: encryption-provider-config
-    value: /etc/kubernetes/pki/secrets.conf
+    value: /etc/kubernetes/local/api-crypt.conf
   - name: oidc-issuer-url
     value: {{ oidc.issuer_url }}
   - name: oidc-client-id
@@ -54,6 +54,15 @@ apiServer:
     value: {{ oidc.username_prefix }}
   - name: oidc-groups-prefix
     value: {{ oidc.group_prefix }}
+  - name: oidc-ca-file
+    value: {{ oidc.ca-file }}
+  extraVolumes:
+  - name: local-config
+    hostPath: "/etc/kubernetes/local"
+    mountPath: "/etc/kubernetes/local"
+    readOnly: true
+    pathType: DirectoryOrCreate
+controlPlaneEndpoint: "{{ k8s.cplane_vip }}:6443"
 dns:
   # Workaround for bug 112131; never got fixed as of k8s 1.31:
   # https://github.com/kubernetes/kubernetes/issues/112131

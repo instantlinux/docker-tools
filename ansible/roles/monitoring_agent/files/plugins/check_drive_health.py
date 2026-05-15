@@ -129,13 +129,15 @@ def check_smart(drive, error_items, warn_temp, crit_temp, warn_spare):
 
     if not dot_get(smart, 'smart_status.passed'):
         return STATUS_CRIT, 'CRIT: serial=%s smart_status not OK' % serial_num
-    if temperature > crit_temp:
-        return STATUS_CRIT, 'CRIT: %s serial=%s temp=%d exceeds threshold' % (
-            drive, serial_num, temperature)
-    elif temperature > warn_temp:
-        status = STATUS_WARN
-        message = 'WARN: %s serial=%s, temp=%d exceeds threshold' % (
-            drive, serial_num, temperature)
+    if temperature:
+        if temperature > crit_temp:
+            return STATUS_CRIT, \
+                'CRIT: %s serial=%s temp=%d exceeds threshold' % (
+                    drive, serial_num, temperature)
+        elif temperature > warn_temp:
+            status = STATUS_WARN
+            message = 'WARN: %s serial=%s, temp=%d exceeds threshold' % (
+                drive, serial_num, temperature)
     if nvme_log:
         spare_threshold = max(nvme_log.get('available_spare_threshold', 0),
                               warn_spare)
@@ -158,8 +160,9 @@ def check_smart(drive, error_items, warn_temp, crit_temp, warn_spare):
                     'CRIT' if status == STATUS_CRIT else 'WARN',
                     drive, serial_num, key, item['val'])
     if status == STATUS_OK:
-        message = '%s OK: temp=%d serial=%s cap=%.3fT' % (
-            drive, temperature, serial_num, capacity / 1e12)
+        message = '%s OK:%s serial=%s cap=%.3fT' % (
+            drive, ' temp=%s' % temperature if temperature else '', serial_num,
+            capacity / 1e12)
     return status, message
 
 
