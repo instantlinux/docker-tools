@@ -1,0 +1,62 @@
+# Default values for valkey.
+deployment:
+  command: ["valkey-server", "/usr/local/etc/valkey/valkey.conf"]
+  containerPorts: [ containerPort: 6379 ]
+  env:
+    valkey_extra_flags: ""
+  podSecurityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+
+volumeMounts:
+- mountPath: /usr/local/etc/valkey/valkey.conf
+  name: config
+  subPath: valkey.conf
+- mountPath: /data
+  name: data
+volumes:
+- name: config
+  configMap:
+    name: valkey-config
+- name: data
+  hostPath:
+    path: /var/lib/docker/k8s-volumes/share/immich/valkey
+
+livenessProbe:
+  exec:
+    command: [ sh, -c, valkey-cli ping | grep PONG ]
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+readinessProbe:
+  exec:
+    command: [ sh, -c, valkey-cli ping | grep PONG ]
+  timeoutSeconds: 5
+
+image:
+  repository: valkey/valkey
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  ports: [ port: 6379 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
+ingress:
+  enabled: false
+
+configmap:
+  name: valkey-config
+  data:
+    valkey.conf: |
+      port 6379
+      dir /data
+      loglevel notice

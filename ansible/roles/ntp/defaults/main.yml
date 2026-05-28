@@ -3,6 +3,7 @@
 ntp_defaults:
   driftfile: /var/lib/ntpsec/ntp.drift
   leapfile: /usr/share/zoneinfo/leap-seconds.list
+  log_level: warn
   query_ok:
   - localhost
   - ::1

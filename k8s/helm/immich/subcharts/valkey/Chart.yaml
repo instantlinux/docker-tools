@@ -1,12 +1,13 @@
 apiVersion: v2
-name: vaultwarden
-description: Self-hosted bitwarden vault service
+name: valkey
+description: Valkey kv-store
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
+- https://hub.docker.com/r/valkey/valkey
 type: application
-version: 0.1.10
-appVersion: "1.36.0-alpine"
+version: 0.1.0
+appVersion: "9.1.0-alpine"
 dependencies:
 - name: chartlib
   version: 0.1.8

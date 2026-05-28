@@ -1,12 +1,14 @@
 apiVersion: v2
-name: vaultwarden
-description: Self-hosted bitwarden vault service
+name: ml
+description: Immich machine-learning
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
+- ghcr.io/immich-app/immich-machine-learning
 type: application
-version: 0.1.10
-appVersion: "1.36.0-alpine"
+version: 0.1.0
+# specify version tag from hub.docker.com in top-level values.yaml
+appVersion: "0.0.1"
 dependencies:
 - name: chartlib
   version: 0.1.8

@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 [observability]
-log-level = "info"
+log-level = "{{ ntp.log_level }}"
 observation-path = "/var/run/ntpd-rs/observe"
 
 {% if 'servers' in ntp %}

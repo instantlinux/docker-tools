@@ -55,7 +55,7 @@ apiServer:
   - name: oidc-groups-prefix
     value: {{ oidc.group_prefix }}
   - name: oidc-ca-file
-    value: {{ oidc.ca-file }}
+    value: {{ oidc.ca_file }}
   extraVolumes:
   - name: local-config
     hostPath: "/etc/kubernetes/local"
