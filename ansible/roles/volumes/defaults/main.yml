@@ -5,7 +5,7 @@
 fs_type: ext4
 
 # LUKS-encrypted volumes
-luks_volume_devaults: {}
+luks_volume_defaults: {}
 # example-volume:
 #   inodes: 100
 #   path: {{ local_k8s_root }}/backup
