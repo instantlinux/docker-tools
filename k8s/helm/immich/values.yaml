@@ -5,18 +5,20 @@ tlsHostname: photos.example.com
 deployment:
   env:
     # Note - the documentation of environment variables for immich under docker
-    #  is misleading. Do *not* use those variables under kubernetes, see the
-    #  volume mounts below.
+    #  is misleading. (See https://docs.immich.app/guides/custom-locations/ .)
+    #  Do *not* use those variables under kubernetes, see the volume mounts
+    #  below.
     db_database_name: immich
     db_hostname: immich-postgres
     db_username: immich
-#   immich_config_file: /config/immich-config.yaml
-    immich_machine_learning_url: http://k8s00:3003
+    immich_machine_learning_url: http://immich-ml:3003
     immich_watch_filesystem: "no"
-#   immich_workers_include: api
     redis_hostname: immich-valkey
     redis_port: 6379
     tz: UTC
+
+    # Add this if you want to configure via ConfigMap rather than database:
+    # immich_config_file: /config/immich-config.yaml
   xenv:
   - name: DB_PASSWORD
     valueFrom:
@@ -31,7 +33,8 @@ deployment:
     # gid values for video, render
     supplementalGroups: [ 44, 891 ]
   securityContext:
-    # TODO define GPU access properly instead of granting excess permissions
+    # GPU access requires privileges. The alternative is somewhat complicated,
+    #  see https://github.com/UntouchedWagons/K3S-Intel
     privileged: true
   resources:
     limits:
@@ -49,8 +52,8 @@ livenessProbe:
   httpGet:
     path: /api/server/ping
     port: 2283
-  # Override this with much larger value if "Reindexing clip_index" on startup
-  initialDelaySeconds: 120
+  # Override this with much larger value if "Reindexing XXX_index" on startup
+  initialDelaySeconds: 300
 readinessProbe:
   httpGet:
     path: /api/server/ping
@@ -64,15 +67,17 @@ volumeMounts:
 # Manually create the subdirectories you want on the NAS, and chown them
 #  to the immich user (default above is uid 1000). Here, it's assumed that
 #  four of the above directories will be subdirectories of an immich
-#  subdirectory on your NAS photo storage volume. Override the volumeMounts
-#  if you want a different layout than the one recommended here.
+#  subdirectory of the primary external-library photo storage volume on your
+#  NAS. Define the top-level NAS volume as an nfs-client PVC 'pictures' before
+#  applying this helm chart. Override the volumeMounts if you want a different
+#  layout than the one recommended here.
 - name: ssd
   mountPath: /data
   subPath: html
 - name: config
   mountPath: /config/immich-config.yaml
   subPath: immich-config.yaml
-- name: dri
+- name: gpu
   mountPath: /dev/dri
 - name: nas
   mountPath: /mnt/photos
@@ -107,11 +112,12 @@ volumes:
 - name: config
   configMap:
     name: immich
-- name: ssd
-  hostPath: { path: /var/lib/docker/k8s-volumes/immich }
-- name: dri
+    optional: true
+- name: gpu
   hostPath:
     path: /dev/dri
+- name: ssd
+  hostPath: { path: /var/lib/docker/k8s-volumes/immich }
 - name: nas
   persistentVolumeClaim:
     claimName: pictures
@@ -152,6 +158,7 @@ autoscaling:
 
 configmap:
   name: immich
+  enabled: false
   data:
     immich-config.yaml: |
       # Add custom settings here
@@ -187,7 +194,6 @@ postgres:
   - name: immich-config
     configMap:
       name: immich
-  psqlTag: 17.7
   image:
     repository: ghcr.io/immich-app/postgres
     tag: 17-vectorchord0.5.3-pgvector0.8.1
@@ -197,4 +203,4 @@ ml:
   image:
     tag: v2.7.5
   env:
-    immich_log_level: debug
+    immich_log_level: info
