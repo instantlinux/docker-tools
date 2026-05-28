@@ -1,0 +1,206 @@
+# Default values for immich.
+
+tlsHostname: photos.example.com
+
+deployment:
+  env:
+    # Note - the documentation of environment variables for immich under docker
+    #  is misleading. (See https://docs.immich.app/guides/custom-locations/ .)
+    #  Do *not* use those variables under kubernetes, see the volume mounts
+    #  below.
+    db_database_name: immich
+    db_hostname: immich-postgres
+    db_username: immich
+    immich_machine_learning_url: http://immich-ml:3003
+    immich_watch_filesystem: "no"
+    redis_hostname: immich-valkey
+    redis_port: 6379
+    tz: UTC
+
+    # Add this if you want to configure via ConfigMap rather than database:
+    # immich_config_file: /config/immich-config.yaml
+  xenv:
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: immich
+        key: immich-db-password
+  containerPorts:
+  - containerPort: 2283
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    # gid values for video, render
+    supplementalGroups: [ 44, 891 ]
+  securityContext:
+    # GPU access requires privileges. The alternative is somewhat complicated,
+    #  see https://github.com/UntouchedWagons/K3S-Intel
+    privileged: true
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 6144Mi
+    requests:
+      cpu: 1100m
+      memory: 768Mi
+  nodeSelector:
+    service.immich: allow
+  strategy:
+    type: Recreate
+
+livenessProbe:
+  httpGet:
+    path: /api/server/ping
+    port: 2283
+  # Override this with much larger value if "Reindexing XXX_index" on startup
+  initialDelaySeconds: 300
+readinessProbe:
+  httpGet:
+    path: /api/server/ping
+    port: 2283
+volumeMounts:
+# The directory layout for immich is fixed; from the microservice instance,
+#  there should be six subdirectories mounted under /data:
+#
+#     backups encoded-video library profile thumbs upload
+#
+# Manually create the subdirectories you want on the NAS, and chown them
+#  to the immich user (default above is uid 1000). Here, it's assumed that
+#  four of the above directories will be subdirectories of an immich
+#  subdirectory of the primary external-library photo storage volume on your
+#  NAS. Define the top-level NAS volume as an nfs-client PVC 'pictures' before
+#  applying this helm chart. Override the volumeMounts if you want a different
+#  layout than the one recommended here.
+- name: ssd
+  mountPath: /data
+  subPath: html
+- name: config
+  mountPath: /config/immich-config.yaml
+  subPath: immich-config.yaml
+- name: gpu
+  mountPath: /dev/dri
+- name: nas
+  mountPath: /mnt/photos
+  readOnly: true
+- name: nas
+  mountPath: /data/backups
+  subPath: immich/backups
+  readOnly: false
+- name: nas
+  mountPath: /data/library
+  subPath: immich/library
+  readOnly: false
+- name: nas
+  mountPath: /data/profile
+  subPath: immich/profile
+  readOnly: false
+- name: nas
+  mountPath: /data/upload
+  subPath: immich/upload
+  readOnly: false
+# These can be left on ssd for single-instance microservices deployment
+# - name: ssd
+#   mountPath: /data/encoded-video
+#   subPath: encoded-video
+#   readOnly: false
+# - name: ssd
+#   mountPath: /data/thumbs
+#   subPath: thumbs
+#   readOnly: false
+
+volumes:
+- name: config
+  configMap:
+    name: immich
+    optional: true
+- name: gpu
+  hostPath:
+    path: /dev/dri
+- name: ssd
+  hostPath: { path: /var/lib/docker/k8s-volumes/immich }
+- name: nas
+  persistentVolumeClaim:
+    claimName: pictures
+
+image:
+  repository: ghcr.io/immich-app/immich-server
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 2283 }
+  type: ClusterIP
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "0"
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_cookie_path: "";
+
+autoscaling:
+  enabled: false
+
+configmap:
+  name: immich
+  enabled: false
+  data:
+    immich-config.yaml: |
+      # Add custom settings here
+
+# Subchart parameters
+
+valkey:
+  enabled: true
+  image:
+    tag: 9.1.0-alpine
+
+postgres:
+  enabled: true
+  statefulset:
+    env:
+      postgres_user: immich
+      postgres_db: immich
+    xenv:
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: immich-db-password
+          name: immich
+    resources:
+      limits:
+        memory: 4096Mi
+      requests:
+        memory: 512Mi
+  volumeMounts:
+  - mountPath: /var/lib/postgresql/data
+    name: pgdata
+  volumes:
+  - name: immich-config
+    configMap:
+      name: immich
+  image:
+    repository: ghcr.io/immich-app/postgres
+    tag: 17-vectorchord0.5.3-pgvector0.8.1
+
+ml:
+  enabled: true
+  image:
+    tag: v2.7.5
+  env:
+    immich_log_level: info

@@ -13,8 +13,6 @@ passwordSalt: CkEFy/t4IpPhjJoem3NRdPt/UD8gOS
 redis:
   port: 6379
   tag: 6.2.4-alpine
-# TODO: remove, versionPrev is (finally!) unneeded
-versionPrev: 25.0.3.2
 
 deployment:
   command: [/bin/bash]
@@ -51,6 +49,10 @@ deployment:
     requests:
       cpu: 100m
       memory: 768Mi
+  nodeSelector:
+    service.nextcloud: allow
+  strategy:
+    type: Recreate
 
 volumeMounts:
 - mountPath: /var/www/html

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: valkey
+description: Valkey kv-store
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://hub.docker.com/r/valkey/valkey
+type: application
+version: 0.1.0
+appVersion: "9.1.0-alpine"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools

@@ -37,7 +37,7 @@ kubeadm suite:
 * Local-volume sync
 * Automatic certificate issuing/renewal with Letsencrypt
 
-Helm has become the standard mechanism for deploying kubernetes resources. This repo provides a library, chartlib, which handles almost all of the logic and tedium of golang templating. Look in the values.yaml file of each of the helm charts published here for parameters that you can override by supplying a helm overrides yaml file.
+Helm has become the standard mechanism for deploying kubernetes resources. This repo provides a time-tested library, [chartlib](https://github.com/instantlinux/docker-tools/tree/main/k8s/helm/chartlib), which provides a simple abstraction for almost all of the logic and tedium of golang templating. Look in the values.yaml file of each of the helm charts published here for parameters that you can override by supplying a helm overrides yaml file. Most chart libraries you find online are over-complicated and constantly changing; this library has survived years of changes in Kubernetes releases without needing modification.
 
 ### Requirements and cost
 

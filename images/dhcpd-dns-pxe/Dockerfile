@@ -7,8 +7,8 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.name=dhcpd-dns-pxe \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-ARG KEA_VERSION=3.0.2-r0
-ARG DNSMASQ_VERSION=2.91-r0
+ARG KEA_VERSION=3.0.3-r0
+ARG DNSMASQ_VERSION=2.91-r1
 
 ENV DB_HOST=db00 \
     DB_NAME=kea \
