@@ -115,7 +115,7 @@ volumes:
 - name: nas
   persistentVolumeClaim:
     claimName: pictures
-  
+
 image:
   repository: ghcr.io/immich-app/immich-server
   pullPolicy: IfNotPresent
