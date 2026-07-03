@@ -21,6 +21,8 @@ deployment:
   replicas: 2
   securityContext:
     fsGroup: 1000
+  strategy:
+    type: Recreate
 volumeMounts:
 - name: cache
   mountPath: /var/cache/owntone
