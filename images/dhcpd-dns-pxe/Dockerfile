@@ -1,4 +1,4 @@
-FROM alpine:3.23
+FROM alpine:3.24
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 ARG KEA_VERSION=3.0.3-r0
-ARG DNSMASQ_VERSION=2.91-r1
+ARG DNSMASQ_VERSION=2.92_p2-r0
 
 ENV DB_HOST=db00 \
     DB_NAME=kea \

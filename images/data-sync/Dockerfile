@@ -1,4 +1,4 @@
-FROM alpine:3.23
+FROM alpine:3.24
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -15,9 +15,9 @@ ENV PEERNAME= \
     SSHKEY1=data-sync-sshkey1 \
     SSHKEY2=data-sync-sshkey2
 
-ARG UNISON_VERSION=2.53.8
-ARG OCAML_VERSION=4.14.2-r2
-ARG UNISON_SHA=d0d30ea63e09fc8edf10bd8cbab238fffc8ed510d27741d06b5caa816abd58b6
+ARG UNISON_VERSION=2.54.0
+ARG OCAML_VERSION=4.14.3-r0
+ARG UNISON_SHA=0f14154611a2dfebb8c229be85ceda29a750eace4fb75d06e0d43fe5b58a6e87
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 
 COPY src/ /root/src/

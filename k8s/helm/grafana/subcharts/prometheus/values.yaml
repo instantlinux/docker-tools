@@ -9,6 +9,12 @@ deployment:
   containerPorts: [ containerPort: 9090 ]
   nodeSelector:
     service.prometheus: allow
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
 volumeMounts:
 - mountPath: /etc/prometheus
   name: config
