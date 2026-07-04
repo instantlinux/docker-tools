@@ -38,7 +38,6 @@ RUN \
     vim xmltv
 
 COPY src/ /root/
-
 RUN \
   usermod -u $MYTHTV_UID -s /bin/bash mythtv && \
   mkdir -p /var/lib/mythtv && \
