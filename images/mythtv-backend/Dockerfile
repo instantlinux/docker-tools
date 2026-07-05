@@ -23,7 +23,7 @@ ARG MYTHTV_VERSION=2:36.0+fixes.202607020123.7153bb6e34~ubuntu26.04.1
 ARG MYTHLINK_SHA=459cb8b60adae4b631a95a9cfb1b41dcb959cc4a0b9053582a711d58b8d8a0d2
 
 RUN \
-  rm /bin/pebble /usr/bin/pebble && \
+  rm /usr/bin/pebble && \
   apt-get -yq update && \
   apt-get install -yq gnupg locales software-properties-common wget && \
   add-apt-repository $MYTHTV_PPA && \
