@@ -25,8 +25,3 @@ keycloak::
 	@echo Starting $@
 	@cd $@ ; KEYCLOAK_DB_PASSWORD=$(shell cat \
 	 /var/adm/secrets/keycloak-db-password) docker compose up -d
-
-nagios::
-	@echo Starting $@
-	docker pull $(REGISTRY_URI)/nagiosql:latest; \
-	cd $@ ; docker compose up -d
