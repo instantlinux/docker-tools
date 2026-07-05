@@ -1,4 +1,4 @@
-FROM alpine:3.23
+FROM alpine:3.24
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -46,7 +46,7 @@ ENV AIRLINK_HOST= \
     WX_ROOT=/home/weewx/weewx-data \
     WX_USER=weewx
 
-ARG WEEWX_VERSION=5.2.0
+ARG WEEWX_VERSION=5.4.0
 ARG WEEGREEN_VERSION=v0.12
 ARG AIRLINK_VERSION=1.4
 ARG WX_GROUP=dialout

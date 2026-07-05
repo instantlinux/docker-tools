@@ -35,7 +35,8 @@ RUN \
     mythtv-backend=$MYTHTV_VERSION \
     mythtv-common=$MYTHTV_VERSION mythtv-transcode-utils=$MYTHTV_VERSION \
     libmyth-python libmythtv-perl libjson-xs-perl psmisc sudo tzdata v4l-utils \
-    vim xmltv
+    vim xmltv && \
+   apt purge pebble
 
 COPY src/ /root/
 RUN \
