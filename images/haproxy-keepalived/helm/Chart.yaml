@@ -9,6 +9,7 @@ sources:
 type: application
 version: 0.1.23
 appVersion: "3.3.11-alpine-2.3.4-r2"
+#appVersion: "3.3.10-alpine-2.3.4-r3"
 dependencies:
 - name: chartlib
   version: 0.1.8

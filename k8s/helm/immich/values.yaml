@@ -201,6 +201,6 @@ postgres:
 ml:
   enabled: true
   image:
-    tag: v2.7.5
+    tag: v3.0.1
   env:
     immich_log_level: info

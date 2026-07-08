@@ -98,7 +98,7 @@ volumes:
 image:
   repository: alpine
   pullPolicy: IfNotPresent
-  tag: 3.23
+  tag: 3.24
 
 nameOverride: ""
 fullnameOverride: ""

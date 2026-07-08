@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:3.10.8-r0
+FROM instantlinux/postfix:3.11.4-r0
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DOVECOT_VERSION=2.4.3-r1
+ARG DOVECOT_VERSION=2.4.3-r2
 ARG PROCMAIL_VERSION=3.22-r4
 ARG MKCERT_SHA=d1efad065f9ef34da372847ff4a4d5ffd86b97410b303d8a43ea25aa2119c86d
 ARG PROCMAIL_SHA=4ac9f21c3d7dbed5b32e7547da39f4d429de480679b4c856026caea39ca842f9
