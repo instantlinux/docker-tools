@@ -8,7 +8,7 @@ sources:
 type: application
 version: 0.1.0
 # Reminder, update tag for ml instance in values.yaml
-appVersion: v2.7.5
+appVersion: v3.0.1
 dependencies:
 - name: chartlib
   version: 0.1.8

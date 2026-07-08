@@ -49,7 +49,6 @@ statefulset:
     #       key: discovery
     #       name: etcd-token
   env:
-    etcdctl_api: "2"
     etcd_data_dir: /var/lib/etcd
     etcd_enable_v2: "true"
     etcd_initial_cluster: ""

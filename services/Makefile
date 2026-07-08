@@ -15,7 +15,7 @@ endif
 default: $(HOST)
 
 cumbre: haproxy-keepalived nut-upsd
-k2: nagios haproxy-keepalived keycloak restic-server
+k2: haproxy-keepalived keycloak nagios restic-server
 
 $(SERVICES)::
 	@echo Starting $@
