@@ -1,6 +1,9 @@
 # Default values for mysqldump.
 deployment:
   env:
+    compress: zstd
+    compresslevel: "5"
+    compressopts: "--rm -fq"
     hour: "5"
     servers: db00
     skew_seconds: "30"

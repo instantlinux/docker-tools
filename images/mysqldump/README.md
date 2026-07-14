@@ -51,6 +51,9 @@ make mysqldump
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
+| COMPRESS | zstd | command: zstd or bzip2 |
+| COMPRESSLEVEL | 5 | compression level |
+| COMPRESSOPTS | --rm -fq | options for compression |
 | DB_CREDS_SECRETNAME | mysql-backup-creds | Name of secret |
 | HOUR | 3 |cron-syntax backup hour |
 | KEEP_DAYS | 31 | days of snapshots to keep |

@@ -26,6 +26,12 @@ log_entry () {
 log_entry info START
 
 [ -z "$LOCK_FOR_BACKUP" ] || OPT_LOCK_FOR_BACKUP=--lock-for-backup
+[ -z "$COMPRESS" ] && COMPRESS=bzip2
+[ -z "$COMPRESSLEVEL" ] && COMPRESSLEVEL=5
+[ -z "$COMPRESSOPTS" ] && COMPRESSOPTS=-f
+[ -z "$OLD_EXT" ] && OLD_EXT="bz2"
+[ -z "$SKEW_SECONDS" ] && SKEW_SECONDS=15
+COMPRESS="$COMPRESS $COMPRESSOPTS -$COMPRESSLEVEL"
 
 # Grants required for bkp user:
 # GRANT SELECT,RELOAD,SUPER,REPLICATION CLIENT ON *.* TO '$USER'@'192.168.%' IDENTIFIED BY '$PSWD';
@@ -38,10 +44,6 @@ DBNAME_QUERY="SELECT schema_name FROM information_schema.schemata \
  WHERE schema_name NOT IN ('sys','information_schema','performance_schema')"
 
 DESTDIR=/var/backup/mysql
-COMPRESS="bzip2 -f"
-COMPRESS_EXT="bz2"
-OLD_EXT="gz"
-[ "$SKEW_SECONDS" = "" ] && SKEW_SECONDS=15
 
 if [ "$#" -eq "0" ]; then
     echo "Usage: backup_mysql_all <days to keep> <list: instances>"

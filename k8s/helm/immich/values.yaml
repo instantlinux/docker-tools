@@ -39,10 +39,10 @@ deployment:
   resources:
     limits:
       cpu: 4000m
-      memory: 6144Mi
+      memory: 8192Mi
     requests:
       cpu: 1100m
-      memory: 768Mi
+      memory: 1024Mi
   nodeSelector:
     service.immich: allow
   strategy:
