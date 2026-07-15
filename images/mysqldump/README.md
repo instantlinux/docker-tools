@@ -86,6 +86,17 @@ data:
 
 ### Notes
 
+Successful completion of dumps is indicated by updates to the file `mysqldump-status.txt`: if that file's age exceeds 24+ hours, look for failures. If the dump files are complete but storage rapidly runs out because `zstd` or `bzip2` didn't run, run the script manually (using the commands seen in `crontab -l -u mysqldump` from a root shell within the container) and check for errors such as the following:
+```
+mariadb-dump: Got error: 1044: "Access denied for user 'bkp'@'%' to database 'rsnap'" when using LOCK TABLES
+mariadb-dump: Couldn't execute 'show events': Access denied for user 'bkp'@'%' to database 'rsnap' (1044)
+```
+or
+```
+mariadb-dump: Couldn't execute 'SHOW FUNCTION STATUS WHERE Db = 'test'': Column count of mysql.proc is wrong. Expected 22, found 21. Created with MariaDB 120002, now running 120302. Please use mariadb-upgrade to fix this error (1558)
+```
+You may need to grant permissions or run the `mariadb-upgrade` maintenance command on your database, if anything has recently changed on the server.
+
 Dumps run in parallel in order to use available multi-core CPUs
 (mainly for compression). You can limit the number of simultaneous
 runs by changing the value of SKEW_SECONDS, so if your server has many
