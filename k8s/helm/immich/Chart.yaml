@@ -6,7 +6,7 @@ sources:
 - https://github.com/immich-app/immich
 - https://github.com/instantlinux/docker-tools
 type: application
-version: 0.1.0
+version: 0.1.1
 # Reminder, update tag for ml instance in values.yaml
 appVersion: v3.0.1
 dependencies:

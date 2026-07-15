@@ -9,6 +9,9 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
 
 ENV HOUR=3 MINUTE=30 \
     KEEP_DAYS=31 \
+    COMPRESS=zstd \
+    COMPRESSLEVEL=5 \
+    COMPRESSOPTS="--rm -fq" \
     DB_CREDS_SECRETNAME=mysql-backup-creds \
     LOCK_FOR_BACKUP= \
     SERVERS=dbhost \
@@ -25,7 +28,7 @@ RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     addgroup -g $BACKUP_GID backup && \
     adduser -u $UID -G backup -s /bin/sh -g "MariaDB" -D $USERNAME && \
     apk add --update --no-cache \
-     bzip2 dcron mariadb-client=$CLIENT_VERSION tzdata && \
+     zstd dcron mariadb-client=$CLIENT_VERSION tzdata && \
     rm -fr /var/cache/apk/* /var/log/*
 
 COPY *.sh /usr/local/bin/
