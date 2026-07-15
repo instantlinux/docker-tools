@@ -86,7 +86,7 @@ data:
 
 ### Notes
 
-Successful completion of dumps is indicated by updates to the file `mysqldump-status.txt`: if that file's age exceeds 24+ hours, look for failures. If the dump files are complete but storage rapidly runs out because `zstd` or `bzip2` didn't run, run the script manually (using the commands seen in `crontab -l -u mysqldump` from a root shell within the container) and check for errors such as the following:
+Successful completion of dumps is indicated by updates to the file `mysqldump-status.txt`: if that file's age exceeds 24+ hours, look for failures. If the dump files are complete but storage rapidly runs out because `zstd` or `bzip2` didn't run, run the script manually (using the commands seen in `crontab -l -u mysqldump` from a `su - mysqldump` shell within the container) and check for errors such as the following:
 ```
 mariadb-dump: Got error: 1044: "Access denied for user 'bkp'@'%' to database 'rsnap'" when using LOCK TABLES
 mariadb-dump: Couldn't execute 'show events': Access denied for user 'bkp'@'%' to database 'rsnap' (1044)
