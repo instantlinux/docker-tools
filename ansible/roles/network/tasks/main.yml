@@ -4,10 +4,10 @@
     name: "{{ ubuntu_packages }}"
 
 - import_tasks: network_legacy.yml
-  when: ansible_distribution_version < '18.04'
+  when: ansible_facts['distribution_version'] < '18.04'
 
 - import_tasks: netplan.yml
-  when: ansible_distribution_version >= '18.04'
+  when: ansible_facts['distribution_version'] >= '18.04'
 
 - import_tasks: kernel.yml
 - import_tasks: sshd.yml

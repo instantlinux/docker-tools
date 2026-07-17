@@ -9,11 +9,11 @@ journald_conf: "{{ journald_conf_defaults | combine(journald_conf_override) }}"
 nagios_defaults:
   allowed_hosts:
   - localhost
-  nrpe_cfg: "{{ '/etc/nagios' if ansible_os_family == 'Debian' else '/etc'
+  nrpe_cfg: "{{ '/etc/nagios' if ansible_facts['os_family'] == 'Debian' else '/etc'
     }}/nrpe.cfg"
-  nrpe_path: /etc/{{ 'nagios' if ansible_os_family == 'Debian'
+  nrpe_path: /etc/{{ 'nagios' if ansible_facts['os_family'] == 'Debian'
     else 'nrpe.d' }}/nrpe_local.cfg
-  nrpe_service: "{{ 'nagios-nrpe-server' if ansible_os_family == 'Debian'
+  nrpe_service: "{{ 'nagios-nrpe-server' if ansible_facts['os_family'] == 'Debian'
     else 'nrpe' }}"
   nrpe_user: nagios
   local_plugins_path: /usr/local/lib/nagios
