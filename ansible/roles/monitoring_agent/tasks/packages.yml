@@ -8,7 +8,7 @@
 - name: Install extra packages
   ansible.builtin.apt:
     name: "{{ ubuntu_packages_extra }}"
-  when: ansible_distribution_version >= '18.04'
+  when: ansible_facts['distribution_version'] >= '18.04'
 
 - name: Python packages for monitoring
   ansible.builtin.command: pip3 install --break-system-packages {{

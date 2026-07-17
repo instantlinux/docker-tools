@@ -4,7 +4,7 @@
 - name: Install system packages
   ansible.builtin.apt:
     name: "{{ ubuntu_packages }}"
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Create mount points
   ansible.builtin.file:

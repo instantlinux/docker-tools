@@ -40,7 +40,7 @@
       shell: >
         cryptsetup isLuks /dev/{{ item.value.vg }}/{{ item.key }} ||
         cryptsetup luksFormat --batch-mode --verbose --key-file={{
-          masterkey.path }}/keys/{{ ansible_hostname }}/{{
+          masterkey.path }}/keys/{{ ansible_facts['hostname'] }}/{{
           item.key }} /dev/{{ item.value.vg }}/{{ item.key }}
       register: luks_format
       changed_when: ("Command successful" in luks_format.stdout)
@@ -57,7 +57,7 @@
     - name: Crypt table entries
       lineinfile:
         line: "{{ 'luks-%-16s /dev/mapper/%s-%-16s %s/keys/%s/%-12s luks' % (
-              item.key, item.value.vg, item.key, masterkey.path, ansible_hostname,
+              item.key, item.value.vg, item.key, masterkey.path, ansible_facts['hostname'],
               item.key) }}"
         path: /etc/crypttab.setup
         regexp: "^luks-{{ item.key }}.*"

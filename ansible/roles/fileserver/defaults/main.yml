@@ -12,7 +12,7 @@ samba_defaults:
   hosts_allow: []
   interfaces:
   - lo
-  - "{{ ansible_default_ipv4.address }}"
+  - "{{ ansible_facts['default_ipv4']['address'] }}"
   log_level: 1
   logon_drive: H
   server_min_protocol: ""

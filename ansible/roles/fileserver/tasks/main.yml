@@ -2,17 +2,17 @@
 - name: Install system packages
   apt:
     name: "{{ ubuntu_packages }}"
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Python pip package
   apt:
     name: python3-pip
-  when: ansible_distribution_version >= '20.04'
+  when: ansible_facts['distribution_version'] >= '20.04'
 
 - name: Python pip package
   apt:
     name: python-pip
-  when: ansible_distribution_version < '20.04'
+  when: ansible_facts['distribution_version'] < '20.04'
 
 - import_tasks: nfs.yml
   when: nfs_exports | length > 0

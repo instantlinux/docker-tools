@@ -152,7 +152,7 @@
     mode: 0755
     url: https://github.com/docker/compose/releases/download/{{
       docker.compose.version }}/docker-compose-Linux-x86_64
-  when: ansible_distribution_version < '22.04'
+  when: ansible_facts['distribution_version'] < '22.04'
 
 - name: Sysctl tuning parameters
   ansible.builtin.sysctl:

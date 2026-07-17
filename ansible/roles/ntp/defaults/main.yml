@@ -12,7 +12,7 @@ ntp_defaults:
   - 1.pool.ntp.org
   service:
     enabled: yes
-    name: "{{ 'ntpd-rs' if ansible_os_family == 'Debian' else 'ntpd' }}"
+    name: "{{ 'ntpd-rs' if ansible_facts['os_family'] == 'Debian' else 'ntpd' }}"
     state: restarted
 
 ntp_override: {}

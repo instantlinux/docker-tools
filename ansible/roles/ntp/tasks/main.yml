@@ -8,7 +8,7 @@
 - name: Install system packages
   ansible.builtin.apt:
     name: "{{ ubuntu_packages }}"
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: NTP keys
   ansible.builtin.template:
@@ -17,20 +17,20 @@
     mode: 0440
     src: ntp.keys.j2
   notify: Restart ntpd
-  when: ntp.service.enabled and ansible_distribution_version < '24.04'
+  when: ntp.service.enabled and ansible_facts['distribution_version'] < '24.04'
 
 - name: NTP config
   ansible.builtin.template:
     dest: /etc/ntp.conf
     src: ntp.conf.j2
   notify: Restart ntpd
-  when: ntp.service.enabled and ansible_distribution_version < '24.04'
+  when: ntp.service.enabled and ansible_facts['distribution_version'] < '24.04'
 
 - name: Override directory for ntp-rs systemd unit file
   ansible.builtin.file:
     dest: /etc/systemd/system/ntpd-rs.service.d
     state: directory
-  when: ntp.service.enabled and ansible_distribution_version >= '24.04'
+  when: ntp.service.enabled and ansible_facts['distribution_version'] >= '24.04'
 
 - name: Allow ntp-rs to bind on port 123
   ansible.builtin.copy:
@@ -38,14 +38,14 @@
     content: |
       [Service]
       AmbientCapabilities=CAP_SYS_TIME CAP_NET_BIND_SERVICE
-  when: ntp.service.enabled and ansible_distribution_version >= '24.04'
+  when: ntp.service.enabled and ansible_facts['distribution_version'] >= '24.04'
 
 - name: ntp-rs config
   ansible.builtin.template:
     dest: /etc/ntpd-rs/ntp.toml
     src: ntp.toml.j2
   notify: Restart ntpd
-  when: ntp.service.enabled and ansible_distribution_version >= '24.04'
+  when: ntp.service.enabled and ansible_facts['distribution_version'] >= '24.04'
 
 - name: NTP service
   ansible.builtin.systemd:

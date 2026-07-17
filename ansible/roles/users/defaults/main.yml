@@ -26,10 +26,10 @@ opensuse_google_auth_repo:
     repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
 
 pam_package: "{{
-    'libpam-google-authenticator' if ansible_os_family == 'Debian' 
+    'libpam-google-authenticator' if ansible_facts['os_family'] == 'Debian' 
     else 'pam-google-authenticator' }}"
 
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
 
 ubuntu_google_auth_repo:
-  - deb {{ ubuntu_repo_uri }} {{ ansible_distribution_release }} main restricted universe multiverse
+  - deb {{ ubuntu_repo_uri }} {{ ansible_facts['distribution_release'] }} main restricted universe multiverse
