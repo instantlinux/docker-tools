@@ -55,7 +55,7 @@ ARG AIRLINK_SHA=6392ee1d8e96a543306f16430ec9095b79dd7d0aacf8078171aa61b060a49745
 
 COPY install-input.txt entrypoint.sh log.conf /tmp
 RUN apk add --no-cache --update \
-      curl freetype libjpeg libstdc++ openssh openssl python3 py3-cheetah \
+      curl freetype libjpeg libstdc++ openssh openssl python3 \
       py3-configobj py3-mysqlclient py3-pillow py3-pymysql py3-pyserial \
       py3-requests py3-six py3-usb rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
@@ -64,7 +64,7 @@ RUN apk add --no-cache --update \
     VENV=/home/$WX_USER/weewx-venv && \
     python3 -m venv $VENV --system-site-packages && \
     source $VENV/bin/activate && \
-    python3 -m pip install weewx==$WEEWX_VERSION && \
+    python3 -m pip install weewx==$WEEWX_VERSION ct3 && \
     git clone -b $WEEGREEN_VERSION --depth 1 \
       https://github.com/instantlinux/weewx-WeeGreen.git \
       $WX_ROOT/skins/WeeGreen && \
