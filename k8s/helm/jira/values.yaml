@@ -82,3 +82,8 @@ ingress:
     nginx.ingress.kubernetes.io/enable-access-log: "false"
 ingressTOTP:
   enabled: true
+
+mariadb:
+  enabled: false
+  image:
+    tag: 10.4.20
