@@ -85,3 +85,8 @@ networking:
 # etcd:
 #   local:
 #     dataDir: /var/lib/etcd
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+containerLogMaxFiles: 3
+containerLogMaxSize: 50Mi

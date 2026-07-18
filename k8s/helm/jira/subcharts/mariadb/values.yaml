@@ -1,0 +1,81 @@
+# Default values for mariadb
+character_set_server: utf8
+ft_min_word_len: 3
+innodb_buffer_pool_size: 1024M
+innodb_log_file_size: 32M
+interactive_timeout: 28800
+join_buffer_size: 131072
+key_buffer_size: 16M
+long_query_time: 4
+max_allowed_packet: 256M
+max_heap_table_size: 16M
+net_read_timeout: 30
+net_write_timeout: 60
+read_buffer_size: 131072
+read_rnd_buffer_size: 262144
+slow_query_log: 1
+thread_stack: 192K
+thread_cache_size: 8
+tmp_table_size: 16M
+wait_timeout: 3600
+
+statefulset:
+  containerPorts: [ containerPort: 3306 ]
+  # environment variables defined in parent
+  env:
+    log_level: info
+  xenv:
+  - name: MARIADB_ROOT_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: mysql-root-password
+        name: mysql-root-password
+  resources:
+    limits:
+      memory: 4096Mi
+    requests:
+      cpu: 300m
+      memory: 128Mi
+volumeMounts:
+- mountPath: /etc/mysql/my.cnf.d
+  name: etc
+- mountPath: /var/log/mysql
+  name: logs
+- mountPath: /var/lib/mysql
+  name: data
+volumes:
+- name: etc
+  configMap:
+    name: jira-mariadb
+volumeClaimTemplates:
+- metadata:
+    name: data
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 8Gi
+- metadata:
+    name: logs
+  spec:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 500Mi
+
+image:
+  repository: mariadb
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  clusterIP: None
+  ports: [ port: 3306 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false
