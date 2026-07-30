@@ -2,19 +2,19 @@
 # package.yml
 
 - name: Install system packages
-  apt:
+  ansible.builtin.package:
     name: "{{ ubuntu_packages }}"
 
 - name: Install local additions
-  apt:
+  ansible.builtin.package:
     name: "{{ ubuntu_package_additions }}"
 
 - name: Python pip package
-  apt:
+  ansible.builtin.package:
     name: python3-pip
   when: ansible_facts['distribution_version'] >= '20.04'
 
 - name: Python pip package
-  apt:
+  ansible.builtin.package:
     name: python-pip
   when: ansible_facts['distribution_release'] < '20.04'
