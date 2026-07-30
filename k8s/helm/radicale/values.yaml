@@ -1,0 +1,238 @@
+# Default values for radicale.
+
+# Version 3.7+ includes support for calendar sharing and birthday calendars
+#  in the radicale API; the UI and docs haven't kept up. To enable calendar
+#  sharing, override these configmap values:
+#
+#    [rights]
+#    type = authenticated
+#
+#    [sharing]
+#    type = files
+#    collection_by_map = true
+#    permit_create_map = true
+#
+# To activate the birthday calendar after launching this chart, setting
+#  up a user, and importing contacts: invoke these shell commands--
+#
+#  USER=someone
+#  PW=redact
+#  COLLECTION=contacts-2026-07-28
+#  DOM=cal.example.com
+#  curl -u "$USER:$PW" -d "PathOrToken=/$USER/birthdays/" \
+#   -d "PathMapped=/$USER/$COLLECTION/" -d "User=$USER" \
+#   -d "Conversion=bday" https://$DOM/.sharing/v1/map/create
+#  curl -u "$USER:$PW" -d "PathOrToken=/$USER/birthdays/" \
+#   https://$DOM/.sharing/v1/map/enable
+#  curl -u "$USER:$PW" -d "PathOrToken=/$USER/birthdays/" \
+#   https://$DOM/.sharing/v1/map/unhide
+
+tlsHostname: cal.example.com
+deployment:
+  containerPorts:
+  - containerPort: 5232
+volumeMounts:
+- name: config
+  mountPath: /etc/radicale/config
+  subPath: config
+- name: share
+  mountPath: /var/lib/radicale
+  subPath: radicale
+- name: users
+  mountPath: /etc/radicale/users
+  subPath: users
+volumes:
+- name: config
+  configMap:
+    name: radicale
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+- name: users
+  secret:
+    secretName: radicale
+
+image:
+  repository: ghcr.io/kozea/radicale
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 5232, name: radicale }
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+
+autoscaling:
+  enabled: false
+
+configmap:
+  data:
+    config: |
+      [server]
+      #hosts = localhost:5232
+      #max_connections = 8
+      #delay_on_error = 1
+      #max_content_length = 100000000
+      #max_resource_size = 10000000
+      #timeout = 30
+      #ssl = False
+      #certificate = /etc/ssl/radicale.cert.pem
+      #key = /etc/ssl/radicale.key.pem
+      #certificate_authority =
+      #protocol = (default)
+      #ciphersuite = (default)
+      #script_name = (default taken from HTTP_X_SCRIPT_NAME or SCRIPT_NAME)
+      #validate_user_value = minimal
+      #validate_path_value = minimal
+
+      [encoding]
+      #request = utf-8
+      #stock = utf-8
+
+      [auth]
+      type = htpasswd
+      #cache_logins = false
+      #cache_successful_logins_expiry = 15
+      #cache_failed_logins_expiry = 90
+      #ldap_uri = ldap://localhost
+      #ldap_base = ##BASE_DN##
+      #ldap_reader_dn = CN=ldapreader,CN=Users,##BASE_DN##
+      #ldap_secret = ldapreader-secret
+      #ldap_secret_file = /run/secrets/ldap_password
+      #ldap_filter = (&(objectClass=person)(uid={0}))
+      #ldap_user_attribute = cn
+      #ldap_security = none
+      #ldap_ssl_verify_mode = REQUIRED
+      #ldap_ssl_ca_file =
+      #ldap_groups_attribute = memberOf
+      #ldap_group_members_attribute = member
+      #ldap_group_base = ##GROUP_BASE_DN##
+      #ldap_group_filter = (objectclass=groupOfNames)
+      #ldap_ignore_attribute_create_modify_timestamp = false
+      #dovecot_connection_type = AF_UNIX
+      #dovecot_socket = /var/run/dovecot/auth-client
+      #dovecot_host = localhost
+      #dovecot_port = 12345
+      #remote_ip_source = REMOTE_ADDR
+      #imap_host = localhost
+      #imap_security = tls
+      #imap_append_domain =
+      #oauth2_token_endpoint = <URL>
+      #oauth2_client_id = radicale
+      #oauth2_client_secret =
+      #pam_serivce = radicale
+      #pam_group_membership =
+      #htpasswd_filename = /etc/radicale/users
+      #htpasswd_encryption = autodetect
+      #htpasswd_cache = False
+      #delay = 1
+      #realm = Radicale - Password Required
+      #lc_username = False
+      #strip_domain = False
+      #urldecode_username = False
+
+      [rights]
+      #type = owner_only
+      #file = /etc/radicale/rights
+      #permit_delete_collection = True
+      #permit_overwrite_collection = True
+
+      [storage]
+      #type = multifilesystem
+      #filesystem_folder = /var/lib/radicale/collections
+      #filesystem_cache_folder = (filesystem_folder)
+      #use_cache_subfolder_for_item = False
+      #use_cache_subfolder_for_history = False
+      #use_cache_subfolder_for_synctoken = False
+      #use_mtime_and_size_for_item_cache = False
+      #folder_umask = (system default, usual 0022)
+      #max_sync_token_age = 2592000
+      #skip_broken_item = True
+      #strict_preconditions = False
+      #hook =
+      #predefined_collections =
+
+      [sharing]
+      #type = none
+      #database_path = (filesystem_folder)/collection-db/sharing.csv
+      #database_path = (filesystem_folder)/collection-db/files
+      #collection_by_token = false
+      #collection_by_map = false
+      #permit_create_token = false
+      #permit_create_map = false
+      #permit_properties_overlay = false
+      #enforce_properties_overlay = true
+      #default_permissions_create_token = rp
+      #default_permissions_create_map = r
+      #conversion_bday_summary_template = [{n:f} {n:g} |{fn}|{nickname}] ({year}) (BDAY)
+      conversion_bday_summary_template = [{n:g} {n:f}|{fn}|{nickname}] (born {year})
+      #conversion_bday_description_template = BDAY={year}-{month}-{day}
+      #conversion_bday_alarm_trigger_template = ""
+      #conversion_bday_categories = Birthday
+      #conversion_bday_age_max = 99
+
+      [web]
+      #type = internal
+      #prefer_browser_login = False
+
+      [logging]
+      #level = info
+      #limit_content = 3000
+      #trace_filter = ""
+      #mask_passwords = True
+      #bad_put_request_content = False
+      #backtrace_on_debug = False
+      #request_header_on_debug = False
+      #request_content_on_debug = False
+      #response_header_on_debug = False
+      #response_content_on_debug = False
+      #request_header_on_notice_condition = {}
+      #request_content_on_notice_condition = {}
+      #response_header_on_notice_condition = {}
+      #response_content_on_notice_condition = {}
+      #rights_rule_doesnt_match_on_debug = False
+      #storage_cache_actions_on_debug = False
+      #profiling = none
+      #profiling_per_request_min_duration = 3
+      #profiling_per_request_header = False
+      #profiling_per_request_xml = False
+      #profiling_per_request_method_interval = 600
+      #profiling_top_x_functions = 10
+
+      [headers]
+      #Access-Control-Allow-Origin = *
+      Content-Security-Policy = default-src 'self'; object-src 'none'
+
+      [hook]
+      #type = none
+      #dryrun = False
+      #rabbitmq_endpoint =
+      #rabbitmq_topic =
+      #rabbitmq_queue_type = classic
+      #smtp_server = localhost
+      #smtp_port = 25
+      #smtp_security = starttls
+      #smtp_ssl_verify_mode = REQUIRED
+      #smtp_username =
+      #smtp_password =
+      #from_email =
+      #mass_email = False
+      #new_or_added_to_event_template =
+      #deleted_or_removed_from_event_template =
+      #updated_event_template =
+
+      [reporting]
+      #max_freebusy_occurrence = 10000

@@ -12,7 +12,7 @@
 - name: Install system packages
   apt:
     name: "{{ ubuntu_packages }}"
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Load kernel modules
   modprobe:
@@ -50,7 +50,7 @@
 
 - name: Set static hostname as FQDN
   command: hostnamectl --static set-hostname {{ inventory_hostname }}
-  when: inventory_hostname != ansible_hostname
+  when: inventory_hostname != ansible_facts['hostname']
   changed_when: False
 
 - include_tasks: cri-dockerd.yml

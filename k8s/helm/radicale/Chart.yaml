@@ -1,0 +1,14 @@
+apiVersion: v2
+name: radicale
+description: Radicale CalDAV / CardDAV server
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/instantlinux/docker-tools
+- https://github.com/Kozea/Radicale
+type: application
+version: 0.1.0
+appVersion: "3.7.7"
+dependencies:
+- name: chartlib
+  version: 0.1.8
+  repository: https://instantlinux.github.io/docker-tools
