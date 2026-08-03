@@ -1,0 +1,119 @@
+# Default values for apache.
+
+# This is a general-purpose helm chart; the configmap below provides
+#  an example use-case for WebDAV as described by
+#  https://simonh.uk/2021/12/25/a-guide-to-setting-up-webdav-with-apache-httpd/
+tlsHostname: apache.example.com
+
+deployment:
+  command: ["/bin/sh", "-c"]
+  args:
+  - |
+    APACHE_ROOT=/usr/local/apache2/conf
+    echo "Include $APACHE_ROOT/custom.conf" >> $APACHE_ROOT/httpd.conf
+    echo "Include $APACHE_ROOT/extras.conf" >> $APACHE_ROOT/httpd.conf
+    exec httpd-foreground
+  containerPorts:
+  - containerPort: 80
+volumeMounts:
+- mountPath: /usr/local/apache2/conf/custom.conf
+  name: config
+  readOnly: true
+  subPath: custom.conf
+- mountPath: /usr/local/apache2/conf/extras.conf
+  name: config
+  readOnly: true
+  subPath: extras.conf
+- mountPath: /usr/local/apache2/htdocs
+  name: share
+  subPath: apache/data
+- mountPath: /usr/local/apache2/var
+  name: share
+  subPath: apache/var
+volumes:
+- name: config
+  configMap:
+    name: apache
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: httpd
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 80, targetPort: 80, name: apache }
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+autoscaling:
+  enabled: false
+
+configmap:
+  data:
+    custom.conf: |
+      # Custom directives defined via kubernetes configmap
+      LoadModule authn_dbm_module modules/mod_authn_dbm.so
+      LoadModule authz_dbm_module modules/mod_authz_dbm.so
+      LoadModule dav_module modules/mod_dav.so
+      LoadModule dav_fs_module modules/mod_dav_fs.so
+      LoadModule macro_module modules/mod_macro.so
+
+      DavLockDB /usr/local/apache2/var/DavLock
+
+      DocumentRoot "/usr/local/apache2/htdocs"
+
+      # Directory Listing Display Options
+      IndexOptions +FancyIndexing
+      IndexOptions +VersionSort
+      IndexOptions +HTMLTable
+      IndexOptions +FoldersFirst
+      IndexOptions +IconsAreLinks
+      IndexOptions +IgnoreCase
+      IndexOptions +XHTML
+      IndexOptions +NameWidth=*
+      IndexOptions +SuppressDescription
+      IndexOptions +SuppressHTMLPreamble
+      IndexOptions +Charset=UTF-8
+      # Make it responsive
+      IndexHeadInsert "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+
+      <Macro WebDAVShare $alias>
+          Alias /$alias /usr/local/apache2/htdocs/webdav/$alias
+          <Directory /usr/local/apache2/htdocs/webdav/$alias>
+              DAV                On
+              AuthType           Basic
+              AuthName           "webdav"
+              AuthBasicProvider  dbm
+              AuthDBMUserFile    "/usr/local/apache2/var/users.dbm"
+              AuthDBMGroupFile   "/usr/local/apache2/var/users.dbm"
+              Require dbm-group  admin $alias
+              <LimitExcept GET HEAD OPTIONS PROPFIND>
+                  Require valid-user
+              </LimitExcept>
+          </Directory>
+
+          <Directory /usr/local/apache2/htdocs/webdav/$alias/cgi-bin/*>
+              Options ExecCGI
+              SetHandler cgi-script
+              DirectoryIndex
+          </Directory>
+      </Macro>
+    extras.conf:
+      Use WebDAVShare user1
