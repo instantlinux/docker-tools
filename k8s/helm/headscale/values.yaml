@@ -1,0 +1,116 @@
+# Default values for headscale.
+
+tlsHostname: headscale.example.com
+deployment:
+  command: [ headscale, serve ]
+  containerPorts:
+  - containerPort: 8080
+  - containerPort: 9090
+volumeMounts:
+- name: config
+  mountPath: /etc/headscale/config.yaml
+  subPath: config.yaml
+- name: share
+  mountPath: /var/lib/headscale
+  subPath: headscale
+volumes:
+- name: config
+  configMap:
+    name: headscale
+- name: share
+  hostPath: { path: /var/lib/docker/k8s-volumes/share }
+
+image:
+  repository: headscale/headscale
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+service:
+  clusterIP: None
+  ports:
+  - { port: 8080, targetPort: 8080, name: headscale }
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+  rules:
+  - host: headscale.example.com
+    http:
+      paths:
+      - path: /admin
+        backend:
+            service:
+              name: headscale-headplane
+              port:
+                number: 3000
+        pathType: Prefix
+      - path: /
+        backend:
+            service:
+              name: headscale
+              port:
+                number: 8080
+        pathType: Prefix
+
+autoscaling:
+  enabled: false
+
+configmap:
+  data:
+    config.yaml: |
+      server_url: https://headscale.example.com
+      listen_addr: 0.0.0.0:8080
+      metrics_listen_addr: 0.0.0.0:9090
+      noise:
+        private_key_path: /var/lib/headscale/noise_private.key
+      prefixes:
+        v4: 100.64.0.0/10
+        v6: fd7a:115c:a1e0::/48
+      derp:
+        server:
+          enabled: false
+        region_id: 999
+        region_code: "headscale"
+        region_name: "Headscale Embedded DERP"
+        stun_listen_addr: "0.0.0.0:3478"
+        private_key_path: /var/lib/headscale/derp_server_private.key
+        automatically_add_embedded_derp_region: true
+        urls:
+        - https://controlplane.tailscale.com/derpmap/default
+        paths: []
+        auto_update_enabled: true
+        update_frequency: 3h
+      disable_check_updates: false
+      node:
+        expire: 0
+        ephemeral:
+          inactivity_timeout: 30m
+      database:
+        type: sqlite3
+        sqlite:
+          path: /var/lib/headscale/db.sqlite
+          write_ahead_log: true
+          wal_autocheckpoint: 1000
+      log:
+        level: info
+        format: text
+      dns:
+        magic_dns: false
+        override_local_dns: false
+        nameservers:
+        - 1.1.1.1
+        - 1.0.0.1
+
+headplane:
+  enabled: true
+  image:
+    tag: 0.7.0
