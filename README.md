@@ -60,6 +60,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 
 | Service | Version | Notes |
 | --- | --- | --- |
+| apache | ** | web server, with webdav example |
 | authelia | ** | single-signon multi-factor auth |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | ddclient | [![](https://img.shields.io/docker/v/instantlinux/ddclient?sort=date)](https://hub.docker.com/r/instantlinux/ddclient "Version badge") | Dynamic DNS client |
@@ -68,6 +69,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
 | grafana | ** | monitoring dashboard with prometheus-based alerting |
 | guacamole | ** | authenticated remote-desktop server |
+| headscale | ** | tailscale-compatible VPN control-plane |
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
@@ -76,6 +78,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | proftpd | [![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd "Version badge") | FTP server |
+| radicale | ** | CalDAV / CardDAV for mobile calendar/contacts sync |
 | restic | ** | backups |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
 | samba | [![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba "Version badge") | file server |
