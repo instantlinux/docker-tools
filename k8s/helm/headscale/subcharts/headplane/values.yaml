@@ -1,13 +1,8 @@
 # Default values for headplane
+base_url: http://localhost:3000
 headscale_url: headscale.example.com
 deployment:
   containerPorts: [ containerPort: 3000 ]
-  resources:
-    limits:
-      memory: 512Mi
-    requests:
-      cpu: 300m
-      memory: 64Mi
 volumeMounts:
 - mountPath: /etc/headplane/config.yaml
   name: config

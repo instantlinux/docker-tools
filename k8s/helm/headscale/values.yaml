@@ -6,6 +6,12 @@ deployment:
   containerPorts:
   - containerPort: 8080
   - containerPort: 9090
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
 volumeMounts:
 - name: config
   mountPath: /etc/headscale/config.yaml
