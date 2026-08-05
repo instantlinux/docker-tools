@@ -20,6 +20,7 @@ network_defaults:
   - to: default
     via: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
+  tailscale: false
   cluster_ip: null
   vrrp_interface: null
 

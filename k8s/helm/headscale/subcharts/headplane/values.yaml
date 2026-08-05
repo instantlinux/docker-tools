@@ -1,0 +1,50 @@
+# Default values for headplane
+base_url: http://localhost:3000
+headscale_url: headscale.example.com
+deployment:
+  containerPorts: [ containerPort: 3000 ]
+volumeMounts:
+- mountPath: /etc/headplane/config.yaml
+  name: config
+  subPath: config.yaml
+- mountPath: /etc/headplane/cookie_secret
+  name: cookie-secret
+  readOnly: true
+  subPath: cookie_secret
+- mountPath: /etc/headscale/config.yaml
+  name: headscale-config
+  subPath: config.yaml
+volumes:
+- name: config
+  configMap:
+    name: headscale-headplane
+- name: headscale-config
+  configMap:
+    name: headscale
+- name: cookie-secret
+  secret:
+    secretName: headscale
+    items:
+    - key: cookie_secret
+      path: cookie_secret
+
+image:
+  repository: ghcr.io/tale/headplane
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: false
+service:
+  clusterIP: None
+  ports:
+  - { port: 3000, targetPort: 3000, name: headscale }
+  type: ClusterIP
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: false

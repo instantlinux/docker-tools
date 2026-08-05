@@ -9,5 +9,8 @@
 - import_tasks: netplan.yml
   when: ansible_facts['distribution_version'] >= '18.04'
 
+- import_tasks: tailscale.yml
+  when: network.tailscale
+
 - import_tasks: kernel.yml
 - import_tasks: sshd.yml
