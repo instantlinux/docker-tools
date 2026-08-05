@@ -36,7 +36,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Calico or flannel networking
 * ingress-nginx
 * Local-volume sync
-* Minio object storage with prometheus metrics
+* Garage object storage
 * Pod security policies
 * Automatic certificate issuing/renewal with Letsencrypt
 * Grafana with prometheus-based alerting
