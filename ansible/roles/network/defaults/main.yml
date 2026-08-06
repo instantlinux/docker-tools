@@ -20,12 +20,15 @@ network_defaults:
   - to: default
     via: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['gateway'] }}"
   search: "{{ hostvars[inventory_hostname]['ansible_dns']['search'] }}"
-  tailscale: false
+  tailscale:
+    enabled: false
+    port: 41641
+    telemetry: false
   cluster_ip: null
   vrrp_interface: null
 
 network_override: {}
-network: "{{ network_defaults | combine(network_override) }}"
+network: "{{ network_defaults | combine(network_override, recursive=True) }}"
 
 network_sysctl:
   net.ipv4.ip_nonlocal_bind: 1
