@@ -1,5 +1,18 @@
 # Default values for headscale.
 
+# Note: when deploying this under kubernetes with the haproxy-keepalived
+#  service (provided in this repo for bare-metal deployments), please add the
+#  following directive to the haproxy definition for port 443 ingress:
+#
+#     timeout tunnel 30m
+#
+# Otherwise, you might see the following errors repeated about every 40
+#  seconds in syslog from each tailscaled client:
+#
+#  tailscaled[5712]: Received error: PollNetMap: unexpected EOF
+#  tailscaled[5712]: control: controlhttp: forcing port 443 dial due to recent noise dial
+#  tailscaled[5712]: [RATELIMIT] format("control: [v\x00JSON]%d%s") (2 dropped)
+
 tlsHostname: headscale.example.com
 deployment:
   command: [ headscale, serve ]
@@ -48,18 +61,11 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-access-log: "false"
-    nginx.ingress.kubernetes.io/keepalive-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400s"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "86400s"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header: Upgrade $http_upgrade;
-      proxy_set_header: Connection $connection_upgrade;
-      proxy_set_header: Host $server_name;
-      proxy_set_header: X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
-    nginx.ingress.kubernetes.io/proxy-buffering: "off"
-    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
   rules:
   - host: headscale.example.com
     http:

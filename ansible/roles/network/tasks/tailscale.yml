@@ -17,6 +17,16 @@
     update_cache: true
     state: present
 
+- name: Disable telemetry to log.tailscale.com
+  ansible.builtin.copy:
+    dest: /etc/default/tailscaled
+    content: |
+      # Managed by ansible
+      PORT={{ network.tailscale.port }}
+      FLAGS=""
+      TS_NO_LOGS_NO_SUPPORT={{ not network.tailscale.telemetry }}
+  notify: Restart tailscaled
+
 - name: Start Tailscale
   ansible.builtin.systemd:
     enabled: yes
