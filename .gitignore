@@ -5,6 +5,7 @@
 .cache
 .coverage
 .deploy
+.env
 __pycache__
 Chart.lock
 coverage.xml

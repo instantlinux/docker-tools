@@ -1,0 +1,76 @@
+services:
+  app:
+    image: dxflrs/garage:${VERSION_GARAGE:-latest}
+    configs:
+    - source: garage.toml
+      target: /etc/garage.toml
+      mode: 0444
+    environment:
+      GARAGE_ADMIN_TOKEN_FILE:    /run/secrets/garage-admin-token
+      GARAGE_METRICS_TOKEN_FILE:  /run/secrets/garage-metrics-token
+      GARAGE_RPC_SECRET_FILE:     /run/secrets/garage-rpc-secret
+    network_mode: host
+    ports:
+    - ${PORT_GARAGE_API:-3900}:3900
+    - ${PORT_GARAGE_RPC:-3901}:3901
+    - ${PORT_GARAGE_WEB:-3902}:3902
+    - ${PORT_GARAGE_ADMIN:-3903}:3903
+    restart: unless-stopped
+    secrets:
+    - garage-admin-token
+    - garage-metrics-token
+    - garage-rpc-secret
+    user: ${UID_GARAGE:-2012}:${GID_GARAGE:-565}
+    volumes:
+    - ${GARAGE_ROOT:-/var/lib/garage}/meta:/var/lib/garage/meta
+    - ${GARAGE_ROOT:-/var/lib/garage}/data:/var/lib/garage/data
+  webui:
+    image: genebit/garage-webui:latest
+    configs:
+    - source: garage.toml
+      target: /etc/garage.toml
+    restart: unless-stopped
+    volumes:
+      - webui-data:/data # required: user accounts, audit logs, upload temp files
+    ports:
+      - 3909:3909
+    environment:
+      API_BASE_URL: "http://${GARAGE_HOST:-localhost}:3903"
+      S3_ENDPOINT_URL: "http://${GARAGE_HOST:-}:3900"
+      S3_REGION: ${GARAGE_REGION:-garage}
+secrets:
+  # note - chown these files on the host filesystem to $UID_GARAGE, and chmod 0400 garage-*
+  garage-admin-token:
+    file: /var/adm/secrets/garage-admin-token
+  garage-metrics-token:
+    file: /var/adm/secrets/garage-metrics-token
+  garage-rpc-secret:
+    file: /var/adm/secrets/garage-rpc-secret
+volumes:
+  webui-data:
+configs:
+  garage.toml:
+    content: |
+      data_dir = "/var/lib/garage/data"
+      metadata_dir = "/var/lib/garage/meta"
+      db_engine = "lmdb"
+
+      consistency_mode = "consistent"
+      replication_factor = 1
+      rpc_bind_addr = "[::]:3901"
+      rpc_public_addr = "127.0.0.1:3901"
+      compression_level = 2
+
+      [s3_api]
+      s3_region = "${GARAGE_REGION:-garage}"
+      api_bind_addr = "[::]:3900"
+      root_domain = "api.${GARAGE_DOMAIN:-s3.garage.localhost}"
+
+      [s3_web]
+      bind_addr = "[::]:3902"
+      root_domain = "web.${GARAGE_DOMAIN:-s3.garage.localhost}"
+      index = "index.html"
+
+      [admin]
+      api_bind_addr = "0.0.0.0:3903"
+      admin_token = "${GARAGE_ADMIN_TOKEN:-****}"
