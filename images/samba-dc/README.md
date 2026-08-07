@@ -9,7 +9,7 @@ The most-common directives can be specified in environment variables as shown be
 Basic requirements:
 
 * A Domain Controller must have a static IP address and persistent DNS entry
-* This container must be run in network_mode:host, and with cap_add:CAP_SYS_ADMIN privs
+* This container must be run in network_mode:host, and with cap_add:CAP_SYS_ADMIN privs (see Notes section below if you want to drop the CAP_SYS_ADMIN permission)
 * A NETBIOS_NAME or hostname must be specified, which becomes the netbios name.
 
 The directories /etc/samba and /var/lib/samba must be mounted as persistent volumes. If /var/lib/samba is empty, the "provision" or "join" action specified in DOMAIN_ACTION variable will be taken.
@@ -124,6 +124,8 @@ samba-tool domain demote --remove-other-dead-server=xxx
 ERROR(ldb): uncaught exception - Element clearTextPassword has empty attribute in ldb
 message (CN=Administrator,CN=Users,DC=ad,DC=***,DC=nl)
 ```
+
+* Version `4.18` introduced a `security.NTACL` feature intended to allow samba-dc to run within a container without the `CAP_SYS_ADMIN` permission. See the section _New option to change the NT ACL default location_ in the [features added/changed](https://wiki.samba.org/index.php/Samba_Features_added/changed) documentation. The helm chart defined here can be locally modified to support this but it's left as an exercise for advanced users. 
 
 ### Contributing
 
