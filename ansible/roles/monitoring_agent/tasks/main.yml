@@ -89,3 +89,12 @@
   ansible.builtin.template:
     dest: "{{ nagios.local_plugins_path }}/tolerations.yaml"
     src: tolerations.j2
+
+- name: Put a leash on prometheus-node-exporter
+  ansible.builtin.copy:
+    dest: /etc/default/prometheus-node-exporter
+    content: |
+      # Managed by ansible
+      ARGS="{{ prometheus.exporter_args }}"
+  notify: Restart prometheus-node-exporter
+  when: prometheus.exporter_enabled

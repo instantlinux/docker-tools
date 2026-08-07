@@ -21,5 +21,10 @@
     name: snmpd
     state: restarted
 
+- name: Restart prometheus-node-exporter
+  ansible.builtin.service:
+    name: prometheus-node-exporter
+    state: restarted
+
 - name: Reload apparmor
   ansible.builtin.command: apparmor_parser -r /etc/apparmor.d/usr.sbin.rsyslogd

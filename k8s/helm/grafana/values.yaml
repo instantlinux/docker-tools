@@ -96,5 +96,9 @@ ingressTOTP:
 # Subchart parameters
 prometheus:
   enabled: true
+  image:
+    tag: v3.13.2
 alertmanager:
   enabled: true
+  image:
+    tag: v0.33.1
