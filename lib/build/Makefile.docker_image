@@ -9,7 +9,7 @@ VENV        = python_env
 VDIR        = $(PWD)/$(VENV)
 
 export IMAGE_NAME  = $(REGISTRY)/$(IMAGE):$(TAG)
-export DOCKER_REPO = $(USER_LOGIN)/$(IMAGE)
+export IMAGE_REPO = $(USER_LOGIN)/$(IMAGE)
 
 ifneq ($(CI_COMMIT_TAG),)
   TAG_OPT   = --tag $(USER_LOGIN)$(IMAGE):$(CI_COMMIT_TAG)      
@@ -57,11 +57,15 @@ create_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
 
 promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
-	# Log into dockerhub
-	docker login -u $(USER_LOGIN) -p $(DOCKER_TOKEN)
-	docker buildx build $(TAG_OPT) \
-	  `[ -e hooks/add_tags ] && hooks/add_tags` \
-	  --tag $(USER_LOGIN)/$(IMAGE):latest --platform $(PLATFORMS) \
+	# Log into dockerhub and ghcr
+	echo $(DOCKER_TOKEN) | docker login -u $(USER_LOGIN) --password-stdin
+	echo $(GHCR_PUBLISH) | docker login -u $(USER_LOGIN) --password-stdin ghcr.io
+	TAG=$$(hooks/add_tags); \
+	docker buildx build $(TAG_OPT) --platform $(PLATFORMS) \
+	  --tag $(IMAGE_REPO):latest \
+	  --tag ghcr.io/$(IMAGE_REPO):latest \
+	  --tag $(IMAGE_REPO):$(TAG) \
+	  --tag ghcr.io/$(IMAGE_REPO):$(TAG) \
 	  --push --file Dockerfile . \
 	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
