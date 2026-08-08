@@ -2,13 +2,14 @@ FROM alpine:3.24
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.opencontainers.image.source=https://github.com/instantlinux/docker-tools \
     org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=proftpd \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG PROFTPD_VERSION=1.3.9b-r1
+ARG PROFTPD_VERSION=1.3.9c-r1
 
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \

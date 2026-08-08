@@ -9,7 +9,7 @@ VENV        = python_env
 VDIR        = $(PWD)/$(VENV)
 
 export IMAGE_NAME  = $(REGISTRY)/$(IMAGE):$(TAG)
-export IMAGE_REPO = $(USER_LOGIN)/$(IMAGE)
+export IMAGE_REPO  = $(USER_LOGIN)/$(IMAGE)
 
 ifneq ($(CI_COMMIT_TAG),)
   TAG_OPT   = --tag $(USER_LOGIN)$(IMAGE):$(CI_COMMIT_TAG)      
