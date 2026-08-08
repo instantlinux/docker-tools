@@ -2,6 +2,7 @@ FROM mariadb:12.3.2
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.opencontainers.image.source=https://github.com/instantlinux/docker-tools \
     org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=mariadb-galera \

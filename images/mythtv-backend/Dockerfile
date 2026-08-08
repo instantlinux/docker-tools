@@ -2,6 +2,7 @@ FROM ubuntu:resolute
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
+    org.opencontainers.image.source=https://github.com/instantlinux/docker-tools \
     org.label-schema.license=GPL-2.0 \
     org.label-schema.name=mythtv-backend \
     org.label-schema.vcs-ref=$VCS_REF \
@@ -19,7 +20,7 @@ ENV DBNAME=mythtv \
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
 ARG MYTHTV_PPA=ppa:mythbuntu/36
-ARG MYTHTV_VERSION=2:36.0+fixes.202607020123.7153bb6e34~ubuntu26.04.1
+ARG MYTHTV_VERSION=2:36.0+fixes.202608010335.0d263282c8~ubuntu26.04.1
 ARG MYTHLINK_SHA=459cb8b60adae4b631a95a9cfb1b41dcb959cc4a0b9053582a711d58b8d8a0d2
 
 RUN \

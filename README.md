@@ -16,7 +16,7 @@ easy. Contents:
 | services | non-clustered docker-compose services |
 | ssl | PKI certificate tools (deprecated by k8s) |
 
-Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/). Each image is scanned by [trivy](https://trivy.dev/) to ensure they contain no known CVE vulnerabilities before promotion to Docker Hub.
+Find images at [docker hub/instantlinux](https://hub.docker.com/r/instantlinux/) or [ghcr.io/instantlinux](https://github.com/instantlinux?tab=packages). Each image is scanned by [trivy](https://trivy.dev/) to ensure they contain no known CVE vulnerabilities before promotion to ghcr.io and Docker Hub.
 
 Find a lot more details about the Kubernetes bare-metal installer in [k8s/README](k8s/README.md).
 
