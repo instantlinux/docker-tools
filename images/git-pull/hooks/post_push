@@ -1,4 +1,0 @@
-#!/bin/bash
-TAG=$(grep "ARG .*_VERSION" Dockerfile | cut -d= -f 2)
-docker tag $IMAGE_NAME $DOCKER_REPO:$TAG
-docker push $DOCKER_REPO:$TAG
