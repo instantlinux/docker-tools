@@ -64,8 +64,8 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	docker buildx build $(TAG_OPT) --platform $(PLATFORMS) \
 	  --tag $(IMAGE_REPO):latest \
 	  --tag ghcr.io/$(IMAGE_REPO):latest \
-	  --tag $(IMAGE_REPO):$(TAG) \
-	  --tag ghcr.io/$(IMAGE_REPO):$(TAG) \
+	  --tag $(IMAGE_REPO):$$(TAG) \
+	  --tag ghcr.io/$(IMAGE_REPO):$$(TAG) \
 	  --push --file Dockerfile . \
 	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)

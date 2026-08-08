@@ -13,7 +13,7 @@ stages:
   - Security Scan
   - Promote Image
 
-image: docker:29.5.2
+image: docker:29.7.1
 
 .registry_template: &registry_login
   before_script:
