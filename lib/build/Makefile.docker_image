@@ -60,12 +60,12 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	# Log into dockerhub and ghcr
 	echo $(DOCKER_TOKEN) | docker login -u $(USER_LOGIN) --password-stdin
 	echo $(GHCR_PUBLISH) | docker login -u $(USER_LOGIN) --password-stdin ghcr.io
-	TAG=$$(hooks/add_tags); \
+	TAG=$$(hooks/add_tags) && \
 	docker buildx build $(TAG_OPT) --platform $(PLATFORMS) \
 	  --tag $(IMAGE_REPO):latest \
 	  --tag ghcr.io/$(IMAGE_REPO):latest \
-	  --tag $(IMAGE_REPO):$$(TAG) \
-	  --tag ghcr.io/$(IMAGE_REPO):$$(TAG) \
+	  --tag $(IMAGE_REPO):$$TAG \
+	  --tag ghcr.io/$(IMAGE_REPO):$$TAG \
 	  --push --file Dockerfile . \
 	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
