@@ -75,11 +75,10 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	# update dockerhub README
 	echo Commencing hub readme task
 	JSON=$$(jq -n --arg pwd "$(DOCKER_TOKEN)" --arg user "$(USER_LOGIN)" \
-	  '{username: $$user, password: $$pwd}')
-	echo $$JSON
+	  '{username: $$user, password: $$pwd}') && \
 	JWT=$$(curl -s -H "Content-Type: application/json" -X POST \
-	  -d "$$JSON" https://hub.docker.com/v2/users/login/ | jq -r .token)
-	echo $$JWT
+	  -d "$$JSON" https://hub.docker.com/v2/users/login/ | jq -r .token) && \
+	echo "$$JWT"
 	# Build JSON payload securely and send PATCH request
 	# jq --arg escapes special characters / newlines in markdown text
 	RESP=$$(jq -n --arg desc "$$(<README.md)" '{"full_description": $$desc}' | \

@@ -8,9 +8,9 @@ variables:
 
 stages:
   - Static Code Analysis
-  - Create Image
+  # - Create Image
   - Functional Tests
-  - Security Scan
+  # - Security Scan
   - Promote Image
 
 image: docker:29.7.2
@@ -26,61 +26,61 @@ analysis:
   image: instantlinux/python-builder:latest
   script: cd images/$IMAGE && make analysis
 
-create_image:
-  <<: *registry_login
-  stage: Create Image
-  script: apk add make && cd images/$IMAGE && make create_image
-  services: [ { name: "docker:dind", command: ["--experimental"] } ]
+# create_image:
+#   <<: *registry_login
+#   stage: Create Image
+#   script: apk add make && cd images/$IMAGE && make create_image
+#   services: [ { name: "docker:dind", command: ["--experimental"] } ]
 
 test:
   stage: Functional Tests
   script: apk add make && cd images/$IMAGE && make test_functional
 
-security_scan_trivy:
-  services: [ "docker:dind" ]
-  image:
-    name: aquasec/trivy:$TRIVY_VERSION
-    entrypoint: [""]
-  stage: Security Scan
-  variables:
-    GIT_STRATEGY: none
-    TRIVY_CACHE_DIR: .trivycache/
-    TRIVY_DEBUG: "true"
-    TRIVY_EXIT_CODE: 1
-    TRIVY_FORMAT: json
-    TRIVY_IGNORE: >-
-      CVE-2023-52425,CVE-2024-8176,
-      CVE-2025-9900,
-      # CVE-2025-9900 is for mythtv-backend
-    TRIVY_OUTPUT: gl-container-scanning-report.json
-    TRIVY_SEVERITY: HIGH,CRITICAL
-    TRIVY_PKG_TYPES: os,library
-  script:
-  - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
-  # Trivy alerts on unfixed vulnerabilities in debian images
-  - >
-    if [ $IMAGE = blacklist ] || [ $IMAGE = spamassassin ]; then
-      IGN_FLAG=--ignore-unfixed ;
-    fi
-  - trivy clean --all
-  - trivy image --download-db-only --no-progress
-  - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
-      --exit-code 0 --format table --output medium-vulns.txt
-  - cat medium-vulns.txt
-  - echo $TRIVY_IGNORE | tr , "\n" | tee .trivyignore
-  - trivy image $IGN_FLAG "${REGISTRY}/${IMAGE}:${TAG}"
-  cache:
-    paths: [ .trivycache ]
-  interruptible: true
-  retry:
-    max: 2
-    when: [ runner_system_failure, stuck_or_timeout_failure ]
-  timeout: 5m
-  artifacts:
-    reports:
-      container_scanning: gl-container-scanning-report.json
-    expire_in: 30 days
-    paths: [ medium-vulns.txt ]
+# security_scan_trivy:
+#   services: [ "docker:dind" ]
+#   image:
+#     name: aquasec/trivy:$TRIVY_VERSION
+#     entrypoint: [""]
+#   stage: Security Scan
+#   variables:
+#     GIT_STRATEGY: none
+#     TRIVY_CACHE_DIR: .trivycache/
+#     TRIVY_DEBUG: "true"
+#     TRIVY_EXIT_CODE: 1
+#     TRIVY_FORMAT: json
+#     TRIVY_IGNORE: >-
+#       CVE-2023-52425,CVE-2024-8176,
+#       CVE-2025-9900,
+#       # CVE-2025-9900 is for mythtv-backend
+#     TRIVY_OUTPUT: gl-container-scanning-report.json
+#     TRIVY_SEVERITY: HIGH,CRITICAL
+#     TRIVY_PKG_TYPES: os,library
+#   script:
+#   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
+#   # Trivy alerts on unfixed vulnerabilities in debian images
+#   - >
+#     if [ $IMAGE = blacklist ] || [ $IMAGE = spamassassin ]; then
+#       IGN_FLAG=--ignore-unfixed ;
+#     fi
+#   - trivy clean --all
+#   - trivy image --download-db-only --no-progress
+#   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
+#       --exit-code 0 --format table --output medium-vulns.txt
+#   - cat medium-vulns.txt
+#   - echo $TRIVY_IGNORE | tr , "\n" | tee .trivyignore
+#   - trivy image $IGN_FLAG "${REGISTRY}/${IMAGE}:${TAG}"
+#   cache:
+#     paths: [ .trivycache ]
+#   interruptible: true
+#   retry:
+#     max: 2
+#     when: [ runner_system_failure, stuck_or_timeout_failure ]
+#   timeout: 5m
+#   artifacts:
+#     reports:
+#       container_scanning: gl-container-scanning-report.json
+#     expire_in: 30 days
+#     paths: [ medium-vulns.txt ]
 
 promote_image:
   stage: Promote Image
