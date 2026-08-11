@@ -79,11 +79,13 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	JWT=$$(curl -s -H "Content-Type: application/json" -X POST \
 	  -d "$$JSON" https://hub.docker.com/v2/users/login/ | jq -r .token) && \
 	# Build JSON payload, send PATCH request
+	echo "$$JWT" && \
 	RESP=$$(jq -n --arg desc "$$(<README.md)" '{"full_description": $$desc}' | \
 	  curl -s -o /dev/null -w "%{http_code}" -X PATCH \
 	  -H "Content-Type: application/json" \
 	  -H "Authorization: JWT $$JWT" \
 	  -d @- https://hub.docker.com/v2/repositories/$(IMAGE_REPO)/) && \
+	echo "$$RESP"
 	[ "$$RESP" -eq 200 ] || exit 1
 
 flake8: test_requirements
