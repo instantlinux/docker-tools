@@ -3,7 +3,7 @@
 stages:
   - prepare
   - git-dump
-  # - blacklist
+  - blacklist
   # - data-sync
   # - ddclient
   # - dhcpd-dns-pxe
@@ -33,7 +33,7 @@ workflow:
   - { if: $CI_COMMIT_TAG =~ /^chart-.*/, when: never }
   - when: always
 
-image: docker:29.1.2
+image: docker:29.7.2
 
 prepare:
   stage: prepare
@@ -64,12 +64,12 @@ smoketest:
     # TODO figure out a way to collect all child pipeline results
     strategy: depend
 
-# blacklist:
-#   stage: blacklist
-#   trigger:
-#     include:
-#     - artifact: .child-blacklist.yml
-#       job: prepare
+blacklist:
+  stage: blacklist
+  trigger:
+    include:
+    - artifact: .child-blacklist.yml
+      job: prepare
 #   only:
 #     changes: [ images/blacklist/**, lib/**, .image-gitlab-ci.yml ]
 
