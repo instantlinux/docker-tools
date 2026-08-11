@@ -64,8 +64,9 @@ security_scan_trivy:
   script:
   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
   # Trivy alerts on unfixed vulnerabilities in debian images
-  - if [ $IMAGE = blacklist ] || [ $IMAGE = spamassassin ]; then \
-      IGN_FLAG=--ignore-unfixed; \
+  - >
+    if [ $IMAGE = blacklist ] || [ $IMAGE = spamassassin ]; then
+      IGN_FLAG=--ignore-unfixed;
     fi
   - trivy clean --all
   - trivy image --download-db-only --no-progress
