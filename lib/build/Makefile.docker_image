@@ -41,7 +41,9 @@ ifeq ($(IMAGE),$(filter $(IMAGE),python-builder python-wsgi))
   PLATFORMS = linux/amd64,linux/arm64
 endif
 ifeq ($(IMAGE),spamassassin)
-  PLATFORMS = linux/amd64,linux/arm64
+  PLATFORMS = linux/amd64
+  # TODO restore arm64 when this error gets fixed:
+  # /usr/bin/tar: dcc-2.3.169/dcc.html.in: Cannot open: Function not implemented
 endif
 
 analysis: flake8
