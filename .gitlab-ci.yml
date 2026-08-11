@@ -259,8 +259,8 @@ spamassassin:
     include:
     - artifact: .child-spamassassin.yml
       job: prepare
-  only:
-    changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
+  # only:
+  #   changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
 
 # udp-nginx-proxy:
 #   stage: udp-nginx-proxy
