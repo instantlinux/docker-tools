@@ -64,194 +64,194 @@ smoketest:
     # TODO figure out a way to collect all child pipeline results
     strategy: depend
 
-blacklist:
-  stage: blacklist
-  trigger:
-    include:
-    - artifact: .child-blacklist.yml
-      job: prepare
-  only:
-    changes: [ images/blacklist/**, lib/**, .image-gitlab-ci.yml ]
+# blacklist:
+#   stage: blacklist
+#   trigger:
+#     include:
+#     - artifact: .child-blacklist.yml
+#       job: prepare
+#   only:
+#     changes: [ images/blacklist/**, lib/**, .image-gitlab-ci.yml ]
 
-data-sync:
-  stage: data-sync
-  trigger:
-    include:
-    - artifact: .child-data-sync.yml
-      job: prepare
-  only:
-    changes: [ images/data-sync/**, lib/**, .image-gitlab-ci.yml ]
+# data-sync:
+#   stage: data-sync
+#   trigger:
+#     include:
+#     - artifact: .child-data-sync.yml
+#       job: prepare
+#   only:
+#     changes: [ images/data-sync/**, lib/**, .image-gitlab-ci.yml ]
 
-ddclient:
-  stage: ddclient
-  trigger:
-    include:
-    - artifact: .child-ddclient.yml
-      job: prepare
-  only:
-    changes: [ images/ddclient/**, lib/**, .image-gitlab-ci.yml ]
+# ddclient:
+#   stage: ddclient
+#   trigger:
+#     include:
+#     - artifact: .child-ddclient.yml
+#       job: prepare
+#   only:
+#     changes: [ images/ddclient/**, lib/**, .image-gitlab-ci.yml ]
 
-dhcpd-dns-pxe:
-  stage: dhcpd-dns-pxe
-  trigger:
-    include:
-    - artifact: .child-dhcpd-dns-pxe.yml
-      job: prepare
-  only:
-    changes: [ images/dhcpd-dns-pxe/**, lib/**, .image-gitlab-ci.yml ]
+# dhcpd-dns-pxe:
+#   stage: dhcpd-dns-pxe
+#   trigger:
+#     include:
+#     - artifact: .child-dhcpd-dns-pxe.yml
+#       job: prepare
+#   only:
+#     changes: [ images/dhcpd-dns-pxe/**, lib/**, .image-gitlab-ci.yml ]
 
-dovecot:
-  stage: dovecot
-  trigger:
-    include:
-    - artifact: .child-dovecot.yml
-      job: prepare
-  only:
-    changes: [ images/dovecot/**, lib/**, .image-gitlab-ci.yml ]
+# dovecot:
+#   stage: dovecot
+#   trigger:
+#     include:
+#     - artifact: .child-dovecot.yml
+#       job: prepare
+#   only:
+#     changes: [ images/dovecot/**, lib/**, .image-gitlab-ci.yml ]
 
-ez-ipupdate:
-  stage: ez-ipupdate
-  trigger:
-    include:
-    - artifact: .child-ez-ipupdate.yml
-      job: prepare
-  only:
-    changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
+# ez-ipupdate:
+#   stage: ez-ipupdate
+#   trigger:
+#     include:
+#     - artifact: .child-ez-ipupdate.yml
+#       job: prepare
+#   only:
+#     changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
 
-git-pull:
-  stage: git-pull
-  trigger:
-    include:
-    - artifact: .child-git-pull.yml
-      job: prepare
-  only:
-    changes: [ images/git-pull/**, lib/**, .image-gitlab-ci.yml ]
+# git-pull:
+#   stage: git-pull
+#   trigger:
+#     include:
+#     - artifact: .child-git-pull.yml
+#       job: prepare
+#   only:
+#     changes: [ images/git-pull/**, lib/**, .image-gitlab-ci.yml ]
 
-haproxy-keepalived:
-  stage: haproxy-keepalived
-  trigger:
-    include:
-    - artifact: .child-haproxy-keepalived.yml
-      job: prepare
-  only:
-    changes: [ images/haproxy-keepalived/**, lib/**, .image-gitlab-ci.yml ]
+# haproxy-keepalived:
+#   stage: haproxy-keepalived
+#   trigger:
+#     include:
+#     - artifact: .child-haproxy-keepalived.yml
+#       job: prepare
+#   only:
+#     changes: [ images/haproxy-keepalived/**, lib/**, .image-gitlab-ci.yml ]
 
-mariadb-galera:
-  stage: mariadb-galera
-  trigger:
-    include:
-    - artifact: .child-mariadb-galera.yml
-      job: prepare
-  only:
-    changes: [ images/mariadb-galera/**, lib/**, .image-gitlab-ci.yml ]
+# mariadb-galera:
+#   stage: mariadb-galera
+#   trigger:
+#     include:
+#     - artifact: .child-mariadb-galera.yml
+#       job: prepare
+#   only:
+#     changes: [ images/mariadb-galera/**, lib/**, .image-gitlab-ci.yml ]
 
-mysqldump:
-  stage: mysqldump
-  trigger:
-    include:
-    - artifact: .child-mysqldump.yml
-      job: prepare
-  only:
-    changes: [ images/mysqldump/**, lib/**, .image-gitlab-ci.yml ]
+# mysqldump:
+#   stage: mysqldump
+#   trigger:
+#     include:
+#     - artifact: .child-mysqldump.yml
+#       job: prepare
+#   only:
+#     changes: [ images/mysqldump/**, lib/**, .image-gitlab-ci.yml ]
 
-mythtv-backend:
-  stage: mythtv-backend
-  trigger:
-    include:
-    - artifact: .child-mythtv-backend.yml
-      job: prepare
-  only:
-    changes: [ images/mythtv-backend/**, lib/**, .image-gitlab-ci.yml ]
+# mythtv-backend:
+#   stage: mythtv-backend
+#   trigger:
+#     include:
+#     - artifact: .child-mythtv-backend.yml
+#       job: prepare
+#   only:
+#     changes: [ images/mythtv-backend/**, lib/**, .image-gitlab-ci.yml ]
 
-nagios:
-  stage: nagios
-  trigger:
-    include:
-    - artifact: .child-nagios.yml
-      job: prepare
-  only:
-    changes: [ images/nagios/**, lib/**, .image-gitlab-ci.yml ]
+# nagios:
+#   stage: nagios
+#   trigger:
+#     include:
+#     - artifact: .child-nagios.yml
+#       job: prepare
+#   only:
+#     changes: [ images/nagios/**, lib/**, .image-gitlab-ci.yml ]
 
-nagiosql:
-  stage: nagiosql
-  trigger:
-    include:
-    - artifact: .child-nagiosql.yml
-      job: prepare
-  only:
-    changes: [ images/nagiosql/**, lib/**, .image-gitlab-ci.yml ]
+# nagiosql:
+#   stage: nagiosql
+#   trigger:
+#     include:
+#     - artifact: .child-nagiosql.yml
+#       job: prepare
+#   only:
+#     changes: [ images/nagiosql/**, lib/**, .image-gitlab-ci.yml ]
 
-nut-upsd:
-  stage: nut-upsd
-  trigger:
-    include:
-    - artifact: .child-nut-upsd.yml
-      job: prepare
-  only:
-    changes: [ images/nut-upsd/**, lib/**, .image-gitlab-ci.yml ]
+# nut-upsd:
+#   stage: nut-upsd
+#   trigger:
+#     include:
+#     - artifact: .child-nut-upsd.yml
+#       job: prepare
+#   only:
+#     changes: [ images/nut-upsd/**, lib/**, .image-gitlab-ci.yml ]
 
-postfix:
-  stage: postfix
-  trigger:
-    include:
-    - artifact: .child-postfix.yml
-      job: prepare
-  only:
-    changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
+# postfix:
+#   stage: postfix
+#   trigger:
+#     include:
+#     - artifact: .child-postfix.yml
+#       job: prepare
+#   only:
+#     changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
 
-openldap:
-  stage: openldap
-  trigger:
-    include:
-    - artifact: .child-openldap.yml
-      job: prepare
-  only:
-    changes: [ images/openldap/**, lib/**, .image-gitlab-ci.yml ]
+# openldap:
+#   stage: openldap
+#   trigger:
+#     include:
+#     - artifact: .child-openldap.yml
+#       job: prepare
+#   only:
+#     changes: [ images/openldap/**, lib/**, .image-gitlab-ci.yml ]
 
-postfix-python:
-  stage: postfix-python
-  trigger:
-    include:
-    - artifact: .child-postfix-python.yml
-      job: prepare
-  only:
-    changes: [ images/postfix-python/**, lib/**, .image-gitlab-ci.yml ]
+# postfix-python:
+#   stage: postfix-python
+#   trigger:
+#     include:
+#     - artifact: .child-postfix-python.yml
+#       job: prepare
+#   only:
+#     changes: [ images/postfix-python/**, lib/**, .image-gitlab-ci.yml ]
 
-proftpd:
-  stage: proftpd
-  trigger:
-    include:
-    - artifact: .child-proftpd.yml
-      job: prepare
-  only:
-    changes: [ images/proftpd/**, lib/**, .image-gitlab-ci.yml ]
+# proftpd:
+#   stage: proftpd
+#   trigger:
+#     include:
+#     - artifact: .child-proftpd.yml
+#       job: prepare
+#   only:
+#     changes: [ images/proftpd/**, lib/**, .image-gitlab-ci.yml ]
 
-rsyslogd:
-  stage: rsyslogd
-  trigger:
-    include:
-    - artifact: .child-rsyslogd.yml
-      job: prepare
-  only:
-    changes: [ images/rsyslogd/**, lib/**, .image-gitlab-ci.yml ]
+# rsyslogd:
+#   stage: rsyslogd
+#   trigger:
+#     include:
+#     - artifact: .child-rsyslogd.yml
+#       job: prepare
+#   only:
+#     changes: [ images/rsyslogd/**, lib/**, .image-gitlab-ci.yml ]
 
-samba:
-  stage: samba
-  trigger:
-    include:
-    - artifact: .child-samba.yml
-      job: prepare
-  only:
-    changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
+# samba:
+#   stage: samba
+#   trigger:
+#     include:
+#     - artifact: .child-samba.yml
+#       job: prepare
+#   only:
+#     changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
 
-samba-dc:
-  stage: samba-dc
-  trigger:
-    include:
-    - artifact: .child-samba-dc.yml
-      job: prepare
-  only:
-    changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
+# samba-dc:
+#   stage: samba-dc
+#   trigger:
+#     include:
+#     - artifact: .child-samba-dc.yml
+#       job: prepare
+#   only:
+#     changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
 
 spamassassin:
   stage: spamassassin
@@ -262,29 +262,29 @@ spamassassin:
   only:
     changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
 
-udp-nginx-proxy:
-  stage: udp-nginx-proxy
-  trigger:
-    include:
-    - artifact: .child-udp-nginx-proxy.yml
-      job: prepare
-  only:
-    changes: [ images/udp-nginx-proxy/**, lib/**, .image-gitlab-ci.yml ]
+# udp-nginx-proxy:
+#   stage: udp-nginx-proxy
+#   trigger:
+#     include:
+#     - artifact: .child-udp-nginx-proxy.yml
+#       job: prepare
+#   only:
+#     changes: [ images/udp-nginx-proxy/**, lib/**, .image-gitlab-ci.yml ]
 
-vsftpd:
-  stage: vsftpd
-  trigger:
-    include:
-    - artifact: .child-vsftpd.yml
-      job: prepare
-  only:
-    changes: [ images/vsftpd/**, lib/**, .image-gitlab-ci.yml ]
+# vsftpd:
+#   stage: vsftpd
+#   trigger:
+#     include:
+#     - artifact: .child-vsftpd.yml
+#       job: prepare
+#   only:
+#     changes: [ images/vsftpd/**, lib/**, .image-gitlab-ci.yml ]
 
-weewx:
-  stage: weewx
-  trigger:
-    include:
-    - artifact: .child-weewx.yml
-      job: prepare
-  only:
-    changes: [ images/weewx/**, lib/**, .image-gitlab-ci.yml ]
+# weewx:
+#   stage: weewx
+#   trigger:
+#     include:
+#     - artifact: .child-weewx.yml
+#       job: prepare
+#   only:
+#     changes: [ images/weewx/**, lib/**, .image-gitlab-ci.yml ]
