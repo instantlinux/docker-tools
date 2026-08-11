@@ -1,4 +1,4 @@
-FROM debian:trixie-slim
+FROM ubuntu:resolute
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYZOR_SITE=public.pyzor.org:24441
 
 ARG DCC_VERSION=2.3.169
-ARG SPAMD_VERSION=4.0.1-5
+ARG SPAMD_VERSION=4.0.2-3
 ARG DCC_SHA=3447e655476ac742942daf25fc217236da456dd0f82b7117661b9a70484b7bf6
 ARG SPAMD_UID=2022
 
@@ -42,9 +42,9 @@ RUN apt-get -yq update && apt-get -y upgrade && \
      /etc/razor/razor-agent.conf && \
     sed -i 's/DCCIFD_ENABLE=off/DCCIFD_ENABLE=on/' /var/dcc/dcc_conf && \
     sed -i '/^#\s*loadplugin .\+::DCC/s/^#\s*//g' /etc/spamassassin/v310.pre && \
-    apt-get purge -yq binutils libldap-2.5-0 linux-libc-dev libmilter-dev make && \
-    apt-get -yq autoremove && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/log/*
+    apt-get purge -yq binutils libc6-dev linux-libc-dev libmilter-dev make && \
+    apt-get -yq autoremove && apt-get clean && \
+    rm -rf /var/cache/debconf/* /var/lib/apt/lists/* /tmp/* /var/log/*
 
 COPY entrypoint.sh /root/
 VOLUME ["/var/lib/spamassassin", "/var/log"]

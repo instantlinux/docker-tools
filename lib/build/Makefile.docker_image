@@ -41,7 +41,9 @@ ifeq ($(IMAGE),$(filter $(IMAGE),python-builder python-wsgi))
   PLATFORMS = linux/amd64,linux/arm64
 endif
 ifeq ($(IMAGE),spamassassin)
-  PLATFORMS = linux/amd64,linux/arm64
+  PLATFORMS = linux/amd64
+  # TODO restore arm64 when this error gets fixed:
+  # /usr/bin/tar: dcc-2.3.169/dcc.html.in: Cannot open: Function not implemented
 endif
 
 analysis: flake8
@@ -69,11 +71,21 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	  --push --file Dockerfile . \
 	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
-	-if [ -x hooks/post_build ]; then sh hooks/post_build; fi
 
-	# TODO update dockerhub README if/when that is supported,
-	# see https://github.com/docker/hub-feedback/issues/1927
-	# and https://github.com/docker/hub-feedback/issues/2127
+	# update dockerhub README
+	[ -s /usr/bin/jq ] || apk add jq
+	@JSON=$(jq -n --arg pwd "$DOCKER_TOKEN" --arg user "$USER_LOGIN" \
+	  '{username: $user, password: $pwd}')
+	@JWT=$(curl -s -H "Content-Type: application/json" -X POST \
+	  -d "$JSON" https://hub.docker.com/v2/users/login/ |jq -r .token)
+	# Build JSON payload securely and send PATCH request
+	# jq --arg escapes special characters / newlines in markdown text
+	RESP=$(jq -n --arg desc "$(<README.md)" '{"full_description": $desc}' | \
+	  curl -s -o /dev/null -w "%{http_code}" -X PATCH \
+	  -H "Content-Type: application/json" \
+	  -H "Authorization: JWT $JWT_TOKEN" \
+	  -d @- https://hub.docker.com/v2/repositories/$(IMAGE_REPO)/
+	[ "$RESPONSE_CODE" -eq 200 ] || exit 1
 
 flake8: test_requirements
 	@echo "Running flake8 code analysis"

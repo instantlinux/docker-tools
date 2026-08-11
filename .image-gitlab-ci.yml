@@ -13,7 +13,7 @@ stages:
   - Security Scan
   - Promote Image
 
-image: docker:29.7.1
+image: docker:29.7.2
 
 .registry_template: &registry_login
   before_script:
@@ -49,27 +49,26 @@ security_scan_trivy:
     TRIVY_EXIT_CODE: 1
     TRIVY_FORMAT: json
     TRIVY_IGNORE: >-
-      CVE-2023-31484,CVE-2023-45853,
       CVE-2023-52425,CVE-2024-8176,
       CVE-2025-9900,
-      CVE-2026-0861,CVE-2025-8194,CVE-2025-13699,
-      CVE-2025-13836,CVE-2025-40914
-      # Above two rows are for spamassassin under debian trixie
       # CVE-2025-9900 is for mythtv-backend
-      # Below are for blacklist image, there's a won't-fix note for zlib1g
-      # CVE-2023-31484,CVE-2023-45853
     TRIVY_OUTPUT: gl-container-scanning-report.json
     TRIVY_SEVERITY: HIGH,CRITICAL
     TRIVY_PKG_TYPES: os,library
   script:
   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
+  # Trivy alerts on unfixed vulnerabilities in debian images
+  - >
+    if [ $IMAGE = blacklist ] || [ $IMAGE = spamassassin ]; then
+      IGN_FLAG=--ignore-unfixed ;
+    fi
   - trivy clean --all
   - trivy image --download-db-only --no-progress
   - trivy image "${REGISTRY}/${IMAGE}:${TAG}" --severity LOW,MEDIUM
       --exit-code 0 --format table --output medium-vulns.txt
   - cat medium-vulns.txt
   - echo $TRIVY_IGNORE | tr , "\n" | tee .trivyignore
-  - trivy image "${REGISTRY}/${IMAGE}:${TAG}"
+  - trivy image $IGN_FLAG "${REGISTRY}/${IMAGE}:${TAG}"
   cache:
     paths: [ .trivycache ]
   interruptible: true

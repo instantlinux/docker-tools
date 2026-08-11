@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/mythtv/mythtv
 type: application
-version: 0.1.21
-appVersion: "36.0-fixes.202607020123.7153bb6e34"
+version: 0.1.22
+appVersion: "36.0-fixes.202608010335.0d263282c8"
 dependencies:
 - name: chartlib
   version: 0.1.8
