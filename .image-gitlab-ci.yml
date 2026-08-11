@@ -49,7 +49,6 @@ security_scan_trivy:
     TRIVY_EXIT_CODE: 1
     TRIVY_FORMAT: json
     TRIVY_IGNORE: >-
-      CVE-2023-31484,CVE-2023-45853,
       CVE-2023-52425,CVE-2024-8176,
       CVE-2025-9900,
       CVE-2026-0861,CVE-2025-8194,CVE-2025-13699,
@@ -66,7 +65,7 @@ security_scan_trivy:
   # Trivy alerts on unfixed vulnerabilities in debian images
   - >
     if [ $IMAGE = blacklist ] || [ $IMAGE = spamassassin ]; then
-      IGN_FLAG=--ignore-unfixed;
+      IGN_FLAG=--ignore-unfixed ;
     fi
   - trivy clean --all
   - trivy image --download-db-only --no-progress
