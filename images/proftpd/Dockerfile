@@ -9,7 +9,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG PROFTPD_VERSION=1.3.9c-r1
+ARG PROFTPD_VERSION=1.3.9c-r0
 
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \

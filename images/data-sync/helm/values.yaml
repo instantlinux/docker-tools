@@ -117,6 +117,7 @@ configmap:
       ignore = Path data-sync/share/openldap/data/lock.mdb
       ignore = Path data-sync/share/snappymail/data/_default_/cache
       ignore = Path data-sync/dos
+      ignore = Path data-sync/headscale/db.sqlite-shm
       ignore = Path data-sync/home/*/.kube/cache
       ignore = Path data-sync/jira/home/analytics-logs
       ignore = Path data-sync/jira/home/log/automation-jira-performance.csv
