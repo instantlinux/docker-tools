@@ -73,8 +73,7 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	  --build-arg=BUILD_DATE=$(shell date +%Y-%m-%dT%H:%M:%SZ)
 
 	# update dockerhub README
-	# jq --arg escapes special characters / newlines
-	pwd && ls -l README.md
+	# jq --arg or --rawfile escapes special characters / newlines
 	JSON=$$(jq -n --arg pwd "$(DOCKER_TOKEN)" --arg user "$(USER_LOGIN)" \
 	  '{username: $$user, password: $$pwd}') && \
 	JWT=$$(curl -s -H "Content-Type: application/json" -X POST \
@@ -85,7 +84,6 @@ promote_image: $(HOME)/.docker/cli-plugins/docker-buildx
 	  -H "Authorization: Bearer $$JWT" \
 	  -d @- https://hub.docker.com/v2/repositories/$(IMAGE_REPO)/) && \
 	[ "$$RESP" -eq 200 ] || exit 1
-	# Build JSON payload, send PATCH request
 
 flake8: test_requirements
 	@echo "Running flake8 code analysis"
