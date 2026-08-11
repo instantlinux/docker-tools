@@ -19,6 +19,5 @@ ENV DEST=. \
 RUN apk add --no-cache --update git=$GIT_VERSION openssh-client && \
     apk upgrade libcrypto3 libssl3
 VOLUME /git
-
 COPY entrypoint.sh /root/
 ENTRYPOINT ["/root/entrypoint.sh"]
