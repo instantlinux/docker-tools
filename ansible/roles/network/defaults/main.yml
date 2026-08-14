@@ -33,6 +33,18 @@ network: "{{ network_defaults | combine(network_override, recursive=True) }}"
 network_sysctl:
   net.ipv4.ip_nonlocal_bind: 1
 
+msmtp_defaults:
+  enabled: false
+  config:
+    defaults: ""
+    syslog: LOG_MAIL
+    account: default
+    host: smtp
+    port: 587
+    from: root
+msmtp_override: {}
+msmtp: "{{ msmtp_defaults | combine(msmtp_override, recursive=True) }}"
+
 sshd_opts_defaults:
   ciphers:
   - aes128-cbc

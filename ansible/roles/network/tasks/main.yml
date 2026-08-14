@@ -14,3 +14,6 @@
 
 - import_tasks: kernel.yml
 - import_tasks: sshd.yml
+
+- import_tasks: msmtp.yml
+  when: msmtp.enabled
