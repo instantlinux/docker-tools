@@ -19,6 +19,9 @@ deployment:
   containerPorts:
   - containerPort: 8080
   - containerPort: 9090
+  - containerPort: 3478
+    protocol: UDP
+    name: stun
   resources:
     limits:
       memory: 512Mi
@@ -52,6 +55,8 @@ service:
   clusterIP: None
   ports:
   - { port: 8080, targetPort: 8080, name: headscale }
+  - { port: 3478, targetPort: 3478, name: stun, protocol: UDP }
+  - { port: 41641, targetPort: 41461, name: wireguard, protocol: UDP }
   type: ClusterIP
 
 ingress:
@@ -102,17 +107,17 @@ configmap:
       derp:
         server:
           enabled: false
-        region_id: 999
-        region_code: "headscale"
-        region_name: "Headscale Embedded DERP"
-        stun_listen_addr: "0.0.0.0:3478"
-        private_key_path: /var/lib/headscale/derp_server_private.key
-        automatically_add_embedded_derp_region: true
+          region_id: 999
+          region_code: "headscale"
+          region_name: "Headscale Embedded DERP"
+          stun_listen_addr: "0.0.0.0:3478"
+          private_key_path: /var/lib/headscale/derp_server_private.key
+          automatically_add_embedded_derp_region: true
         urls:
         - https://controlplane.tailscale.com/derpmap/default
         paths: []
         auto_update_enabled: true
-        update_frequency: 3h
+        update_frequency: 24h
       disable_check_updates: false
       node:
         expire: 0
