@@ -1,0 +1,14 @@
+---
+# for remote VPN-connected systems
+apiVersion: v1
+kind: Service
+metadata:
+  name: rsyslogd-external
+  namespace: $K8S_NAMESPACE
+spec:
+  type: NodePort
+  ports:
+  - { port: 514, nodePort: $NODEPORT_SYSLOG, targetPort: 514, name: rsyslogd }
+  selector:
+    app.kubernetes.io/name: rsyslogd
+  sessionAffinity: ClientIP

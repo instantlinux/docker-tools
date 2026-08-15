@@ -37,10 +37,10 @@ deployment:
     failureThreshold: 10
   resources:
     limits:
-      memory: 256Mi
+      memory: 1024Mi
     requests:
       cpu: 100m
-      memory: 64Mi
+      memory: 128Mi
 volumeMounts:
 - mountPath: /var/lib/grafana
   name: data

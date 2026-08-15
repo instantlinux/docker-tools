@@ -33,7 +33,7 @@ services:
     volumes:
       - webui-data:/data # required: user accounts, audit logs, upload temp files
     ports:
-      - 3909:3909
+      - ${GARAGE_BIND_IP:-[::]}:3909:3909
     environment:
       API_BASE_URL: "http://${GARAGE_HOST:-localhost}:3903"
       S3_ENDPOINT_URL: "http://${GARAGE_HOST:-}:3900"
@@ -57,20 +57,20 @@ configs:
 
       consistency_mode = "consistent"
       replication_factor = 1
-      rpc_bind_addr = "[::]:3901"
+      rpc_bind_addr = "${GARAGE_BIND_IP:-[::]}:3901"
       rpc_public_addr = "127.0.0.1:3901"
       compression_level = 2
 
       [s3_api]
       s3_region = "${GARAGE_REGION:-garage}"
-      api_bind_addr = "[::]:3900"
+      api_bind_addr = "${GARAGE_BIND_IP:-[::]}:3900"
       root_domain = "api.${GARAGE_DOMAIN:-s3.garage.localhost}"
 
       [s3_web]
-      bind_addr = "[::]:3902"
+      bind_addr = "${GARAGE_BIND_IP:-[::]}:3902"
       root_domain = "web.${GARAGE_DOMAIN:-s3.garage.localhost}"
       index = "index.html"
 
       [admin]
-      api_bind_addr = "0.0.0.0:3903"
+      api_bind_addr = "${GARAGE_BIND_IP:-[::]}:3903"
       admin_token = "${GARAGE_ADMIN_TOKEN:-****}"

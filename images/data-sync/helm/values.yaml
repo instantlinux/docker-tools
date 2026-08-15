@@ -105,19 +105,15 @@ configmap:
       ignore = Name ldapi
       ignore = Name lost+found
       ignore = Name msg.sock
-      # jenkins
-      ignore = Name *KubernetesClients.log
       ignore = Name *socket
       ignore = Name .s.PGSQL.5432
       ignore = Name atlassian-*.log
       ignore = Name pgstat.stat
-      ignore = Path data-sync/share/artifactory/data/data/derby/log
-      ignore = Path data-sync/share/artifactory/data/logs/request.log
+      ignore = Path data-sync/share/headscale/db.sqlite-shm
       ignore = Path data-sync/share/nagios/var/rw
       ignore = Path data-sync/share/openldap/data/lock.mdb
       ignore = Path data-sync/share/snappymail/data/_default_/cache
       ignore = Path data-sync/dos
-      ignore = Path data-sync/headscale/db.sqlite-shm
       ignore = Path data-sync/home/*/.kube/cache
       ignore = Path data-sync/jira/home/analytics-logs
       ignore = Path data-sync/jira/home/log/automation-jira-performance.csv
@@ -142,8 +138,6 @@ configmap:
       auto   = true
       batch  = true
       confirmbigdel = true
-      # copyquoterem feature seems to be gone as of 2.53.3
-      ## copyquoterem = false
       # SYS-400 overall performance is absolutely awful without this
       fastercheckUNSAFE = true
 

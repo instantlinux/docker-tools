@@ -96,7 +96,7 @@ install: install/admin-user cluster_network \
 	install_imports namespace_config install/prometheus-rbac \
 	install/k8s-backup fluent-bit remote_volumes \
 	sops data-sync-ssh persistent secrets install/ingress-nginx \
-	install/cert-manager
+	install/rsyslog-ext install/cert-manager
 
 namespace_config: install/namespace install/limits install/namespace-user \
 	secrets/regcred

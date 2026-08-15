@@ -1,0 +1,19 @@
+---
+- name: Install msmtp-mta
+  ansible.builtin.apt:
+    name: msmtp-mta
+    state: present
+
+- name: Configure msmtp
+  ansible.builtin.copy:
+    dest: /etc/msmtprc
+    content: |
+      # Managed by ansible
+      {% for key, val in msmtp.config.items() %}
+      {{ key }} {{ val }}
+      {% endfor %}
+
+- name: Remove postfix
+  ansible.builtin.apt:
+    name: postfix
+    state: absent
