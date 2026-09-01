@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.name=postfix \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
-ARG POSTFIX_VERSION=3.11.5-r0
+ARG POSTFIX_VERSION=3.11.6-r0
 ENV SASL_SECRETNAME=postfix-sasl-passwd \
     TZ=UTC
 

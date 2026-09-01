@@ -10,6 +10,13 @@ deployment:
     runAsGroup: 1000
     seccompProfile:
       type: RuntimeDefault
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
 
 volumeMounts:
 - mountPath: /usr/local/etc/valkey/valkey.conf
