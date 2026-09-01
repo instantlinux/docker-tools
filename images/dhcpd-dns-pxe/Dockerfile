@@ -9,7 +9,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 ARG KEA_VERSION=3.0.3-r0
-ARG DNSMASQ_VERSION=2.92_p2-r0
+ARG DNSMASQ_VERSION=2.93-r0
 
 ENV DB_HOST=db00 \
     DB_NAME=kea \
@@ -39,7 +39,9 @@ ENV DB_HOST=db00 \
     TFTP_SERVER=self \
     TZ=UTC
 
-RUN apk add --no-cache --update kea=$KEA_VERSION dnsmasq=$DNSMASQ_VERSION \
+RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
+      >> /etc/apk/repositories && \
+    apk add --no-cache --update kea=$KEA_VERSION dnsmasq@edge=$DNSMASQ_VERSION \
       kea-admin kea-hook-mysql mariadb-client && \
     mkdir -m 755 /run/kea && chown kea /run/kea
 

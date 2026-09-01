@@ -9,7 +9,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
-ARG DOVECOT_VERSION=2.4.4-r0
+ARG DOVECOT_VERSION=2.4.5-r0
 ARG PROCMAIL_VERSION=3.22-r4
 ARG MKCERT_SHA=d1efad065f9ef34da372847ff4a4d5ffd86b97410b303d8a43ea25aa2119c86d
 ARG PROCMAIL_SHA=4ac9f21c3d7dbed5b32e7547da39f4d429de480679b4c856026caea39ca842f9
@@ -30,7 +30,9 @@ RUN cd /tmp && \
       wget -q https://dl-cdn.alpinelinux.org/alpine/v3.11/main/armv7/procmail-$PROCMAIL_VERSION.apk ;; \
     *) echo Unrecognized ${TARGETPLATFORM} ;; \
     esac && \
-    apk add --no-cache dovecot=$DOVECOT_VERSION dovecot-ldap=$DOVECOT_VERSION && \
+    echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
+      >> /etc/apk/repositories && \
+    apk add --no-cache dovecot@edge=$DOVECOT_VERSION dovecot-ldap@edge=$DOVECOT_VERSION && \
     apk add --allow-untrusted procmail-$PROCMAIL_VERSION.apk && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/dovecot/core/release-2.4.1/doc/mkcert.sh && \

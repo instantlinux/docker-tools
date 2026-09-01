@@ -6,7 +6,7 @@ sources:
 - https://github.com/immich-app/immich
 - https://github.com/instantlinux/docker-tools
 type: application
-version: 0.1.1
+version: 0.1.2
 # Reminder, update tag for ml instance in values.yaml
 appVersion: v3.0.1
 dependencies:
@@ -20,5 +20,5 @@ dependencies:
   version: 0.1.0
   repository: file://subcharts/postgres
 - name: valkey
-  version: 0.1.0
+  version: 0.1.1
   repository: file://subcharts/valkey

@@ -41,10 +41,10 @@ Variable | Default | Description |
 ADMIN_PATH | /opt | Path on localhost (for adding local plugins, etc)
 AUTHORIZED_USERS | nagiosadmin | List of users
 CONFIG_CHECK | yes | Whether to halt on startup if config-check fails
-HTPASSWD_SECRET | nagios-htpasswd | Secret holding basic-auth user/passwords
-MAIL_AUTH_USER | | Auth for SMTP relay provider
-MAIL_AUTH_SECRET | nagios-mail-secret | Name of secret containing mail password
+HTPASSWD_SECRETNAME | nagios-htpasswd | Secret holding basic-auth user/passwords
 MAIL_RELAY_HOST | smtp:25 | FQDN and port of SMTP relay
+MAIL_RELAY_SECRETNAME | nagios-mail-secret | Name of secret containing mail password
+MAIL_RELAY_USER | | Auth for SMTP relay provider
 MAIL_USE_TLS | yes | Whether to encrypt with TLS and STARTTLS
 NAGIOS_MAIL_RELAY | smtp | DNS name for nagios email sending
 NAGIOS_FQDN | nagios.docker | server_name for nginx
