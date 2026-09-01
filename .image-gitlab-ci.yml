@@ -19,7 +19,7 @@ image: docker:29.7.2
   before_script:
   - export TAG=bld_$CI_PIPELINE_IID_${CI_COMMIT_SHORT_SHA}
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $REGISTRY
-  services: [ "docker:29.7.2-dind" ]
+  services: [ "docker:29.6.2-dind" ]
 
 analysis:
   stage: Static Code Analysis
@@ -30,14 +30,14 @@ create_image:
   <<: *registry_login
   stage: Create Image
   script: apk add make && cd images/$IMAGE && make create_image
-  services: [ { name: "docker:29.7.2-dind", command: ["--experimental"] } ]
+  services: [ { name: "docker:29.6.2-dind", command: ["--experimental"] } ]
 
 test:
   stage: Functional Tests
   script: apk add make && cd images/$IMAGE && make test_functional
 
 security_scan_trivy:
-  services: [ "docker:29.7.2-dind" ]
+  services: [ "docker:29.6.2-dind" ]
   image:
     name: aquasec/trivy:$TRIVY_VERSION
     entrypoint: [""]
