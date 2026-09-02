@@ -25,11 +25,13 @@ ENV ADMIN_PASSWORD_SECRET=samba-admin-password \
     WINBIND_USE_DEFAULT_DOMAIN=yes \
     WORKGROUP=AD
 
-ARG SAMBA_VERSION=4.23.8-r0
+ARG SAMBA_VERSION=4.23.10-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
-RUN apk add -u --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION \
+RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
+      >> /etc/apk/repositories && \
+    apk add -u --no-cache krb5 ldb-tools samba-dc@edge=$SAMBA_VERSION \
       samba-winbind-clients=$SAMBA_VERSION tdb bind bind-libs bind-tools \
       libcrypto3 libxml2 tzdata py3-cryptography py3-setuptools py3-pip && \
     pip install jinjanator --break-system-packages && \

@@ -36,7 +36,8 @@ RUN addgroup -g $NAGIOS_GID nagios && \
       nagios-plugins-mysql=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \
       perl-crypt-x509 perl-libwww perl-text-glob perl-timedate \
-      php83 php83-fpm py3-pip py3-pymysql python3 ssmtp tzdata && \
+      php83 php83-fpm py3-pip py3-pymysql python3 ssmtp tzdata \
+      samba-client@edge && \
     addgroup nginx nagios && \
     chmod u+s /usr/lib/nagios/plugins/check_ping && \
     sed -i -e s/use_syslog=.*/use_syslog=0/ \
