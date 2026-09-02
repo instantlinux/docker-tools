@@ -53,7 +53,7 @@ test_functional:
 	@echo "Running functional verification of running image"
 
 create_image: $(HOME)/.docker/cli-plugins/docker-buildx
-	docker buildx build --tag $(REGISTRY)/$(IMAGE):$(TAG)
+	docker buildx build --tag $(REGISTRY)/$(IMAGE):$(TAG) \
 	  --platform $(PLATFORMS) --provenance=false --sboms=false \
 	  $(PUSH) --file Dockerfile . \
 	  --build-arg=VCS_REF=$(CI_COMMIT_SHA) \
