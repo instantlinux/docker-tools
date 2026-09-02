@@ -79,7 +79,7 @@ security_scan_trivy:
   artifacts:
     reports:
       container_scanning: gl-container-scanning-report.json
-    expire_in: 30 days
+    expire_in: 90 days
     paths: [ medium-vulns.txt ]
 
 promote_image:
