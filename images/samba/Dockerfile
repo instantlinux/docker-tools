@@ -18,7 +18,8 @@ ENV LOGON_DRIVE=H \
 
 RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
-    apk add -u --no-cache samba@edge=$SAMBA_VERSION shadow tzdata
+    apk add -u --no-cache samba@edge=$SAMBA_VERSION shadow tzdata \
+      libcrypto3 libssl3
 
 VOLUME /etc/samba/conf.d /var/log/samba
 EXPOSE 137-138/udp 139 445
