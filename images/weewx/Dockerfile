@@ -66,7 +66,7 @@ RUN apk add -u --no-cache \
     python3 -m venv $VENV --system-site-packages && \
     source $VENV/bin/activate && \
     pip install weewx==$WEEWX_VERSION ct3 && \
-    pip uninstall -y setuptools && \
+    pip uninstall -y pip && \
     git clone -b $WEEGREEN_VERSION --depth 1 \
       https://github.com/instantlinux/weewx-WeeGreen.git \
       $WX_ROOT/skins/WeeGreen && \
