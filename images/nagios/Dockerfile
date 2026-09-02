@@ -31,7 +31,7 @@ RUN addgroup -g $NAGIOS_GID nagios && \
       nagios && \
     echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
-    apk add --update --no-cache nagios@edge=$NAGIOS_VERSION nagios-web \
+    apk add -u --no-cache nagios@edge=$NAGIOS_VERSION nagios-web \
       nagios-plugins-all=$PLUGINS_VERSION \
       nagios-plugins-mysql=$PLUGINS_VERSION \
       nrpe-plugin bash curl fcgiwrap file mariadb-client nginx openssl \

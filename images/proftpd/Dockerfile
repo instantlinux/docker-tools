@@ -31,12 +31,8 @@ ENV ALLOW_OVERWRITE=on \
 
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 RUN chmod 644 /etc/proftpd/proftpd.conf && \
-    apk add --update \
-        libcrypto3 \
-        proftpd=$PROFTPD_VERSION \
-        tzdata \
-        proftpd-mod_sftp \
-        openssh-keygen
+    apk add -u --no-cache \
+      proftpd=$PROFTPD_VERSION proftpd-mod_sftp openssh-keygen tzdata
 
 VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp /etc/ssh
 EXPOSE 21 $SFTP_PORT $PASV_MIN_PORT-$PASV_MAX_PORT

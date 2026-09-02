@@ -12,7 +12,7 @@ ARG POSTFIX_VERSION=3.11.6-r0
 ENV SASL_SECRETNAME=postfix-sasl-passwd \
     TZ=UTC
 
-RUN apk add --no-cache --update \
+RUN apk add -u --no-cache \
       postfix=$POSTFIX_VERSION cyrus-sasl-login rsyslog \
       spamassassin-client tzdata
 

@@ -1,5 +1,4 @@
-FROM alpine:3.23
-MAINTAINER Rich Braun "docker@instantlinux.net"
+FROM alpine:3.24
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
@@ -27,7 +26,7 @@ ENV ANONYMOUS_ENABLE=YES \
     VSFTPD_LOG_FILE=/dev/stdout \
     WRITE_ENABLE=YES
 
-RUN apk add --update --no-cache tzdata vsftpd=$VSFTPD_VERSION
+RUN apk add -u --no-cache tzdata vsftpd=$VSFTPD_VERSION
 
 VOLUME /etc/vsftpd.d /var/lib/ftp
 EXPOSE 21 $PASV_MIN_PORT-$PASV_MAX_PORT

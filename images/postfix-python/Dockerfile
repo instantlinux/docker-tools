@@ -27,7 +27,7 @@ ARG PYTHON_PIP_VERSION=25.0.1
 COPY requirements.txt /root/
 COPY src/ /usr/local/bin/
 
-RUN apk add --no-cache --update \
+RUN apk add -u --no-cache \
      curl openssl python3 python3-dev py3-configobj && \
     mkdir build && cd build && \
     wget -q -O get-pip.py $GETPIP_URI && \

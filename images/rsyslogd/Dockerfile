@@ -10,9 +10,9 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
 
 ARG RSYSLOG_VERSION=8.2604.0-r0
 ENV TZ=UTC
-RUN apk add --update gzip logrotate rsyslog=$RSYSLOG_VERSION \
+RUN apk add -u --no-cache gzip logrotate rsyslog=$RSYSLOG_VERSION \
       rsyslog-mysql=$RSYSLOG_VERSION tar xz && \
-    rm -fr /var/log/* /var/cache/apk/*
+    rm -fr /var/log/*
 VOLUME /var/log /etc/logrotate.d /etc/rsyslog.d
 EXPOSE 514 514/udp
 COPY logrotate.conf /etc/logrotate.conf

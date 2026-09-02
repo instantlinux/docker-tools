@@ -16,8 +16,8 @@ ENV HOST= \
     SERVICE_TYPE=easydns \
     USER_SECRETNAME=ez-ipupdate-user
 
-RUN apk add --update curl ez-ipupdate=$EZ_VERSION && \
-    rm -fr /var/log/* /var/cache/apk/*
+RUN apk add -u --no-cache curl ez-ipupdate=$EZ_VERSION && \
+    rm -fr /var/log/*
 
 CMD sh -c 'echo "user=`cat /run/secrets/$USER_SECRETNAME`" > /run/ez.conf && \
     if [ -z "$HOST" ]; then echo "Please set a HOST name"; exit 1; fi && \

@@ -16,7 +16,7 @@ ENV LOGON_DRIVE=H \
     TZ=UTC \
     WORKGROUP=WORKGROUP
 
-RUN apk add --update --no-cache samba=$SAMBA_VERSION shadow tzdata
+RUN apk add -u --no-cache samba=$SAMBA_VERSION shadow tzdata
 
 VOLUME /etc/samba/conf.d /var/log/samba
 EXPOSE 137-138/udp 139 445

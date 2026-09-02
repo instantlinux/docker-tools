@@ -28,9 +28,9 @@ RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \
     addgroup -g $BACKUP_GID backup && \
     adduser -u $UID -G backup -s /bin/sh -g "MariaDB" -D $USERNAME && \
-    apk add --update --no-cache \
+    apk add -u --no-cache \
      zstd dcron mariadb-client=$CLIENT_VERSION tzdata && \
-    rm -fr /var/cache/apk/* /var/log/*
+    rm -fr /var/log/*
 
 COPY *.sh /usr/local/bin/
 RUN chmod g+rx,o+rx /usr/local/bin/*.sh

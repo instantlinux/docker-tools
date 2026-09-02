@@ -31,7 +31,7 @@ COPY html /var/www/html
 RUN addgroup -g $NAGIOS_GID nagios && \
     adduser -u $APACHE_UID -g Apache -DSH -h /var/www apache && \
     adduser -u $NAGIOS_UID -g "Nagios Server" -DSH -h /var/nagios nagios && \
-    apk add --update --no-cache apache2 curl nagios=$NAGIOS_VERSION php83 \
+    apk add -u --no-cache apache2 curl nagios=$NAGIOS_VERSION php83 \
       php83-apache2 php83-ftp php83-gettext php83-mysqli php83-pear php83-session \
       php83-pecl-ssh2 tzdata && \
     addgroup apache nagios && \
