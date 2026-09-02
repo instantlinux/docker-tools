@@ -1,5 +1,4 @@
 variables:
-  DOCKER_CLI_EXPERIMENTAL: enabled
   DOCKER_TLS_CERTDIR: ""
   IMAGE: {{ IMAGE }}
   PLATFORMS: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
