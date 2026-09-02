@@ -29,7 +29,7 @@ ARG SAMBA_VERSION=4.23.8-r0
 
 COPY *.conf.j2 /root/
 COPY entrypoint.sh /usr/local/bin/
-RUN apk add --update --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION \
+RUN apk add -u --no-cache krb5 ldb-tools samba-dc=$SAMBA_VERSION \
       samba-winbind-clients=$SAMBA_VERSION tdb bind bind-libs bind-tools \
       libcrypto3 libxml2 tzdata py3-cryptography py3-setuptools py3-pip && \
     pip install jinjanator --break-system-packages && \

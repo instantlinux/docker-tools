@@ -1,4 +1,4 @@
-FROM nginx:1.27.4-alpine
+FROM nginx:1.31.4-alpine
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \

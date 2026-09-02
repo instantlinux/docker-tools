@@ -22,7 +22,7 @@ ARG UNISON_SHA=0f14154611a2dfebb8c229be85ceda29a750eace4fb75d06e0d43fe5b58a6e87
 ARG RRSYNC_SHA=b745a37909fc10087cc9c901ad7dfda8ad8b6b493097b156b68ba33db4a5a52f
 
 COPY src/ /root/src/
-RUN apk add --update openssh-client openssh-server perl rsync && \
+RUN apk add -u --no-cache openssh-client openssh-server perl rsync && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/instantlinux/docker-tools/master/ansible/roles/docker_node/files/rrsync && \
     echo "$RRSYNC_SHA  rrsync" | sha256sum -c && \
@@ -36,8 +36,7 @@ RUN apk add --update openssh-client openssh-server perl rsync && \
     tar zxf unison.tar.gz --strip-components=1 && \
     make && cp src/unison src/unison-fsmonitor /usr/bin && \
     cd .. && apk del .fetch-deps && \
-    rm -fr /build /var/log/* /var/cache/apk/* && \
-    mkdir /var/log/unison /root/.unison
+    rm -fr /build /var/log/* && mkdir /var/log/unison /root/.unison
 
 EXPOSE 22
 VOLUME /etc/ssh /etc/unison.d /root/.unison /var/data-sync /var/log/unison

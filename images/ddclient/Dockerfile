@@ -18,7 +18,7 @@ ENV HOST= \
     USER_LOGIN= \
     USER_SECRETNAME=ddclient-user
 
-RUN apk add --no-cache --update curl ddclient=$DDCLIENT_VERSION \
+RUN apk add -u --no-cache curl ddclient=$DDCLIENT_VERSION \
       su-exec && \
     mv /etc/ddclient/ddclient.conf /etc/ddclient/ddclient.conf-dist && \
     chown ddclient /var/cache/ddclient

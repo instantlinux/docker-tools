@@ -28,7 +28,7 @@ ENV SLAPD_DN_ATTR=uid \
     SLAPD_ULIMIT=2048 \
     SLAPD_USERPW_SECRETNAME=openldap-user-passwords
 
-RUN apk add --update --no-cache gettext gzip openldap=$OPENLDAP_VERSION \
+RUN apk add -u --no-cache gettext gzip openldap=$OPENLDAP_VERSION \
       openldap-clients openldap-back-mdb openldap-passwd-pbkdf2 \
       openldap-overlay-auditlog openldap-overlay-memberof \
       openldap-overlay-ppolicy openldap-overlay-refint

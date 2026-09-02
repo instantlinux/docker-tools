@@ -1,4 +1,4 @@
-FROM instantlinux/postfix:3.11.4-r0
+FROM instantlinux/postfix:3.11.6-r0
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -32,7 +32,7 @@ RUN cd /tmp && \
     esac && \
     echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
-    apk add --no-cache dovecot@edge=$DOVECOT_VERSION dovecot-ldap@edge=$DOVECOT_VERSION && \
+    apk add -u --no-cache dovecot@edge=$DOVECOT_VERSION dovecot-ldap@edge=$DOVECOT_VERSION && \
     apk add --allow-untrusted procmail-$PROCMAIL_VERSION.apk && \
     cd /usr/local/bin && \
     wget -q https://raw.githubusercontent.com/dovecot/core/release-2.4.1/doc/mkcert.sh && \

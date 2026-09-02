@@ -41,7 +41,7 @@ ENV DB_HOST=db00 \
 
 RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
-    apk add --no-cache --update kea=$KEA_VERSION dnsmasq@edge=$DNSMASQ_VERSION \
+    apk add -u --no-cache kea=$KEA_VERSION dnsmasq@edge=$DNSMASQ_VERSION \
       kea-admin kea-hook-mysql mariadb-client && \
     mkdir -m 755 /run/kea && chown kea /run/kea
 

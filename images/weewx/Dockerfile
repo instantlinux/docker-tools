@@ -47,7 +47,7 @@ ENV AIRLINK_HOST= \
     WX_ROOT=/home/weewx/weewx-data \
     WX_USER=weewx
 
-ARG WEEWX_VERSION=5.4.0
+ARG WEEWX_VERSION=5.5.0
 ARG WEEGREEN_VERSION=v0.12
 ARG AIRLINK_VERSION=1.4
 ARG WX_GROUP=dialout
@@ -55,7 +55,7 @@ ARG WX_UID=2071
 ARG AIRLINK_SHA=6392ee1d8e96a543306f16430ec9095b79dd7d0aacf8078171aa61b060a49745
 
 COPY install-input.txt entrypoint.sh log.conf /tmp
-RUN apk add --no-cache --update \
+RUN apk add -u --no-cache \
       curl freetype libjpeg libstdc++ openssh openssl python3 \
       py3-configobj py3-mysqlclient py3-pillow py3-pymysql py3-pyserial \
       py3-requests py3-six py3-usb rsync rsyslog tzdata && \

@@ -27,7 +27,7 @@ ARG GID=505
 ARG UID=212
 
 COPY *.sh /usr/local/bin/
-RUN apk add --no-cache --update curl dcron git=$GIT_VERSION jq \
+RUN apk add -u --no-cache curl dcron git=$GIT_VERSION jq \
       openssh-client tzdata && \
     apk upgrade libcrypto3 libssl3 && \
     addgroup -g $GID $GROUP && \
