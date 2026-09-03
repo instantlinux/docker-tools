@@ -1,13 +1,11 @@
 ---
-- name: k8s repo key
-  get_url:
-    url: "{{ k8s.apt_repo.url }}"
-    dest: /etc/apt/keyrings/kubernetes.asc
-
 - name: k8s repo
-  apt_repository:
-    filename: k8s
-    repo: "{{ k8s.apt_repo.repo }}"
+  deb822_repository:
+    name: k8s
+    types: [ deb ]
+    uris: "{{ k8s.apt_repo.url }}"
+    suites: [ / ]
+    signed_by: "{{ k8s.apt_repo.url }}/Release.key"
 
 - name: Install system packages
   apt:

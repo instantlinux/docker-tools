@@ -12,10 +12,12 @@
   when: ansible_facts['os_family'] == 'Suse'
 
 - name: Ensure repositories available
-  apt_repository:
-    repo: "{{ item }}"
-    filename: ubuntu
-  with_items: "{{ ubuntu_google_auth_repo }}"
+  deb822_repository:
+    name: ubuntu
+    types: [ deb ]
+    uris: "{{ ubuntu_repo_uri }}"
+    suites: [ "{{ ansible_facts['distribution_release'] }}" ]
+    components: [ main, restricted, universe, multiverse ]
   when: ansible_facts['os_family'] == 'Debian'
 
 - name: Install PAM module for google-authenticator

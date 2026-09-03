@@ -14,8 +14,7 @@ k8s_defaults:
   config_fetch_always: false
   apt_repo:
     # TODO parameterize hardcoded 1.36 value
-    repo: deb [signed-by=/etc/apt/keyrings/kubernetes.asc] https://pkgs.k8s.io/core:/stable:/v1.36/deb/ /
-    url: https://pkgs.k8s.io/core:/stable:/v1.36/deb/Release.key
+    url: https://pkgs.k8s.io/core:/stable:/v1.36/deb
   cplane_hostip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
   cplane_vip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
   # TODO: might be able to retire cri-dockerd
