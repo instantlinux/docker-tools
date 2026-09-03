@@ -1,6 +1,6 @@
 ---
 - name: k8s repo
-  deb822_repository:
+  ansible.builtin.deb822_repository:
     name: k8s
     types: [ deb ]
     uris: "{{ k8s.apt_repo.url }}"

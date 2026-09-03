@@ -1,6 +1,6 @@
 ---
 - name: Ensure ubuntu repos available
-  deb822_repository:
+  ansible.builtin.deb822_repository:
     name: ubuntu
     types: [ deb, deb-src ]
     uris: "{{ ubuntu_repo_uri }}"
@@ -13,7 +13,7 @@
     signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 - name: Docker repo
-  deb822_repository:
+  ansible.builtin.deb822_repository:
     name: docker
     types: [ deb ]
     uris: "{{ docker.apt_repo.url }}"

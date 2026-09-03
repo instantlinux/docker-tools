@@ -1,6 +1,6 @@
 ---
 - name: Add Tailscale repository
-  deb822_repository:
+  ansible.builtin.deb822_repository:
     name: tailscale
     types: [ deb ]
     uris: https://pkgs.tailscale.com/stable/ubuntu
