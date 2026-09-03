@@ -7,8 +7,8 @@ if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
 fi
 
 sed -i -e "s/=nagiosadmin/=$AUTHORIZED_USERS/" /etc/nagios/cgi.cfg
-if [ -s /run/secrets/$HTPASSWD_SECRET ]; then
-  cp /run/secrets/$HTPASSWD_SECRET /etc/nagios/htpasswd.users
+if [ -s /run/secrets/$HTPASSWD_SECRETNAME ]; then
+  cp /run/secrets/$HTPASSWD_SECRETNAME /etc/nagios/htpasswd.users
   chown root:www-data /etc/nagios/htpasswd.users
   chmod 640 /etc/nagios/htpasswd.users
 fi
