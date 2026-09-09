@@ -18,6 +18,7 @@
     uris: "{{ ubuntu_repo_uri }}"
     suites: [ "{{ ansible_facts['distribution_release'] }}" ]
     components: [ main, restricted, universe, multiverse ]
+    install_python_debian: true
   when: ansible_facts['os_family'] == 'Debian'
 
 - name: Install PAM module for google-authenticator
