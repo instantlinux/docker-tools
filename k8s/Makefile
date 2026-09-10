@@ -183,7 +183,7 @@ include Makefile.sops
 imports/cert-manager.yaml: imports/cert-manager-$(VERSION_CERT_MANAGER).yaml
 	ln -s $(notdir $<) $@
 imports/cert-manager-$(VERSION_CERT_MANAGER).yaml:
-	curl -sLo $@ https://github.com/jetstack/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
+	curl -sLo $@ https://github.com/cert-manager/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
 
 ##########
 # node-local-dns
