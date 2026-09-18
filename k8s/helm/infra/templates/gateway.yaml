@@ -56,9 +56,8 @@ spec:
         matchLabels:
           kubernetes.io/metadata.name: {{ .Values.namespace }}
   listeners:
-  listeners:
-  # Custom port mappings for local services - dovecot, git, postfix
-  #  Other services are defined as ListenerSets in their helm charts
+  # at least one dummy listener is needed; here we also add support for
+  # TCP listeners; all http listeners are defined with ListenerSets
   {{- if hasKey .Values.gateway "listeners" }}
   {{- range .Values.gateway.listeners }}
   - name: {{ .name }}

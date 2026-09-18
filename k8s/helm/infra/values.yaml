@@ -4,7 +4,8 @@ certManager:
   email: admin@example.com
   issuer:
     prod: letsencrypt-prod
-    staging: letsencrypt-staging
+    # Add this override for testing
+    # staging: letsencrypt-staging
   internalCA:
     rootCert:
       duration: 43800h

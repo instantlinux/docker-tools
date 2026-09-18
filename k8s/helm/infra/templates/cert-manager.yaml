@@ -1,4 +1,4 @@
-{{- if hasKey .Values "staging" }}
+{{- if hasKey .Values.certManager.issuer "staging" }}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -15,36 +15,7 @@ spec:
     solvers:
     {{- range .Values.certManager.solvers }}
     {{- if hasKey . "enabled" | ternary .enabled true }}
-    {{- if eq .solver "dns01" }}
-    - selector:
-        dnsZones: {{ .dnsZones }}
-      dns01:
-        {{- if hasKey . "webhook" | ternary .webhook true }}
-        webhook:
-          groupName: {{ .groupName }}
-          solverName: lexicon
-# TODO resync with prod
-          config:
-            provider: {{ .provider }}
-            userPassword: false
-            # authUsernameSecretRef:
-            usernameRef:
-              name: {{ .apiKey }}
-              key: user
-            passwordRef:
-              name: {{ .apiKey }}
-              key: user
-            apiKeyRef:
-              name: {{ .apiKey }}
-              key: key
-        {{- else }}
-        {{ .provider }}:
-          email: {{ .email }}
-          apiKeySecretRef:
-            name: {{ .apiKey }}
-            key: api-key
-        {{- end }}
-    {{- else if eq .solver "http01" }}
+    {{- if eq .solver "http01" }}
     - http01:
         ingress:
           class: nginx
@@ -68,41 +39,7 @@ spec:
     solvers:
     {{- range .Values.certManager.solvers }}
     {{- if hasKey . "enabled" | ternary .enabled true }}
-    {{- if eq .solver "dns01" }}
-    - selector:
-        dnsZones: {{ .dnsZones }}
-      dns01:
-        {{- if hasKey . "webhook" | ternary .webhook true }}
-        webhook:
-          groupName: {{ .groupName }}
-          solverName: lexicon
-          config:
-            provider: {{ .provider }}
-            usePassword: true
-            # authUsernameSecretRef:
-            # apiSecretRef:
-            #   name: {{ .apiKey }}
-            #   key: user
-            # passwordRef:
-            #   name: {{ .apiKey }}
-            #   key: user
-            # apiKeyRef:
-            #   name: {{ .apiKey }}
-            #   key: key
-            usernameRef:
-              name: {{ .apiKey }}
-              key: auth_username
-            apiKeyRef:
-              name: {{ .apiKey }}
-              key: auth_usertoken
-        {{- else }}
-        {{ .provider }}:
-          email: {{ .email }}
-          apiKeySecretRef:
-            name: {{ .apiKey }}
-            key: api-key
-        {{- end }}
-    {{- else if eq .solver "http01" }}
+    {{- if eq .solver "http01" }}
     - http01:
         ingress:
           class: nginx
