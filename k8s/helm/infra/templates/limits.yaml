@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  limits:
+  - default:
+      memory: {{ .Values.limits.mem.default }}
+    defaultRequest:
+      memory: {{ .Values.limits.mem.request }}
+    type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limit-range
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  limits:
+  - default:
+      cpu: {{ .Values.limits.cpu.default }}
+    defaultRequest:
+      cpu: {{ .Values.limits.cpu.request }}
+    type: Container

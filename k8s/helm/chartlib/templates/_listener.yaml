@@ -1,0 +1,144 @@
+{{- define "chartlib.listener" -}}
+{{- if hasKey .Values "gateway" }}
+{{- if or .Values.gateway.enabled (not (hasKey .Values "gateway.enabled")) }}
+{{- $fullName := include "local.fullname" . -}}
+{{- $svcPort := .Values.service.port | default (index .Values.service.ports 0).port -}}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: ListenerSet
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+  annotations:
+    {{- if hasKey .Values.gateway "annotations" }}
+    {{- toYaml .Values.gateway.annotations | nindent 4 }}
+    {{- else if .Values.gateway.external }}
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    {{- else }}
+    cert-manager.io/cluster-issuer: internal-ca-issuer
+    {{- end }}
+spec:
+  parentRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: {{ .Values.gateway.name | default "gateway-1" }}
+    {{- if hasKey .Values.gateway "namespace" }}
+    namespace: {{ .Values.gateway.namespace }}
+    {{- end }}
+  listeners:
+  {{- if hasKey .Values "tlsHostname" }}
+  - name: https
+    hostname: {{ .Values.tlsHostname }}
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: tls-{{ $fullName }}
+  - name: http
+    hostname: {{ .Values.tlsHostname }}
+    port: 80
+    protocol: HTTP
+  {{- end }}
+  {{- if hasKey .Values.gateway "listeners" }}
+  {{- toYaml .Values.gateway.listeners | nindent 2 }}
+  {{- end }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}
+spec:
+  parentRefs:
+  - kind: ListenerSet
+    name: {{ $fullName }}
+    sectionName: https
+  rules:
+  {{- if hasKey .Values.gateway "routeRules" }}
+  {{- toYaml .Values.gateway.routeRules | nindent 2 }}
+  {{- else }}
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: {{ $fullName }}
+      port: {{ $svcPort }}
+  {{- end }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}-https-redirect
+spec:
+  parentRefs:
+  - kind: ListenerSet
+    name: {{ $fullName }}
+    sectionName: http
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 308
+{{- if and (hasKey .Values.gateway "totp") .Values.gateway.totp -}}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}-authelia
+spec:
+  parentRefs:
+  - kind: ListenerSet
+    name: {{ $fullName }}
+    sectionName: https
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: {{ .Values.authelia.path }}
+    backendRefs:
+    - name: {{ $fullName }}
+      port: {{ $svcPort }}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $fullName }}-totp
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    # kind: HTTPRoute
+    # name: {{ $fullName }}-authelia
+    kind: Gateway
+    name: {{ .Values.gateway.name | default "gateway-1" }}
+  extAuth:
+    failOpen: false
+    headersToExtAuth:
+    - accept
+    - authorization
+    - cookie
+    - location
+    - proxy-authorization
+    - x-forwarded-host
+    - x-forwarded-method
+    - x-forwarded-proto
+    - x-forwarded-uri
+    http:
+      backendRefs:
+      - name: {{ .Values.authelia.service | default "authelia" }}
+        port: {{ .Values.authelia.port | default 80 }}
+        {{- if hasKey .Values.authelia "namespace" }}
+        namespace: {{ .Values.authelia.namespace }}
+        {{- end }}
+      headersToBackend:
+      - Remote-Email
+      - Remote-Groups
+      - Remote-Name
+      - Remote-User
+      path: /api/authz/ext-authz/
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -91,15 +91,12 @@ INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
-install: install/admin-user cluster_network \
-	install/local-storage storage_localdefault imports \
-	install_imports namespace_config install/prometheus-rbac \
-	install/k8s-backup fluent-bit remote_volumes \
+install: install/admin-user cluster_network imports \
+	install_imports namespace_config fluent-bit remote_volumes \
 	sops data-sync-ssh persistent secrets install/ingress-nginx \
-	install/rsyslog-ext install/cert-manager
+	infra storage_localdefault
 
-namespace_config: install/namespace install/limits install/namespace-user \
-	secrets/regcred
+namespace_config: install/namespace install/namespace-user secrets/regcred
 
 untaint_master:
 	@echo -e '** Allowing workload on master risks admin-cert security compromise **\n'
@@ -176,14 +173,32 @@ include Makefile.sops
 # cert-manager
 ##########
 
-# Note - need both, to define the CRD and the ClusterIssuer resources
+# Note - need both, to define the CRD and the ClusterIssuer resources; define
+#     an override file for infra helm chart first and then:
 #   make imports/cert-manager
-#   make install/cert-manager
+#   make infra
 
 imports/cert-manager.yaml: imports/cert-manager-$(VERSION_CERT_MANAGER).yaml
 	ln -s $(notdir $<) $@
 imports/cert-manager-$(VERSION_CERT_MANAGER).yaml:
 	curl -sLo $@ https://github.com/cert-manager/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
+
+# Run this once after imports/cert-manager
+cert-manager-gateway: 
+	kubectl patch deployment cert-manager --context=sudo -n cert-manager --type='json' -p='[ { "op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--enable-gateway-api" }, { "op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--enable-gateway-api-listenerset" }, { "op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--feature-gates=ListenerSets=true" } ]'
+
+##########
+# envoy-gateway
+##########
+imports/envoy-gateway.yaml: imports/envoy-gateway-$(VERSION_ENVOY_GATEWAY).yaml
+	ln -s $(notdir $<) $@
+imports/envoy-gateway-$(VERSION_ENVOY_GATEWAY).yaml:
+	curl -sLo $@ https://github.com/envoyproxy/gateway/releases/download/v$(VERSION_ENVOY_GATEWAY)/install.yaml
+imports/envoy-gateway:: imports/envoy-gateway.yaml
+	@echo --$(NOTICE) $@ from server-side--
+	@SERVICE_NAME=$(@F) \
+	  envsubst < $@.yaml | kubectl $(ADMIN_CTX) $(ACTION) \
+	  --server-side --force-conflicts -f -
 
 ##########
 # node-local-dns

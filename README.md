@@ -34,7 +34,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Encryption for internal etcd
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Calico or flannel networking
-* ingress-nginx
+* Envoy API gateway
 * Local-volume sync
 * Garage object storage
 * Pod security policies

@@ -13,6 +13,9 @@
     name: ssh
     state: restarted
 
+- name: Update CA certificates
+  command: update-ca-certificates
+
 - name: Restart tailscaled
   ansible.builtin.service:
     enabled: yes

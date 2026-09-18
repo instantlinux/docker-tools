@@ -8,6 +8,8 @@
 ---
 {{- include "chartlib.ingresstotp" . }}
 ---
+{{- include "chartlib.listener" . }}
+---
 {{- include "chartlib.service" . }}
 ---
 {{- include "chartlib.serviceaccount" . }}

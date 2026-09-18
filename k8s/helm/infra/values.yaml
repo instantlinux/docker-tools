@@ -1,0 +1,52 @@
+# Default values for infra.
+namespace: default
+certManager:
+  email: admin@example.com
+  issuer:
+    prod: letsencrypt-prod
+    staging: letsencrypt-staging
+  internalCA:
+    rootCert:
+      duration: 43800h
+      renewBefore: 2160h
+    commonName: Internal Root
+    subject:
+      countries: [ US ]
+      localities: [ San Francisco ]
+      organizations: [ Example Inc ]
+      organizationalUnits: [ ]
+      provinces: [ California ]
+  solvers:
+  - solver: http01
+    enabled: true
+gateway:
+  config: envoy-config
+  name: gateway-1
+  crdNamespace: envoy-gateway-system
+  listeners: []
+k8sBackup:
+  destPath: /var/backup/k8s
+  etcdVersion: 3.5.15-0
+  # 4:10am PST is 12:10pm UTC - k8s cron only supports UTC
+  schedule: "10 12 * * *"
+limits:
+  cpu:
+    default: 500m
+    request: 50m
+  mem:
+    default: 256Mi
+    request: 64Mi
+rsyslogExt:
+  nodePort: 30514
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  enabled: true
+  name: example-privileged
+service:
+  clusterIP: 10.101.1.19
+  ports: [ port: 2379 ]
+  type: ClusterIP
+autoscaling:
+  enabled: false

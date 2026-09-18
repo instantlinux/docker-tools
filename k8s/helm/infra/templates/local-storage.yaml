@@ -5,6 +5,8 @@ metadata:
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
   name: local-storage
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
 allowVolumeExpansion: false
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer

@@ -1,0 +1,94 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy-class
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: {{ .Values.gateway.config }}
+    namespace: {{ .Values.gateway.crdNamespace }}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: {{ .Values.gateway.config }}
+  namespace: {{ .Values.gateway.crdNamespace }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: NodePort
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+                - name: http
+                  port: 80
+                  protocol: TCP
+                  nodePort: {{ .Values.gateway.nodeport_http }}
+                - name: https
+                  port: 443
+                  protocol: TCP
+                  nodePort: {{ .Values.gateway.nodeport_https }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  gatewayClassName: envoy-class
+  allowedListeners:
+    namespaces:
+      from: Selector
+      selector:
+        matchLabels:
+          kubernetes.io/metadata.name: {{ .Values.namespace }}
+  listeners:
+  listeners:
+  # Custom port mappings for local services - dovecot, git, postfix
+  #  Other services are defined as ListenerSets in their helm charts
+  {{- if hasKey .Values.gateway "listeners" }}
+  {{- range .Values.gateway.listeners }}
+  - name: {{ .name }}
+    protocol: TCP
+    port: {{ .port }}
+    allowedRoutes:
+      kinds:
+      - kind: TCPRoute
+  {{- end }}
+  {{- else }}
+  - name: dummy
+    protocol: HTTP
+    port: 80
+  {{- end }}
+{{- if ne .Values.namespace .Values.authelia.namespace }}
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: envoy-authelia-integration
+  namespace: {{ .Values.authelia.namespace }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  from:
+  - group: gateway.envoyproxy.io
+    kind: SecurityPolicy
+    namespace: {{ .Values.infra.namespace }}
+  to:
+  - group: ""
+    kind: Service
+    name: {{ .Values.authelia.service | default "authelia" }}
+{{- end }}

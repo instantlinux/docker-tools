@@ -5,6 +5,7 @@
 #    make gen_sops_gpg    - Set up local PGP private key
 #    make secrets/foo.yml - Create a new secret
 #    make secrets/foo     - (without .yml) Upload secret to k8s
+#    K8S_NAMESPACE=other CONTEXT_FLAG=--context=sudo make secrets/foo  - Upload to alt namespace
 #    sops secrets/foo.yml - Edit secret
 #
 # Note:
@@ -13,6 +14,7 @@
 .PHONY: sops gen_sops_gpg
 
 sops: /usr/local/bin/sops
+CONTEXT_FLAG ?=
 
 /usr/local/bin/sops:
 ifeq ($(shell uname -s),Darwin)
@@ -55,10 +57,7 @@ SECRETS = $(basename $(wildcard secrets/*.yml secrets/*/*.yml))
 secrets: $(SECRETS)
 $(SECRETS):
 	-sops -d $@.yml | envsubst | \
-	 kubectl create -n $(K8S_NAMESPACE) -f -
-
-# TODO does this need sudo?
-# kubectl create -n $(K8S_NAMESPACE) --context=sudo -f -
+	 kubectl create -n $(K8S_NAMESPACE) $(CONTEXT_FLAG) -f -
 
 secrets/%.yml secrets/*/%yml:
 	@echo Creating secret $(@F)

@@ -49,3 +49,5 @@ CHARTLOCK = $(addsuffix /Chart.lock, $(addprefix helm/, $(CHARTS))) \
 	  $(addsuffix /Chart.lock, $(addprefix helm/instances/, $(INSTANCES)))
 $(CHARTLOCK):
 	helm dependency update $(dir $@)
+
+infra: XARGS=--kube-context=sudo

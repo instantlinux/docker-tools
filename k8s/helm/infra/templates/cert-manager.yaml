@@ -1,0 +1,153 @@
+{{- if hasKey .Values "staging" }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.certManager.issuer.staging }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: {{ .Values.certManager.email }}
+    privateKeySecretRef:
+      name: {{ .Values.certManager.issuer.staging }}
+    solvers:
+    {{- range .Values.certManager.solvers }}
+    {{- if hasKey . "enabled" | ternary .enabled true }}
+    {{- if eq .solver "dns01" }}
+    - selector:
+        dnsZones: {{ .dnsZones }}
+      dns01:
+        {{- if hasKey . "webhook" | ternary .webhook true }}
+        webhook:
+          groupName: {{ .groupName }}
+          solverName: lexicon
+# TODO resync with prod
+          config:
+            provider: {{ .provider }}
+            userPassword: false
+            # authUsernameSecretRef:
+            usernameRef:
+              name: {{ .apiKey }}
+              key: user
+            passwordRef:
+              name: {{ .apiKey }}
+              key: user
+            apiKeyRef:
+              name: {{ .apiKey }}
+              key: key
+        {{- else }}
+        {{ .provider }}:
+          email: {{ .email }}
+          apiKeySecretRef:
+            name: {{ .apiKey }}
+            key: api-key
+        {{- end }}
+    {{- else if eq .solver "http01" }}
+    - http01:
+        ingress:
+          class: nginx
+    {{- end }}
+    {{- end }}
+    {{- end }}
+{{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.certManager.issuer.prod }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: {{ .Values.certManager.email }}
+    privateKeySecretRef:
+      name: {{ .Values.certManager.issuer.prod }}
+    solvers:
+    {{- range .Values.certManager.solvers }}
+    {{- if hasKey . "enabled" | ternary .enabled true }}
+    {{- if eq .solver "dns01" }}
+    - selector:
+        dnsZones: {{ .dnsZones }}
+      dns01:
+        {{- if hasKey . "webhook" | ternary .webhook true }}
+        webhook:
+          groupName: {{ .groupName }}
+          solverName: lexicon
+          config:
+            provider: {{ .provider }}
+            usePassword: true
+            # authUsernameSecretRef:
+            # apiSecretRef:
+            #   name: {{ .apiKey }}
+            #   key: user
+            # passwordRef:
+            #   name: {{ .apiKey }}
+            #   key: user
+            # apiKeyRef:
+            #   name: {{ .apiKey }}
+            #   key: key
+            usernameRef:
+              name: {{ .apiKey }}
+              key: auth_username
+            apiKeyRef:
+              name: {{ .apiKey }}
+              key: auth_usertoken
+        {{- else }}
+        {{ .provider }}:
+          email: {{ .email }}
+          apiKeySecretRef:
+            name: {{ .apiKey }}
+            key: api-key
+        {{- end }}
+    {{- else if eq .solver "http01" }}
+    - http01:
+        ingress:
+          class: nginx
+    {{- end }}
+    {{- end }}
+    {{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: internal-root-ca-issuer
+  namespace: cert-manager
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: internal-root-ca
+  namespace: cert-manager
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  isCA: true
+  commonName: internal-root-ca
+  duration: {{ .Values.certManager.internalCA.rootCert.duration }}
+  issuerRef:
+    name: internal-root-ca-issuer
+    kind: Issuer
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  renewBefore: {{ .Values.certManager.internalCA.rootCert.renewBefore }}
+  secretName: internal-root-cert
+  subject:
+    {{- toYaml .Values.certManager.internalCA.subject | nindent 4 }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: internal-ca-issuer
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
+spec:
+  ca:
+    secretName: internal-root-cert

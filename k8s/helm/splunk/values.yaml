@@ -79,11 +79,21 @@ authelia:
   fqdn: authtotp.example.com
   ip: 10.101.1.5
   path: /en-US/account/login
-ingress:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/auth-type: basic
-    nginx.ingress.kubernetes.io/auth-secret: splunk-auth
-ingressTOTP:
+gateway:
   enabled: true
+  totp: false
+  routeRules:
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: splunk
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+    sessionPersistence:
+      absoluteTimeout: 30m
+      type: Header
+      sessionName: Authorization

@@ -1,4 +1,9 @@
 ---
+ca_trust_defaults:
+  path: /usr/local/share/ca-certificates
+  certificates: []
+ca_trust: "{{ ca_trust_defaults | combine(ca_trust_override) }}"
+
 kernel_modules:
   - ip_vs
 

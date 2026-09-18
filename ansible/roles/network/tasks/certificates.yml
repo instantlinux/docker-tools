@@ -1,0 +1,8 @@
+---
+- name: Add trusted root certificate(s)
+  ansible.builtin.copy:
+    dest: "{{ ca_trust.path }}/{{ item }}"
+    mode: 0400
+    src: certs/{{ item }}
+  with_items: "{{ ca_trust.certificates }}"
+  notify: Update CA certificates

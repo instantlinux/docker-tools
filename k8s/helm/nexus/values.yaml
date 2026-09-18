@@ -2,6 +2,7 @@
 
 autheliaIP: 10.0.10.10
 domain: example.com
+tlsHostname: nexus.example.com
 deployment:
   # Notes:
   #   port 1234 provides an h2 console, if configured
@@ -63,8 +64,31 @@ service:
   - { port: 80, targetPort: 8081, name: nexus }
   - { port: 5001, targetPort: 5000, name: registry }
 
-ingress:
+gateway:
   enabled: true
+  routeRules:
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: nexus
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: nexus
+      port: 5001
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /v2/
+ingress:
+  enabled: false
   className: ""
   annotations:
     kubernetes.io/ingress.class: nginx

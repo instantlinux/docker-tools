@@ -1,3 +1,5 @@
+{{- include "chartlib.configmap" . }}
+---
 {{- include "chartlib.deployment" . }}
 ---
 {{- include "chartlib.hpa" . }}
@@ -6,6 +8,10 @@
 ---
 {{- include "chartlib.ingresstotp" . }}
 ---
+{{- include "chartlib.listener" . }}
+---
 {{- include "chartlib.service" . }}
 ---
 {{- include "chartlib.serviceaccount" . }}
+---
+{{- include "chartlib.statefulset" . }}

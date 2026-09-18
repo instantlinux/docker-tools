@@ -23,13 +23,24 @@ service:
   type: ClusterIP
 autoscaling:
   enabled: false
-ingress:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/app-root: /guacamole
-    nginx.ingress.kubernetes.io/proxy-buffering: "off"
-    nginx.ingress.kubernetes.io/enable-access-log: "false"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Connection $http_connection;
-      proxy_set_header Upgrade $http_upgrade;
+gateway:
+  enabled: true
+  routeRules:
+  - backendRefs:
+    - name: guacamole-guacamole-server
+      port: 80
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+  - filters:
+    - requestRedirect:
+        path:
+          replaceFullPath: /guacamole
+          type: ReplaceFullPath
+        statusCode: 302
+      type: RequestRedirect
+    matches:
+    - path:
+        type: Exact
+        value: /
