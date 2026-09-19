@@ -64,5 +64,6 @@ jobs:
 
     - name: Package and Push
       run: |
+        helm dependency update "${{ matrix.chart }}"
         helm package "${{ matrix.chart }}"
         helm push "$(echo *.tgz)" oci://ghcr.io/${{ github.repository_owner }}/helm-charts
