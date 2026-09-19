@@ -28,7 +28,7 @@ jobs:
           CHANGED=$(git diff --name-only HEAD^ HEAD | \
             egrep "^(${CHART_DIR}/.*|images/.*/helm)/Chart.yaml" | \
             awk '{sub(/\/[^/]+$/, ""); print}' | paste -sd , )
-          echo "matrix={\"chart\":[\"$CHANGED"\]}" >> $GITHUB_OUTPUT
+          echo "matrix={\"chart\":[\"$CHANGED\"]}" >> $GITHUB_OUTPUT
 
   publish:
     needs: find-charts
