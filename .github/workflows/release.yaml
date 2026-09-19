@@ -7,8 +7,9 @@ env:
 on:
   push:
     branches: [main, SYS-673_envoy_gateway]
-#    paths:
-#    - k8s/helm/**/Chart.yaml
+    paths:
+    - k8s/helm/**/Chart.yaml
+    - images/**/helm/Chart.yaml
 
 jobs:
   find-charts:
@@ -25,7 +26,7 @@ jobs:
         id: set-matrix
         run: |
           CHANGED=$(git diff --name-only HEAD^ HEAD | \
-            grep "^${CHART_DIR}/.*/Chart.yaml" | \
+            egrep "^(${CHART_DIR}/.*|images/.*/helm)/Chart.yaml" | \
             awk '{sub(/\/[^/]+$/, ""); print}' | paste -sd , )
           echo "matrix={\"chart\":[$CHANGED]}" >> $GITHUB_OUTPUT
 
