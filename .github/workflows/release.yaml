@@ -26,19 +26,21 @@ jobs:
         id: set-matrix
         run: |
           CHANGED=$(git diff --name-only HEAD^ HEAD | \
-            egrep "^(${CHART_DIR}/.*|images/.*/helm)/Chart.yaml" | \
-            awk '{sub(/\/[^/]+$/, ""); print}' | paste -sd , )
-          echo "matrix={\"chart\":[\"$CHANGED\"]}" >> $GITHUB_OUTPUT
+            grep -E "^(${CHART_DIR}/.*|images/.*/helm)/Chart.yaml" | \
+            awk '{sub(/\/[^/]+$/, ""); print}' | \
+            jq -R . | jq -s -c .)
+          echo "matrix={\"chart\":$CHANGED}" >> $GITHUB_OUTPUT
 
   publish:
     needs: find-charts
-    if: ${{ needs.find-charts.outputs.matrix != '{"chart":[]}' }}
+    if: ${{ needs.find-charts.outputs.matrix != '{"chart":[]}' && \
+            needs.find-charts.outputs.matrix != '' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     strategy:
-      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.find-charts.outputs.matrix) }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
