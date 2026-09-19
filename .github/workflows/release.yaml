@@ -7,8 +7,8 @@ env:
 on:
   push:
     branches: [main, SYS-673_envoy_gateway]
-    paths:
-    - k8s/helm/**/Chart.yaml
+#    paths:
+#    - k8s/helm/**/Chart.yaml
 
 jobs:
   find-charts:
