@@ -33,7 +33,7 @@ jobs:
 
   publish:
     needs: find-charts
-    if: ${{ needs.find-charts.outputs.matrix != '{"chart":[]}' && \
+    if: ${{ needs.find-charts.outputs.matrix != '{"chart":[]}' &&
             needs.find-charts.outputs.matrix != '' }}
     runs-on: ubuntu-latest
     permissions:
