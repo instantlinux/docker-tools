@@ -70,6 +70,6 @@ jobs:
       run: |
         helm dependency update "${{ matrix.chart }}"
         helm package "${{ matrix.chart }}"
-        NAME=$(grep ^name: ${{ matrix.chart }}/Chart.yaml | cut -d ' ' -f 2
+        NAME=$(grep ^name: ${{ matrix.chart }}/Chart.yaml | cut -d ' ' -f 2)
         helm push "$(echo *.tgz)" oci://${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USER }}/$NAME
         helm push "$(echo *.tgz)" oci://${{ env.GITHUB_REGISTRY }}/${{ github.repository_owner }}/charts
