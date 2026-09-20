@@ -12,6 +12,7 @@
 - import_tasks: tailscale.yml
   when: network.tailscale.enabled
 
+- import_tasks: certificates.yml
 - import_tasks: kernel.yml
 - import_tasks: sshd.yml
 

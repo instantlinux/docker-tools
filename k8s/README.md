@@ -33,7 +33,7 @@ kubeadm suite:
 * MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Calico or flannel networking
 * Fluent Bit for container-log aggregation
-* ingress-nginx
+* Envoy API gateway
 * Local-volume sync
 * Automatic certificate issuing/renewal with Letsencrypt
 
@@ -229,11 +229,25 @@ Look in the k8s/install subdirectory for resources in namespace-user.yaml for ex
 
 ### Installation
 
-To configure k8s resources, invoke the following in this directory ([k8s](https://github.com/instantlinux/docker-tools/tree/main/k8s)):
+To configure k8s resources, first define a helm override file `infra.yaml` with content like these (define names to suit your environment):
+```
+authelia:
+  namespace: instantlinux
+certManager:
+  email: admin@ci.net
+  solvers:
+    dns01:
+      enabled: true
+      groupName: acme.ci.net
+gateway:
+  nodeport_http: 30180
+  nodeport_https: 30543
+```
+You'll need an account at letsencrypt, and a dns-apikey secret (with user and key) stored in cert-manager namespace. Invoke the following in this directory ([k8s](https://github.com/instantlinux/docker-tools/tree/main/k8s)):
 ```
 make install
 ```
-This will add flannel networking, an nginx ingress load-balancer,
+This will add flannel networking, an Envoy API gateway,
 helm and sops. Create directories for persistent volumes for each node,
 and optionally set node-affinity labels:
 ```
@@ -286,9 +300,9 @@ but gpg is suitable for bare-metal data center setups.
 ### Certificate Manager
 
 Cert-manager installation is part of the above _make install_; to
-start the issuer invoke:
+start the issuer (part of the `infra` helm chart here) invoke:
 ```
-CERT_MGR_EMAIL=<my email> make install/cert-manager
+CERT_MGR_EMAIL=<my email> make infra
 ```
 A lot of things have to be functioning before letsencrypt will issue certs: the [Let's Encrypt troubleshooting guide](https://cert-manager.io/docs/troubleshooting/acme/) is super-helpful.
 

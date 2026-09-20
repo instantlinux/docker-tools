@@ -89,6 +89,8 @@ authelia:
   fqdn: authtotp.example.com
   ip: 10.101.1.5
   path: /Myth/LoginUser
+gateway:
+  enabled: true
 ingress:
   # This ingress exposes your MythTV schedule and operational controls to
   #  the public Internet. Set up the admin user before enabling. See

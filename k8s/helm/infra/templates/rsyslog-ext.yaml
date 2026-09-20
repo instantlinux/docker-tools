@@ -4,11 +4,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rsyslogd-external
-  namespace: $K8S_NAMESPACE
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
 spec:
   type: NodePort
   ports:
-  - { port: 514, nodePort: $NODEPORT_SYSLOG, targetPort: 514, name: rsyslogd }
+  - { port: 514, nodePort: {{ .Values.rsyslogExt.nodePort }}, targetPort: 514, name: rsyslogd }
   selector:
     app.kubernetes.io/name: rsyslogd
   sessionAffinity: ClientIP

@@ -1,28 +1,69 @@
-name: Release Helm Charts
+name: Publish Helm Charts
+
+env:
+  DOCKER_REGISTRY: registry-1.docker.io
+  DOCKER_USER: instantlinux
+  GITHUB_REGISTRY: ghcr.io
+  CHART_DIR: k8s/helm
 
 on:
   push:
-    # branches: [gh-pages, master]
-    branches: [gh-pages, master, SYS-570_charts]
+    branches: [main]
+    paths:
+    - k8s/helm/**/Chart.yaml
+    - images/**/helm/Chart.yaml
 
 jobs:
-  release:
+  find-charts:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: List Chart.yaml Updates
+        id: set-matrix
+        run: |
+          CHANGED=$(git diff --name-only HEAD^ HEAD | \
+            grep -E "^(${CHART_DIR}/.*|images/.*/helm)/Chart.yaml" | \
+            awk '{sub(/\/[^/]+$/, ""); print}' | \
+            jq -R . | jq -s -c .)
+          echo "matrix={\"chart\":$CHANGED}" >> $GITHUB_OUTPUT
+
+  publish:
+    needs: find-charts
+    if: ${{ needs.find-charts.outputs.matrix != '{"chart":[]}' &&
+            needs.find-charts.outputs.matrix != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.find-charts.outputs.matrix) }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: Configure Git
-      run: |
-        git config user.name "$GITHUB_ACTOR"
-        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+    - name: Install Helm
+      uses: azure/setup-helm@v4
 
-    - name: Run chart-releaser
-      uses: helm/chart-releaser-action@v1.2.1
-      env:
-        CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      with:
-        charts_dir: k8s/helm
-        config: .github/cr.yaml
+    - name: Log in to github OCI Registry
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ${{ env.GITHUB_REGISTRY }} --username ${{ github.actor }} --password-stdin
+
+    - name: Log in to docker hub OCI Registry
+      run: |
+        echo "${{ secrets.DOCKER_TOKEN }}" | helm registry login ${{ env.DOCKER_REGISTRY }} --username ${{ env.DOCKER_USER }} --password-stdin
+
+    - name: Package and Push
+      run: |
+        helm dependency update "${{ matrix.chart }}"
+        helm package "${{ matrix.chart }}"
+        helm push "$(echo *.tgz)" oci://${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USER }}
+        helm push "$(echo *.tgz)" oci://${{ env.GITHUB_REGISTRY }}/${{ github.repository_owner }}/charts

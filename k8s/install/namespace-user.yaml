@@ -58,11 +58,32 @@ rules:
 - apiGroups: [cert-manager.io]
   resources:
   - certificates
+  - certificaterequests
+  verbs: [get, list]
+- apiGroups: [acme.cert-manager.io]
+  resources:
+  - challenges
+  - orders
   verbs: [get, list]
 - apiGroups: [networking.k8s.io]
   resources:
   - ingresses
   verbs: ["*"]
+- apiGroups: [gateway.envoyproxy.io]
+  resources:
+  - securitypolicies
+  verbs: ["*"]
+- apiGroups: [gateway.networking.k8s.io]
+  resources:
+  - gateways
+  - httproutes
+  - listenersets
+  - tcproutes
+  verbs: ["*"]
+- apiGroups: [gateway.networking.k8s.io]
+  resources:
+  - gatewayclasses
+  verbs: [get, list, watch]
 - apiGroups: [rbac.authorization.k8s.io]
   resources:
   - rolebindings

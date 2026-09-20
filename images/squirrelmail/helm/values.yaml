@@ -51,11 +51,5 @@ service:
 autoscaling:
   enabled: false
 
-authelia:
-  fqdn: authtotp.example.com
-  ip: 10.101.1.5
-  path: /src/login.php
-ingress:
-  enabled: true
-ingressTOTP:
+gateway:
   enabled: true

@@ -2,20 +2,24 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: $K8S_NAMESPACE:prometheus-scraper-binding
+  name: {{ .Values.namespace }}:prometheus-scraper-binding
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: $K8S_NAMESPACE:prometheus-scraper
+  name: {{ .Values.namespace }}:prometheus-scraper
 subjects:
 - kind: ServiceAccount
   name: grafana-prometheus
-  namespace: $K8S_NAMESPACE
+  namespace: {{ .Values.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: $K8S_NAMESPACE:prometheus-scraper
+  name: {{ .Values.namespace }}:prometheus-scraper
+  labels:
+    {{- include "local.labels" . | nindent 4 }}
 rules:
 - apiGroups: [""]
   resources:

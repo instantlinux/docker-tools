@@ -57,10 +57,11 @@ data:
 
     # Configuration of session cookies
     session:
-      expiration: {{ .Values.session.expiration }}
-      inactivity: {{ .Values.session.inactivity }}
-      # TODO this is deprecated with little info about how to fix it
-      domain: {{ .Values.session.domain }}
+      cookies:
+      - domain: {{ .Values.domain }}
+        authelia_url: https://{{ $.Values.tlsHostname }}
+        expiration: {{ .Values.session.expiration }}
+        inactivity: {{ .Values.session.inactivity }}
       redis:
         host: redis
         port: 6379
