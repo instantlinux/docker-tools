@@ -70,5 +70,5 @@ jobs:
       run: |
         helm dependency update "${{ matrix.chart }}"
         helm package "${{ matrix.chart }}"
-        helm push "$(echo *.tgz)" oci://${{ env.GITHUB_REGISTRY }}/${{ github.repository_owner }}/charts
         helm push "$(echo *.tgz)" oci://${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USER }}
+        helm push "$(echo *.tgz)" oci://${{ env.GITHUB_REGISTRY }}/${{ github.repository_owner }}/charts
