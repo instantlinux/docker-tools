@@ -1,12 +1,14 @@
 name: Publish Helm Charts
 
 env:
-  REGISTRY: ghcr.io
+  DOCKER_REGISTRY: registry-1.docker.io
+  DOCKER_USER: instantlinux
+  GITHUB_REGISTRY: ghcr.io
   CHART_DIR: k8s/helm
 
 on:
   push:
-    branches: [main, SYS-673_envoy_gateway]
+    branches: [main]
     paths:
     - k8s/helm/**/Chart.yaml
     - images/**/helm/Chart.yaml
@@ -47,23 +49,26 @@ jobs:
       with:
         fetch-depth: 0
 
-    # - name: Configure Git
-    #   run: |
-    #     git config user.name "$GITHUB_ACTOR"
-    #     git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
     - name: Install Helm
       uses: azure/setup-helm@v4
 
-    - name: Log in to OCI Registry
+    - name: Log in to github OCI Registry
       uses: docker/login-action@v3
       with:
-        registry: ${{ env.REGISTRY }}
+        registry: ${{ env.GITHUB_REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Log in to docker hub OCI Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ env.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_TOKEN }}
 
     - name: Package and Push
       run: |
         helm dependency update "${{ matrix.chart }}"
         helm package "${{ matrix.chart }}"
-        helm push "$(echo *.tgz)" oci://ghcr.io/${{ github.repository_owner }}/helm-charts
+        helm push "$(echo *.tgz)" oci://${{ env.GITHUB_REGISTRY }}/${{ github.repository_owner }}/charts
+        helm push "$(echo *.tgz)" oci://${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USER }}
