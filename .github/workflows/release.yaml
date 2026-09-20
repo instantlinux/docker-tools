@@ -55,9 +55,7 @@ jobs:
 
     - name: Log in to github OCI Registry
       run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | \
-         helm registry login ${{ env.GITHUB_REGISTRY }} \
-         --username ${{ github.actor }} --password-stdin
+        echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ${{ env.GITHUB_REGISTRY }} --username ${{ github.actor }} --password-stdin
       # uses: docker/login-action@v3
       # with:
       #   registry: ${{ env.GITHUB_REGISTRY }}
@@ -66,9 +64,7 @@ jobs:
 
     - name: Log in to docker hub OCI Registry
       run: |
-        echo "${{ secrets.DOCKER_TOKEN }}" | \
-         helm registry login ${{ env.DOCKER_REGISTRY }} \
-         --username ${{ env.DOCKER_USER }} --password-stdin
+        echo "${{ secrets.DOCKER_TOKEN }}" | helm registry login ${{ env.DOCKER_REGISTRY }} --username ${{ env.DOCKER_USER }} --password-stdin
       #  uses: docker/login-action@v3
       # with:
       #   registry: ${{ env.DOCKER_REGISTRY }}
