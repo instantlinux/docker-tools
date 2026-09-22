@@ -7,9 +7,10 @@ sources:
 - https://source.isc.org/git/dhcp.git
 - http://thekelleys.org.uk/gitweb/?p=dnsmasq.git
 type: application
-version: 0.2.3
+version: 0.2.4
 appVersion: "3.0.3-r0-2.93-r0"
 dependencies:
 - name: chartlib
-  version: 0.1.8
-  repository: https://instantlinux.github.io/docker-tools
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux

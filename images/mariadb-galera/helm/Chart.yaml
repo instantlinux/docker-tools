@@ -7,9 +7,10 @@ sources:
 - https://github.com/MariaDB/server
 - https://github.com/MariaDB/galera
 type: application
-version: 0.1.4
+version: 0.1.5
 appVersion: "12.3.2"
 dependencies:
 - name: chartlib
-  version: 0.1.8
-  repository: https://instantlinux.github.io/docker-tools
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux
