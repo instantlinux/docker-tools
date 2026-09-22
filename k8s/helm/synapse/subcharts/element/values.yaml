@@ -48,10 +48,3 @@ service:
   type: ClusterIP
 autoscaling:
   enabled: false
-
-ingress:
-  hosts:
-  - host: element.example.com
-    paths:
-    - path: /
-      pathType: Prefix

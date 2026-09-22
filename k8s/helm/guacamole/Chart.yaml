@@ -13,11 +13,11 @@ version: 0.1.6
 appVersion: "1.6.0"
 dependencies:
 - name: chartlib
-  version: 0.1.10
+  version: 0.1.11
   repository: oci://registry-1.docker.io/instantlinux
 - name: guacamole-server
-  version: 0.1.6
+  version: 0.1.7
   repository: file://subcharts/guacamole-server
 - name: guacd
-  version: 0.1.5
+  version: 0.1.6
   repository: file://subcharts/guacd

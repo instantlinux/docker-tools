@@ -2,10 +2,10 @@
 #  a user-seed.conf in mounted volume. Details are found at:
 #  http://docs.splunk.com/Documentation/Splunk/latest/Admin/user-seedconf
 #
-# The free version of splunk does not have login splash page. Included here are
-#  ingress definitions that define basic-auth and TOTP. Add a k8s secret
-#  named splunk-auth containing a key named auth. See this URL:
-#  https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/auth/basic/README.md
+# The free version of splunk does not have login splash page. Included here is
+#  an API-gateway definition that defines basic-auth. Add a k8s secret
+#  named splunk-auth containing a key named .htpasswd. See this URL:
+#  https://gateway.envoyproxy.io/docs/tasks/security/basic-auth/
 
 apiVersion: v2
 name: splunk
@@ -15,9 +15,10 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://hub.docker.com/r/splunk/splunk
 type: application
-version: 0.1.19
+version: 0.1.20
 appVersion: "10.4.1"
 dependencies:
 - name: chartlib
-  version: 0.1.10
-  repository: oci://registry-1.docker.io/instantlinux
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux

@@ -1,25 +1,27 @@
+{{ $labels := include "local.labels" . -}}
+{{- range $gateway := .Values.gateways }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
-  name: envoy-class
+  name: {{ $gateway.class }}
   labels:
-    {{- include "local.labels" . | nindent 4 }}
+    {{- $labels | nindent 4 }}
 spec:
   controllerName: gateway.envoyproxy.io/gatewayclass-controller
   parametersRef:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
-    name: {{ .Values.gateway.config }}
-    namespace: {{ .Values.gateway.crdNamespace }}
+    name: {{ $gateway.config }}
+    namespace: {{ $gateway.crdNamespace | default "envoy-gateway-system" }}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
-  name: {{ .Values.gateway.config }}
-  namespace: {{ .Values.gateway.crdNamespace }}
+  name: {{ $gateway.config }}
+  namespace: {{ $gateway.crdNamespace | default "envoy-gateway-system" }}
   labels:
-    {{- include "local.labels" . | nindent 4 }}
+    {{- $labels | nindent 4 }}
 spec:
   provider:
     type: Kubernetes
@@ -34,32 +36,32 @@ spec:
                 - name: http
                   port: 80
                   protocol: TCP
-                  nodePort: {{ .Values.gateway.nodeport_http }}
+                  nodePort: {{ $gateway.nodeport_http }}
                 - name: https
                   port: 443
                   protocol: TCP
-                  nodePort: {{ .Values.gateway.nodeport_https }}
+                  nodePort: {{ .nodeport_https }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: {{ .Values.gateway.name }}
-  namespace: {{ .Values.namespace }}
+  name: {{ $gateway.name }}
+  namespace: {{ $.Values.namespace }}
   labels:
-    {{- include "local.labels" . | nindent 4 }}
+    {{- $labels | nindent 4 }}
 spec:
-  gatewayClassName: envoy-class
+  gatewayClassName: {{ $gateway.class }}
   allowedListeners:
     namespaces:
       from: Selector
       selector:
         matchLabels:
-          kubernetes.io/metadata.name: {{ .Values.namespace }}
+          kubernetes.io/metadata.name: {{ $.Values.namespace }}
   listeners:
   # at least one dummy listener is needed; here we also add support for
   # TCP listeners; all http listeners are defined with ListenerSets
-  {{- if hasKey .Values.gateway "listeners" }}
-  {{- range .Values.gateway.listeners }}
+  {{- if hasKey $gateway "listeners" }}
+  {{- range $gateway.listeners }}
   - name: {{ .name }}
     protocol: TCP
     port: {{ .port }}
@@ -72,22 +74,22 @@ spec:
     protocol: HTTP
     port: 80
   {{- end }}
-{{- if ne .Values.namespace .Values.authelia.namespace }}
+{{- range $gateway.listeners }}
 ---
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: ReferenceGrant
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
 metadata:
-  name: envoy-authelia-integration
-  namespace: {{ .Values.authelia.namespace }}
+  name: {{ .name }}
+  namespace: {{ $.Values.namespace }}
   labels:
-    {{- include "local.labels" . | nindent 4 }}
+    {{- $labels | nindent 4 }}
 spec:
-  from:
-  - group: gateway.envoyproxy.io
-    kind: SecurityPolicy
-    namespace: {{ .Values.infra.namespace }}
-  to:
-  - group: ""
-    kind: Service
-    name: {{ .Values.authelia.service | default "authelia" }}
+  parentRefs:
+  - name: {{ $gateway.name }}
+    sectionName: {{ .name }}
+  rules:
+  - backendRefs:
+    - name: {{ .service }}
+      port: {{ .port }}
+{{- end }}
 {{- end }}

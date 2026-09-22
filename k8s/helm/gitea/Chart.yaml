@@ -6,9 +6,10 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/go-gitea/gitea
 type: application
-version: 0.1.11
+version: 0.1.12
 appVersion: 1.27.3-rootless
 dependencies:
 - name: chartlib
-  version: 0.1.10
-  repository: oci://registry-1.docker.io/instantlinux
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux

@@ -6,19 +6,20 @@ sources:
 - https://github.com/immich-app/immich
 - https://github.com/instantlinux/docker-tools
 type: application
-version: 0.1.3
+version: 0.1.4
 # Reminder, update tag for ml instance in values.yaml
 appVersion: v3.0.1
 dependencies:
 - name: chartlib
-  version: 0.1.8
-  repository: https://instantlinux.github.io/docker-tools
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux
 - name: ml
-  version: 0.1.0
+  version: 0.1.1
   repository: file://subcharts/ml
 - name: postgres
-  version: 0.1.0
+  version: 0.1.1
   repository: file://subcharts/postgres
 - name: valkey
-  version: 0.1.1
+  version: 0.1.2
   repository: file://subcharts/valkey

@@ -4,9 +4,9 @@
 ---
 {{- include "chartlib.hpa" . }}
 ---
-{{- include "chartlib.ingress" . }}
+{{- include "chartlib.listener" . }}
 ---
-{{- include "chartlib.ingresstotp" . }}
+{{- include "chartlib.service" . }}
 ---
 {{- include "chartlib.serviceaccount" . }}
 ---

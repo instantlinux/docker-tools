@@ -20,11 +20,14 @@ certManager:
   solvers:
   - solver: http01
     enabled: true
-gateway:
-  config: envoy-config
-  name: gateway-1
+gateways:
+- name: gateway-1
+  class: envoy-internal
+  config: envoy-config-internal
   crdNamespace: envoy-gateway-system
   listeners: []
+  nodeport_http: 30080
+  nodeport_https: 30443
 k8sBackup:
   destPath: /var/backup/k8s
   etcdVersion: 3.5.15-0
@@ -39,15 +42,3 @@ limits:
     request: 64Mi
 rsyslogExt:
   nodePort: 30514
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  enabled: true
-  name: example-privileged
-service:
-  clusterIP: 10.101.1.19
-  ports: [ port: 2379 ]
-  type: ClusterIP
-autoscaling:
-  enabled: false

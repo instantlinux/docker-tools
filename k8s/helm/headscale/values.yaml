@@ -58,41 +58,33 @@ service:
   - { port: 3478, targetPort: 3478, name: stun, protocol: UDP }
   - { port: 41641, targetPort: 41461, name: wireguard, protocol: UDP }
   type: ClusterIP
-
-ingress:
-  enabled: true
-  className: ""
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/enable-access-log: "false"
-    nginx.ingress.kubernetes.io/proxy-buffering: "off"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection $connection_upgrade;
-  rules:
-  - host: headscale.example.com
-    http:
-      paths:
-      - path: /admin
-        backend:
-            service:
-              name: headscale-headplane
-              port:
-                number: 3000
-        pathType: Prefix
-      - path: /
-        backend:
-            service:
-              name: headscale
-              port:
-                number: 8080
-        pathType: Prefix
-
 autoscaling:
   enabled: false
+gateway:
+  enabled: true
+  external: true
+  name: gateway-2
+  routeRules:
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: headscale
+      port: 8080
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: headscale-headplane
+      port: 3000
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /admin
 
 configmap:
   data:

@@ -65,6 +65,10 @@ rules:
   - challenges
   - orders
   verbs: [get, list]
+- apiGroups: [discovery.k8s.io]
+  resources:
+  - endpointslices
+  verbs: ["*"]
 - apiGroups: [networking.k8s.io]
   resources:
   - ingresses

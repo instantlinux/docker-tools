@@ -6,9 +6,10 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://build.trac.wordpress.org/browser
 type: application
-version: 0.1.6
+version: 0.1.7
 appVersion: "7.0.0-php8.5-apache"
 dependencies:
 - name: chartlib
-  version: 0.1.8
-  repository: https://instantlinux.github.io/docker-tools
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux

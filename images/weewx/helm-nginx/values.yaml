@@ -67,10 +67,19 @@ service:
   type: ClusterIP
 autoscaling:
   enabled: false
+gateway:
+  enabled: true
+  external: true
+  name: gateway-2
+  listeners:
+  - name: http
+    hostname: wx.example.com
+    port: 80
+    protocol: HTTP
 
-ingress:
-  hosts:
-  - host: wx.example.com
-    paths:
-    - path: /
-      pathType: Prefix
+# ingress:
+#   hosts:
+#   - host: wx.example.com
+#     paths:
+#     - path: /
+#       pathType: Prefix

@@ -84,30 +84,8 @@ service:
 autoscaling:
   enabled: false
 
-authelia:
-  # To override, use tlsHostname at top level
-  fqdn: authtotp.example.com
-  ip: 10.101.1.5
-  path: /Myth/LoginUser
 gateway:
   enabled: true
-ingress:
-  # This ingress exposes your MythTV schedule and operational controls to
-  #  the public Internet. Set up the admin user before enabling. See
-  #  https://github.com/instantlinux/docker-tools/blob/main/images/mythtv-backend/README.md#upgrade-notes
-  enabled: false
-ingressTOTP:
-  # Enable this ingress for TOTP if you have Authelia installed,
-  #   along with an external DNS name.
-  # TODO: this helm chart does trigger TOTP, but Authelia's login
-  #   splash page doesn't come up. The http-post operation to
-  #   /Myth/LoginUser fails to redirect. But you can manually
-  #   bring it up (e.g. https://authtotp.example.com) and authenticate
-  #   there, then come back to the MythTV dashboard's login link.
-  # Fixing that is a low-priority, as ingress-nginx is deprecated
-  #   and there may be an easier way to implement TOTP under envoy
-  #   gateway.
-  enabled: false
 
 # Subchart data-sync, maintains persistent data across nodes
 data-sync:
