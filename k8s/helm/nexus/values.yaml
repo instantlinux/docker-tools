@@ -1,6 +1,5 @@
 # Default values for nexus.
 
-autheliaIP: 10.0.10.10
 domain: example.com
 tlsHostname: nexus.example.com
 deployment:

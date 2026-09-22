@@ -136,8 +136,15 @@ service:
   ports:
   - { port: 80, targetPort: 2283 }
   type: ClusterIP
+autoscaling:
+  enabled: false
+gateway:
+  enabled: true
+  external: true
+  name: gateway-2
 
 ingress:
+  # TODO remove
   enabled: false
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -155,13 +162,6 @@ ingress:
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
       proxy_cookie_path: "";
-
-autoscaling:
-  enabled: false
-gateway:
-  enabled: true
-  external: true
-  name: gateway-2
 
 configmap:
   name: immich

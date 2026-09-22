@@ -15,10 +15,10 @@ dependencies:
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux
 - name: prometheus
-  version: 0.1.4
+  version: 0.1.5
   repository: file://subcharts/prometheus
   condition: prometheus.enabled
 - name: alertmanager
-  version: 0.1.2
+  version: 0.1.3
   repository: file://subcharts/alertmanager
   condition: alertmanager.enabled

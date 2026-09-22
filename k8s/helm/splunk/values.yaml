@@ -75,13 +75,8 @@ service:
 autoscaling:
   enabled: false
 
-authelia:
-  fqdn: authtotp.example.com
-  ip: 10.101.1.5
-  path: /en-US/account/login
 gateway:
   enabled: true
-  totp: false
   routeRules:
   - backendRefs:
     - group: ""

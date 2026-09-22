@@ -30,7 +30,6 @@ kubeadm suite:
 * A k8sudo script to encrypt/decrypt k8s admin key
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
-* MFA using [Authelia](https://github.com/clems4ever/authelia) and Google Authenticator
 * Calico or flannel networking
 * Fluent Bit for container-log aggregation
 * Envoy API gateway
