@@ -1,10 +1,8 @@
 # Third-party versions
 export VERSION_CERT_MANAGER   ?= 1.21.2
-export VERSION_DEFAULTBACKEND ?= 1.5
 export VERSION_ENVOY_GATEWAY  ?= 1.9.1
 export VERSION_FLANNEL        ?= 0.28.9
 export VERSION_HELM           ?= 4.3.0
-export VERSION_INGRESS_NGINX  ?= 1.15.1
 export VERSION_METRICS        ?= 2.18.0
 export VERSION_NODE_LOCAL_DNS ?= 1.36.4
 VERSION_SOPS                  ?= 3.13.0

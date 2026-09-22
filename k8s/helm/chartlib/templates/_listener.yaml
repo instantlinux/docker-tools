@@ -53,7 +53,7 @@ spec:
   parentRefs:
   - kind: ListenerSet
     name: {{ $fullName }}
-    sectionName: https
+    sectionName: http{{- if hasKey .Values "tlsHostname" }}s{{ end }}
   rules:
   {{- if hasKey .Values.gateway "routeRules" }}
   {{- toYaml .Values.gateway.routeRules | nindent 2 }}
@@ -66,6 +66,7 @@ spec:
     - name: {{ $fullName }}
       port: {{ $svcPort }}
   {{- end }}
+{{- if hasKey .Values "tlsHostname" }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -82,62 +83,7 @@ spec:
       requestRedirect:
         scheme: https
         statusCode: 308
-{{- if and (hasKey .Values.gateway "totp") .Values.gateway.totp -}}
 ---
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: {{ $fullName }}-authelia
-spec:
-  parentRefs:
-  - kind: ListenerSet
-    name: {{ $fullName }}
-    sectionName: https
-  rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: {{ .Values.authelia.path }}
-    backendRefs:
-    - name: {{ $fullName }}
-      port: {{ $svcPort }}
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: {{ $fullName }}-totp
-spec:
-  targetRefs:
-  - group: gateway.networking.k8s.io
-    # kind: HTTPRoute
-    # name: {{ $fullName }}-authelia
-    kind: Gateway
-    name: {{ .Values.gateway.name | default "gateway-1" }}
-  extAuth:
-    failOpen: false
-    headersToExtAuth:
-    - accept
-    - authorization
-    - cookie
-    - location
-    - proxy-authorization
-    - x-forwarded-host
-    - x-forwarded-method
-    - x-forwarded-proto
-    - x-forwarded-uri
-    http:
-      backendRefs:
-      - name: {{ .Values.authelia.service | default "authelia" }}
-        port: {{ .Values.authelia.port | default 80 }}
-        {{- if hasKey .Values.authelia "namespace" }}
-        namespace: {{ .Values.authelia.namespace }}
-        {{- end }}
-      headersToBackend:
-      - Remote-Email
-      - Remote-Groups
-      - Remote-Name
-      - Remote-User
-      path: /api/authz/ext-authz/
 {{- end }}
 {{- end }}
 {{- end }}

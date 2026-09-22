@@ -63,7 +63,8 @@ service:
   ports:
   - { port: 80, targetPort: 8081, name: nexus }
   - { port: 5001, targetPort: 5000, name: registry }
-
+autoscaling:
+  enabled: false
 gateway:
   enabled: true
   routeRules:
@@ -87,41 +88,6 @@ gateway:
     - path:
         type: PathPrefix
         value: /v2/
-ingress:
-  enabled: false
-  className: ""
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/enable-access-log: "false"
-    nginx.ingress.kubernetes.io/proxy-body-size: 500m
-    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-  rules:
-  - host: nexus.example.com
-    http:
-      paths:
-      - path: /
-        backend:
-          service:
-            name: nexus
-            port:
-              number: 80
-        pathType: Prefix
-      - path: /v2/
-        backend:
-          service:
-            name: nexus
-            port:
-              number: 5001
-        pathType: Prefix
-  tls:
-  - hosts:
-    - nexus.example.com
-    secretName: nexus.example.com
-
-autoscaling:
-  enabled: false
 
 configmap:
   name: nexus

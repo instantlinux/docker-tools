@@ -11,8 +11,9 @@ version: 0.1.6
 appVersion: 13.0.6
 dependencies:
 - name: chartlib
-  version: 0.1.10
-  repository: oci://registry-1.docker.io/instantlinux
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux
 - name: prometheus
   version: 0.1.4
   repository: file://subcharts/prometheus
