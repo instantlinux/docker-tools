@@ -6,10 +6,10 @@ sources:
 - https://github.com/element-hq/element-web
 - https://hub.docker.com/r/vectorim/element-web
 type: application
-version: 0.1.0
+version: 0.1.1
 # specify version tag from hub.docker.com in top-level values.yaml
 appVersion: v0.0.1
 dependencies:
 - name: chartlib
-  version: 0.1.8
-  repository: https://instantlinux.github.io/docker-tools
+  version: 0.1.11
+  repository: oci://ghcr.io/instantlinux/charts
