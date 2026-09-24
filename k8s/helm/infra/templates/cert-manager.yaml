@@ -1,3 +1,4 @@
+{{- if or .Values.certManager.enabled (not (hasKey .Values "certManager.enabled")) }}
 {{- if hasKey .Values.certManager.issuer "staging" }}
 ---
 apiVersion: cert-manager.io/v1
@@ -88,3 +89,4 @@ metadata:
 spec:
   ca:
     secretName: internal-root-cert
+{{- end }}

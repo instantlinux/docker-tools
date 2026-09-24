@@ -1,3 +1,4 @@
+{{- if or .Values.k8sBackup.enabled (not (hasKey .Values "k8sBackup.enabled")) }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -40,3 +41,4 @@ spec:
               type: Directory
           - name: backup
             hostPath: { path: {{ .Values.k8sBackup.destPath }} }
+{{- end }}

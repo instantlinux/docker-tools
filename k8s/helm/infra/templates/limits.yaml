@@ -1,3 +1,4 @@
+{{- if or .Values.limits.enabled (not (hasKey .Values "limits.enabled")) }}
 ---
 apiVersion: v1
 kind: LimitRange
@@ -28,3 +29,4 @@ spec:
     defaultRequest:
       cpu: {{ .Values.limits.cpu.request }}
     type: Container
+{{- end }}

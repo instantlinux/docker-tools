@@ -1,3 +1,4 @@
+{{- if or .Values.rsyslogExt.enabled (not (hasKey .Values "rsyslogExt.enabled")) }}
 ---
 # for remote VPN-connected systems
 apiVersion: v1
@@ -14,3 +15,4 @@ spec:
   selector:
     app.kubernetes.io/name: rsyslogd
   sessionAffinity: ClientIP
+{{- end }}

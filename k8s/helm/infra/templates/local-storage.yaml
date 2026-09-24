@@ -1,12 +1,14 @@
+{{- if or .Values.localStorage.enabled (not (hasKey .Values "localStorage.enabled")) }}
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
-  name: local-storage
+  name: {{ .Values.localStorage.name }}
   labels:
     {{- include "local.labels" . | nindent 4 }}
 allowVolumeExpansion: false
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
+{{- end }}

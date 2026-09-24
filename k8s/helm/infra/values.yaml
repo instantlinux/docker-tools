@@ -1,5 +1,11 @@
 # Default values for infra.
+#  These sections are optional (add 'enabled: false' override to disable
+#  any that aren't applicable to your environment):
+#    adminUser, certManager, k8sBackup, limits, localStorage, rsyslogExt
+#  To disable gateway resources, override with an empty list [].
 namespace: default
+adminUser:
+  name: admin-user
 certManager:
   email: admin@example.com
   issuer:
@@ -22,6 +28,9 @@ certManager:
     enabled: true
 gateways:
 - name: gateway-1
+  # gateway resources will launch in the namespace defined at top; to
+  #  allow listenersets from other namespaces, list them here
+  # allowNamespaces: [ myapp ]
   class: envoy-internal
   config: envoy-config-internal
   crdNamespace: envoy-gateway-system
@@ -40,5 +49,7 @@ limits:
   mem:
     default: 256Mi
     request: 64Mi
+localStorage:
+  name: local-storage
 rsyslogExt:
   nodePort: 30514
