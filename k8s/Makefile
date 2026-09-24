@@ -91,9 +91,9 @@ INSTALL_YAML = $(basename $(wildcard install/*.yaml)) \
           $(addprefix imports/, $(IMPORTS))
 VOLUMES_YAML = $(basename $(wildcard volumes/*.yaml))
 
-install: install/admin-user cluster_network imports install_imports \
-	namespace_config fluent-bit remote_volumes sops data-sync-ssh \
-	persistent secrets infra storage_localdefault
+install: cluster_network imports install_imports namespace_config fluent-bit \
+	remote_volumes sops data-sync-ssh persistent secrets infra \
+	storage_localdefault
 
 namespace_config: install/namespace install/namespace-user secrets/regcred
 

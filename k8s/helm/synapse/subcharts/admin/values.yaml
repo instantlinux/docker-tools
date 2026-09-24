@@ -21,5 +21,3 @@ autoscaling:
   enabled: false
 gateway:
   enabled: true
-  external: true
-  name: gateway-2

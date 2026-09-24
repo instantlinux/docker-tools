@@ -6,7 +6,7 @@ sources:
 - https://github.com/Awesome-Technologies/synapse-admin
 - https://hub.docker.com/r/awesometechnologies/synapse-admin
 type: application
-version: 0.1.1
+version: 0.1.2
 # specify version tag from hub.docker.com in top-level values.yaml
 appVersion: 0.0.1
 dependencies:

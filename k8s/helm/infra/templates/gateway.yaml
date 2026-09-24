@@ -55,8 +55,14 @@ spec:
     namespaces:
       from: Selector
       selector:
-        matchLabels:
-          kubernetes.io/metadata.name: {{ $.Values.namespace }}
+        matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values:
+          - {{ $.Values.namespace }}
+          {{- if hasKey $gateway "allowNamespaces" }}
+          {{- toYaml $gateway.allowNamespaces | nindent 10 }}
+          {{- end }}
   listeners:
   # at least one dummy listener is needed; here we also add support for
   # TCP listeners; all http listeners are defined with ListenerSets

@@ -6,15 +6,15 @@ sources:
 - https://github.com/matrix-org/synapse
 - https://hub.docker.com/r/matrixdotorg/synapse
 type: application
-version: 0.1.1
-appVersion: v1.126.0
+version: 0.1.2
+appVersion: v1.161.0
 dependencies:
 - name: chartlib
   version: 0.1.11
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux
 - name: admin
-  version: 0.1.1
+  version: 0.1.2
   repository: file://subcharts/admin
   condition: admin.enabled
 - name: element

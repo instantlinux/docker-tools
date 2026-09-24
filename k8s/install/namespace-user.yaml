@@ -148,6 +148,15 @@ rules:
   - get
   - list
   - watch
+- apiGroups: [gateway.networking.k8s.io]
+  resources:
+  - httproutes
+  - listenersets
+  - tcproutes
+  verbs:
+  - get
+  - list
+  - view
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
