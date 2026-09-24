@@ -154,7 +154,6 @@ rules:
   - listenersets
   - tcproutes
   verbs:
-  - create
   - get
   - list
   - view
