@@ -145,8 +145,6 @@ configuration.
 
 Set up a local admin repo to define helm overrides and environment variables, git-cloned under the path ~/docker/k8s/admin. Within the admin repo, create a subdirectory `services` with a file `values.yaml` containing any site-specific overrides, such as:
 ```
-authelia
-  fqdn: authtotp.mydomain.com
 domain: mydomain.com
 serviceAccount:
   name: instantlinux-privileged
@@ -230,17 +228,24 @@ Look in the k8s/install subdirectory for resources in namespace-user.yaml for ex
 
 To configure k8s resources, first define a helm override file `infra.yaml` with content like these (define names to suit your environment):
 ```
-authelia:
-  namespace: instantlinux
 certManager:
   email: admin@ci.net
-  solvers:
-    dns01:
-      enabled: true
-      groupName: acme.ci.net
-gateway:
+  internalCA:
+    commonName: MyCompany k8s root
+    subject:
+      organizations: [ MyCompany.com ]
+gateways:
+- name: gateway-1
+  class: envoy-internal
+  config: envoy-config-internal
   nodeport_http: 30180
   nodeport_https: 30543
+- name: gateway-2
+  allowNamespaces: [ mynamespace ]
+  class: envoy-external
+  config: envoy-config-external
+  nodeport_http: 30080
+  nodeport_https: 30443
 ```
 You'll need an account at letsencrypt, and a dns-apikey secret (with user and key) stored in cert-manager namespace. Invoke the following in this directory ([k8s](https://github.com/instantlinux/docker-tools/tree/main/k8s)):
 ```

@@ -75,6 +75,8 @@ rules:
   verbs: ["*"]
 - apiGroups: [gateway.envoyproxy.io]
   resources:
+  - backendtrafficpolicies
+  - clienttrafficpolicies
   - securitypolicies
   verbs: ["*"]
 - apiGroups: [gateway.networking.k8s.io]

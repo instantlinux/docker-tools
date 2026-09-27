@@ -15,6 +15,12 @@ deployment:
     exec httpd-foreground
   containerPorts:
   - containerPort: 80
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
 volumeMounts:
 - mountPath: /usr/local/apache2/conf/custom.conf
   name: config

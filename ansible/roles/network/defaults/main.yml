@@ -75,6 +75,7 @@ ubuntu_packages:
   - dnsutils
   - net-tools
   - psmisc
+  - socat
 
 vrrp:
   VI_1:

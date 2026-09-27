@@ -31,6 +31,7 @@ gateways:
   # gateway resources will launch in the namespace defined at top; to
   #  allow listenersets from other namespaces, list them here
   # allowNamespaces: [ myapp ]
+  accessLog: false
   class: envoy-internal
   config: envoy-config-internal
   crdNamespace: envoy-gateway-system
