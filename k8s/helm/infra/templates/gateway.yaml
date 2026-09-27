@@ -41,6 +41,11 @@ spec:
                   port: 443
                   protocol: TCP
                   nodePort: {{ .nodeport_https }}
+  {{- if or (not (hasKey $gateway "accessLog")) (not $gateway.accessLog) }}
+  telemetry:
+    accessLog:
+      disable: true
+  {{- end }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
