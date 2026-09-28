@@ -65,7 +65,8 @@ gateway:
   external: true
   name: gateway-2
   routeRules:
-  - backendRefs:
+  - name: headscale
+    backendRefs:
     - group: ""
       kind: Service
       name: headscale
@@ -75,7 +76,19 @@ gateway:
     - path:
         type: PathPrefix
         value: /
-  - backendRefs:
+  - name: tailscale
+    backendRefs:
+    - group: ""
+      kind: Service
+      name: headscale
+      port: 8080
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /ts2021
+  - name: headplane
+    backendRefs:
     - group: ""
       kind: Service
       name: headscale-headplane
