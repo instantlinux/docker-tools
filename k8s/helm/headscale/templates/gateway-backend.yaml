@@ -7,5 +7,7 @@ spec:
   - group: gateway.networking.k8s.io
     kind: HTTPRoute
     name: {{ include "local.fullname" . }}
+    sectionName: tailscale
   httpUpgrade:
   - type: tailscale-control-protocol
+  - type: websocket
