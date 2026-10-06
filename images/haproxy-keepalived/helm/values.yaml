@@ -15,7 +15,7 @@ deployment:
     keepalived_config_id: main
   hostNetwork: true
   # override pid: host to use vrrp_track_process
-  pid: false
+  hostPID: false
   nodeSelector:
     service.haproxy-keepalived: allow
   replicas: 2

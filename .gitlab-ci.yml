@@ -71,7 +71,7 @@ blacklist:
     - artifact: .child-blacklist.yml
       job: prepare
   only:
-    changes: [ images/blacklist/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/blacklist/**, .image-gitlab-ci.yml ]
 
 data-sync:
   stage: data-sync
@@ -80,7 +80,7 @@ data-sync:
     - artifact: .child-data-sync.yml
       job: prepare
   only:
-    changes: [ images/data-sync/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/data-sync/**, .image-gitlab-ci.yml ]
 
 ddclient:
   stage: ddclient
@@ -89,7 +89,7 @@ ddclient:
     - artifact: .child-ddclient.yml
       job: prepare
   only:
-    changes: [ images/ddclient/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/ddclient/**, .image-gitlab-ci.yml ]
 
 dhcpd-dns-pxe:
   stage: dhcpd-dns-pxe
@@ -98,7 +98,7 @@ dhcpd-dns-pxe:
     - artifact: .child-dhcpd-dns-pxe.yml
       job: prepare
   only:
-    changes: [ images/dhcpd-dns-pxe/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/dhcpd-dns-pxe/**, .image-gitlab-ci.yml ]
 
 dovecot:
   stage: dovecot
@@ -107,7 +107,7 @@ dovecot:
     - artifact: .child-dovecot.yml
       job: prepare
   only:
-    changes: [ images/dovecot/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/dovecot/**, .image-gitlab-ci.yml ]
 
 ez-ipupdate:
   stage: ez-ipupdate
@@ -116,7 +116,7 @@ ez-ipupdate:
     - artifact: .child-ez-ipupdate.yml
       job: prepare
   only:
-    changes: [ images/ez-ipupdate/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/ez-ipupdate/**, .image-gitlab-ci.yml ]
 
 git-pull:
   stage: git-pull
@@ -125,7 +125,7 @@ git-pull:
     - artifact: .child-git-pull.yml
       job: prepare
   only:
-    changes: [ images/git-pull/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/git-pull/**, .image-gitlab-ci.yml ]
 
 haproxy-keepalived:
   stage: haproxy-keepalived
@@ -134,7 +134,7 @@ haproxy-keepalived:
     - artifact: .child-haproxy-keepalived.yml
       job: prepare
   only:
-    changes: [ images/haproxy-keepalived/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/haproxy-keepalived/**, .image-gitlab-ci.yml ]
 
 mariadb-galera:
   stage: mariadb-galera
@@ -143,7 +143,7 @@ mariadb-galera:
     - artifact: .child-mariadb-galera.yml
       job: prepare
   only:
-    changes: [ images/mariadb-galera/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/mariadb-galera/**, .image-gitlab-ci.yml ]
 
 mysqldump:
   stage: mysqldump
@@ -152,7 +152,7 @@ mysqldump:
     - artifact: .child-mysqldump.yml
       job: prepare
   only:
-    changes: [ images/mysqldump/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/mysqldump/**, .image-gitlab-ci.yml ]
 
 mythtv-backend:
   stage: mythtv-backend
@@ -161,7 +161,7 @@ mythtv-backend:
     - artifact: .child-mythtv-backend.yml
       job: prepare
   only:
-    changes: [ images/mythtv-backend/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/mythtv-backend/**, .image-gitlab-ci.yml ]
 
 nagios:
   stage: nagios
@@ -170,7 +170,7 @@ nagios:
     - artifact: .child-nagios.yml
       job: prepare
   only:
-    changes: [ images/nagios/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/nagios/**, .image-gitlab-ci.yml ]
 
 nagiosql:
   stage: nagiosql
@@ -179,7 +179,7 @@ nagiosql:
     - artifact: .child-nagiosql.yml
       job: prepare
   only:
-    changes: [ images/nagiosql/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/nagiosql/**, .image-gitlab-ci.yml ]
 
 nut-upsd:
   stage: nut-upsd
@@ -188,7 +188,7 @@ nut-upsd:
     - artifact: .child-nut-upsd.yml
       job: prepare
   only:
-    changes: [ images/nut-upsd/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/nut-upsd/**, .image-gitlab-ci.yml ]
 
 postfix:
   stage: postfix
@@ -197,7 +197,7 @@ postfix:
     - artifact: .child-postfix.yml
       job: prepare
   only:
-    changes: [ images/postfix/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/postfix/**, .image-gitlab-ci.yml ]
 
 openldap:
   stage: openldap
@@ -206,7 +206,7 @@ openldap:
     - artifact: .child-openldap.yml
       job: prepare
   only:
-    changes: [ images/openldap/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/openldap/**, .image-gitlab-ci.yml ]
 
 postfix-python:
   stage: postfix-python
@@ -215,7 +215,7 @@ postfix-python:
     - artifact: .child-postfix-python.yml
       job: prepare
   only:
-    changes: [ images/postfix-python/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/postfix-python/**, .image-gitlab-ci.yml ]
 
 proftpd:
   stage: proftpd
@@ -224,7 +224,7 @@ proftpd:
     - artifact: .child-proftpd.yml
       job: prepare
   only:
-    changes: [ images/proftpd/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/proftpd/**, .image-gitlab-ci.yml ]
 
 rsyslogd:
   stage: rsyslogd
@@ -233,7 +233,7 @@ rsyslogd:
     - artifact: .child-rsyslogd.yml
       job: prepare
   only:
-    changes: [ images/rsyslogd/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/rsyslogd/**, .image-gitlab-ci.yml ]
 
 samba:
   stage: samba
@@ -242,7 +242,7 @@ samba:
     - artifact: .child-samba.yml
       job: prepare
   only:
-    changes: [ images/samba/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/samba/**, .image-gitlab-ci.yml ]
 
 samba-dc:
   stage: samba-dc
@@ -251,7 +251,7 @@ samba-dc:
     - artifact: .child-samba-dc.yml
       job: prepare
   only:
-    changes: [ images/samba-dc/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/samba-dc/**, .image-gitlab-ci.yml ]
 
 spamassassin:
   stage: spamassassin
@@ -260,7 +260,7 @@ spamassassin:
     - artifact: .child-spamassassin.yml
       job: prepare
   only:
-    changes: [ images/spamassassin/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/spamassassin/**, .image-gitlab-ci.yml ]
 
 udp-nginx-proxy:
   stage: udp-nginx-proxy
@@ -269,7 +269,7 @@ udp-nginx-proxy:
     - artifact: .child-udp-nginx-proxy.yml
       job: prepare
   only:
-    changes: [ images/udp-nginx-proxy/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/udp-nginx-proxy/**, .image-gitlab-ci.yml ]
 
 vsftpd:
   stage: vsftpd
@@ -278,7 +278,7 @@ vsftpd:
     - artifact: .child-vsftpd.yml
       job: prepare
   only:
-    changes: [ images/vsftpd/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/vsftpd/**, .image-gitlab-ci.yml ]
 
 weewx:
   stage: weewx
@@ -287,4 +287,4 @@ weewx:
     - artifact: .child-weewx.yml
       job: prepare
   only:
-    changes: [ images/weewx/**, lib/**, .image-gitlab-ci.yml ]
+    changes: [ images/weewx/**, .image-gitlab-ci.yml ]

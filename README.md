@@ -5,7 +5,7 @@
 Kubernetes is hard--or is it? This repo is a collection of
 multi-platform images and container resource definitions for managing
 a software-dev organization using Kubernetes. These tools make it
-easy. Contents:
+easy to install and stay up-to-date. Contents:
 
 | Directory | Description |
 | --------- | ----------- |
@@ -46,30 +46,29 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 
 | Service | Version | Notes |
 | --- | --- | --- |
-| gitea | ** | git repo |
 | admin-git | [![](https://img.shields.io/docker/v/instantlinux/git-pull?sort=date)](https://hub.docker.com/r/instantlinux/git-pull "Version badge") | sync git repo across cluster |
 | gitea | ** | self-hosted git repo with many github features |
-| jira | ** | ticket tracking |
+| jira | 9.12.1 | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
-| nexus | ** | binary repo with docker registry |
-| synapse | ** | self-hosted team chat |
+| nexus | 3.96.1 | binary repo with docker registry |
+| synapse | v1.161.0 | self-hosted team chat |
+| updater | ** | tool that updates this repo for [inventory.md](lib/build/inventory.md) |
 | wordpress | ** | |
 
 **Networking and support**
 
 | Service | Version | Notes |
 | --- | --- | --- |
-| apache | ** | web server, with webdav example |
-| authelia | ** | single-signon multi-factor auth |
+| apache | 2.4.67 | web server, with webdav example |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | ddclient | [![](https://img.shields.io/docker/v/instantlinux/ddclient?sort=date)](https://hub.docker.com/r/instantlinux/ddclient "Version badge") | Dynamic DNS client |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
 | fluent-bit | ** | central logging for Kubernetes |
 | garage | ** | S3-compatible object storage |
-| grafana | ** | monitoring dashboard with prometheus-based alerting |
-| guacamole | ** | authenticated remote-desktop server |
+| grafana | 13.0.6 | monitoring dashboard with prometheus-based alerting |
+| guacamole | 1.6.0 | authenticated remote-desktop server |
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
-| headscale | ** | tailscale-compatible VPN control-plane |
+| headscale | 0.29.3 | tailscale-compatible VPN control-plane |
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
@@ -77,13 +76,13 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | proftpd | [![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd "Version badge") | FTP server |
-| radicale | ** | CalDAV / CardDAV for mobile calendar/contacts sync |
+| radicale | 3.7.7 | CalDAV / CardDAV for mobile calendar/contacts sync |
 | restic | ** | backups |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
 | samba | [![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba "Version badge") | file server |
 | samba-dc | [![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://hub.docker.com/r/instantlinux/samba-dc "Version badge") | Active-Directory compatible domain controller |
 | [secondshot](https://github.com/instantlinux/secondshot) | [![](https://img.shields.io/docker/v/instantlinux/secondshot?sort=date)](https://hub.docker.com/r/instantlinux/secondshot "Version badge") | rsnapshot-based backups |
-| splunk | ** | the free version |
+| splunk | 10.4.1 | the free version |
 | vaultwarden | ** | BitWarden-compatible self-hosted backend |
 | virt-manager | ** | GUI and CLI for QEMU/KVM virtual machines |
 
@@ -95,7 +94,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | dovecot | [![](https://img.shields.io/docker/v/instantlinux/dovecot?sort=date)](https://hub.docker.com/r/instantlinux/dovecot "Version badge") | imapd server |
 | postfix | [![](https://img.shields.io/docker/v/instantlinux/postfix?sort=date)](https://hub.docker.com/r/instantlinux/postfix "Version badge") | compact general-purpose image in 11MB |
 | postfix-python | [![](https://img.shields.io/docker/v/instantlinux/postfix-python?sort=date)](https://hub.docker.com/r/instantlinux/postfix-python "Version badge") | postfix with spam-control scripts |
-| snappymail | ** | webmail, forked from rainloop imapd-client server |
+| snappymail | v2.38.2 | webmail, forked from rainloop imapd-client server |
 | spamassassin | [![](https://img.shields.io/docker/v/instantlinux/spamassassin?sort=date)](https://hub.docker.com/r/instantlinux/spamassassin "Version badge") | spam control daemon |
 
 **Entertainment**
@@ -103,9 +102,9 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | Service | Version | Notes |
 | --- | --- | --- |
 | davite | [![](https://img.shields.io/docker/v/instantlinux/davite?sort=date)](https://hub.docker.com/r/instantlinux/davite "Version badge") | party-invites manager like eVite |
-| immich | ** | immich self-hosted photo/video manager |
+| immich | v3.0.1 | immich self-hosted photo/video manager |
 | mythtv-backend | [![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://hub.docker.com/r/instantlinux/mythtv-backend "Version badge") | MythTV backend |
-| OwnTone | ** | iTunes server (formerly forked-daapd) |
+| OwnTone | 29.2 | iTunes server (formerly forked-daapd) |
 | weewx | [![](https://img.shields.io/docker/v/instantlinux/weewx?sort=date)](https://hub.docker.com/r/instantlinux/weewx "Version badge") | Weather station software (Davis VantagePro2 etc.) |
 
 ### Credits

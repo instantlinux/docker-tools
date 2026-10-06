@@ -1,6 +1,6 @@
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/nut-upsd:latest
+    image: ${REGISTRY_URI:-instantlinux}/nut-upsd:${VERSION_NUT_UPSD:-latest}
     restart: always
     environment:
       SERIAL: ${UPS_1_SERIAL}

@@ -1,0 +1,4 @@
+GitPython==3.2.0
+PyGithub==2.10.0
+PyYAML==6.0.3
+yadopt==2026.9.26
