@@ -1,6 +1,6 @@
 services:
   db:
-    image: mariadb:10
+    image: mariadb:${VERSION_KC_DB:-10}
     environment:
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"
       MARIADB_USER:                 ${KEYCLOAK_DB_USER:-keycloak}

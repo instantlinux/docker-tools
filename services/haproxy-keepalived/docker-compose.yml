@@ -1,7 +1,7 @@
 services:
 
   app:
-    image: ${REGISTRY_URI:-instantlinux}/haproxy-keepalived:latest
+    image: ${REGISTRY_URI:-instantlinux}/haproxy-keepalived:${VERSION_HA_KA:-latest}
     restart: always
     environment:
       KEEPALIVE_CONFIG_ID: ${KEEPALIVED_CONFIG_ID:-main}

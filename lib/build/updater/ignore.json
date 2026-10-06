@@ -1,0 +1,33 @@
+{
+    "alpine-packages": [
+	"data-sync",
+	"dhcpd-dns-pxe",
+	"nagios",
+	"nagiosql",
+	"weewx"
+    ],
+    "ubuntu-packages": [
+	"blacklist",
+	"mythtv-backend"
+    ],
+    "python-packages": [
+	"weewx"
+    ],
+    "images": [
+	"alpine",
+	"instantlinux/haproxy-keepalived",
+	"mariadb",
+	"instantlinux/nagiosql",
+	"instantlinux/nut-upsd",
+	"nginx"
+    ],
+    "charts": [
+	"il-v1",
+	"immich",
+	"jira",
+	"restic",
+	"squirrelmail",
+	"wordpress"
+    ]
+}
+	

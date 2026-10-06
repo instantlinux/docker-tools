@@ -25,7 +25,7 @@ services:
     - ${GARAGE_ROOT:-/var/lib/garage}/meta:/var/lib/garage/meta
     - ${GARAGE_ROOT:-/var/lib/garage}/data:/var/lib/garage/data
   webui:
-    image: genebit/garage-webui:latest
+    image: genebit/garage-webui:${VERSION_GAR_WEBUI:-latest}
     configs:
     - source: garage.toml
       target: /etc/garage.toml

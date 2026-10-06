@@ -109,6 +109,7 @@ configmap:
       ignore = Name .s.PGSQL.5432
       ignore = Name atlassian-*.log
       ignore = Name pgstat.stat
+      ignore = Name py3ttvdb4.sqlite
       ignore = Path data-sync/share/headscale/db.sqlite-shm
       ignore = Path data-sync/share/nagios/var/rw
       ignore = Path data-sync/share/openldap/data/lock.mdb

@@ -6,7 +6,7 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/networkupstools/nut
 type: application
-version: 0.1.14
+version: 2.8.5
 appVersion: "2.8.5-r1"
 dependencies:
 - name: chartlib

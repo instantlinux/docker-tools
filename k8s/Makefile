@@ -189,10 +189,10 @@ cert-manager-gateway:
 ##########
 # envoy-gateway
 ##########
-imports/envoy-gateway.yaml: imports/envoy-gateway-$(VERSION_ENVOY_GATEWAY).yaml
+imports/envoy-gateway.yaml: imports/envoy-gateway-$(VERSION_GATEWAY).yaml
 	ln -s $(notdir $<) $@
-imports/envoy-gateway-$(VERSION_ENVOY_GATEWAY).yaml:
-	curl -sLo $@ https://github.com/envoyproxy/gateway/releases/download/v$(VERSION_ENVOY_GATEWAY)/install.yaml
+imports/envoy-gateway-$(VERSION_GATEWAY).yaml:
+	curl -sLo $@ https://github.com/envoyproxy/gateway/releases/download/v$(VERSION_GATEWAY)/install.yaml
 imports/envoy-gateway:: imports/envoy-gateway.yaml
 	@echo --$(NOTICE) $@ from server-side--
 	@SERVICE_NAME=$(@F) \
@@ -214,12 +214,12 @@ imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml:
 imports: $(foreach file,$(IMPORTS),imports/$(file).yaml)
 install_imports: $(foreach file, $(IMPORTS), imports/$(file))
 
-imports/kube-state-metrics: imports/kube-state-metrics-$(VERSION_METRICS)
+imports/kube-state-metrics: imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)
 	ln -s $(notdir $<) $@
 imports/kube-state-metrics-$(VERSION_METRICS):
-	git clone --dept 1 --branch v$(VERSION_METRICS) \
+	git clone --dept 1 --branch v$(VERSION_KUBE_STATE_METRICS) \
 	 https://github.com/kubernetes/kube-state-metrics \
-	 imports/kube-state-metrics-$(VERSION_METRICS)
+	 imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)
 install_metrics: imports/kube-state-metrics
 	kubectl apply --context=sudo -k $</examples/standard
 
