@@ -185,7 +185,7 @@ def update_inventory(scripts_path, dest_path):
 
 def generate_pr(changeset, repo, gh_reponame, title, body, branch, base):
     del changeset['manual-checks']
-    repo.index.commit(title)
+    repo.git.commit('-S', m=title)
     repo.git.push("--set-upstream", "origin", repo.head.ref)
     auth = GitAuth.Token(os.environ["GITHUB_TOKEN"])
     gh_repo = Github(auth=auth).get_repo(gh_reponame)
