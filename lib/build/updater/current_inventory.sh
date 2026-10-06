@@ -95,7 +95,7 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
       TAG=$(grep "FROM alpine" $FIRST | grep -oE "[1-9]+\.[0-9]+(\.[0-9])*");;
     docker)
       FILES='".image-gitlab-ci.yml", ".gitlab-ci.yml"'
-      TAG=$(grep ^image: $FILE | grep -oE "[1-9]+\.[0-9]+(\.[0-9])*");;
+      TAG=$(grep ^image: .gitlab-ci.yml | grep -oE "[1-9]+\.[0-9]+(\.[0-9])*");;
     dxflrs/garage)
       TAG=$(grep VERSION_GARAGE $FILE | awk '{ print $4; }');;
     genebit/garage-webui)

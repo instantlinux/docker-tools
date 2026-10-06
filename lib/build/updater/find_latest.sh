@@ -173,8 +173,7 @@ for ITEM in cni coredns docker-ce kubernetes smartmontools; do
        grep -Ev "\-(rc|alpha)" | head -1 | awk -F '|' '{print $2; }' | xargs);;
     kubernetes)  ROLE=kubernetes; VERSION=$(curl -s \
       https://api.github.com/repos/kubernetes/$ITEM/releases | \
-      jq -r '.[].tag_name' | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?' | sort -V | tail -n 1);;
-      # jq -r '.[].tag_name' | grep -Ev "\-(rc|alpha)" | sort -V | tail -n 1);;
+      jq -r '.[].tag_name' | grep -E '^v[0-9]+\.[0-9]+(\.[0-9]+)?$' | sort -V | tail -n 1);;
     smartmontools) ROLE=monitoring_agent; VERSION=$(curl -s \
       https://api.github.com/repos/smartmontools/$ITEM/releases | \
       jq -r '.[].tag_name' | awk '{ sub(/^RELEASE_/, ""); print }' | tr _ . | \

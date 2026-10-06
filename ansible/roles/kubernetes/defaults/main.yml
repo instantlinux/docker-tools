@@ -31,8 +31,8 @@ k8s_defaults:
     state: restarted
   service_network: 10.96.0.0/12
   version: 1.36.4
-  coredns_version: v1.14.2
-  cni_version: 1.9.1
+  coredns_version: v1.14.7
+  cni_version: 1.9.1-1.1
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
 

@@ -25,11 +25,12 @@ Options:
 
 Default pathnames are relative to current directory unless destpath is activated
 by update.
-"""
+"""  # noqa
 
 import copy
 from datetime import datetime
 import git
+from github import Auth as GitAuth
 from github import Github
 import jinja2
 import json
@@ -124,6 +125,11 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
         if category == 'manual-checks':
             continue
         for item in changeset[category]:
+            if not changeset[category][item]['version']:
+                print("Skipped missing version for %s in %s" % (
+                    item, category))
+                skip.append({'category': category, 'item': item})
+                continue
             try:
                 available = version_parse(
                     re.sub(r'-([a-zA-Z0-9]+)$', r'+\1',
@@ -177,6 +183,22 @@ def update_inventory(scripts_path, dest_path):
                                    'lib/build/inventory.md'])
 
 
+def generate_pr(changeset, repo, gh_reponame, title, body, branch, base):
+    del changeset['manual-checks']
+    repo.git.commit('-S', m=title)
+    repo.git.push("--set-upstream", "origin", repo.head.ref)
+    auth = GitAuth.Token(os.environ["GITHUB_TOKEN"])
+    gh_repo = Github(auth=auth).get_repo(gh_reponame)
+    try:
+        pr = gh_repo.create_pull(title=title, body=body, head=branch,
+                                 base=base)
+        pr.add_to_labels("dependencies")
+        return pr.html_url
+    except Exception as e:
+        print(f"PR generation failed: {e}")
+        sys.exit(1)
+
+
 def main():
     sys.tracebacklimit = 0
     args = yadopt.parse(__doc__)
@@ -221,19 +243,12 @@ def main():
             sys.exit(0)
 
         if args.pr:
-            del changeset['manual-checks']
-            gh_repo = Github(os.environ['GITHUB_TOKEN']).get_repo(
-                args.clone.split(":")[-1].rsplit(".", 1)[0])
-            try:
-                pr = gh_repo.create_pull(
-                    title=datetime.now().strftime(args.pr_title),
-                    body=pr_template.render(dependencies=changeset),
-                    head=branch,
-                    base='main')
-                print(f"Updates ({changes}) submitted as PR {pr.html_url}")
-            except Exception as e:
-                print(f"PR generation failed: {e}")
-                sys.exit(1)
+            url = generate_pr(changeset, repo,
+                              args.clone.split(":")[-1].rsplit(".", 1)[0],
+                              datetime.now().strftime(args.pr_title),
+                              pr_template.render(dependencies=changeset),
+                              'main')
+            print(f"Updates ({changes}) submitted as PR {url}")
 
 
 if __name__ == '__main__':

@@ -1,0 +1,94 @@
+{
+  "alpine-packages": {
+    "data-sync": {"package": "unison", "version": "2.54.0-4.14.3-r0", "paths": ["images/data-sync/Dockerfile", "images/data-sync/helm/Chart.yaml"]},
+    "ddclient": {"package": "ddclient", "version": "4.0.0-r2", "paths": ["images/ddclient/Dockerfile", "images/ddclient/helm/Chart.yaml"]},
+    "dhcpd-dns-pxe": {"package": "kea", "version": "3.0.3-r0-2.93-r0", "paths": ["images/dhcpd-dns-pxe/Dockerfile", "images/dhcpd-dns-pxe/helm/Chart.yaml"]},
+    "ez-ipupdate": {"package": "ez-ipupdate", "version": "3.0.10-r13", "paths": ["images/ez-ipupdate/Dockerfile", "images/ez-ipupdate/helm/Chart.yaml"]},
+    "git-dump": {"package": "git", "version": "2.54.0-r0", "paths": ["images/git-dump/Dockerfile", "images/git-dump/helm/Chart.yaml"]},
+    "git-pull": {"package": "git", "version": "2.54.0-r0", "paths": ["images/git-pull/Dockerfile", "images/git-pull/helm/Chart.yaml"]},
+    "mysqldump": {"package": "mariadb-client", "version": "11.8.8-r0", "paths": ["images/mysqldump/Dockerfile", "images/mysqldump/helm/Chart.yaml"]},
+    "nagios": {"package": "nagios", "version": "4.5.14-2.5", "paths": ["images/nagios/Dockerfile"]},
+    "nagiosql": {"package": "nagiosql", "version": "3.5.0-4.5.14", "paths": ["images/nagiosql/Dockerfile"]},
+    "nut-upsd": {"package": "nut", "version": "2.8.5-r1", "paths": ["images/nut-upsd/Dockerfile", "images/nut-upsd/helm/Chart.yaml"]},
+    "openldap": {"package": "openldap", "version": "2.6.15-r0", "paths": ["images/openldap/Dockerfile", "images/openldap/helm/Chart.yaml"]},
+    "postfix": {"package": "postfix", "version": "3.11.7-r0", "paths": ["images/postfix/Dockerfile"]},
+    "proftpd": {"package": "proftpd", "version": "1.3.9c-r0", "paths": ["images/proftpd/Dockerfile", "images/proftpd/helm/Chart.yaml"]},
+    "rsyslogd": {"package": "rsyslog", "version": "8.2604.0-r0", "paths": ["images/rsyslogd/Dockerfile", "images/rsyslogd/helm/Chart.yaml"]},
+    "samba": {"package": "samba", "version": "4.23.10-r0", "paths": ["images/samba/Dockerfile", "images/samba/helm/Chart.yaml"]},
+    "samba-dc": {"package": "samba-dc", "version": "4.23.10-r0", "paths": ["images/samba-dc/Dockerfile", "images/samba-dc/helm/Chart.yaml"]},
+    "vsftpd": {"package": "vsftpd", "version": "3.0.5-r3", "paths": ["images/vsftpd/Dockerfile"]},
+    "weewx": {"package": "weewx", "version": "5.5.0", "paths": ["images/weewx/Dockerfile", "images/weewx/helm/Chart.yaml"]}
+  },
+  "ubuntu-packages": {
+    "blacklist": {"package": "rbldnsd", "version": "1.0", "paths": ["images/blacklist/Dockerfile"]},
+    "mythtv-backend": {"package": "mythtv", "version": "36.0-fixes.202608221819.b6ed364d3f", "paths": ["images/mythtv-backend/Dockerfile"]},
+    "spamassassin": {"package": "spamassassin", "version": "4.0.2-3", "paths": ["images/spamassassin/Dockerfile"]}
+  },
+  "python-packages": {
+    "ansible": {"version": "14.4.0", "paths": ["ansible/requirements.txt"]},
+    "GitPython": {"version": "3.2.0", "paths": ["lib/build/updater/requirements.txt"]},
+    "pip": {"version": "26.2.1", "paths": ["ansible/requirements.txt"]},
+    "PyGithub": {"version": "2.10.0", "paths": ["lib/build/updater/requirements.txt"]},
+    "PyYAML": {"version": "6.0.3", "paths": ["lib/build/updater/requirements.txt"]},
+    "weewx": {"version": "5.5.0", "paths": ["images/weewx/Dockerfile"]},
+    "yadopt": {"version": "2026.9.26", "paths": ["lib/build/updater/requirements.txt"]}
+  },
+  "images": {
+    "alpine": {"version": "3.24", "paths": ["images/data-sync/Dockerfile","images/ddclient/Dockerfile","images/dhcpd-dns-pxe/Dockerfile","images/ez-ipupdate/Dockerfile","images/git-dump/Dockerfile","images/git-pull/Dockerfile","images/il-v1/Dockerfile","images/mysqldump/Dockerfile","images/nagios/Dockerfile","images/nagiosql/Dockerfile","images/nut-upsd/Dockerfile","images/openldap/Dockerfile","images/postfix/Dockerfile","images/proftpd/Dockerfile","images/rsyslogd/Dockerfile","images/samba-dc/Dockerfile","images/samba/Dockerfile","images/squirrelmail/Dockerfile","images/vsftpd/Dockerfile","images/weewx/Dockerfile"]},
+    "docker": {"version": "", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
+    "dxflrs/garage": {"version": "v2.4.1", "paths": ["services/Makefile"]},
+    "genebit/garage-webui": {"version": "1.1.0", "paths": ["services/Makefile"]},
+    "instantlinux/haproxy-keepalived": {"version": "3.4.4-alpine-2.3.4-r2", "paths": ["services/Makefile"]},
+    "quay.io/keycloak/keycloak": {"version": "26.8.0", "paths": ["services/Makefile"]},
+    "mariadb": {"version": "10", "paths": ["services/Makefile"]},
+    "instantlinux/nagios": {"version": "4.5.14-2.5", "paths": ["services/Makefile"]},
+    "instantlinux/nagiosql": {"version": "3.4.1-4.4.6", "paths": ["services/Makefile"]},
+    "nginx": {"version": "1.29.5-alpine", "paths": ["services/Makefile"]},
+    "instantlinux/nut-upsd": {"version": "2.8.5-r1", "paths": ["services/Makefile"]},
+    "restic/rest-server": {"version": "0.14.0", "paths": ["services/Makefile"]}
+  },
+  "charts": {
+    "apache": {"repository": "httpd", "version": "2.4.69", "paths": ["k8s/helm/apache/Chart.yaml"]},
+    "etcd": {"repository": "quay.io/coreos/etcd", "version": "v3.6.15", "paths": ["k8s/helm/etcd/Chart.yaml"]},
+    "gitea": {"repository": "gitea/gitea", "version": "28.0.0-rootless", "paths": ["k8s/helm/gitea/Chart.yaml"]},
+    "grafana": {"repository": "grafana/grafana-enterprise", "version": "13.2.3", "paths": ["k8s/helm/grafana/Chart.yaml"]},
+    "headscale": {"repository": "headscale/headscale", "version": "v0.29.4", "paths": ["k8s/helm/headscale/Chart.yaml"]},
+    "il-v1": {"repository": "nexus.instantlinux.net/il-v1", "version": "latest", "paths": ["k8s/helm/il-v1/Chart.yaml"]},
+    "immich": {"repository": "ghcr.io/immich-app/immich-server ghcr.io/immich-app/postgres", "version": "v3.0.1", "paths": ["k8s/helm/immich/Chart.yaml"]},
+    "jira": {"repository": "atlassian/jira-core", "version": "9.12.1", "paths": ["k8s/helm/jira/Chart.yaml"]},
+    "nexus": {"repository": "sonatype/nexus3", "version": "3.96.4", "paths": ["k8s/helm/nexus/Chart.yaml"]},
+    "owntone": {"repository": "owntone/owntone", "version": "29.3", "paths": ["k8s/helm/owntone/Chart.yaml"]},
+    "radicale": {"repository": "ghcr.io/kozea/radicale", "version": "3.8.2", "paths": ["k8s/helm/radicale/Chart.yaml"]},
+    "restic": {"repository": "alpine", "version": "0.18.1-r8", "paths": ["k8s/helm/restic/Chart.yaml"]},
+    "snappymail": {"repository": "djmaze/snappymail", "version": "v2.38.2", "paths": ["k8s/helm/snappymail/Chart.yaml"]},
+    "splunk": {"repository": "splunk/splunk", "version": "10.6.0", "paths": ["k8s/helm/splunk/Chart.yaml"]},
+    "squirrelmail": {"repository": "nexus.instantlinux.net/squirrelmail", "version": "latest", "paths": ["k8s/helm/squirrelmail/Chart.yaml"]},
+    "synapse": {"repository": "matrixdotorg/synapse", "version": "v1.162.0", "paths": ["k8s/helm/synapse/Chart.yaml"]},
+    "vaultwarden": {"repository": "vaultwarden/server", "version": "1.37.4-alpine", "paths": ["k8s/helm/vaultwarden/Chart.yaml"]},
+    "wordpress": {"repository": "wordpress", "version": "7.0.0-php8.5-apache", "paths": ["k8s/helm/wordpress/Chart.yaml"]},
+    "wx-nginx": {"repository": "nginx", "version": "1.31.6-alpine", "paths": ["k8s/helm/wx-nginx/Chart.yaml"]}
+  },
+  "ansible-applied": {
+    "cni": {"role": "kubernetes", "version": "1.9.1-1.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "coredns": {"role": "kubernetes", "version": "v1.14.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "docker-ce": {"role": "docker_node", "version": "5:29.8.2-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
+    "kubernetes": {"role": "kubernetes", "version": "v1.37.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "smartmontools": {"role": "monitoring_agent", "version": "7.5", "paths": ["ansible/roles/monitoring_agent/defaults/main.yml"]}
+  },
+  "github-imports": {
+    "cert-manager/cert-manager": {"version": "v1.21.2", "paths": ["k8s/Makefile.versions"]},
+    "Mirantis/cri-dockerd": {"version": "v0.3.20", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "envoyproxy/gateway": {"version": "v1.9.1", "paths": ["k8s/Makefile.versions"]},
+    "flannel-io/flannel": {"version": "v0.28.9", "paths": ["k8s/Makefile.versions"]},
+    "helm/helm": {"version": "v4.3.0", "paths": ["k8s/Makefile.versions"]},
+    "kubernetes/kube-state-metrics": {"version": "v2.18.0", "paths": ["k8s/Makefile.versions"]},
+    "kubernetes/node-local-dns": {"version": "v1.36.4", "paths": ["k8s/Makefile.versions"]},
+    "getsops/sops": {"version": "v3.13.0", "paths": ["k8s/Makefile.versions"]},
+    "aquasecurity/trivy": {"version": "v0.74.0", "paths": [".image-gitlab-ci.yml"]}
+  },
+  "manual-checks": {
+    "mariadb-galera": {"image": "mariadb", "version": "12.3.3", "paths": ["images/mariadb-galera/Dockerfile", "images/mariadb-galera/helm/Chart.yaml"]},
+    "mythtv-backend": {"image": "mythtv", "version": "36.0-fixes.202608221819.b6ed364d3f", "paths": ["images/mythtv-backend/Dockerfile", "images/mythtv-backend/helm/Chart.yaml"]},
+    "nagiosql": {"image": "nagiosql", "version": "3.5.0-4.5.14", "paths": ["images/nagiosql/Dockerfile", "images/nagiosql/helm/Chart.yaml"]}
+  }
+}

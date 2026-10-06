@@ -28,6 +28,9 @@
 	"restic",
 	"squirrelmail",
 	"wordpress"
+    ],
+    "ansible-applied": [
+	"kubernetes"
     ]
 }
 	

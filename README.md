@@ -50,8 +50,8 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | gitea | ** | self-hosted git repo with many github features |
 | jira | 9.12.1 | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
-| nexus | 3.96.1 | binary repo with docker registry |
-| synapse | v1.161.0 | self-hosted team chat |
+| nexus | 3.96.4 | binary repo with docker registry |
+| synapse | v1.162.0 | self-hosted team chat |
 | updater | ** | tool that updates this repo for [inventory.md](lib/build/inventory.md) |
 | wordpress | ** | |
 
@@ -65,10 +65,10 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
 | fluent-bit | ** | central logging for Kubernetes |
 | garage | ** | S3-compatible object storage |
-| grafana | 13.0.6 | monitoring dashboard with prometheus-based alerting |
+| grafana | 13.2.3 | monitoring dashboard with prometheus-based alerting |
 | guacamole | 1.6.0 | authenticated remote-desktop server |
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
-| headscale | 0.29.3 | tailscale-compatible VPN control-plane |
+| headscale | v0.29.4 | tailscale-compatible VPN control-plane |
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |
@@ -76,13 +76,13 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | proftpd | [![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd "Version badge") | FTP server |
-| radicale | 3.7.7 | CalDAV / CardDAV for mobile calendar/contacts sync |
+| radicale | 3.8.2 | CalDAV / CardDAV for mobile calendar/contacts sync |
 | restic | ** | backups |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
 | samba | [![](https://img.shields.io/docker/v/instantlinux/samba?sort=date)](https://hub.docker.com/r/instantlinux/samba "Version badge") | file server |
 | samba-dc | [![](https://img.shields.io/docker/v/instantlinux/samba-dc?sort=date)](https://hub.docker.com/r/instantlinux/samba-dc "Version badge") | Active-Directory compatible domain controller |
 | [secondshot](https://github.com/instantlinux/secondshot) | [![](https://img.shields.io/docker/v/instantlinux/secondshot?sort=date)](https://hub.docker.com/r/instantlinux/secondshot "Version badge") | rsnapshot-based backups |
-| splunk | 10.4.1 | the free version |
+| splunk | 10.6.0 | the free version |
 | vaultwarden | ** | BitWarden-compatible self-hosted backend |
 | virt-manager | ** | GUI and CLI for QEMU/KVM virtual machines |
 
