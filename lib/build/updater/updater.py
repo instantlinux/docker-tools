@@ -192,6 +192,7 @@ def generate_pr(changeset, repo, gh_reponame, title, body, branch, base):
     try:
         pr = gh_repo.create_pull(title=title, body=body, head=branch,
                                  base=base)
+        pr.add_to_labels("dependencies")
         return pr.html_url
     except Exception as e:
         print(f"PR generation failed: {e}")
