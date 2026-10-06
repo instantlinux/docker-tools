@@ -1,14 +1,20 @@
 #! /bin/sh
+# find_latest.sh
+#
+#   created 2-oct-2026 by richb@instantlinux.net
+#
 # This script generates a JSON blob detailing upstream dependencies by
 # files in the entire monorepo, spelling out the newest-available
 # version or tag.
 
 # The companion script current_versions.sh generates a JSON blob
-# with similar structure, spelling out what the version of artifacts
+# with similar structure, spelling out what versions of artifacts were
 # previously published from this repo. It adds the path of at least one file
 # within this repo that makes explicit reference to that version, so
 # as to automate detection and response as newer versions are released
 # by upstream publishers.
+#
+#   TODO - pythonize
 
 [ -z "$ALPINE_VERSION" ] && ALPINE_VERSION=3.24
 [ -z "$UBUNTU_VERSION" ] && UBUNTU_VERSION=resolute

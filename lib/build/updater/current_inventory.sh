@@ -1,4 +1,12 @@
 #! /bin/sh
+# current_inventory.sh
+#
+#   created 2-oct-2026 by richb@instantlinux.net
+#
+#   produces a manifest of versions of objects this repo depends on
+#
+#   TODO - pythonize
+
 [ -z "$REPO_PATH" ] && REPO_PATH=~/docker
 echo "{"
 
