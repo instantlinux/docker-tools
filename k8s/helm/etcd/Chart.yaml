@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/etcd-io/etcd
 type: application
-version: 3.6.12
-appVersion: "v3.6.12"
+version: 3.6.15
+appVersion: "v3.6.15"
 dependencies:
 - name: chartlib
   version: 0.1.8

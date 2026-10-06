@@ -29,7 +29,7 @@
 |  | weewx | 5.5.0 |  |
 |  | yadopt | 2026.9.26 |  |
 | images | alpine | 3.24 |  |
-|  | docker |  |  |
+|  | docker | 29.8.2 |  |
 |  | dxflrs/garage | v2.4.1 |  |
 |  | genebit/garage-webui | 1.1.0 |  |
 |  | instantlinux/haproxy-keepalived | 3.4.4-alpine-2.3.4-r2 |  |
@@ -62,7 +62,7 @@
 | ansible-applied | cni | 1.9.1-1.1 |  |
 |  | coredns | v1.14.7 |  |
 |  | docker-ce | 5:29.8.2-1~ubuntu.26.04~resolute |  |
-|  | kubernetes | v1.37.1 |  |
+|  | kubernetes | v1.36.4 |  |
 |  | smartmontools | 7.5 |  |
 | github-imports | cert-manager/cert-manager | v1.21.2 |  |
 |  | Mirantis/cri-dockerd | v0.3.20 |  |

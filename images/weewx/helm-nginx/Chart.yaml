@@ -5,8 +5,8 @@ home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
 type: application
-version: 0.1.7
-appVersion: "1.31.2-alpine"
+version: 1.31.6
+appVersion: "1.31.6-alpine"
 dependencies:
 - name: chartlib
   version: 0.1.11
