@@ -117,7 +117,7 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
     restic/rest-server)
       TAG=$(grep VERSION_RESTIC $FILE | awk '{ print $4; }');;
     aquasecurity/trivy) FILE=.image-gitlab-ci.yml
-      TAG=$(grep -m 1 -i ${ITEM}_VERSION: $FILE | awk '{ print $2; }');;
+      TAG=$(grep -m 1 -i TRIVY_VERSION: $FILE | awk '{ print $2; }');;
   esac
   [ -z "${FILES+defined}" ] && FILES=\"$FILE\"
   [ $IMAGE = alpine ] || echo ,
