@@ -175,20 +175,19 @@ for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway 
     *) VERSION=$(grep -i VERSION_$ITEM $FILE | awk '{ print $4; }');;
   esac
   [ $SOURCE = cert-manager/cert-manager ] || echo ,
-  echo -n "   " \"$SOURCE\": {\"version\": \"v$VERSION\", \"paths\": \
+  echo -n "   " \"$SOURCE\": {\"version\": \"$VERSION\", \"paths\": \
     [\"$FILE\"]}
 done
 echo "\n  }",
 
 echo " " \"manual-checks\": {
 cd $REPO_PATH/images
-for IMG in mariadb-galera mythtv-backend nagiosql; do
+for IMG in mariadb-galera nagiosql; do
   cd $IMG
   FILE=images/$IMG/Dockerfile
   TAG=$(./hooks/add_tags)
   case $IMG in
     mariadb-galera) IMAGE=mariadb;;
-    mythtv-backend) IMAGE=mythtv;;
     nagiosql) IMAGE=nagiosql;;
   esac
   [ $IMG = mariadb-galera ] || echo ,

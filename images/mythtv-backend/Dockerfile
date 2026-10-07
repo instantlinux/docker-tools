@@ -20,7 +20,7 @@ ENV DBNAME=mythtv \
 ARG MYTHTV_GID=100
 ARG MYTHTV_UID=2021
 ARG MYTHTV_PPA=ppa:mythbuntu/36
-ARG MYTHTV_VERSION=2:36.0+fixes.202608221819.b6ed364d3f~ubuntu26.04.1
+ARG MYTHTV_VERSION=36.0-fixes.202610052224.b6ed364d3f
 ARG MYTHLINK_SHA=459cb8b60adae4b631a95a9cfb1b41dcb959cc4a0b9053582a711d58b8d8a0d2
 
 RUN \
@@ -32,10 +32,10 @@ RUN \
   locale-gen $LANG && \
   echo "# added via Dockerfile\npath-include=/usr/share/doc/mythtv-backend/contrib/*" > \
    /etc/dpkg/dpkg.cfg.d/mythtv-backend && \
+  VER=2:$(echo $MYTHTV_VERSION | tr - +)~ubuntu26.04.1 && \
   apt-get -yq --no-install-recommends install \
     curl iputils-ping less lsb-release mariadb-client net-tools \
-    mythtv-backend=$MYTHTV_VERSION \
-    mythtv-common=$MYTHTV_VERSION mythtv-transcode-utils=$MYTHTV_VERSION \
+    mythtv-backend=$VER mythtv-common=$VER mythtv-transcode-utils=$VER \
     libmyth-python libmythtv-perl libjson-xs-perl psmisc sudo tzdata v4l-utils \
     vim xmltv
 

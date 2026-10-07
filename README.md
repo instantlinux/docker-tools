@@ -59,12 +59,12 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 
 | Service | Version | Notes |
 | --- | --- | --- |
-| apache | 2.4.67 | web server, with webdav example |
+| apache | 2.4.69 | web server, with webdav example |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | ddclient | [![](https://img.shields.io/docker/v/instantlinux/ddclient?sort=date)](https://hub.docker.com/r/instantlinux/ddclient "Version badge") | Dynamic DNS client |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |
 | fluent-bit | ** | central logging for Kubernetes |
-| garage | ** | S3-compatible object storage |
+| garage | v2.4.1 | S3-compatible object storage |
 | grafana | 13.2.3 | monitoring dashboard with prometheus-based alerting |
 | guacamole | 1.6.0 | authenticated remote-desktop server |
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
@@ -104,7 +104,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | davite | [![](https://img.shields.io/docker/v/instantlinux/davite?sort=date)](https://hub.docker.com/r/instantlinux/davite "Version badge") | party-invites manager like eVite |
 | immich | v3.0.1 | immich self-hosted photo/video manager |
 | mythtv-backend | [![](https://img.shields.io/docker/v/instantlinux/mythtv-backend?sort=date)](https://hub.docker.com/r/instantlinux/mythtv-backend "Version badge") | MythTV backend |
-| OwnTone | 29.2 | iTunes server (formerly forked-daapd) |
+| OwnTone | 29.3 | iTunes server (formerly forked-daapd) |
 | weewx | [![](https://img.shields.io/docker/v/instantlinux/weewx?sort=date)](https://hub.docker.com/r/instantlinux/weewx "Version badge") | Weather station software (Davis VantagePro2 etc.) |
 
 ### Credits

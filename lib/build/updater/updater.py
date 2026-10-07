@@ -130,6 +130,11 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
                     item, category))
                 skip.append({'category': category, 'item': item})
                 continue
+            elif 'available' not in changeset[category][item]:
+                print("No available version found for %s in %s" % (
+                    item, category))
+                skip.append({'category': category, 'item': item})
+                continue
             try:
                 available = version_parse(
                     re.sub(r'-([a-zA-Z0-9]+)$', r'+\1',
@@ -185,7 +190,7 @@ def update_inventory(scripts_path, dest_path):
 
 def generate_pr(changeset, repo, gh_reponame, title, body, branch, base):
     del changeset['manual-checks']
-    repo.git.commit('-S', m=title)
+    repo.git.commit('-a', '-S', m=title)
     repo.git.push("--set-upstream", "origin", repo.head.ref)
     auth = GitAuth.Token(os.environ["GITHUB_TOKEN"])
     gh_repo = Github(auth=auth).get_repo(gh_reponame)
@@ -234,10 +239,9 @@ def main():
         changes = process_updates(changeset, args.destpath, repo,
                                   branch, args.dry_run)
         if changes:
-            if args.dry_run:
-                print(f">>> Total updates: {changes} <<<")
-            else:
+            if not args.dry_run:
                 update_inventory(args.scripts, args.destpath)
+            print(f">>> Total updates: {changes} <<<")
         else:
             print("No changes to publish")
             sys.exit(0)
