@@ -135,10 +135,6 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
                     item, category))
                 skip.append({'category': category, 'item': item})
                 continue
-            if category == 'github-imports':
-                print('ready to edit %s: %s(was %s)' % (
-                    item, changeset[category][item]['available'],
-                    changeset[category][item]['version']))
             try:
                 available = version_parse(
                     re.sub(r'-([a-zA-Z0-9]+)$', r'+\1',
@@ -152,8 +148,6 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
                 # here we simply assume the available version is new
                 newer = True
             if newer:
-                if category == 'github-imports':
-                    print("doing files: %s" % changeset[category][item]['paths'])
                 for file in changeset[category][item]['paths']:
                     if dry_run:
                         print(file)
