@@ -5,7 +5,7 @@ docker_defaults:
   apt_repo:
     key: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     package_name: docker-ce
-    package_ver: 5:29.7.2-1~ubuntu.26.04~resolute
+    package_ver: 5:29.8.2-1~ubuntu.26.04~resolute
     url: https://download.docker.com/linux/ubuntu
   certs:
     ca_root: ca-root.pem

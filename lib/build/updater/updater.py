@@ -247,7 +247,7 @@ def main():
                               args.clone.split(":")[-1].rsplit(".", 1)[0],
                               datetime.now().strftime(args.pr_title),
                               pr_template.render(dependencies=changeset),
-                              'main')
+                              branch, 'main')
             print(f"Updates ({changes}) submitted as PR {url}")
 
 

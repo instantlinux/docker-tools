@@ -31,6 +31,9 @@
     ],
     "ansible-applied": [
 	"kubernetes"
+    ],
+    "github-imports": [
+	"kubernetes/node-local-dns"
     ]
 }
 	

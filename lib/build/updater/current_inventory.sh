@@ -84,7 +84,7 @@ cd $REPO_PATH
 for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
     instantlinux/haproxy-keepalived quay.io/keycloak/keycloak mariadb \
     instantlinux/nagios instantlinux/nagiosql nginx instantlinux/nut-upsd \
-    restic/rest-server; do
+    restic/rest-server aquasecurity/trivy; do
   FILE=services/Makefile
   unset FILES
   case $IMAGE in
@@ -116,6 +116,8 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
       TAG=$(grep VERSION_NUT_UPSD $FILE | awk '{ print $4; }');;
     restic/rest-server)
       TAG=$(grep VERSION_RESTIC $FILE | awk '{ print $4; }');;
+    aquasecurity/trivy) FILE=.image-gitlab-ci.yml
+      TAG=$(grep -m 1 -i ${ITEM}_VERSION: $FILE | awk '{ print $2; }');;
   esac
   [ -z "${FILES+defined}" ] && FILES=\"$FILE\"
   [ $IMAGE = alpine ] || echo ,
@@ -163,15 +165,13 @@ echo " " \"github-imports\": {
 cd $REPO_PATH
 for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway \
     flannel-io/flannel helm/helm kubernetes/kube-state-metrics \
-    kubernetes/node-local-dns getsops/sops aquasecurity/trivy; do
+    kubernetes/node-local-dns getsops/sops; do
   ITEM=$(echo $SOURCE | cut -d / -f 2 | tr '-' _)
   FILE=k8s/Makefile.versions
   case $ITEM in
     cri_dockerd) FILE=ansible/roles/kubernetes/defaults/main.yml
        VERSION=$(grep -A 1 cri_dockerd: $FILE | \
        tail -1 | awk '{ print $2; }');;
-    trivy) FILE=.image-gitlab-ci.yml
-       VERSION=$(grep -i ${ITEM}_VERSION: $FILE | awk '{ print $2; }');;
     *) VERSION=$(grep -i VERSION_$ITEM $FILE | awk '{ print $4; }');;
   esac
   [ $SOURCE = cert-manager/cert-manager ] || echo ,
