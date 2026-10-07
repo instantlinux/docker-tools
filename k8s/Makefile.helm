@@ -1,7 +1,7 @@
 ##########
 # Helm
 ##########
-export TARBALL = helm-v$(VERSION_HELM)-linux-amd64.tar.gz
+export TARBALL = helm-$(VERSION_HELM)-linux-amd64.tar.gz
 CHARTS = $(notdir $(wildcard ./helm/*))
 INSTANCES = $(notdir $(wildcard ./helm/instances/*))
 .PHONY: helm_install

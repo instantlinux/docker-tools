@@ -180,7 +180,7 @@ include Makefile.sops
 imports/cert-manager.yaml: imports/cert-manager-$(VERSION_CERT_MANAGER).yaml
 	ln -s $(notdir $<) $@
 imports/cert-manager-$(VERSION_CERT_MANAGER).yaml:
-	curl -sLo $@ https://github.com/cert-manager/cert-manager/releases/download/v$(VERSION_CERT_MANAGER)/cert-manager.yaml
+	curl -sLo $@ https://github.com/cert-manager/cert-manager/releases/download/$(VERSION_CERT_MANAGER)/cert-manager.yaml
 
 # Run this once after imports/cert-manager
 cert-manager-gateway: 
@@ -192,7 +192,7 @@ cert-manager-gateway:
 imports/envoy-gateway.yaml: imports/envoy-gateway-$(VERSION_GATEWAY).yaml
 	ln -s $(notdir $<) $@
 imports/envoy-gateway-$(VERSION_GATEWAY).yaml:
-	curl -sLo $@ https://github.com/envoyproxy/gateway/releases/download/v$(VERSION_GATEWAY)/install.yaml
+	curl -sLo $@ https://github.com/envoyproxy/gateway/releases/download/$(VERSION_GATEWAY)/install.yaml
 imports/envoy-gateway:: imports/envoy-gateway.yaml
 	@echo --$(NOTICE) $@ from server-side--
 	@SERVICE_NAME=$(@F) \
@@ -205,7 +205,7 @@ imports/envoy-gateway:: imports/envoy-gateway.yaml
 imports/nodelocaldns.yaml: imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml
 	ln -s $(notdir $<) $@
 imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml:
-	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/kubernetes/refs/tags/v$(VERSION_NODE_LOCAL_DNS)/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml
+	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/kubernetes/refs/tags/$(VERSION_NODE_LOCAL_DNS)/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml
 	sed -i -e "s/__PILLAR__LOCAL__DNS__/$(NODE_LOCAL_DNS_IP)/g; s/__PILLAR__DNS__DOMAIN__/cluster.local/g; s/__PILLAR__DNS__SERVER__/$(COREDNS_IP)/g" $@
 
 ##########
@@ -217,7 +217,7 @@ install_imports: $(foreach file, $(IMPORTS), imports/$(file))
 imports/kube-state-metrics: imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)
 	ln -s $(notdir $<) $@
 imports/kube-state-metrics-$(VERSION_METRICS):
-	git clone --dept 1 --branch v$(VERSION_KUBE_STATE_METRICS) \
+	git clone --dept 1 --branch $(VERSION_KUBE_STATE_METRICS) \
 	 https://github.com/kubernetes/kube-state-metrics \
 	 imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)
 install_metrics: imports/kube-state-metrics

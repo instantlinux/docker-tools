@@ -75,8 +75,15 @@ for IMG in blacklist spamassassin; do
   [ $IMG = blacklist ] || echo ,
   echo -n "   " \"$IMG\": {\"package\": \"$PKG\", \"version\": \"$VERSION\"}
 done
-echo "\n  },"
 EOF
+IMG=mythtv-backend
+PKG=mythtv
+REL=36
+VERSION=$(curl -s "https://launchpad.net/~mythbuntu/+archive/ubuntu/${REL}?ws.op=getPublishedSources&source_name=mythtv&exact_match=true" |\
+  grep ubuntu26.04|grep -Eo "${REL}\.[0-9]?\+fixes\.[0-9a-f.]+" | tr + -)
+echo ,
+echo -n "   " \"$IMG\": {\"package\": \"$PKG\", \"version\": \"$VERSION\"}
+echo "\n  },"
 
 echo " " \"python-packages\": {
 for PKG in ansible GitPython pip PyGithub PyYAML weewx yadopt; do
@@ -201,7 +208,6 @@ echo "\n  },"
 
 echo " " \"manual-checks\": {
 echo "   " \"mariadb-galera\": {\"image\": \"mariadb\", \"url\": \"https://hub.docker.com/_/mariadb/tags\"},
-echo "   " \"mythtv-backend\": {\"package\": \"mythtv\", \"url\": \"https://blueprints.launchpad.net/~mythbuntu/+archive/ubuntu/36\"},
 echo "   " \"nagiosql\": {\"download\": \"nagiosql\", \"url\": \"https://sourceforge.net/projects/nagiosql/files/\"}
 echo "  }"
 echo "}"

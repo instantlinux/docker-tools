@@ -26,9 +26,9 @@ imports/calico::
 imports/flannel.yaml: imports/flannel-$(VERSION_FLANNEL).yaml
 	ln -s $(notdir $<) $@
 imports/flannel-$(VERSION_FLANNEL).yaml:
-	curl -sLo $@ https://raw.githubusercontent.com/flannel-io/flannel/v$(VERSION_FLANNEL)/Documentation/kube-flannel.yml
+	curl -sLo $@ https://raw.githubusercontent.com/flannel-io/flannel/$(VERSION_FLANNEL)/Documentation/kube-flannel.yml
 	sed -i -e 's/"Type": "vxlan"/"Type": "host-gw"/' $@
 
 /usr/local/bin/calicoctl:
-	sudo curl -Lo $@  https://github.com/projectcalico/calicoctl/releases/download/v$(VERSION_CALICO).0/calicoctl
+	sudo curl -Lo $@  https://github.com/projectcalico/calicoctl/releases/download/$(VERSION_CALICO).0/calicoctl
 	sudo chmod +x $@

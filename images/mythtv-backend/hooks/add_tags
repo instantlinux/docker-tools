@@ -1,2 +1,2 @@
 #!/bin/sh
-echo $(grep "ARG .*_VERSION" Dockerfile | grep -o '[1-9][0-9].[0-9+]+fixes\.[0-9]*.[0-9a-f]*' | tr + -)
+echo $(grep "ARG .*_VERSION" Dockerfile | grep -o '[1-9][0-9].[0-9+]-fixes\.[0-9]*.[0-9a-f]*')

@@ -175,7 +175,7 @@ for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway 
     *) VERSION=$(grep -i VERSION_$ITEM $FILE | awk '{ print $4; }');;
   esac
   [ $SOURCE = cert-manager/cert-manager ] || echo ,
-  echo -n "   " \"$SOURCE\": {\"version\": \"v$VERSION\", \"paths\": \
+  echo -n "   " \"$SOURCE\": {\"version\": \"$VERSION\", \"paths\": \
     [\"$FILE\"]}
 done
 echo "\n  }",

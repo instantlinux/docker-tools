@@ -7,8 +7,7 @@
 	"weewx"
     ],
     "ubuntu-packages": [
-	"blacklist",
-	"mythtv-backend"
+	"blacklist"
     ],
     "python-packages": [
 	"weewx"
@@ -18,7 +17,6 @@
 	"instantlinux/haproxy-keepalived",
 	"mariadb",
 	"instantlinux/nagiosql",
-	"instantlinux/nut-upsd",
 	"nginx"
     ],
     "charts": [
