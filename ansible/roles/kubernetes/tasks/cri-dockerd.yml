@@ -5,7 +5,7 @@
     dest: /usr/bin
     extra_opts: [ --strip-components=1 ]
     remote_src: yes
-    src: https://github.com/Mirantis/cri-dockerd/releases/download/v{{ cri_dockerd.version }}/cri-dockerd-{{ cri_dockerd.version }}.amd64.tgz
+    src: https://github.com/Mirantis/cri-dockerd/releases/download/{{ cri_dockerd.version }}/cri-dockerd-{{ cri_dockerd.version }}.amd64.tgz
 
 - name: Get cri-docker service definition
   ansible.builtin.get_url:

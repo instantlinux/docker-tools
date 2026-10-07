@@ -91,7 +91,7 @@ cd $REPO_PATH
 for IMG in alpine docker dxflrs/garage genebit/garage-webui \
     instantlinux/haproxy-keepalived quay.io/keycloak/keycloak mariadb \
     instantlinux/nagios instantlinux/nagiosql nginx instantlinux/nut-upsd \
-    restic/rest-server; do
+    restic/rest-server aquasec/trivy; do
   case $IMG in
     alpine|docker|mariadb|nginx) REPO=library/$IMG;;
     *) REPO=$IMG
@@ -187,7 +187,7 @@ echo "\n  },"
 echo " " \"github-imports\": {
 for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway \
     flannel-io/flannel helm/helm kubernetes/node-local-dns \
-    kubernetes/kube-state-metrics getsops/sops aquasecurity/trivy; do
+    kubernetes/kube-state-metrics getsops/sops; do
   case $SOURCE in
     kubernetes/node-local-dns) REPO=kubernetes/kubernetes;;
     *) REPO=$SOURCE;;
