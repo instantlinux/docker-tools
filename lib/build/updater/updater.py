@@ -43,9 +43,6 @@ import sys
 import yaml
 import yadopt
 
-# List of versions mentioned in top-level README
-readme_doc = ['apache', 'grafana', 'headscale', 'jira', 'nexus',
-              'radicale', 'splunk', 'synapse']
 # Markdown format for jinja2
 changes_md = (
     "| Category | Item | Current | New |\n"
@@ -155,12 +152,6 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
                         edit_file(destpath, file,
                                   changeset[category][item]['version'],
                                   changeset[category][item]['available'])
-                # For listed charts: make an extra edit to README
-                if (not dry_run and category == 'charts' and
-                        item in readme_doc):
-                    edit_file(destpath, 'README.md',
-                              changeset[category][item]['version'],
-                              changeset[category][item]['available'])
                 changes += 1
             else:
                 print("Skipped older version %s found for %s(%s) in %s" % (
