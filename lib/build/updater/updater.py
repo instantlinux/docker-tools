@@ -43,9 +43,6 @@ import sys
 import yaml
 import yadopt
 
-# List of versions mentioned in top-level README
-readme_doc = ['apache', 'grafana', 'headscale', 'jira', 'nexus',
-              'radicale', 'splunk', 'synapse']
 # Markdown format for jinja2
 changes_md = (
     "| Category | Item | Current | New |\n"
@@ -155,12 +152,6 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
                         edit_file(destpath, file,
                                   changeset[category][item]['version'],
                                   changeset[category][item]['available'])
-                # For listed charts: make an extra edit to README
-                if (not dry_run and category == 'charts' and
-                        item in readme_doc):
-                    edit_file(destpath, 'README.md',
-                              changeset[category][item]['version'],
-                              changeset[category][item]['available'])
                 changes += 1
             else:
                 print("Skipped older version %s found for %s(%s) in %s" % (
@@ -189,7 +180,6 @@ def update_inventory(scripts_path, dest_path):
 
 
 def generate_pr(changeset, repo, gh_reponame, title, body, branch, base):
-    del changeset['manual-checks']
     repo.git.commit('-a', '-S', m=title)
     repo.git.push("--set-upstream", "origin", repo.head.ref)
     auth = GitAuth.Token(os.environ["GITHUB_TOKEN"])
@@ -247,6 +237,7 @@ def main():
             sys.exit(0)
 
         if args.pr:
+            del changeset['manual-checks']
             url = generate_pr(changeset, repo,
                               args.clone.split(":")[-1].rsplit(".", 1)[0],
                               datetime.now().strftime(args.pr_title),

@@ -97,8 +97,8 @@ echo " " \"images\": {
 cd $REPO_PATH
 for IMG in alpine docker dxflrs/garage genebit/garage-webui \
     instantlinux/haproxy-keepalived quay.io/keycloak/keycloak mariadb \
-    instantlinux/nagios instantlinux/nagiosql nginx instantlinux/nut-upsd \
-    restic/rest-server aquasec/trivy; do
+    instantlinux/nagios instantlinux/nagiosql nginx restic/rest-server \
+    aquasec/trivy; do
   case $IMG in
     alpine|docker|mariadb|nginx) REPO=library/$IMG;;
     *) REPO=$IMG

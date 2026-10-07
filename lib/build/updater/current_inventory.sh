@@ -18,6 +18,7 @@ for IMG in $(echo *); do
   fi
   [ -f $IMG/hooks/add_tags ] || continue
 
+  PATHS=\"images/$IMG/Dockerfile\"
   case $IMG in
     data-sync)       PKG=unison;;
     dhcpd-dns-pxe)   PKG=kea;;
@@ -25,7 +26,9 @@ for IMG in $(echo *); do
     git-pull)        PKG=git;;
     haproxy-keepalived) PKG=haproxy;;
     mysqldump)       PKG=mariadb-client;;
-    nut-upsd)        PKG=nut;;
+    nut-upsd)        PKG=nut; PATHS="$PATHS, \"services/Makefile\"";;
+    postfix)         PATHS="$PATHS, \"images/postfix-python/Dockerfile\", \
+        \"images/postfix-python/helm/Chart.yaml\""; PKG=$IMG;;
     postfix-python)  PKG=postfix;;
     rsyslogd)        PKG=rsyslog;;
     udp-nginx-proxy) PKG=nginx;;
@@ -33,7 +36,6 @@ for IMG in $(echo *); do
   esac
   cd $IMG
   [ $IMG = data-sync ] || echo ,
-  PATHS=\"images/$IMG/Dockerfile\"
   [ -f ./helm/Chart.yaml ] && PATHS="$PATHS, \"images/$IMG/helm/Chart.yaml\""
   echo -n "   " \"$IMG\": {\"package\": \"$PKG\", \"version\": \"$( \
     ./hooks/add_tags)\", \"paths\": [$PATHS]}
@@ -83,8 +85,8 @@ echo " " \"images\": {
 cd $REPO_PATH
 for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
     instantlinux/haproxy-keepalived quay.io/keycloak/keycloak mariadb \
-    instantlinux/nagios instantlinux/nagiosql nginx instantlinux/nut-upsd \
-    restic/rest-server aquasecurity/trivy; do
+    instantlinux/nagios instantlinux/nagiosql nginx restic/rest-server \
+    aquasec/trivy; do
   FILE=services/Makefile
   unset FILES
   case $IMAGE in
@@ -112,11 +114,9 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
       TAG=$(grep VERSION_NAGIOSQL $FILE | awk '{ print $4; }');;
     nginx)
       TAG=$(grep VERSION_NGINX $FILE | awk '{ print $4; }');;
-    instantlinux/nut-upsd)
-      TAG=$(grep VERSION_NUT_UPSD $FILE | awk '{ print $4; }');;
     restic/rest-server)
       TAG=$(grep VERSION_RESTIC $FILE | awk '{ print $4; }');;
-    aquasecurity/trivy) FILE=.image-gitlab-ci.yml
+    aquasec/trivy) FILE=.image-gitlab-ci.yml
       TAG=$(grep -m 1 -i TRIVY_VERSION: $FILE | awk '{ print $2; }');;
   esac
   [ -z "${FILES+defined}" ] && FILES=\"$FILE\"
@@ -133,9 +133,15 @@ for CHART in $(echo *); do
   [ -z "$REPO" ] && continue
   [ $(echo $REPO | cut -d / -f 1) = "instantlinux" ] && continue
   TAG=$(grep ^appVersion ./$CHART/Chart.yaml | awk '{ gsub(/"/, ""); print $2; }')
+  PATHS=\"k8s/helm/$CHART/Chart.yaml\"
+  case $CHART in
+    apache|grafana|headscale|immich|jira|nexus|owntone|radicale|snappymail| \
+    splunk|synapse)
+      PATHS="$PATHS, \"README.md\"";;
+  esac
   [ $CHART = apache ] || echo ,
   echo -n "   " \"$CHART\": {\"repository\": \"$REPO\", \"version\": \"$TAG\", \
-    \"paths\": [\"k8s/helm/$CHART/Chart.yaml\"]}
+    \"paths\": [$PATHS]}
 done
 echo "\n  },"
 
