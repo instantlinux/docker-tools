@@ -1,6 +1,6 @@
 | Category | Item | Current | New |
 | --- | --- | --- | --- |
-| alpine-packages | data-sync | 2.54.0-4.14.3-r0 |  |
+| alpine-packages | data-sync | 2.54.0-4.14.4-r0 |  |
 |  | ddclient | 4.0.0-r2 |  |
 |  | dhcpd-dns-pxe | 3.0.3-r0-2.93-r0 |  |
 |  | ez-ipupdate | 3.0.10-r13 |  |
@@ -19,9 +19,9 @@
 |  | vsftpd | 3.0.5-r3 |  |
 |  | weewx | 5.5.0 |  |
 | ubuntu-packages | blacklist | 1.0 |  |
-|  | mythtv-backend | 36.0-fixes.202608221819.b6ed364d3f |  |
+|  | mythtv-backend | 36.0-fixes.202610052224.b6ed364d3f |  |
 |  | spamassassin | 4.0.2-3 |  |
-| python-packages | ansible | 14.4.0 |  |
+| python-packages | ansible | 14.5.0 |  |
 |  | GitPython | 3.2.0 |  |
 |  | pip | 26.2.1 |  |
 |  | PyGithub | 2.10.0 |  |
@@ -38,11 +38,11 @@
 |  | instantlinux/nagios | 4.5.14-2.5 |  |
 |  | instantlinux/nagiosql | 3.4.1-4.4.6 |  |
 |  | nginx | 1.29.5-alpine |  |
-|  | instantlinux/nut-upsd | 2.8.5-r1 |  |
 |  | restic/rest-server | 0.14.0 |  |
+|  | aquasec/trivy | 0.75.0 |  |
 | charts | apache | 2.4.69 |  |
 |  | etcd | v3.6.15 |  |
-|  | gitea | 28.0.0-rootless |  |
+|  | gitea | 28.1.0-rootless |  |
 |  | grafana | 13.2.3 |  |
 |  | headscale | v0.29.4 |  |
 |  | il-v1 | latest |  |
@@ -65,14 +65,12 @@
 |  | kubernetes | 1.36.4 |  |
 |  | smartmontools | 7.5 |  |
 | github-imports | cert-manager/cert-manager | v1.21.2 |  |
-|  | Mirantis/cri-dockerd | v0.3.20 |  |
-|  | envoyproxy/gateway | v1.9.1 |  |
+|  | Mirantis/cri-dockerd | v0.4.7 |  |
+|  | envoyproxy/gateway | v1.9.2 |  |
 |  | flannel-io/flannel | v0.28.9 |  |
 |  | helm/helm | v4.3.0 |  |
-|  | kubernetes/kube-state-metrics | v2.18.0 |  |
+|  | kubernetes/kube-state-metrics | v2.20.0 |  |
 |  | kubernetes/node-local-dns | v1.36.4 |  |
-|  | getsops/sops | v3.13.0 |  |
-|  | aquasecurity/trivy | v0.74.0 |  |
+|  | getsops/sops | v3.13.3 |  |
 | manual-checks | mariadb-galera | 12.3.3 |  |
-|  | mythtv-backend | 36.0-fixes.202608221819.b6ed364d3f |  |
 |  | nagiosql | 3.5.0-4.5.14 |  |
