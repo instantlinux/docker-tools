@@ -35,7 +35,7 @@
   },
   "images": {
     "alpine": {"version": "3.24", "paths": ["images/data-sync/Dockerfile","images/ddclient/Dockerfile","images/dhcpd-dns-pxe/Dockerfile","images/ez-ipupdate/Dockerfile","images/git-dump/Dockerfile","images/git-pull/Dockerfile","images/il-v1/Dockerfile","images/mysqldump/Dockerfile","images/nagios/Dockerfile","images/nagiosql/Dockerfile","images/nut-upsd/Dockerfile","images/openldap/Dockerfile","images/postfix/Dockerfile","images/proftpd/Dockerfile","images/rsyslogd/Dockerfile","images/samba-dc/Dockerfile","images/samba/Dockerfile","images/squirrelmail/Dockerfile","images/vsftpd/Dockerfile","images/weewx/Dockerfile"]},
-    "docker": {"version": "", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
+    "docker": {"version": "29.8.2", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
     "dxflrs/garage": {"version": "v2.4.1", "paths": ["services/Makefile"]},
     "genebit/garage-webui": {"version": "1.1.0", "paths": ["services/Makefile"]},
     "instantlinux/haproxy-keepalived": {"version": "3.4.4-alpine-2.3.4-r2", "paths": ["services/Makefile"]},
@@ -72,7 +72,7 @@
     "cni": {"role": "kubernetes", "version": "1.9.1-1.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "coredns": {"role": "kubernetes", "version": "v1.14.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "docker-ce": {"role": "docker_node", "version": "5:29.8.2-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
-    "kubernetes": {"role": "kubernetes", "version": "v1.37.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "kubernetes": {"role": "kubernetes", "version": "1.36.4", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "smartmontools": {"role": "monitoring_agent", "version": "7.5", "paths": ["ansible/roles/monitoring_agent/defaults/main.yml"]}
   },
   "github-imports": {
