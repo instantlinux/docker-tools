@@ -1,6 +1,6 @@
 {
   "alpine-packages": {
-    "data-sync": {"package": "unison", "version": "2.54.0-4.14.3-r0", "paths": ["images/data-sync/Dockerfile", "images/data-sync/helm/Chart.yaml"]},
+    "data-sync": {"package": "unison", "version": "2.54.0-4.14.4-r0", "paths": ["images/data-sync/Dockerfile", "images/data-sync/helm/Chart.yaml"]},
     "ddclient": {"package": "ddclient", "version": "4.0.0-r2", "paths": ["images/ddclient/Dockerfile", "images/ddclient/helm/Chart.yaml"]},
     "dhcpd-dns-pxe": {"package": "kea", "version": "3.0.3-r0-2.93-r0", "paths": ["images/dhcpd-dns-pxe/Dockerfile", "images/dhcpd-dns-pxe/helm/Chart.yaml"]},
     "ez-ipupdate": {"package": "ez-ipupdate", "version": "3.0.10-r13", "paths": ["images/ez-ipupdate/Dockerfile", "images/ez-ipupdate/helm/Chart.yaml"]},
@@ -21,7 +21,7 @@
   },
   "ubuntu-packages": {
     "blacklist": {"package": "rbldnsd", "version": "1.0", "paths": ["images/blacklist/Dockerfile"]},
-    "mythtv-backend": {"package": "mythtv", "version": "36.0-fixes.202608221819.b6ed364d3f", "paths": ["images/mythtv-backend/Dockerfile"]},
+    "mythtv-backend": {"package": "mythtv", "version": "36.0-fixes.202610052224.b6ed364d3f", "paths": ["images/mythtv-backend/Dockerfile"]},
     "spamassassin": {"package": "spamassassin", "version": "4.0.2-3", "paths": ["images/spamassassin/Dockerfile"]}
   },
   "python-packages": {
@@ -45,7 +45,8 @@
     "instantlinux/nagiosql": {"version": "3.4.1-4.4.6", "paths": ["services/Makefile"]},
     "nginx": {"version": "1.29.5-alpine", "paths": ["services/Makefile"]},
     "instantlinux/nut-upsd": {"version": "2.8.5-r1", "paths": ["services/Makefile"]},
-    "restic/rest-server": {"version": "0.14.0", "paths": ["services/Makefile"]}
+    "restic/rest-server": {"version": "0.14.0", "paths": ["services/Makefile"]},
+    "aquasecurity/trivy": {"version": "0.75.0", "paths": [".image-gitlab-ci.yml"]}
   },
   "charts": {
     "apache": {"repository": "httpd", "version": "2.4.69", "paths": ["k8s/helm/apache/Chart.yaml"]},
@@ -77,18 +78,16 @@
   },
   "github-imports": {
     "cert-manager/cert-manager": {"version": "v1.21.2", "paths": ["k8s/Makefile.versions"]},
-    "Mirantis/cri-dockerd": {"version": "v0.3.20", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "Mirantis/cri-dockerd": {"version": "v0.4.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "envoyproxy/gateway": {"version": "v1.9.1", "paths": ["k8s/Makefile.versions"]},
     "flannel-io/flannel": {"version": "v0.28.9", "paths": ["k8s/Makefile.versions"]},
     "helm/helm": {"version": "v4.3.0", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/kube-state-metrics": {"version": "v2.18.0", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/node-local-dns": {"version": "v1.36.4", "paths": ["k8s/Makefile.versions"]},
-    "getsops/sops": {"version": "v3.13.0", "paths": ["k8s/Makefile.versions"]},
-    "aquasecurity/trivy": {"version": "v0.74.0", "paths": [".image-gitlab-ci.yml"]}
+    "getsops/sops": {"version": "v3.13.0", "paths": ["k8s/Makefile.versions"]}
   },
   "manual-checks": {
     "mariadb-galera": {"image": "mariadb", "version": "12.3.3", "paths": ["images/mariadb-galera/Dockerfile", "images/mariadb-galera/helm/Chart.yaml"]},
-    "mythtv-backend": {"image": "mythtv", "version": "36.0-fixes.202608221819.b6ed364d3f", "paths": ["images/mythtv-backend/Dockerfile", "images/mythtv-backend/helm/Chart.yaml"]},
     "nagiosql": {"image": "nagiosql", "version": "3.5.0-4.5.14", "paths": ["images/nagiosql/Dockerfile", "images/nagiosql/helm/Chart.yaml"]}
   }
 }

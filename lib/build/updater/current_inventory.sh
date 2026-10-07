@@ -182,13 +182,12 @@ echo "\n  }",
 
 echo " " \"manual-checks\": {
 cd $REPO_PATH/images
-for IMG in mariadb-galera mythtv-backend nagiosql; do
+for IMG in mariadb-galera nagiosql; do
   cd $IMG
   FILE=images/$IMG/Dockerfile
   TAG=$(./hooks/add_tags)
   case $IMG in
     mariadb-galera) IMAGE=mariadb;;
-    mythtv-backend) IMAGE=mythtv;;
     nagiosql) IMAGE=nagiosql;;
   esac
   [ $IMG = mariadb-galera ] || echo ,
