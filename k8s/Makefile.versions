@@ -6,7 +6,6 @@ export VERSION_HELM           ?= v4.3.0
 export VERSION_KUBE_STATE_METRICS ?= v2.20.0
 export VERSION_NODE_LOCAL_DNS ?= v1.36.4
 export VERSION_SOPS           ?= v3.13.3
-SOPS_SHA                      ?= f2e5ed5e57376789b0e12793adc848e54c2338906e51392246dd03461b320157
 
 # Held back versions - more effort to upgrade
 export VERSION_CALICO         ?= v3.16.5

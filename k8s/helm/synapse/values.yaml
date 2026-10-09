@@ -95,7 +95,7 @@ deployment:
   - containerPort: 8008
   initContainers:
   - name: config
-    image: alpine:3.21
+    image: alpine:3.24
     command: [ /bin/sh ]
     envFrom:
     - secretRef:
@@ -189,19 +189,19 @@ gateway:
 
 # Subchart parameters
 admin:
-  tlsHostname: synapse-admin.example.com
   enabled: true
   image:
     tag: 0.11.4
+  tlsHostname: synapse-admin.example.com
   deployment:
     env:
       react_app_server: http://synapse-admin.example.com
 
 element:
   enabled: true
-  fullnameOverride: synapse-element
   image:
-    tag: v1.12.29
+    tag: v1.12.30
+  fullnameOverride: synapse-element
   deployment:
     env:
       country_code: US
@@ -223,6 +223,8 @@ nginx:
 
 postgres:
   enabled: false
+  image:
+    tag: 17.11-alpine
   statefulset:
     env:
       postgres_user: synapse
@@ -233,5 +235,3 @@ postgres:
         secretKeyRef:
           key: database_password
           name: synapse
-  image:
-    tag: 17.11-alpine

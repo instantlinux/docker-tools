@@ -175,7 +175,7 @@ configmap:
 valkey:
   enabled: true
   image:
-    tag: 9.1.0-alpine
+    tag: 9.2-alpine
 
 postgres:
   enabled: true
@@ -208,6 +208,6 @@ postgres:
 ml:
   enabled: true
   image:
-    tag: v3.0.1
+    tag: v3.3.1
   env:
     immich_log_level: info

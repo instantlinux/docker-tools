@@ -1,5 +1,7 @@
 # Default values for guacamole.
 guacd:
+  image:
+    tag: 1.6.0
   deployment:
     resources:
       limits:
@@ -8,6 +10,8 @@ guacd:
         cpu: 100m
         memory: 512Mi
 guacamole-server:
+  image:
+    tag: 1.6.0
   tlsHostname: guacamole.example.com
   deployment:
     env:

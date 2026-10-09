@@ -47,12 +47,11 @@ ENV AIRLINK_HOST= \
     WX_ROOT=/home/weewx/weewx-data \
     WX_USER=weewx
 
-ARG WEEWX_VERSION=5.5.0
+ARG WEEWX_VERSION=5.5.2
 ARG WEEGREEN_VERSION=v0.12
-ARG AIRLINK_VERSION=1.4
+ARG AIRLINK_VERSION=v4.1.1
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
-ARG AIRLINK_SHA=6392ee1d8e96a543306f16430ec9095b79dd7d0aacf8078171aa61b060a49745
 
 COPY install-input.txt entrypoint.sh log.conf /tmp
 RUN apk add -u --no-cache \
@@ -61,7 +60,7 @@ RUN apk add -u --no-cache \
       py3-requests py3-six py3-usb rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mv /tmp/* /home/$WX_USER && \
-    apk add --no-cache --virtual .fetch-deps gcc git musl-dev python3-dev && \
+    apk add --no-cache --virtual .fetch-deps gcc git jq musl-dev python3-dev && \
     VENV=/home/$WX_USER/weewx-venv && \
     python3 -m venv $VENV --system-site-packages && \
     source $VENV/bin/activate && \
@@ -75,8 +74,12 @@ RUN apk add -u --no-cache \
     su $WX_USER -c \
       "$VENV/bin/weectl station create < /home/$WX_USER/install-input.txt" && \
     cat /home/$WX_USER/log.conf >> $WX_ROOT/weewx.conf && \
+    AIRLINK_SHA=$(curl -sSL -H "Accept: application/vnd.github+json" \
+      https://api.github.com/repos/chaunceygardiner/weewx-airlink/releases/tags/$AIRLINK_VERSION | \
+      jq -r --arg name weewx-airlink.zip \
+      '.assets[] | select(.name == $name) | .digest' | cut -d : -f 2) && \
     curl -sLo /tmp/weewx-airlink.zip \
-      https://github.com/chaunceygardiner/weewx-airlink/releases/download/v$AIRLINK_VERSION/weewx-airlink-$AIRLINK_VERSION.zip && \
+      https://github.com/chaunceygardiner/weewx-airlink/releases/download/$AIRLINK_VERSION/weewx-airlink.zip && \
     echo "$AIRLINK_SHA  /tmp/weewx-airlink.zip" >> /tmp/checksums && \
       sha256sum -c /tmp/checksums && \
     su $WX_USER -c \
