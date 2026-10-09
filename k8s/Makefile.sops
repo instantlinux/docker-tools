@@ -15,6 +15,9 @@
 
 sops: /usr/local/bin/sops
 CONTEXT_FLAG ?=
+SOPS_SHA     := $(shell curl -sL \
+	 https://github.com/getsops/sops/releases/download/$(VERSION_SOPS)/sops-$(VERSION_SOPS).checksums.txt | \
+	 grep linux.amd64 | awk '{ print $$1; }')
 
 /usr/local/bin/sops:
 ifeq ($(shell uname -s),Darwin)

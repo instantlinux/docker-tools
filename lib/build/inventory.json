@@ -17,7 +17,7 @@
     "samba": {"package": "samba", "version": "4.23.10-r0", "paths": ["images/samba/Dockerfile", "images/samba/helm/Chart.yaml"]},
     "samba-dc": {"package": "samba-dc", "version": "4.23.10-r0", "paths": ["images/samba-dc/Dockerfile", "images/samba-dc/helm/Chart.yaml"]},
     "vsftpd": {"package": "vsftpd", "version": "3.0.5-r3", "paths": ["images/vsftpd/Dockerfile"]},
-    "weewx": {"package": "weewx", "version": "5.5.0", "paths": ["images/weewx/Dockerfile", "images/weewx/helm/Chart.yaml"]}
+    "weewx": {"package": "weewx", "version": "5.5.2", "paths": ["images/weewx/Dockerfile", "images/weewx/helm/Chart.yaml"]}
   },
   "ubuntu-packages": {
     "blacklist": {"package": "rbldnsd", "version": "1.0", "paths": ["images/blacklist/Dockerfile"]},
@@ -30,7 +30,7 @@
     "pip": {"version": "26.2.1", "paths": ["ansible/requirements.txt"]},
     "PyGithub": {"version": "2.10.0", "paths": ["lib/build/updater/requirements.txt"]},
     "PyYAML": {"version": "6.0.3", "paths": ["lib/build/updater/requirements.txt"]},
-    "weewx": {"version": "5.5.0", "paths": ["images/weewx/Dockerfile"]},
+    "weewx": {"version": "5.5.2", "paths": ["images/weewx/Dockerfile"]},
     "yadopt": {"version": "2026.9.26", "paths": ["lib/build/updater/requirements.txt"]}
   },
   "images": {
@@ -38,14 +38,22 @@
     "docker": {"version": "29.8.2", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
     "dxflrs/garage": {"version": "v2.4.1", "paths": ["services/Makefile"]},
     "genebit/garage-webui": {"version": "1.1.0", "paths": ["services/Makefile"]},
+    "guacamole/guacd": {"version": "1.6.0", "paths": ["k8s/helm/guacamole/values.yaml"]},
+    "guacamole/guacamole": {"version": "1.6.0", "paths": ["k8s/helm/guacamole/values.yaml"]},
     "instantlinux/haproxy-keepalived": {"version": "3.4.4-alpine-2.3.4-r2", "paths": ["services/Makefile"]},
     "quay.io/keycloak/keycloak": {"version": "26.8.0", "paths": ["services/Makefile"]},
-    "mariadb": {"version": "10", "paths": ["services/Makefile"]},
+    "mariadb": {"version": "11.8.9", "paths": ["services/Makefile"]},
     "instantlinux/nagios": {"version": "4.5.14-2.5", "paths": ["services/Makefile"]},
     "instantlinux/nagiosql": {"version": "3.4.1-4.4.6", "paths": ["services/Makefile"]},
     "nginx": {"version": "1.29.5-alpine", "paths": ["services/Makefile"]},
+    "prom/alertmanager": {"version": "v0.34.1", "paths": ["k8s/helm/grafana/values.yaml"]},
+    "prom/prometheus": {"version": "v3.15.0", "paths": ["k8s/helm/grafana/values.yaml"]},
+    "ghcr.io/immich-app/immich-machine-learning": {"version": "v3.3.1", "paths": ["k8s/helm/immich/values.yaml"]},
     "restic/rest-server": {"version": "0.14.0", "paths": ["services/Makefile"]},
-    "aquasec/trivy": {"version": "0.75.0", "paths": [".image-gitlab-ci.yml"]}
+    "awesometechnologies/synapse-admin": {"version": "0.11.4", "paths": ["k8s/helm/synapse/values.yaml"]},
+    "vectorim/element-web": {"version": "v1.12.30", "paths": ["k8s/helm/synapse/values.yaml"]},
+    "aquasec/trivy": {"version": "0.75.0", "paths": [".image-gitlab-ci.yml"]},
+    "valkey/valkey": {"version": "9.2-alpine", "paths": ["k8s/helm/immich/values.yaml"]}
   },
   "charts": {
     "apache": {"repository": "httpd", "version": "2.4.69", "paths": ["k8s/helm/apache/Chart.yaml", "README.md"]},
@@ -54,7 +62,7 @@
     "grafana": {"repository": "grafana/grafana-enterprise", "version": "13.2.3", "paths": ["k8s/helm/grafana/Chart.yaml", "README.md"]},
     "headscale": {"repository": "headscale/headscale", "version": "v0.29.4", "paths": ["k8s/helm/headscale/Chart.yaml", "README.md"]},
     "il-v1": {"repository": "nexus.instantlinux.net/il-v1", "version": "latest", "paths": ["k8s/helm/il-v1/Chart.yaml"]},
-    "immich": {"repository": "ghcr.io/immich-app/immich-server ghcr.io/immich-app/postgres", "version": "v3.0.1", "paths": ["k8s/helm/immich/Chart.yaml", "README.md"]},
+    "immich": {"repository": "ghcr.io/immich-app/immich-server ghcr.io/immich-app/postgres", "version": "v3.3.0", "paths": ["k8s/helm/immich/Chart.yaml", "README.md"]},
     "jira": {"repository": "atlassian/jira-core", "version": "9.12.1", "paths": ["k8s/helm/jira/Chart.yaml", "README.md"]},
     "nexus": {"repository": "sonatype/nexus3", "version": "3.96.4", "paths": ["k8s/helm/nexus/Chart.yaml", "README.md"]},
     "owntone": {"repository": "owntone/owntone", "version": "29.3", "paths": ["k8s/helm/owntone/Chart.yaml", "README.md"]},
@@ -83,7 +91,8 @@
     "helm/helm": {"version": "v4.3.0", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/kube-state-metrics": {"version": "v2.20.0", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/node-local-dns": {"version": "v1.36.4", "paths": ["k8s/Makefile.versions"]},
-    "getsops/sops": {"version": "v3.13.3", "paths": ["k8s/Makefile.versions"]}
+    "getsops/sops": {"version": "v3.13.3", "paths": ["k8s/Makefile.versions"]},
+    "chaunceygardiner/weewx-airlink": {"version": "v4.1.1", "paths": ["images/weewx/Dockerfile"]}
   },
   "manual-checks": {
     "mariadb-galera": {"image": "mariadb", "version": "12.3.3", "paths": ["images/mariadb-galera/Dockerfile", "images/mariadb-galera/helm/Chart.yaml"]},

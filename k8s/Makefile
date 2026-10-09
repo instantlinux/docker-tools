@@ -216,7 +216,7 @@ install_imports: $(foreach file, $(IMPORTS), imports/$(file))
 
 imports/kube-state-metrics: imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)
 	ln -s $(notdir $<) $@
-imports/kube-state-metrics-$(VERSION_METRICS):
+imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS):
 	git clone --dept 1 --branch $(VERSION_KUBE_STATE_METRICS) \
 	 https://github.com/kubernetes/kube-state-metrics \
 	 imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)

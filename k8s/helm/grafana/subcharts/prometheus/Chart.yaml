@@ -6,8 +6,8 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://hub.docker.com/r/prom/prometheus
 type: application
-version: 0.1.5
-appVersion: "v3.13.0"
+version: 0.1.6
+appVersion: "0.1.0"
 dependencies:
 - name: chartlib
   version: 0.1.11

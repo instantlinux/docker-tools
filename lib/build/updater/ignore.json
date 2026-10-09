@@ -2,26 +2,20 @@
     "alpine-packages": [
 	"data-sync",
 	"dhcpd-dns-pxe",
-	"nagios",
-	"nagiosql",
-	"weewx"
+	"nagiosql"
     ],
     "ubuntu-packages": [
 	"blacklist"
     ],
-    "python-packages": [
-	"weewx"
-    ],
     "images": [
 	"alpine",
 	"instantlinux/haproxy-keepalived",
+	"ghcr.io/immich-app/immich-machine-learning",
 	"mariadb",
-	"instantlinux/nagiosql",
-	"nginx"
+	"instantlinux/nagiosql"
     ],
     "charts": [
 	"il-v1",
-	"immich",
 	"jira",
 	"restic",
 	"squirrelmail",

@@ -84,9 +84,12 @@ echo "\n  },"
 echo " " \"images\": {
 cd $REPO_PATH
 for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
-    instantlinux/haproxy-keepalived quay.io/keycloak/keycloak mariadb \
-    instantlinux/nagios instantlinux/nagiosql nginx restic/rest-server \
-    aquasec/trivy; do
+    guacamole/guacd guacamole/guacamole instantlinux/haproxy-keepalived \
+    quay.io/keycloak/keycloak mariadb instantlinux/nagios \
+    instantlinux/nagiosql nginx prom/alertmanager prom/prometheus \
+    ghcr.io/immich-app/immich-machine-learning restic/rest-server \
+    awesometechnologies/synapse-admin vectorim/element-web aquasec/trivy \
+    valkey/valkey; do
   FILE=services/Makefile
   unset FILES
   case $IMAGE in
@@ -118,6 +121,33 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
       TAG=$(grep VERSION_RESTIC $FILE | awk '{ print $4; }');;
     aquasec/trivy) FILE=.image-gitlab-ci.yml
       TAG=$(grep -m 1 -i TRIVY_VERSION: $FILE | awk '{ print $2; }');;
+    # Images for subcharts
+    guacamole/guacd | guacamole/guacamole | ghcr.io/tale/headplane | \
+        ghcr.io/immich-app/immich-machine-learning | prom/alertmanager | \
+        prom/prometheus | awesometechnologies/synapse-admin | \
+	vectorim/element-web | valkey/valkey)
+      case $(echo $IMAGE | cut -d / -f 1) in
+        awesometechnologies | vectorim) CHART=synapse;;
+        prom) CHART=grafana;;
+	ghcr.io)
+          if [ "$IMAGE" = "ghcr.io/tale/headplane" ]; then
+            CHART=headscale
+	  elif [ "$IMAGE" = "ghcr.io/immich-app/immich-machine-learning" ]; then
+            CHART=immich
+          fi;;
+        valkey) CHART=immich;;
+        *) CHART=$(echo $IMAGE | cut -d / -f 1);;
+      esac
+      case $(echo $IMAGE | rev | cut -d / -f 1 | rev) in
+        element-web) SUBCHART=element;;
+        guacamole) SUBCHART=guacamole-server;;
+	immich-machine-learning) SUBCHART=ml;;
+        synapse-admin) SUBCHART=admin;;
+	*) SUBCHART=$(echo $IMAGE | cut -d / -f 2);;
+      esac
+      FILE=k8s/helm/$CHART/values.yaml
+      TAG=$(grep -A 5 ^${SUBCHART}: $FILE | grep tag: | \
+        awk '{ print $2; }');;
   esac
   [ -z "${FILES+defined}" ] && FILES=\"$FILE\"
   [ $IMAGE = alpine ] || echo ,
@@ -171,13 +201,15 @@ echo " " \"github-imports\": {
 cd $REPO_PATH
 for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway \
     flannel-io/flannel helm/helm kubernetes/kube-state-metrics \
-    kubernetes/node-local-dns getsops/sops; do
+    kubernetes/node-local-dns getsops/sops chaunceygardiner/weewx-airlink; do
   ITEM=$(echo $SOURCE | cut -d / -f 2 | tr '-' _)
   FILE=k8s/Makefile.versions
   case $ITEM in
     cri_dockerd) FILE=ansible/roles/kubernetes/defaults/main.yml
        VERSION=$(grep -A 1 cri_dockerd: $FILE | \
        tail -1 | awk '{ print $2; }');;
+    weewx_airlink) FILE=images/weewx/Dockerfile
+       VERSION=$(grep "^ARG AIRLINK_VERSION" $FILE | cut -d = -f 2);;
     *) VERSION=$(grep -i VERSION_$ITEM $FILE | awk '{ print $4; }');;
   esac
   [ $SOURCE = cert-manager/cert-manager ] || echo ,

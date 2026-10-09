@@ -96,16 +96,18 @@ echo "\n  },"
 echo " " \"images\": {
 cd $REPO_PATH
 for IMG in alpine docker dxflrs/garage genebit/garage-webui \
-    instantlinux/haproxy-keepalived quay.io/keycloak/keycloak mariadb \
-    instantlinux/nagios instantlinux/nagiosql nginx restic/rest-server \
-    aquasec/trivy; do
+    guacamole/guacd guacamole/guacamole instantlinux/haproxy-keepalived \
+    ghcr.io/tale/headplane quay.io/keycloak/keycloak mariadb instantlinux/nagios \
+    instantlinux/nagiosql nginx prom/alertmanager prom/prometheus \
+    ghcr.io/immich-app/immich-machine-learning restic/rest-server \
+    awesometechnologies/synapse-admin vectorim/element-web aquasec/trivy \
+    valkey/valkey; do
   case $IMG in
     alpine|docker|mariadb|nginx) REPO=library/$IMG;;
     *) REPO=$IMG
   esac
   if [ "$(echo $IMG | cut -d / -f 1)" = "ghcr.io" ]; then
-    REPO=$(echo $IMG | cut -d / -f 2-)
-    TAGS=$(docker run --rm regclient/regctl tag ls --limit 100 ${REPO})
+    TAGS=$(docker run --rm regclient/regctl tag ls --limit 100 ${IMG})
   elif [ "$(echo $IMG | cut -d / -f 1)" = "quay.io" ]; then
     REPO=$(echo $IMG | cut -d / -f 2-)
     TAGS=$(curl -sL https://quay.io/api/v1/repository/$REPO/tag/ | \
@@ -122,6 +124,7 @@ for IMG in alpine docker dxflrs/garage genebit/garage-webui \
   TAG=$(echo $TAGS |tr " " "\n"| \
     grep -E '^[v]*[0-9]+\.[0-9]+(\.[0-9]+)?(\-([0-9]+(\.[0-9]+)))?$' | \
     sort -V | tail -n 1)
+  [ $IMG = valkey/valkey ] && TAG=$TAG-alpine
   [ $IMG = alpine ] || echo ,
   echo -n "   " \"$IMG\": {\"version\": \"$TAG\"}
 done
@@ -132,6 +135,7 @@ for CHART in alpine apache etcd gitea garage grafana guacamole headscale \
     immich jira nexus owntone radicale snappymail splunk synapse \
     vaultwarden wordpress wx-nginx; do
   SUFFIX=
+  EXTRA=
   case $CHART in
     alpine)    IMG=library/alpine;;
     apache)    IMG=library/httpd;;
@@ -139,6 +143,7 @@ for CHART in alpine apache etcd gitea garage grafana guacamole headscale \
     garage)    IMG=dxflrs/garage;;
     gitea)     IMG=$CHART/$CHART ; SUFFIX="-rootless";;
     grafana)   IMG=grafana/grafana-enterprise;;
+    headscale) IMG=$CHART/$CHART ; EXTRA="&name=0.";;
     immich)    IMG=ghcr.io/immich-app/immich-server;;
     jira)      IMG=atlassian/jira-core;;  
     nexus)     IMG=sonatype/nexus3;;
@@ -158,7 +163,7 @@ for CHART in alpine apache etcd gitea garage grafana guacamole headscale \
       jq -r '.manifest[].tag[]|select(endswith("amd64"))' | \
       cut -d - -f 1)
   else
-    TAGS=$(curl -s https://hub.docker.com/v2/repositories/${IMG}/tags/?page_size=100 | \
+    TAGS=$(curl -s "https://hub.docker.com/v2/repositories/${IMG}/tags/?page_size=100${EXTRA}" | \
       jq -r '.results[].name')
   fi
   TAG=$(echo $TAGS |tr " " "\n"| grep -E '^[v]*[0-9]+\.[0-9]+(\.[0-9]+)?$' | sort -V | tail -n 1)
@@ -194,7 +199,7 @@ echo "\n  },"
 echo " " \"github-imports\": {
 for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway \
     flannel-io/flannel helm/helm kubernetes/node-local-dns \
-    kubernetes/kube-state-metrics getsops/sops; do
+    kubernetes/kube-state-metrics getsops/sops chaunceygardiner/weewx-airlink; do
   case $SOURCE in
     kubernetes/node-local-dns) REPO=kubernetes/kubernetes;;
     *) REPO=$SOURCE;;
