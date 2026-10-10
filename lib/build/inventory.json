@@ -16,8 +16,7 @@
     "rsyslogd": {"package": "rsyslog", "version": "8.2604.0-r0", "paths": ["images/rsyslogd/Dockerfile", "images/rsyslogd/helm/Chart.yaml"]},
     "samba": {"package": "samba", "version": "4.23.10-r0", "paths": ["images/samba/Dockerfile", "images/samba/helm/Chart.yaml"]},
     "samba-dc": {"package": "samba-dc", "version": "4.23.10-r0", "paths": ["images/samba-dc/Dockerfile", "images/samba-dc/helm/Chart.yaml"]},
-    "vsftpd": {"package": "vsftpd", "version": "3.0.5-r3", "paths": ["images/vsftpd/Dockerfile"]},
-    "weewx": {"package": "weewx", "version": "5.5.2", "paths": ["images/weewx/Dockerfile", "images/weewx/helm/Chart.yaml"]}
+    "vsftpd": {"package": "vsftpd", "version": "3.0.5-r3", "paths": ["images/vsftpd/Dockerfile"]}
   },
   "ubuntu-packages": {
     "blacklist": {"package": "rbldnsd", "version": "1.0", "paths": ["images/blacklist/Dockerfile"]},
@@ -35,7 +34,7 @@
   },
   "images": {
     "alpine": {"version": "3.24", "paths": ["images/data-sync/Dockerfile","images/ddclient/Dockerfile","images/dhcpd-dns-pxe/Dockerfile","images/ez-ipupdate/Dockerfile","images/git-dump/Dockerfile","images/git-pull/Dockerfile","images/il-v1/Dockerfile","images/mysqldump/Dockerfile","images/nagios/Dockerfile","images/nagiosql/Dockerfile","images/nut-upsd/Dockerfile","images/openldap/Dockerfile","images/postfix/Dockerfile","images/proftpd/Dockerfile","images/rsyslogd/Dockerfile","images/samba-dc/Dockerfile","images/samba/Dockerfile","images/squirrelmail/Dockerfile","images/vsftpd/Dockerfile","images/weewx/Dockerfile"]},
-    "docker": {"version": "29.8.2", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
+    "docker": {"version": "29.9.0", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
     "dxflrs/garage": {"version": "v2.4.1", "paths": ["services/Makefile"]},
     "genebit/garage-webui": {"version": "1.1.0", "paths": ["services/Makefile"]},
     "guacamole/guacd": {"version": "1.6.0", "paths": ["k8s/helm/guacamole/values.yaml"]},
@@ -45,7 +44,7 @@
     "mariadb": {"version": "11.8.9", "paths": ["services/Makefile"]},
     "instantlinux/nagios": {"version": "4.5.14-2.5", "paths": ["services/Makefile"]},
     "instantlinux/nagiosql": {"version": "3.4.1-4.4.6", "paths": ["services/Makefile"]},
-    "nginx": {"version": "1.29.5-alpine", "paths": ["services/Makefile"]},
+    "nginx": {"version": "1.31.6-alpine", "paths": ["services/Makefile"]},
     "prom/alertmanager": {"version": "v0.34.1", "paths": ["k8s/helm/grafana/values.yaml"]},
     "prom/prometheus": {"version": "v3.15.0", "paths": ["k8s/helm/grafana/values.yaml"]},
     "ghcr.io/immich-app/immich-machine-learning": {"version": "v3.3.1", "paths": ["k8s/helm/immich/values.yaml"]},
@@ -66,7 +65,7 @@
     "jira": {"repository": "atlassian/jira-core", "version": "9.12.1", "paths": ["k8s/helm/jira/Chart.yaml", "README.md"]},
     "nexus": {"repository": "sonatype/nexus3", "version": "3.96.4", "paths": ["k8s/helm/nexus/Chart.yaml", "README.md"]},
     "owntone": {"repository": "owntone/owntone", "version": "29.3", "paths": ["k8s/helm/owntone/Chart.yaml", "README.md"]},
-    "radicale": {"repository": "ghcr.io/kozea/radicale", "version": "3.8.2", "paths": ["k8s/helm/radicale/Chart.yaml", "README.md"]},
+    "radicale": {"repository": "ghcr.io/kozea/radicale", "version": "3.8.3", "paths": ["k8s/helm/radicale/Chart.yaml", "README.md"]},
     "restic": {"repository": "alpine", "version": "0.18.1-r8", "paths": ["k8s/helm/restic/Chart.yaml"]},
     "snappymail": {"repository": "djmaze/snappymail", "version": "v2.38.2", "paths": ["k8s/helm/snappymail/Chart.yaml", "README.md"]},
     "splunk": {"repository": "splunk/splunk", "version": "10.6.0", "paths": ["k8s/helm/splunk/Chart.yaml", "README.md"]},
@@ -79,15 +78,15 @@
   "ansible-applied": {
     "cni": {"role": "kubernetes", "version": "1.9.1-1.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "coredns": {"role": "kubernetes", "version": "v1.14.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
-    "docker-ce": {"role": "docker_node", "version": "5:29.8.2-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
-    "kubernetes": {"role": "kubernetes", "version": "1.36.4", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "docker-ce": {"role": "docker_node", "version": "5:29.9.0-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
+    "kubernetes": {"role": "kubernetes", "version": "1.37.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "smartmontools": {"role": "monitoring_agent", "version": "7.5", "paths": ["ansible/roles/monitoring_agent/defaults/main.yml"]}
   },
   "github-imports": {
     "cert-manager/cert-manager": {"version": "v1.21.2", "paths": ["k8s/Makefile.versions"]},
-    "Mirantis/cri-dockerd": {"version": "v0.4.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "Mirantis/cri-dockerd": {"version": "v0.4.8", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "envoyproxy/gateway": {"version": "v1.9.2", "paths": ["k8s/Makefile.versions"]},
-    "flannel-io/flannel": {"version": "v0.28.9", "paths": ["k8s/Makefile.versions"]},
+    "flannel-io/flannel": {"version": "v0.28.10", "paths": ["k8s/Makefile.versions"]},
     "helm/helm": {"version": "v4.3.0", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/kube-state-metrics": {"version": "v2.20.0", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/node-local-dns": {"version": "v1.36.4", "paths": ["k8s/Makefile.versions"]},

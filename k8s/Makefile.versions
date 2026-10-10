@@ -1,7 +1,7 @@
 # Third-party versions
 export VERSION_CERT_MANAGER   ?= v1.21.2
 export VERSION_GATEWAY        ?= v1.9.2
-export VERSION_FLANNEL        ?= v0.28.9
+export VERSION_FLANNEL        ?= v0.28.10
 export VERSION_HELM           ?= v4.3.0
 export VERSION_KUBE_STATE_METRICS ?= v2.20.0
 export VERSION_NODE_LOCAL_DNS ?= v1.36.4

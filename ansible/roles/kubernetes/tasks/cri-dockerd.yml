@@ -1,11 +1,40 @@
 ---
-- name: Get cri-dockerd binary
+- name: Fetch asset metadata for cri-dockerd version from github
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/Mirantis/cri-dockerd/releases/tags/{{
+      cri_dockerd.version }}
+    headers:
+      Accept: "application/vnd.github+json"
+      X-GitHub-Api-Version: "2022-11-28"
+    return_content: true
+  register: cri_metadata
+
+- name: Get cri-dockerd download checksum
+  ansible.builtin.set_fact:
+    cri_meta_sha256: >-
+      {{
+        (cri_metadata.json.assets 
+         | selectattr('name', 'equalto', 'cri-dockerd-' + (cri_dockerd.version
+            | ansible.builtin.regex_replace('^v', '')) + '.amd64.tgz')
+         | map(attribute='digest') 
+         | first)
+      }}
+
+- name: Download cri-dockerd tarball
+  ansible.builtin.get_url:
+    url: https://github.com/Mirantis/cri-dockerd/releases/download/{{
+      cri_dockerd.version }}/cri-dockerd-{{ 
+      cri_dockerd.version | ansible.builtin.regex_replace('^v', '') }}.amd64.tgz
+    dest: /opt/cri-dockerd.tgz
+    checksum: "{{ cri_meta_sha256 }}"
+  notify: Restart cri-docker
+
+- name: Extract cri-dockerd binary
   ansible.builtin.unarchive:
-    creates: /usr/bin/cri-dockerd
     dest: /usr/bin
     extra_opts: [ --strip-components=1 ]
     remote_src: yes
-    src: https://github.com/Mirantis/cri-dockerd/releases/download/{{ cri_dockerd.version }}/cri-dockerd-{{ cri_dockerd.version }}.amd64.tgz
+    src: /opt/cri-dockerd.tgz
 
 - name: Get cri-docker service definition
   ansible.builtin.get_url:

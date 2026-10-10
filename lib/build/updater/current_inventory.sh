@@ -32,6 +32,7 @@ for IMG in $(echo *); do
     postfix-python)  PKG=postfix;;
     rsyslogd)        PKG=rsyslog;;
     udp-nginx-proxy) PKG=nginx;;
+    weewx)           continue;;     # built from pypi not alpine-pkgs
     *)               PKG=$IMG;;
   esac
   cd $IMG
