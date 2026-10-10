@@ -21,7 +21,7 @@ export  VERSION_KEYCLOAK ?= 26.8.0
 export    VERSION_NAGIOS ?= 4.5.14-2.5
 # 3.5.0 held back - PEAR: NOT AVAILABLE
 export  VERSION_NAGIOSQL ?= 3.4.1-4.4.6
-export     VERSION_NGINX ?= 1.29.5-alpine
+export     VERSION_NGINX ?= 1.31.6
 export  VERSION_NUT_UPSD ?= 2.8.5-r1
 export    VERSION_RESTIC ?= 0.14.0
 
