@@ -9,3 +9,8 @@
   delegate_to: "{{ groups['k8s_cplane'][0] }}"
   run_once: true
   ignore_errors: true
+
+- name: Restart cri-docker
+  service:
+    name: cri-docker
+    state: restarted

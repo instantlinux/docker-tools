@@ -79,7 +79,7 @@
     "cni": {"role": "kubernetes", "version": "1.9.1-1.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "coredns": {"role": "kubernetes", "version": "v1.14.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "docker-ce": {"role": "docker_node", "version": "5:29.9.0-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
-    "kubernetes": {"role": "kubernetes", "version": "1.36.4", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "kubernetes": {"role": "kubernetes", "version": "1.37.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "smartmontools": {"role": "monitoring_agent", "version": "7.5", "paths": ["ansible/roles/monitoring_agent/defaults/main.yml"]}
   },
   "github-imports": {

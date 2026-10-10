@@ -69,7 +69,7 @@
 | ansible-applied | cni | 1.9.1-1.1 |  |
 |  | coredns | v1.14.7 |  |
 |  | docker-ce | 5:29.9.0-1~ubuntu.26.04~resolute |  |
-|  | kubernetes | 1.36.4 |  |
+|  | kubernetes | 1.37.1 |  |
 |  | smartmontools | 7.5 |  |
 | github-imports | cert-manager/cert-manager | v1.21.2 |  |
 |  | Mirantis/cri-dockerd | v0.4.8 |  |

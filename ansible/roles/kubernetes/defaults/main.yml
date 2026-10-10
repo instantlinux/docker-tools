@@ -13,8 +13,8 @@ k8s_defaults:
   admin_config: /etc/kubernetes/admin.conf
   config_fetch_always: false
   apt_repo:
-    # TODO parameterize hardcoded 1.36 value
-    url: https://pkgs.k8s.io/core:/stable:/v1.36/deb
+    # TODO parameterize hardcoded 1.37 value
+    url: https://pkgs.k8s.io/core:/stable:/v1.37/deb
   cplane_hostip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
   cplane_vip: "{{ hostvars[groups['k8s_cplane'][0]]['ansible_default_ipv4']['address'] | default(groups['k8s_cplane'][0]) }}"
   # TODO: might be able to retire cri-dockerd
@@ -30,14 +30,14 @@ k8s_defaults:
     name: kubelet
     state: restarted
   service_network: 10.96.0.0/12
-  version: 1.36.4
+  version: 1.37.1
   coredns_version: v1.14.7
   cni_version: 1.9.1-1.1
 k8s_override: {}
 k8s: "{{ k8s_defaults | combine(k8s_override) }}"
 
 cri_dockerd:
-  version: v0.4.7
+  version: v0.4.8
 
 oidc:
   client_id: client-not-yet-set
@@ -54,6 +54,6 @@ sysctl:
 ubuntu_packages:
   - kubeadm={{ k8s.version }}-*
   - kubelet={{ k8s.version }}-*
-  - kubernetes-cni={{ k8s.cni_version }}-*
+  - kubernetes-cni={{ k8s.cni_version }}
 
 ubuntu_package_additions: []
