@@ -44,7 +44,7 @@
     "mariadb": {"version": "11.8.9", "paths": ["services/Makefile"]},
     "instantlinux/nagios": {"version": "4.5.14-2.5", "paths": ["services/Makefile"]},
     "instantlinux/nagiosql": {"version": "3.4.1-4.4.6", "paths": ["services/Makefile"]},
-    "nginx": {"version": "1.31.6", "paths": ["services/Makefile"]},
+    "nginx": {"version": "1.31.6-alpine", "paths": ["services/Makefile"]},
     "prom/alertmanager": {"version": "v0.34.1", "paths": ["k8s/helm/grafana/values.yaml"]},
     "prom/prometheus": {"version": "v3.15.0", "paths": ["k8s/helm/grafana/values.yaml"]},
     "ghcr.io/immich-app/immich-machine-learning": {"version": "v3.3.1", "paths": ["k8s/helm/immich/values.yaml"]},

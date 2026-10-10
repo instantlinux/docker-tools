@@ -38,7 +38,7 @@
 |  | mariadb | 11.8.9 |  |
 |  | instantlinux/nagios | 4.5.14-2.5 |  |
 |  | instantlinux/nagiosql | 3.4.1-4.4.6 |  |
-|  | nginx | 1.31.6 |  |
+|  | nginx | 1.31.6-alpine |  |
 |  | prom/alertmanager | v0.34.1 |  |
 |  | prom/prometheus | v3.15.0 |  |
 |  | ghcr.io/immich-app/immich-machine-learning | v3.3.1 |  |
