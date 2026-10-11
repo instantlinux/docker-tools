@@ -88,3 +88,8 @@ configmap:
       host yourhost { hardware ethernet 02:0f:b5:ff:ff:ff; fixed-address 192.168.1.100 }
     hosts: |
       192.168.1.100  yourhost.example.com
+
+mariadb:
+  enabled: false
+  image:
+    tag: 13.0.2

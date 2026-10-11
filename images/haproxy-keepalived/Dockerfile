@@ -23,6 +23,7 @@ USER root
 STOPSIGNAL SIGTERM
 RUN apk add --no-cache --update \
       keepalived=$KEEPALIVED_VERSION rsyslog && \
+    apk upgrade &&
     getent passwd haproxy || adduser -S -u 99 haproxy && \
     adduser -D -s /bin/sh keepalived_script && \
     rm -f /etc/keepalived/keepalived.conf

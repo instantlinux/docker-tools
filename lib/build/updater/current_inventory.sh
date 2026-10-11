@@ -111,7 +111,9 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
     quay.io/keycloak/keycloak)
       TAG=$(grep VERSION_KEYCLOAK $FILE | awk '{ print $4; }');;
     mariadb)
-      TAG=$(grep VERSION_KC_DB $FILE | awk '{ print $4; }');;
+      FILE=images/dhcpd-dns-pxe/helm/values.yaml
+      TAG=$(grep -A 4 ^${IMAGE}: $FILE | grep tag: | awk '{ print $2; }')
+      FILES="\"$FILE\", \"services/Makefile\"";;
     instantlinux/nagios)
       TAG=$(grep -m 1 VERSION_NAGIOS $FILE | awk '{ print $4; }');;
     instantlinux/nagiosql)
@@ -200,12 +202,15 @@ echo "\n  },"
 
 echo " " \"github-imports\": {
 cd $REPO_PATH
-for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway \
-    flannel-io/flannel helm/helm kubernetes/kube-state-metrics \
-    kubernetes/node-local-dns getsops/sops chaunceygardiner/weewx-airlink; do
+for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd docker/buildx \
+    envoyproxy/gateway flannel-io/flannel helm/helm \
+    kubernetes/kube-state-metrics kubernetes/node-local-dns getsops/sops \
+    chaunceygardiner/weewx-airlink; do
   ITEM=$(echo $SOURCE | cut -d / -f 2 | tr '-' _)
   FILE=k8s/Makefile.versions
   case $ITEM in
+    buildx) FILE=lib/build/Makefile.docker_image
+       VERSION=$(grep ^BUILDX $FILE | grep -oP "v([0-9\.])+" | head -1);;
     cri_dockerd) FILE=ansible/roles/kubernetes/defaults/main.yml
        VERSION=$(grep -A 1 cri_dockerd: $FILE | \
        tail -1 | awk '{ print $2; }');;

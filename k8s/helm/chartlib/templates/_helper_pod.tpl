@@ -100,6 +100,9 @@ spec:
       dnsConfig:
         {{- toYaml .pod.dnsConfig | nindent 8 }}
       {{- end }}
+      {{- if hasKey .pod "dnsPolicy" }}
+      dnsPolicy: {{ .pod.dnsPolicy }}
+      {{- end }}
       {{- if hasKey .pod "hostNetwork" }}
       {{- if .pod.hostNetwork }}
       hostNetwork: true
@@ -111,6 +114,9 @@ spec:
       {{- end }}
       {{- if hasKey .pod "hostname" }}
       hostname: {{ .pod.hostname }}
+      {{- end }}
+      {{- if hasKey .pod "hostPID" }}
+      hostPID: {{ .pod.hostPID }}
       {{- end }}
       {{- if hasKey .pod "nodeSelector" }}
       nodeSelector:

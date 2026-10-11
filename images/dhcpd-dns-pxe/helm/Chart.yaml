@@ -4,13 +4,17 @@ description: DHCP server with dnsmasq
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
-- https://source.isc.org/git/dhcp.git
+- https://github.com/isc-projects/kea
 - http://thekelleys.org.uk/gitweb/?p=dnsmasq.git
 type: application
-version: 0.2.4
+version: 3.0.3
 appVersion: "3.0.3-r0-2.93-r0"
 dependencies:
 - name: chartlib
-  version: 0.1.11
+  version: 0.1.12
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux
+- name: mariadb
+  version: 0.1.1
+  repository: file://subcharts/mariadb
+  condition: mariadb.enabled

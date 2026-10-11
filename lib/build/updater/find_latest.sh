@@ -197,8 +197,8 @@ done
 echo "\n  },"
 
 echo " " \"github-imports\": {
-for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd envoyproxy/gateway \
-    flannel-io/flannel helm/helm kubernetes/node-local-dns \
+for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd docker/buildx \
+    envoyproxy/gateway flannel-io/flannel helm/helm kubernetes/node-local-dns \
     kubernetes/kube-state-metrics getsops/sops chaunceygardiner/weewx-airlink; do
   case $SOURCE in
     kubernetes/node-local-dns) REPO=kubernetes/kubernetes;;
