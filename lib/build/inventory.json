@@ -85,7 +85,7 @@
   "github-imports": {
     "cert-manager/cert-manager": {"version": "v1.21.2", "paths": ["k8s/Makefile.versions"]},
     "Mirantis/cri-dockerd": {"version": "v0.4.8", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
-    "docker/buildx": {"version": "v0.36.1", "paths": ["lib/build/Makefile.docker_image"]},
+    "docker/buildx": {"version": "v0.38.0", "paths": ["lib/build/Makefile.docker_image"]},
     "envoyproxy/gateway": {"version": "v1.9.2", "paths": ["k8s/Makefile.versions"]},
     "flannel-io/flannel": {"version": "v0.28.10", "paths": ["k8s/Makefile.versions"]},
     "helm/helm": {"version": "v4.3.0", "paths": ["k8s/Makefile.versions"]},
