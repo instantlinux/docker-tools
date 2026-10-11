@@ -2,6 +2,9 @@
 deployment:
   env:
     db_initialize: yes
+    # Note - if you enable the mariadb subchart, override the db_host
+    #  as dhcpd-dns-pxe-mariadb.<namespace> and also add the directive
+    #  "dnsPolicy: ClusterFirstWithHostNet" to the deployment overrides.
     db_host: db00
     db_name: kea
     db_user: kea
@@ -88,3 +91,8 @@ configmap:
       host yourhost { hardware ethernet 02:0f:b5:ff:ff:ff; fixed-address 192.168.1.100 }
     hosts: |
       192.168.1.100  yourhost.example.com
+
+mariadb:
+  enabled: false
+  image:
+    tag: 13.0.2
