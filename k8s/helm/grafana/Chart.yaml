@@ -6,9 +6,9 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/grafana/grafana
 type: application
-version: 13.2.3
+version: 13.2.4
 # Reminder, update subchart tags in values.yaml
-appVersion: 13.2.3
+appVersion: 13.2.4
 dependencies:
 - name: chartlib
   version: 0.1.11
