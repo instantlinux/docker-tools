@@ -25,7 +25,8 @@ certManager:
       provinces: [ California ]
   solvers:
   - solver: http01
-    enabled: true
+    gateway: gateway-1
+    enabled: false
 gateways:
 - name: gateway-1
   # gateway resources will launch in the namespace defined at top; to
