@@ -163,7 +163,7 @@ def process_updates(changeset, destpath, repo, branch, dry_run):
     return changes
 
 
-def update_inventory(scripts_path, dest_path):
+def update_inventory(repo, scripts_path, dest_path):
     scripts_path = re.sub(r"^-", dest_path, scripts_path)
     result = subprocess.run([os.path.join(scripts_path,
                                           'current_inventory.sh')],
@@ -175,13 +175,12 @@ def update_inventory(scripts_path, dest_path):
     with open(os.path.join(dest_path, 'lib/build/inventory.md'),
               'w', encoding='utf-8') as file:
         file.write(md_template.render(dependencies=json.loads(result.stdout)))
-    git.Repo(dest_path).index.add(['lib/build/inventory.json',
-                                   'lib/build/inventory.md'])
+    repo.git.add(['lib/build/inventory.json', 'lib/build/inventory.md'])
 
 
 def generate_pr(changeset, repo, gh_reponame, title, body, branch, base):
     repo.git.commit('-a', '-S', m=title)
-    repo.git.push("--set-upstream", "origin", repo.head.ref)
+    repo.git.push("--set-upstream", "origin", branch)
     auth = GitAuth.Token(os.environ["GITHUB_TOKEN"])
     gh_repo = Github(auth=auth).get_repo(gh_reponame)
     try:
@@ -230,7 +229,7 @@ def main():
                                   branch, args.dry_run)
         if changes:
             if not args.dry_run:
-                update_inventory(args.scripts, args.destpath)
+                update_inventory(repo, args.scripts, args.destpath)
             print(f">>> Total updates: {changes} <<<")
         else:
             print("No changes to publish")
