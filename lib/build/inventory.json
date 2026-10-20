@@ -66,7 +66,7 @@
     "nexus": {"repository": "sonatype/nexus3", "version": "3.96.4", "paths": ["k8s/helm/nexus/Chart.yaml", "README.md"]},
     "owntone": {"repository": "owntone/owntone", "version": "29.3", "paths": ["k8s/helm/owntone/Chart.yaml", "README.md"]},
     "radicale": {"repository": "ghcr.io/kozea/radicale", "version": "3.8.3", "paths": ["k8s/helm/radicale/Chart.yaml", "README.md"]},
-    "restic": {"repository": "alpine", "version": "0.18.1-r8", "paths": ["k8s/helm/restic/Chart.yaml"]},
+    "restic": {"repository": "alpine", "version": "0.18.1-r9", "paths": ["k8s/helm/restic/Chart.yaml"]},
     "snappymail": {"repository": "djmaze/snappymail", "version": "v2.38.2", "paths": ["k8s/helm/snappymail/Chart.yaml", "README.md"]},
     "splunk": {"repository": "splunk/splunk", "version": "10.6.0", "paths": ["k8s/helm/splunk/Chart.yaml", "README.md"]},
     "squirrelmail": {"repository": "nexus.instantlinux.net/squirrelmail", "version": "latest", "paths": ["k8s/helm/squirrelmail/Chart.yaml"]},

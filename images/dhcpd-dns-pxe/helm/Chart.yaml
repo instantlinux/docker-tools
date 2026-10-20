@@ -1,6 +1,6 @@
 apiVersion: v2
 name: dhcpd-dns-pxe
-description: DHCP server with dnsmasq
+description: DHCP server with dnsmasq and database
 home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools

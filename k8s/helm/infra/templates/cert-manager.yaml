@@ -18,8 +18,12 @@ spec:
     {{- if hasKey . "enabled" | ternary .enabled true }}
     {{- if eq .solver "http01" }}
     - http01:
-        ingress:
-          class: nginx
+        gatewayHTTPRoute:
+          parentRefs:
+          - group: gateway.networking.k8s.io
+            kind: Gateway
+            name: {{ .gateway }}
+            namespace: {{ $.Values.namespace }}
     {{- end }}
     {{- end }}
     {{- end }}
@@ -42,8 +46,12 @@ spec:
     {{- if hasKey . "enabled" | ternary .enabled true }}
     {{- if eq .solver "http01" }}
     - http01:
-        ingress:
-          class: nginx
+        gatewayHTTPRoute:
+          parentRefs:
+          - group: gateway.networking.k8s.io
+            kind: Gateway
+            name: {{ .gateway }}
+            namespace: {{ $.Values.namespace }}
     {{- end }}
     {{- end }}
     {{- end }}

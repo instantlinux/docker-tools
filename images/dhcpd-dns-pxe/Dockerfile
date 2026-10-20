@@ -44,7 +44,6 @@ RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
     apk add -u --no-cache kea=$KEA_VERSION dnsmasq@edge=$DNSMASQ_VERSION \
       kea-admin kea-hook-mysql mariadb-client && \
     mkdir -m 755 /run/kea && chown kea /run/kea
-
 EXPOSE 53/udp 67/udp 69/udp 8000/tcp
 VOLUME $TFTP_ROOT /etc/dhcpd.d/local /etc/dnsmasq.d/local
 COPY entrypoint.sh /usr/local/bin/
