@@ -7,7 +7,7 @@ sources:
 - https://github.com/juanfont/headscale
 type: application
 version: 0.29.4
-appVersion: v0.29.4
+appVersion: v0.29.5
 dependencies:
 - name: chartlib
   version: 0.1.11

@@ -7,7 +7,7 @@ sources:
 - https://github.com/mariadb/server/tree/10.5/client
 type: application
 version: 11.8.8
-appVersion: "11.8.8-r0"
+appVersion: "11.8.9-r0"
 dependencies:
 - name: chartlib
   version: 0.1.11

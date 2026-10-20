@@ -7,7 +7,7 @@ sources:
 - https://hub.docker.com/r/matrixdotorg/synapse
 type: application
 version: 1.162.0
-appVersion: v1.162.0
+appVersion: v1.163.0
 dependencies:
 - name: chartlib
   version: 0.1.11
