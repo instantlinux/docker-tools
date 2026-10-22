@@ -21,6 +21,7 @@ stages:
   - postfix
   - postfix-python
   - proftpd
+  - rest-server
   - rsyslogd
   - samba
   - samba-dc
@@ -225,6 +226,15 @@ proftpd:
       job: prepare
   only:
     changes: [ images/proftpd/**, .image-gitlab-ci.yml ]
+
+rest-server:
+  stage: rest-server
+  trigger:
+    include:
+    - artifact: .child-rest-server.yml
+      job: prepare
+  only:
+    changes: [ images/rest-server/**, .image-gitlab-ci.yml ]
 
 rsyslogd:
   stage: rsyslogd

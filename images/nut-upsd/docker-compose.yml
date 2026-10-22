@@ -1,8 +1,6 @@
-version: "3.1"
-
 services:
   app:
-    image: ${REGISTRY_URI:-instantlinux}/nut-upsd:latest
+    image: ${REGISTRY_URI:-instantlinux}/nut-upsd:${VERSION_NUT_UPSD:-latest}
     restart: always
     environment:
       NUT_DEBUG_LEVEL: 0
@@ -15,4 +13,4 @@ services:
 
 secrets:
   nut-upsd-password:
-    file: /var/adm/admin/secrets/nut-upsd-password
+    file: /var/adm/secrets/nut-upsd-password

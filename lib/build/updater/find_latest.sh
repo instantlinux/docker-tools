@@ -41,7 +41,8 @@ docker run --rm -i alpine:$ALPINE_VERSION sh <<'EOF'
 echo " " \"alpine-packages\": {
 for IMG in data-sync ddclient dhcpd-dns-pxe dovecot ez-ipupdate git-dump \
     git-pull haproxy-keepalived mysqldump nagios nut-upsd openldap postfix \
-    postfix-python proftpd rsyslogd samba samba-dc udp-nginx-proxy vsftpd; do
+    postfix-python proftpd rest-server rsyslogd samba samba-dc \
+    udp-nginx-proxy vsftpd; do
   case $IMG in
     data-sync)       PKG=unison;;
     dhcpd-dns-pxe)   PKG=kea;;
@@ -99,7 +100,7 @@ for IMG in alpine docker dxflrs/garage genebit/garage-webui \
     guacamole/guacd guacamole/guacamole instantlinux/haproxy-keepalived \
     ghcr.io/tale/headplane quay.io/keycloak/keycloak mariadb instantlinux/nagios \
     instantlinux/nagiosql nginx prom/alertmanager prom/prometheus \
-    ghcr.io/immich-app/immich-machine-learning restic/rest-server \
+    ghcr.io/immich-app/immich-machine-learning \
     awesometechnologies/synapse-admin vectorim/element-web aquasec/trivy \
     valkey/valkey; do
   case $IMG in

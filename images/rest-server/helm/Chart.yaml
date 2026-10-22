@@ -1,0 +1,15 @@
+apiVersion: v2
+name: rest-server
+description: Backend server for restic backup client
+home: https://github.com/instantlinux/docker-tools
+sources:
+- https://github.com/restic/rest-server
+- https://github.com/instantlinux/docker-tools
+type: application
+version: 0.14.0-12
+appVersion: "0.14.0-r12"
+dependencies:
+- name: chartlib
+  version: 0.1.12
+  repository: oci://ghcr.io/instantlinux/charts
+  # also available at oci://registry-1.docker.io/instantlinux

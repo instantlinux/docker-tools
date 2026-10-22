@@ -1,0 +1,29 @@
+# Default values for rest-server.
+deployment:
+  nodeSelector:
+    service.rest-server: allow
+volumeMounts:
+- name: data
+  mountPath: /data
+- name: secret
+  mountPath: /run/secrets/restic-htpasswd
+  readOnly: true
+  subPath: restic-htpasswd
+volumes:
+- name: data
+  hostPath: { path: /var/lib/docker/k8s-volumes/restic }
+- name: secret
+  secret:
+    secretName: restic-htpasswd
+
+image:
+  repository: instantlinux/rest-server
+  pullPolicy: IfNotPresent
+  # tag: default
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+autoscaling:
+  enabled: false

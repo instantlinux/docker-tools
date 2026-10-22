@@ -1,8 +1,0 @@
-services:
-  app:
-    image: restic/rest-server:${VERSION_RESTIC:-latest}
-    restart: always
-    ports:
-    - ${PORT_RESTIC:-8000}:8000
-    volumes:
-    - /var/backup/restic:/data
