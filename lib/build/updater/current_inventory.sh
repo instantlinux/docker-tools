@@ -30,6 +30,7 @@ for IMG in $(echo *); do
     postfix)         PATHS="$PATHS, \"images/postfix-python/Dockerfile\", \
         \"images/postfix-python/helm/Chart.yaml\""; PKG=$IMG;;
     postfix-python)  PKG=postfix;;
+    rest-server)     PKG=$IMG; PATHS="$PATHS, \"services/Makefile\"";;
     rsyslogd)        PKG=rsyslog;;
     udp-nginx-proxy) PKG=nginx;;
     weewx)           continue;;     # built from pypi not alpine-pkgs
@@ -88,7 +89,7 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
     guacamole/guacd guacamole/guacamole instantlinux/haproxy-keepalived \
     quay.io/keycloak/keycloak mariadb instantlinux/nagios \
     instantlinux/nagiosql nginx prom/alertmanager prom/prometheus \
-    ghcr.io/immich-app/immich-machine-learning restic/rest-server \
+    ghcr.io/immich-app/immich-machine-learning \
     awesometechnologies/synapse-admin vectorim/element-web aquasec/trivy \
     valkey/valkey; do
   FILE=services/Makefile
@@ -120,8 +121,6 @@ for IMAGE in alpine docker dxflrs/garage genebit/garage-webui \
       TAG=$(grep VERSION_NAGIOSQL $FILE | awk '{ print $4; }');;
     nginx)
       TAG=$(grep VERSION_NGINX $FILE | awk '{ print $4; }');;
-    restic/rest-server)
-      TAG=$(grep VERSION_RESTIC $FILE | awk '{ print $4; }');;
     aquasec/trivy) FILE=.image-gitlab-ci.yml
       TAG=$(grep -m 1 -i TRIVY_VERSION: $FILE | awk '{ print $2; }');;
     # Images for subcharts

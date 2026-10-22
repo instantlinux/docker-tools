@@ -7,7 +7,7 @@
 
 HOST = $(shell hostname -s)
 REGISTRY_URI ?= nexus.instantlinux.net
-SERVICES = garage haproxy-keepalived mythtv-backend nut-upsd restic-server
+SERVICES = garage haproxy-keepalived nut-upsd rest-server
 ifeq ($(shell test -d /var/adm/admin/services && echo 1),1)
   export ADMIN_PATH=/var/adm/admin/services
 endif
@@ -23,12 +23,12 @@ export    VERSION_NAGIOS ?= 4.5.14-2.5
 export  VERSION_NAGIOSQL ?= 3.4.1-4.4.6
 export     VERSION_NGINX ?= 1.31.7-alpine
 export  VERSION_NUT_UPSD ?= 2.8.5-r1
-export    VERSION_RESTIC ?= 0.14.0
+export VERSION_REST_SERVER ?= 0.14.0-r12
 
 default: $(HOST)
 
 cumbre: haproxy-keepalived nut-upsd
-k2: haproxy-keepalived keycloak nagios restic-server
+k2: haproxy-keepalived keycloak nagios rest-server
 
 $(SERVICES)::
 	@echo Starting $@

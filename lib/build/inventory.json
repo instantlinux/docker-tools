@@ -13,6 +13,7 @@
     "openldap": {"package": "openldap", "version": "2.6.15-r0", "paths": ["images/openldap/Dockerfile", "images/openldap/helm/Chart.yaml"]},
     "postfix": {"package": "postfix", "version": "3.11.7-r0", "paths": ["images/postfix/Dockerfile", "images/postfix-python/Dockerfile", "images/postfix-python/helm/Chart.yaml"]},
     "proftpd": {"package": "proftpd", "version": "1.3.9c-r0", "paths": ["images/proftpd/Dockerfile", "images/proftpd/helm/Chart.yaml"]},
+    "rest-server": {"package": "rest-server", "version": "0.14.0-r12", "paths": ["images/rest-server/Dockerfile", "services/Makefile", "images/rest-server/helm/Chart.yaml"]},
     "rsyslogd": {"package": "rsyslog", "version": "8.2604.0-r0", "paths": ["images/rsyslogd/Dockerfile", "images/rsyslogd/helm/Chart.yaml"]},
     "samba": {"package": "samba", "version": "4.23.10-r0", "paths": ["images/samba/Dockerfile", "images/samba/helm/Chart.yaml"]},
     "samba-dc": {"package": "samba-dc", "version": "4.23.10-r0", "paths": ["images/samba-dc/Dockerfile", "images/samba-dc/helm/Chart.yaml"]},
@@ -33,7 +34,7 @@
     "yadopt": {"version": "2026.9.26", "paths": ["lib/build/updater/requirements.txt"]}
   },
   "images": {
-    "alpine": {"version": "3.24", "paths": ["images/data-sync/Dockerfile","images/ddclient/Dockerfile","images/dhcpd-dns-pxe/Dockerfile","images/ez-ipupdate/Dockerfile","images/git-dump/Dockerfile","images/git-pull/Dockerfile","images/il-v1/Dockerfile","images/mysqldump/Dockerfile","images/nagios/Dockerfile","images/nagiosql/Dockerfile","images/nut-upsd/Dockerfile","images/openldap/Dockerfile","images/postfix/Dockerfile","images/proftpd/Dockerfile","images/rsyslogd/Dockerfile","images/samba-dc/Dockerfile","images/samba/Dockerfile","images/squirrelmail/Dockerfile","images/vsftpd/Dockerfile","images/weewx/Dockerfile"]},
+    "alpine": {"version": "3.24", "paths": ["images/data-sync/Dockerfile","images/ddclient/Dockerfile","images/dhcpd-dns-pxe/Dockerfile","images/ez-ipupdate/Dockerfile","images/git-dump/Dockerfile","images/git-pull/Dockerfile","images/il-v1/Dockerfile","images/mysqldump/Dockerfile","images/nagios/Dockerfile","images/nagiosql/Dockerfile","images/nut-upsd/Dockerfile","images/openldap/Dockerfile","images/postfix/Dockerfile","images/proftpd/Dockerfile","images/rest-server/Dockerfile","images/rsyslogd/Dockerfile","images/samba-dc/Dockerfile","images/samba/Dockerfile","images/squirrelmail/Dockerfile","images/vsftpd/Dockerfile","images/weewx/Dockerfile"]},
     "docker": {"version": "29.9.1", "paths": [".image-gitlab-ci.yml", ".gitlab-ci.yml"]},
     "dxflrs/garage": {"version": "v2.4.1", "paths": ["services/Makefile"]},
     "genebit/garage-webui": {"version": "1.1.0", "paths": ["services/Makefile"]},
@@ -48,7 +49,6 @@
     "prom/alertmanager": {"version": "v0.34.1", "paths": ["k8s/helm/grafana/values.yaml"]},
     "prom/prometheus": {"version": "v3.15.0", "paths": ["k8s/helm/grafana/values.yaml"]},
     "ghcr.io/immich-app/immich-machine-learning": {"version": "v3.3.1", "paths": ["k8s/helm/immich/values.yaml"]},
-    "restic/rest-server": {"version": "0.14.0", "paths": ["services/Makefile"]},
     "awesometechnologies/synapse-admin": {"version": "0.11.4", "paths": ["k8s/helm/synapse/values.yaml"]},
     "vectorim/element-web": {"version": "v1.12.32", "paths": ["k8s/helm/synapse/values.yaml"]},
     "aquasec/trivy": {"version": "0.76.0", "paths": [".image-gitlab-ci.yml"]},

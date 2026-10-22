@@ -1,0 +1,14 @@
+services:
+  app:
+    image: ${REGISTRY_URI:-instantlinux}/rest-server:${VERSION_REST_SERVER:-latest}
+    restart: always
+    ports:
+    - ${PORT_RESTIC:-8000}:8000
+    secrets:
+    - restic-htpasswd
+    volumes:
+    - /var/backup/restic:/data
+
+secrets:
+  restic-htpasswd:
+    file: /var/adm/secrets/restic-htpasswd
