@@ -95,7 +95,7 @@ statefulset:
     db_host: db00
     honeypot_addrs: honeypot@example.com
     inbound_relay: 'by mx-caprica.?\\.easydns\\.com'
-    spamc_host: 10.101.1.50
+    spamc_host: spamassassin
     tz: UTC
   containerPorts:
   - containerPort: 25

@@ -47,10 +47,9 @@ fullnameOverride: ""
 
 serviceAccount: {}
 service:
-  clusterIP: 10.101.1.50
   ports:
   - { port: 783, targetPort: 783 }
-  type: clusterIP
+  type: ClusterIP
 autoscaling:
   enabled: false
 

@@ -100,6 +100,7 @@ configmap:
 postgres:
   enabled: true
   statefulset:
+    args: [-c, max_connections=200]
     env:
       postgres_user: nexus
       postgres_db: nexus

@@ -7,11 +7,13 @@ mid-2017 the vastly harder-to-use / harder-to-learn Kubernetes
 technology had eliminated Swarm from meaningful contention in the
 enterprise market.
 
-This repo is an attempt to make Kubernetes more approachable for any
-user who wants to get started easily, with a real cluster (not just
+This repo is an attempt to make Kubernetes more approachable and secure for
+any user who wants to get started easily, with a real cluster (not just
 a single-instance minikube setup) on bare-metal. Most of this will
 probably work on cloud providers like Google or AWS but the purpose
 of this repo is to set up production-grade K8S with your own servers / VMs.
+
+Today's challenge is staying ahead of the CVE vulnerability reports in the software essential to keep a cluster and its services running. Tools in this repo help keep it more up-to-date than before 2026.
 
 See [How to use this](#how-to-use-this) below to get started.
 

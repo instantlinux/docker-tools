@@ -10,9 +10,16 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
 
 ARG RSYSLOG_VERSION=8.2604.0-r0
 ENV TZ=UTC
+
 RUN apk add -u --no-cache gzip logrotate rsyslog=$RSYSLOG_VERSION \
       rsyslog-mysql=$RSYSLOG_VERSION tar xz && \
+    sed -i -e 's/^module[(]load="imkmsg"/# module(load="imkmsg"/' \
+      -e 's/^module[(]load="immark"/# module(load="immark"/' \
+      -e 's:load="imuxsock":load="imuxsock" SysSock.Name="/tmp/rsyslog":' \
+      /etc/rsyslog.conf && \
+    chmod 644 /etc/rsyslog.conf && \
     rm -fr /var/log/*
+
 VOLUME /var/log /etc/logrotate.d /etc/rsyslog.d
 EXPOSE 514 514/udp
 COPY logrotate.conf /etc/logrotate.conf
@@ -20,5 +27,5 @@ COPY rsyslog-rotate /etc/logrotate.d/rsyslog
 
 RUN chmod 644 /etc/logrotate.conf
 
-ADD entrypoint.sh /root/
-ENTRYPOINT ["/root/entrypoint.sh"]
+COPY entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -19,9 +19,9 @@ data:
         missingok
         notifempty
         size +4096k
-        create 640 root root
+        nocreate
         sharedscripts
         postrotate
-            /usr/bin/killall -HUP rsyslogd
+            /usr/bin/killall -HUP $(cat /tmp/rsyslogd.pid 2>/dev/null) 2>/dev/null || true
         endscript
     }
