@@ -8,9 +8,15 @@ livenessProbe:
 
 deployment:
   env:
+    port: 1514
     tz: UTC
   containerPorts:
-  - containerPort: 514
+  - containerPort: 1514
+  podSecurityContext:
+    runAsUser: 2028
+    runAsGroup: 2028
+    fsGroup: 2028
+    runAsNonRoot: true
   resources:
     limits:
       memory: 512Mi
@@ -23,6 +29,10 @@ volumeMounts:
   mountPath: /etc/rsyslog.d
 - name: logrotate
   mountPath: /etc/logrotate.d
+- name: logs
+  mountPath: /var/log
+- name: work
+  mountPath: /var/lib/rsyslog
 volumes:
 - name: config
   configMap:
@@ -30,6 +40,12 @@ volumes:
 - name: logrotate
   configMap:
     name: rsyslogd-logrotate
+- name: logs
+  emptyDir:
+    mode: 0750
+- name: work
+  emptyDir:
+    mode: 0750
 
 image:
   repository: instantlinux/rsyslogd
@@ -41,10 +57,9 @@ fullnameOverride: ""
 
 serviceAccount: {}
 service:
-  clusterIP: 10.101.1.40
   ports:
-  - { port: 514, targetPort: 514, name: rsyslogd }
-  type: ClusterIP
+  - { port: 514, nodePort: 30514, targetPort: 1514, name: rsyslogd }
+  type: NodePort
 autoscaling:
   enabled: false
 
@@ -54,7 +69,7 @@ configmap:
     custom.conf: |
       # This file created from k8s configmap
       module(load="imtcp")
-      $InputTCPServerRun 514
+      input(type="imtcp" port="1514")
       $RepeatedMsgReduction on
 
       :msg, regex, "Connection closed by 192.168.2.[0-9]\\{1,3\\} \\[preauth\\]" stop

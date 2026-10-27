@@ -179,7 +179,7 @@ echo "\n  },"
 
 cd $REPO_PATH/ansible/roles
 echo " " \"ansible-applied\": {
-for ITEM in cni coredns docker-ce kubernetes smartmontools; do
+for ITEM in cni coredns docker-ce kubernetes; do
   case $ITEM in
     cni)         ROLE=kubernetes; VERSION=$(grep cni_version: \
       $ROLE/defaults/main.yml | awk '{ print $2; }');;
@@ -189,9 +189,6 @@ for ITEM in cni coredns docker-ce kubernetes smartmontools; do
       $ROLE/defaults/main.yml | awk '{ print $2; }');;
     kubernetes)  ROLE=kubernetes; VERSION=$(grep -m 1 '^[ ]*version:' \
       $ROLE/defaults/main.yml | awk '{ print $2; }');;
-    smartmontools) ROLE=monitoring_agent; \
-      VERSION=$(grep -A 1 -m 1 smartmon_download: \
-      $ROLE/defaults/main.yml | tail -1 | awk '{ gsub(/"/, ""); print $2; }');;
   esac
   [ $ITEM = cni ] || echo ,
   echo -n "   " \"$ITEM\": {\"role\": \"$ROLE\", \"version\": \"$VERSION\", \

@@ -60,6 +60,10 @@ RUN apk add -u --no-cache \
       py3-requests py3-six py3-usb rsync rsyslog tzdata && \
     adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
     mv /tmp/* /home/$WX_USER && \
+    sed -i -e "s+-/var/log/messages+$SYSLOG_DEST+" \
+        -e 's/^.*imklog/# disabled ("imklog/' \
+	-e 's/^module[(]load="imkmsg"/# module(load="imkmsg"/' \
+        /etc/rsyslog.conf && \
     apk add --no-cache --virtual .fetch-deps gcc git jq musl-dev python3-dev && \
     VENV=/home/$WX_USER/weewx-venv && \
     python3 -m venv $VENV --system-site-packages && \

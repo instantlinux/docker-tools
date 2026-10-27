@@ -18,8 +18,8 @@ config:
     [OUTPUT]
         Name                syslog
         Match               kube.*
-        Host                $RSYSLOGD_IP
-        Port                514
+        Host                rsyslogd.instantlinux
+        Port                1514
         Mode                tcp
         Syslog_Format       rfc5424
         Syslog_MaxSize      16384

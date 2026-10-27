@@ -174,7 +174,7 @@ done
 echo "\n  },"
 
 echo " " \"ansible-applied\": {
-for ITEM in cni coredns docker-ce kubernetes smartmontools; do
+for ITEM in cni coredns docker-ce kubernetes; do
   case $ITEM in
     cni)         ROLE=kubernetes; VERSION=$(apt-cache madison kubernetes-$ITEM | \
        awk -F '|' '{print $2; }' | xargs);;
@@ -187,10 +187,6 @@ for ITEM in cni coredns docker-ce kubernetes smartmontools; do
     kubernetes)  ROLE=kubernetes; VERSION=$(curl -s \
       https://api.github.com/repos/kubernetes/$ITEM/releases | \
       jq -r '.[].tag_name' | grep -E '^v[0-9]+\.[0-9]+(\.[0-9]+)?$' | sort -V | tail -n 1);;
-    smartmontools) ROLE=monitoring_agent; VERSION=$(curl -s \
-      https://api.github.com/repos/smartmontools/$ITEM/releases | \
-      jq -r '.[].tag_name' | awk '{ sub(/^RELEASE_/, ""); print }' | tr _ . | \
-      sort -V | tail -n 1);;
   esac
   [ $ITEM = cni ] || echo ,
   echo -n "   " \"$ITEM\": {\"role\": \"$ROLE\", \"version\": \"$VERSION\"}

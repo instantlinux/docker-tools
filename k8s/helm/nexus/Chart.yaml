@@ -5,11 +5,11 @@ home: https://github.com/instantlinux/docker-tools
 sources:
 - https://github.com/instantlinux/docker-tools
 type: application
-version: 3.97.0
+version: 3.97.0-1
 appVersion: "3.97.0"
 dependencies:
 - name: chartlib
-  version: 0.1.11
+  version: 0.1.12
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux
 - name: postgres

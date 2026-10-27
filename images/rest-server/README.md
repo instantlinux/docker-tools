@@ -61,4 +61,4 @@ ftp-user-password-secret | (optional) hashed pw of upload user
 
 If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).
 
-[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-ubuntu%2Frest-server-blue.svg)](https://github.com/restic/rest-server "Code")
+[![](https://img.shields.io/badge/license-Apache--2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/ "License badge") [![](https://img.shields.io/badge/code-restic%2Frest--server-blue.svg)](https://github.com/restic/rest-server "Code")

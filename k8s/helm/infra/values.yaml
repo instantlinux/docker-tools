@@ -1,7 +1,7 @@
 # Default values for infra.
 #  These sections are optional (add 'enabled: false' override to disable
 #  any that aren't applicable to your environment):
-#    adminUser, certManager, k8sBackup, limits, localStorage, rsyslogExt
+#    adminUser, certManager, k8sBackup, limits, localStorage
 #  To disable gateway resources, override with an empty list [].
 namespace: default
 adminUser:
@@ -36,6 +36,10 @@ gateways:
   class: envoy-internal
   config: envoy-config-internal
   crdNamespace: envoy-gateway-system
+  # usually you don't need any listeners. the chart will create TCP
+  # listeners along with matching TCPRoutes if you define them in
+  # your overrides file; be sure to prefix each TCPRoute name with
+  # the associated service and a hyphen
   listeners: []
   nodeport_http: 30080
   nodeport_https: 30443
@@ -53,5 +57,3 @@ limits:
     request: 64Mi
 localStorage:
   name: local-storage
-rsyslogExt:
-  nodePort: 30514

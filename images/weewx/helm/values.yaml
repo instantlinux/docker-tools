@@ -21,7 +21,7 @@ deployment:
     station_model: "6152"
     station_type: Vantage
     station_url: ""
-    syslog_dest: "@@10.101.1.40:514"
+    syslog_dest: "@@rsyslogd:514"
     tz: UTC
     tz_code: "0"
     webcam_url: ""

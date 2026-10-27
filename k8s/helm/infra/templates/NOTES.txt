@@ -5,4 +5,3 @@ This infra chart defined the following:
 - default CPU and memory limits for {{ .Values.namespace }} namespace
 - local-storage class default
 - cluster role permissions for prometheus
-- node port {{ .Values.rsyslogExt.nodePort }} for rsyslog

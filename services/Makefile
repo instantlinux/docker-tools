@@ -7,7 +7,7 @@
 
 HOST = $(shell hostname -s)
 REGISTRY_URI ?= nexus.instantlinux.net
-SERVICES = garage haproxy-keepalived nut-upsd rest-server
+SERVICES = $(shell echo [a-z]*)
 ifeq ($(shell test -d /var/adm/admin/services && echo 1),1)
   export ADMIN_PATH=/var/adm/admin/services
 endif

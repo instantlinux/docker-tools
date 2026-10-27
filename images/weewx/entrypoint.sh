@@ -21,10 +21,6 @@ if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
     REGISTER_OPT=true
   fi
   # Edit distributed weewx.conf settings after adding driver for STATION_TYPE
-  cp /etc/rsyslog.conf /tmp
-  sed -e "s+-/var/log/messages+$SYSLOG_DEST+" \
-      -e 's/^.*imklog/# disabled ("imklog/' \
-      /tmp/rsyslog.conf >/etc/rsyslog.conf
   su $WX_USER -c "weectl station reconfigure --driver=weewx.drivers.$(
     echo $STATION_TYPE | tr [:upper:] [:lower:]) --no-prompt"
   sed --in-place=.bak -e "s/location = DESC/location = \"$LOCATION\"/" \
@@ -110,7 +106,7 @@ EOF
   RETRIES=10
   while [ ! -s /tmp/sshkey ]; do
     sleep 5
-    ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST > /tmp/sshkey
+    ssh-keyscan -p $RSYNC_PORT $RSYNC_HOST > /tmp/sshkey || true
     RETRIES=$((RETRIES - 1))
     if [ $RETRIES == 0 ]; then
       echo "Could not reach sshd on $RSYNC_HOST after 10 tries"
@@ -121,8 +117,6 @@ EOF
 fi
 
 chown -R $WX_USER $HOMEDIR/.ssh $HTML_ROOT /run/$SSHKEY
-# Docker 18.02 changes group to root at launch
-#chgrp $WX_GROUP /dev/ttyUSB0
 set +e
 su $WX_USER -c "PATH=$PATH weewxd|grep -v LOOP:"
 # Failure: attempt restart only every 2 minutes

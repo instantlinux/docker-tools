@@ -69,23 +69,24 @@ spec:
           {{- toYaml $gateway.allowNamespaces | nindent 10 }}
           {{- end }}
   listeners:
-  # at least one dummy listener is needed; here we also add support for
-  # TCP listeners; all http listeners are defined with ListenerSets
-  {{- if hasKey $gateway "listeners" }}
-  {{- range $gateway.listeners }}
-  - name: {{ .name }}
-    protocol: TCP
-    port: {{ .port }}
+  # at least one direct-attached listener is needed (even though all
+  # application routes are defined separately as listenersets)
+  # you can override whole list here
+  {{- if $gateway.listeners }}
+  {{- toYaml $gateway.listeners | nindent 4 }} 
+  {{- else }}
+  - name: acme-challenge
     allowedRoutes:
       kinds:
-      - kind: TCPRoute
-  {{- end }}
-  {{- else }}
-  - name: dummy
+      - group: gateway.networking.k8s.io
+        kind: HTTPRoute
+      namespaces:
+        from: Same
     protocol: HTTP
     port: 80
   {{- end }}
 {{- range $gateway.listeners }}
+{{- if eq .protocol "TCP" }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: TCPRoute
@@ -100,7 +101,8 @@ spec:
     sectionName: {{ .name }}
   rules:
   - backendRefs:
-    - name: {{ .service }}
+    - name: {{ splitList "-" .name | first }}
       port: {{ .port }}
+{{- end }}
 {{- end }}
 {{- end }}
