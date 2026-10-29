@@ -44,6 +44,8 @@ Variable | Default | Description |
 DATA_DIRECTORY | /data | Destination path to use within container
 PASS_SECNAME | restic-htpasswd | Name of secret holding htpasswd file
 
+Container UID is 2025.
+
 ### Volumes
 
 Mount a host directory into the container:

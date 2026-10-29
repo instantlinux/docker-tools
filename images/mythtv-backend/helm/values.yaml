@@ -16,6 +16,11 @@ deployment:
   hostNetwork: true
   nodeSelector:
     service.mythtv-backend: allow
+  podSecurityContext:
+    runAsUser: 2021
+    runAsGroup: 2021
+    fsGroup: 2021
+    runAsNonRoot: true
   resources:
     limits:
       memory: 2560Mi

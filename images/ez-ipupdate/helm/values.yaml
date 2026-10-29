@@ -2,6 +2,11 @@
 deployment:
   env:
     host: www.example.com
+  podSecurityContext:
+    runAsUser: 2030
+    runAsGroup: 2030
+    fsGroup: 2030
+    runAsNonRoot: true
 volumeMounts:
 - name: secret
   mountPath: /run/secrets/ez-ipupdate-user

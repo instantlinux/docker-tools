@@ -7,6 +7,11 @@ daemonset:
     git_org: example
     git_repo: "ssh://git@$(GIT_HOST)/$(GIT_ORG)/admin.git"
     interval: 60
+  podSecurityContext:
+    runAsUser: 2031
+    runAsGroup: 2031
+    fsGroup: 2031
+    runAsNonRoot: true
   resources:
     limits:
       memory: 128Mi

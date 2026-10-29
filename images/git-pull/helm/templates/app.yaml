@@ -1,5 +1,7 @@
 {{- include "chartlib.configmap" . }}
 ---
+{{- include "chartlib.daemonset" . }}
+---
 {{- include "chartlib.deployment" . }}
 ---
 {{- include "chartlib.hpa" . }}

@@ -5,6 +5,11 @@ deployment:
     repo_prefix: "git@git.example.com:user/"
     ssh_port: 22
     tz: UTC
+  podSecurityContext:
+    runAsUser: 2032
+    runAsGroup: 505
+    fsGroup: 505
+    runAsNonRoot: true
 # this whole list must be overridden, helm cannot interpolate values here
 volumeMounts:
 - mountPath: /var/backup

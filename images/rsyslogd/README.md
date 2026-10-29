@@ -23,6 +23,8 @@ make rsyslogd
 | -------- | ------- | ----------- |
 | TZ       | UTC     | timezone    |
 
+Container UID is 2028.
+
 Most configuration is done via config file; see the ConfigMap defined in kubernetes.yaml.
 
 ### Contributing

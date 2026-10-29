@@ -7,6 +7,11 @@ deployment:
     server: members.easydns.com
     service_type: easydns
     user_login: ""
+  podSecurityContext:
+    runAsUser: 2029
+    runAsGroup: 2029
+    fsGroup: 2029
+    runAsNonRoot: true
 volumeMounts:
 - name: secret
   mountPath: /run/secrets/ddclient-user

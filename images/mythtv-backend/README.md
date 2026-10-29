@@ -35,17 +35,18 @@ Change the password by generating a new hashed password and setting mythtv-user-
 
 Look for MythTV status pages and configuration UI on port 6544.
 
-Starting with v34, mythtv-setup is accessed via <pod-ip>:6544/setupwizard. Use that to define video sources, storage groups, and set up channels.
+Starting with v34, mythtv-setup is accessed via <pod-ip>:6544/setupwizard. Use that to define video sources, storage groups, and set up channels. This container no longer provides ssh mythtv-setup command-line access.
 
 ### Variables
 Variable | Default | Description
 -------- | ------- | -----------
 DBNAME | mythtv | Database name
 DBSERVER | db00 | Database server hostname
-LANG | en_US.UTF-8 | 
-LANGUAGE | en_US.UTF-8 | 
+LANG | en_US.UTF-8 | Language (rebuild image to change)
 LOCALHOSTNAME | | Override if needed (see [config.xml](https://www.mythtv.org/wiki/Config.xml))
 TZ | UTC | Time zone
+
+Container UID is 2021.
 
 ### MythTV Frontend
 
@@ -65,11 +66,10 @@ Note that the [Kodi](https://kodi.tv/download/) frontend also provides limited s
  
 ### Volumes
 
-Optionally, mount this path name to persistent storage:
-
 Path | Description
 ---- | -----------
-/etc/ssh | Host keys and configs for ssh
+/home/mythtv | For configuration and schedule downloads
+/var/mythdata | Video storage
 
 ### Secrets
 
@@ -78,7 +78,6 @@ Add these as Kubernetes secrets, or if you're running standalone specify these w
 Secret | Description
 ------ | -----------
 mythtv-db-password | Password of MythTV db user
-mythtv-user-password | Hashed password of MythTV ssh user
 
 ### Upgrade Notes
 

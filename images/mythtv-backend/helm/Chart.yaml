@@ -6,11 +6,11 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/mythtv/mythtv
 type: application
-version: 0.36.2609
+version: 0.36.2610
 appVersion: "36.0-fixes.202610052224.b6ed364d3f"
 dependencies:
 - name: chartlib
-  version: 0.1.11
+  version: 0.1.12
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux
 - name: data-sync

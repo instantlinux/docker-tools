@@ -1,10 +1,12 @@
 #!/bin/sh -e
+export GIT_SSH_COMMAND="ssh -i /tmp/.ssh/id_rsa -o IdentitiesOnly=yes \
+   -o UserKnownHostsFile=/tmp/.ssh/known_hosts" 
 
-mkdir -p /root/.ssh
-if [ ! -f /root/.ssh/id_rsa ]; then
+mkdir -p -m 700 /tmp/.ssh
+if [ ! -f /tmp/.ssh/id_rsa ]; then
   if [ -f /run/secrets/git-deploy-sshkey ]; then
-    cp /run/secrets/git-deploy-sshkey /root/.ssh/id_rsa
-    chmod 400 /root/.ssh/id_rsa
+    cp /run/secrets/git-deploy-sshkey /tmp/.ssh/id_rsa
+    chmod 400 /tmp/.ssh/id_rsa
   fi
   host=`echo $GIT_HOST | cut -d : -f 1`
   port=22
@@ -12,14 +14,14 @@ if [ ! -f /root/.ssh/id_rsa ]; then
   RETRIES=10
   while [ ! -s /tmp/sshkey ]; do
     sleep 5
-    ssh-keyscan -p $port $host > /tmp/sshkey
+    ssh-keyscan -p $port $host > /tmp/sshkey || true
     RETRIES=$((RETRIES - 1))
     if [ $RETRIES == 0 ]; then
       echo "Could not reach sshd on $host after 10 tries"
       exit 1
     fi
   done
-  cat /tmp/sshkey >> /root/.ssh/known_hosts && rm /tmp/sshkey
+  cat /tmp/sshkey >> /tmp/.ssh/known_hosts && rm /tmp/sshkey
 fi
 cd /git/$DEST
 if [ ! -d .git ]; then

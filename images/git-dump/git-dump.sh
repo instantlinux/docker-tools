@@ -9,7 +9,7 @@
 #  $2 number of files to keep
 #  $3-$ git repo suffixes
 
-# Omit git repo list if a API_TOKEN_SECRETNAME is provided to query project
+# Omit git repo list if a API_TOK_SECRETNAME is provided to query project
 # list from gitlab
 
 DESTDIR=$1
@@ -28,7 +28,7 @@ log_entry () {
 KEEP_DAYS=$1
 shift;
 ERROR_STATE=0
-[ -e /etc/opt/git-dump ] && source /etc/opt/git-dump
+[ -e /etc/default/git-dump ] && source /etc/default/git-dump
 log_entry info status=START
 
 # Dumps will be kept in directories named as day of week or
@@ -44,9 +44,9 @@ else
  DAY=`date +%m%d`
 fi
 
-if [ ! -z "$API_TOKEN_SECRETNAME" ] && [ -e /run/secrets/$API_TOKEN_SECRETNAME ]; then
+if [ ! -z "$API_TOK_SECRETNAME" ] && [ -e /run/secrets/$API_TOK_SECRETNAME ]; then
   SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d/ -f 1 | cut -d: -f 1)
-  TOKEN=$(cat /run/secrets/$API_TOKEN_SECRETNAME)
+  TOKEN=$(cat /run/secrets/$API_TOK_SECRETNAME)
   if [ $SCM_TYPE == github ]; then
     API_VERSION=v3
     API_PATH=repo

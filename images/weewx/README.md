@@ -60,6 +60,8 @@ definition, or (even easier) under Kubernetes deploy the
 | WEEK_START | 6 | day of week to start weekly data (0 = Mon) |
 | WX_USER | weewx | run-as username |
 
+Container UID is 2071; GID is 20.
+
 You can volume-mount a different skin to a subdirectory of /home/weewx/skins if you prefer one that isn't already included.
 
 If `OPTIONAL_ACCESSORIES` is specified, you must upgrade database (see below).
