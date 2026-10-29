@@ -13,11 +13,10 @@ ENV DBNAME=mythtv \
     DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8 \
     LOCALHOSTNAME= \
     TZ=UTC
-
-ARG MYTHTV_GID=100
+ 
+ARG MYTHTV_GID=2021
 ARG MYTHTV_UID=2021
 ARG MYTHTV_PPA=ppa:mythbuntu/36
 ARG MYTHTV_VERSION=36.0-fixes.202610052224.b6ed364d3f
@@ -29,23 +28,26 @@ RUN \
   apt-get install -yq gnupg locales software-properties-common wget && \
   add-apt-repository $MYTHTV_PPA && \
   apt-get -yq update && \
-  locale-gen $LANG && \
+  sed -i "s/# $LANG UTF-8/$LANG UTF-8/" /etc/locale.gen && \
+  locale-gen && update-locale LANG=$LANG && \
   echo "# added via Dockerfile\npath-include=/usr/share/doc/mythtv-backend/contrib/*" > \
    /etc/dpkg/dpkg.cfg.d/mythtv-backend && \
   VER=2:$(echo $MYTHTV_VERSION | tr - +)~ubuntu26.04.1 && \
   apt-get -yq --no-install-recommends install \
     curl iputils-ping less lsb-release mariadb-client net-tools \
     mythtv-backend=$VER mythtv-common=$VER mythtv-transcode-utils=$VER \
-    libmyth-python libmythtv-perl libjson-xs-perl psmisc sudo tzdata v4l-utils \
+    libmyth-python libmythtv-perl libjson-xs-perl psmisc tzdata v4l-utils \
     vim xmltv
 
-COPY src/ /root/
+COPY entrypoint.sh /usr/local/bin/
+COPY config.xml /etc/mythtv/
 RUN \
-  usermod -u $MYTHTV_UID -s /bin/bash mythtv && \
+  groupmod -g $MYTHTV_GID mythtv && \
+  usermod -u $MYTHTV_UID -g $MYTHTV_GID -s /bin/bash mythtv && \
   mkdir -p /var/lib/mythtv && \
-  echo "mythtv:mythtv" | chpasswd && \
-  chown $MYTHTV_UID:$MYTHTV_GID /var/lib/mythtv && \
+  chown $MYTHTV_UID:$MYTHTV_GID /var/lib/mythtv /etc/mythtv/config.xml && \
   ln -s /usr/share/doc/mythtv-backend/contrib/user_jobs/mythlink.pl /usr/bin
 
 EXPOSE 5000/udp 5002/udp 5004/udp 6543 6544 6549 65001 65001/udp 
-ENTRYPOINT ["/root/entrypoint.sh"]
+USER $MYTHTV_UID
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

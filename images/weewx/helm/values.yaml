@@ -28,6 +28,11 @@ deployment:
     xtide_location: San Francisco
   nodeSelector:
     service.weewx: allow
+  podSecurityContext:
+    runAsUser: 2071
+    runAsGroup: 20
+    fsGroup: 2071
+    runAsNonRoot: true
   resources:
     limits:
       memory: 1024Mi

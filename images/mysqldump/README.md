@@ -65,6 +65,8 @@ make mysqldump
 | USERNAME | mysqldump | username to run as |
 | TZ | UTC | time zone |
 
+Container UID is 2033, GID is 34.
+
 ### Secrets
 
 | Secret | Description |

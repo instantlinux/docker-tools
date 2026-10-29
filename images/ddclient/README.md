@@ -22,6 +22,8 @@ Then deploy this service, see the example [helm](https://github.com/instantlinux
 | USER_LOGIN | |Login name|
 | USER_SECRETNAME | ddclient-user |Name of the Docker secret containing password |
 
+Container UID is 2029.
+
 Instead of supplying these variables, if your provider requires more parameters than shown above, you can volume-mount the configuration as `/etc/ddclient/ddclient.conf`.
 
 Logging is set to `verbose` in order to have any logging at all.

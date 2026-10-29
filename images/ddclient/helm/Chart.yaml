@@ -6,10 +6,10 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/ddclient/ddclient/
 type: application
-version: 0.1.6
+version: 4.0.0-2
 appVersion: "4.0.0-r2"
 dependencies:
 - name: chartlib
-  version: 0.1.11
+  version: 0.1.12
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux

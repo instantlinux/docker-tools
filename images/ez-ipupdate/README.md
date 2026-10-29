@@ -22,6 +22,8 @@ Then deploy this service, see the example [helm](https://github.com/instantlinux
 | SERVICE_TYPE | easydns | DNS vendor, see [available services](http://leaf.sourceforge.net/doc/bucu-ezipupd.html) |
 | USER_SECRETNAME | ez-ipupdate-user |Name of the Docker secret to deploy |
 
+Container UID is 2030; can be overridden via helm or docker-compose.
+
 This repo has complete instructions for
 [building a kubernetes cluster](https://github.com/instantlinux/docker-tools/blob/main/k8s/README.md) where you can deploy with [helm](https://github.com/instantlinux/docker-tools/tree/main/images/ez-ipupdate/helm) or [kubernetes.yaml](https://github.com/instantlinux/docker-tools/blob/main/images/ez-ipupdate/kubernetes.yaml) using _make_ and customizing [Makefile.vars](https://github.com/instantlinux/docker-tools/blob/main/k8s/Makefile.vars) after cloning this repo:
 ~~~

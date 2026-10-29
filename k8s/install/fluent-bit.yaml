@@ -18,7 +18,7 @@ config:
     [OUTPUT]
         Name                syslog
         Match               kube.*
-        Host                rsyslogd.instantlinux
+        Host                rsyslogd
         Port                1514
         Mode                tcp
         Syslog_Format       rfc5424

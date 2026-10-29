@@ -10,6 +10,8 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG DDCLIENT_VERSION=4.0.0-r2
+ARG UID=2029
+
 ENV HOST= \
     INTERVAL=3600 \
     IPLOOKUP_URI=http://ipinfo.io/ip \
@@ -18,10 +20,12 @@ ENV HOST= \
     USER_LOGIN= \
     USER_SECRETNAME=ddclient-user
 
-RUN apk add -u --no-cache curl ddclient=$DDCLIENT_VERSION \
-      su-exec && \
+RUN adduser -D -u $UID -h /var/lib/ddclient -s /sbin/nologin ddclient && \
+    apk add -u --no-cache curl ddclient=$DDCLIENT_VERSION && \
     mv /etc/ddclient/ddclient.conf /etc/ddclient/ddclient.conf-dist && \
-    chown ddclient /var/cache/ddclient
+    mkdir -p /run/ddclient && \
+    chown ddclient /etc/ddclient /run/ddclient /var/cache/ddclient
 
 COPY entrypoint.sh /usr/local/bin/
+USER $UID
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

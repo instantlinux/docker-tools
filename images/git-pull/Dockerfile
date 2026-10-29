@@ -10,13 +10,17 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG GIT_VERSION=2.54.0-r0
+ARG UID=2031
 ENV DEST=. \
     GIT_COMMIT=master \
     GIT_HOST=github.com \
     GIT_REPO=uri \
     INTERVAL=0
 
-RUN apk add -u --no-cache git=$GIT_VERSION openssh-client
+RUN apk add -u --no-cache git=$GIT_VERSION openssh-client && \
+    adduser -D -H -s /sbin/nologin -u $UID git-pull
+
 VOLUME /git
-COPY entrypoint.sh /root/
-ENTRYPOINT ["/root/entrypoint.sh"]
+COPY entrypoint.sh /usr/local/bin/
+USER $UID
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

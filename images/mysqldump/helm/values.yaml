@@ -11,6 +11,11 @@ deployment:
     tz: UTC
   nodeSelector:
     service.mysqldump: allow
+  podSecurityContext:
+    runAsUser: 2033
+    runAsGroup: 34
+    fsGroup: 34
+    runAsNonRoot: true
 volumeMounts:
 - mountPath: /var/backup
   name: backup

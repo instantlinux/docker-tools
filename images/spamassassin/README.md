@@ -38,6 +38,8 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | TZ | UTC | time zone |
 | USERNAME | debian-spamd | user name to run as |
 
+Container UID is 2022.
+
 ### Contributing
 
 If you want to make improvements to this image, see [CONTRIBUTING](https://github.com/instantlinux/docker-tools/blob/main/CONTRIBUTING.md).

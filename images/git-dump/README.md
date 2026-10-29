@@ -43,7 +43,7 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| API_TOKEN_SECRETNAME | | docker secret name of API token as below |
+| API_TOK_SECRETNAME | | docker secret name of API token as below |
 | DEST_DIR | /var/backup/git | destination path |
 | HOUR | 0 |cron-syntax backup hour |
 | KEEP_DAYS | 31 | days of snapshots to keep |
@@ -55,6 +55,8 @@ These variables can be passed to the image from kubernetes.yaml or docker-compos
 | SSHKEY_SECRETNAME | git-dump_sshkey | docker secret name as below |
 | SSH_PORT | 22 | TCP port of git service |
 | TZ | UTC | time zone |
+
+Container UID is 2032.
 
 ### Secrets
 

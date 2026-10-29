@@ -6,8 +6,8 @@ sources:
 - https://github.com/matrix-org/synapse
 - https://hub.docker.com/r/matrixdotorg/synapse
 type: application
-version: 1.163.0
-appVersion: v1.163.0
+version: 1.164.1
+appVersion: v1.164.1
 dependencies:
 - name: chartlib
   version: 0.1.12
@@ -18,7 +18,7 @@ dependencies:
   repository: file://subcharts/admin
   condition: admin.enabled
 - name: element
-  version: 0.1.1
+  version: 0.1.2
   repository: file://subcharts/element
   condition: element.enabled
 - name: postgres

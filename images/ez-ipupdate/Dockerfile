@@ -19,13 +19,14 @@ ENV HOST= \
 RUN apk add -u --no-cache curl ez-ipupdate=$EZ_VERSION && \
     rm -fr /var/log/*
 
-CMD sh -c 'echo "user=`cat /run/secrets/$USER_SECRETNAME`" > /run/ez.conf && \
-    if [ -z "$HOST" ]; then echo "Please set a HOST name"; exit 1; fi && \
+USER 2030
+CMD ["sh", "-c", \
+   "echo \"user=`cat /run/secrets/$USER_SECRETNAME`\" > /tmp/ez.conf && \
+    if [ -z \"$HOST\" ]; then echo 'Please set a HOST name'; exit 1; fi && \
     while [ 1 == 1 ]; do \
      IPADDR=`curl -s $IPLOOKUP_URI` && \
-     echo "`date --rfc-2822` host=$HOST ipaddr=$IPADDR"; \
+     echo \"`date --rfc-2822` host=$HOST ipaddr=$IPADDR\"; \
      ez-ipupdate -a $IPADDR \
-      --host $HOST --service-type $SERVICE_TYPE -c /run/ez.conf ; \
+      --host $HOST --service-type $SERVICE_TYPE -c /tmp/ez.conf ; \
      sleep $INTERVAL; \
-    done'
-
+    done"]

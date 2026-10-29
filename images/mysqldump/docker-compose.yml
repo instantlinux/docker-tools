@@ -1,5 +1,3 @@
-version: "3.1"
-
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/mysqldump:latest
@@ -9,10 +7,6 @@ services:
     volumes:
     - backup:/var/backup
     - logs:/var/log
-    deploy:
-      placement:
-        constraints:
-        - node.labels.swarm-sync == primary
     secrets:
     - mysql-backup
 
@@ -20,10 +14,6 @@ volumes:
   logs:
   backup:
     external: true
-networks:
-  default:
-    external:
-      name: dbcluster
 secrets:
   mysql-backup:
     external: true

@@ -20,20 +20,21 @@ ENV HOUR=3 MINUTE=30 \
     SKIP_SSL=true \
     USERNAME=mysqldump \
     TZ=UTC
-ARG UID=210
+ARG UID=2033
 ARG BACKUP_GID=34
 ARG CLIENT_VERSION=11.8.9-r0
 
+COPY *.sh /usr/local/bin/
 RUN RMGROUP=$(grep :$BACKUP_GID: /etc/group | cut -d: -f 1) && \
     [ -z "$RMGROUP" ] || delgroup $RMGROUP && \
     addgroup -g $BACKUP_GID backup && \
     adduser -u $UID -G backup -s /bin/sh -g "MariaDB" -D $USERNAME && \
     apk add -u --no-cache \
-     zstd dcron mariadb-client=$CLIENT_VERSION tzdata && \
+     supercronic zstd mariadb-client=$CLIENT_VERSION tzdata && \
+    chmod g+rx,o+rx /usr/local/bin/*.sh && \
+    chown $USERNAME /var/log && \
     rm -fr /var/log/*
 
-COPY *.sh /usr/local/bin/
-RUN chmod g+rx,o+rx /usr/local/bin/*.sh
 VOLUME /var/backup /var/log
-
+USER $UID:$BACKUP_GID
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

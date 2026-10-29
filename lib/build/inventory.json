@@ -63,24 +63,23 @@
     "il-v1": {"repository": "nexus.instantlinux.net/il-v1", "version": "latest", "paths": ["k8s/helm/il-v1/Chart.yaml"]},
     "immich": {"repository": "ghcr.io/immich-app/immich-server ghcr.io/immich-app/postgres", "version": "v3.3.0", "paths": ["k8s/helm/immich/Chart.yaml", "README.md"]},
     "jira": {"repository": "atlassian/jira-core", "version": "9.12.1", "paths": ["k8s/helm/jira/Chart.yaml", "README.md"]},
-    "nexus": {"repository": "sonatype/nexus3", "version": "3.97.0", "paths": ["k8s/helm/nexus/Chart.yaml", "README.md"]},
+    "nexus": {"repository": "sonatype/nexus3", "version": "3.97.3", "paths": ["k8s/helm/nexus/Chart.yaml", "README.md"]},
     "owntone": {"repository": "owntone/owntone", "version": "29.3", "paths": ["k8s/helm/owntone/Chart.yaml", "README.md"]},
     "radicale": {"repository": "ghcr.io/kozea/radicale", "version": "3.8.3", "paths": ["k8s/helm/radicale/Chart.yaml", "README.md"]},
     "restic": {"repository": "alpine", "version": "0.18.1-r9", "paths": ["k8s/helm/restic/Chart.yaml"]},
     "snappymail": {"repository": "djmaze/snappymail", "version": "v2.38.2", "paths": ["k8s/helm/snappymail/Chart.yaml", "README.md"]},
     "splunk": {"repository": "splunk/splunk", "version": "10.6.1", "paths": ["k8s/helm/splunk/Chart.yaml", "README.md"]},
     "squirrelmail": {"repository": "nexus.instantlinux.net/squirrelmail", "version": "latest", "paths": ["k8s/helm/squirrelmail/Chart.yaml"]},
-    "synapse": {"repository": "matrixdotorg/synapse", "version": "v1.163.0", "paths": ["k8s/helm/synapse/Chart.yaml", "README.md"]},
+    "synapse": {"repository": "matrixdotorg/synapse", "version": "v1.164.1", "paths": ["k8s/helm/synapse/Chart.yaml", "README.md"]},
     "vaultwarden": {"repository": "vaultwarden/server", "version": "1.37.4-alpine", "paths": ["k8s/helm/vaultwarden/Chart.yaml"]},
     "wordpress": {"repository": "wordpress", "version": "7.0.0-php8.5-apache", "paths": ["k8s/helm/wordpress/Chart.yaml"]},
-    "wx-nginx": {"repository": "nginx", "version": "1.31.7-alpine", "paths": ["k8s/helm/wx-nginx/Chart.yaml"]}
+    "wx-nginx": {"repository": "nginx", "version": "1.31.8-alpine", "paths": ["k8s/helm/wx-nginx/Chart.yaml"]}
   },
   "ansible-applied": {
     "cni": {"role": "kubernetes", "version": "1.9.1-1.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "coredns": {"role": "kubernetes", "version": "v1.14.7", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "docker-ce": {"role": "docker_node", "version": "5:29.9.2-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
-    "kubernetes": {"role": "kubernetes", "version": "1.37.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
-    "smartmontools": {"role": "monitoring_agent", "version": "7.5", "paths": ["ansible/roles/monitoring_agent/defaults/main.yml"]}
+    "kubernetes": {"role": "kubernetes", "version": "1.37.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]}
   },
   "github-imports": {
     "cert-manager/cert-manager": {"version": "v1.21.2", "paths": ["k8s/Makefile.versions"]},

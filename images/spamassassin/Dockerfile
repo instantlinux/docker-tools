@@ -22,9 +22,10 @@ ARG SPAMD_UID=2022
 
 RUN apt-get -yq update && apt-get -y upgrade && \
     apt-get -y --no-install-recommends install \
-     ca-certificates cron curl gcc libc6-dev libdbd-mysql-perl \
+     ca-certificates curl gcc libc6-dev libdbd-mysql-perl \
      libmail-dkim-perl libmilter-dev libnet-ident-perl make pyzor razor \
      gpg gpg-agent procps spamd=$SPAMD_VERSION && \
+     groupmod --gid $SPAMD_UID $USERNAME && \
      usermod --uid $SPAMD_UID $USERNAME && \
      chsh -s /bin/sh $USERNAME && \
      mv /etc/mail/spamassassin/local.cf /etc/mail/spamassassin/local.cf-dist && \
@@ -43,9 +44,12 @@ RUN apt-get -yq update && apt-get -y upgrade && \
     sed -i '/^#\s*loadplugin .\+::DCC/s/^#\s*//g' /etc/spamassassin/v310.pre && \
     apt-get purge -yq binutils libc6-dev linux-libc-dev libmilter-dev make && \
     apt-get -yq autoremove && apt-get clean && \
+    mkdir -p /run/dcc /run/spamd && \
+    chown -R $SPAMD_UID /etc/spamassassin /run/dcc /run/spamd /var/dcc && \
     rm -rf /var/cache/debconf/* /var/lib/apt/lists/* /tmp/* /var/log/*
 
-COPY entrypoint.sh /root/
+COPY entrypoint.sh /usr/local/bin
 VOLUME ["/var/lib/spamassassin", "/var/log"]
 EXPOSE 783
-ENTRYPOINT ["/root/entrypoint.sh"]
+USER $SPAMD_UID
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -39,7 +39,6 @@ ENV AIRLINK_HOST= \
     STATION_MODEL=6152 \
     STATION_TYPE=Vantage \
     STATION_URL= \
-    SYSLOG_DEST=/var/log/messages \
     TZ=US/Eastern \
     TZ_CODE=10 \
     WEBCAM_URL=https://www.wunderground.com/wundermap?lat=37.761&lon=-122.435&zoom=5&radar=1&cam=1 \
@@ -52,18 +51,16 @@ ARG WEEGREEN_VERSION=v0.12
 ARG AIRLINK_VERSION=v4.1.1
 ARG WX_GROUP=dialout
 ARG WX_UID=2071
+ARG WX_GID=20
 
 COPY install-input.txt entrypoint.sh log.conf /tmp
 RUN apk add -u --no-cache \
       curl freetype libjpeg libstdc++ openssh openssl python3 \
       py3-configobj py3-mysqlclient py3-pillow py3-pymysql py3-pyserial \
-      py3-requests py3-six py3-usb rsync rsyslog tzdata && \
-    adduser -u $WX_UID -s /bin/sh -G $WX_GROUP -D $WX_USER && \
+      py3-requests py3-six py3-usb rsync tzdata && \
+    adduser -u $WX_UID -s /bin/sh -D $WX_USER && \
+    addgroup $WX_USER $WX_GROUP && \
     mv /tmp/* /home/$WX_USER && \
-    sed -i -e "s+-/var/log/messages+$SYSLOG_DEST+" \
-        -e 's/^.*imklog/# disabled ("imklog/' \
-	-e 's/^module[(]load="imkmsg"/# module(load="imkmsg"/' \
-        /etc/rsyslog.conf && \
     apk add --no-cache --virtual .fetch-deps gcc git jq musl-dev python3-dev && \
     VENV=/home/$WX_USER/weewx-venv && \
     python3 -m venv $VENV --system-site-packages && \
@@ -89,7 +86,8 @@ RUN apk add -u --no-cache \
     su $WX_USER -c \
       "$VENV/bin/weectl extension install /tmp/weewx-airlink.zip --yes" && \
     apk del .fetch-deps && \
-    rm -fr $WX_ROOT/skins/WeeGreen/.git /home/$WX_USER/.cache && \
+    rm -fr $WX_ROOT/skins/WeeGreen/.git /home/$WX_USER/.cache /tmp/* && \
     find /usr/lib/python3* $VENV -name __pycache__ -exec rm -r '{}' +;
 
+USER $WX_UID:$WX_GID
 ENTRYPOINT ["/home/weewx/entrypoint.sh"]

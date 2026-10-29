@@ -15,7 +15,7 @@ config:
     [OUTPUT]
         name         splunk
         match        *
-        host         splunk.instantlinux.svc.cluster.local
+        host         splunk
         splunk_token ${SPLUNK_HEC_TOKEN}
         tls          On
         tls.verify   Off

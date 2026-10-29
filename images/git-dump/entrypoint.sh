@@ -1,19 +1,14 @@
 #! /bin/sh -e
+export GIT_SSH_COMMAND="ssh -i /tmp/.ssh/id_rsa -o IdentitiesOnly=yes \
+   -o UserKnownHostsFile=/tmp/.ssh/known_hosts" 
+SSH_PATH=/home/$USERNAME/.ssh
 
-if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
-  # At first startup, set timezone
-  cp /usr/share/zoneinfo/$TZ /etc/localtime
-  echo $TZ >/etc/timezone
-fi
-
-if [ -z "$REPOS" ] && [ ! -s /run/secrets/$API_TOKEN_SECRETNAME ]; then
-  echo "** This container requires setting for REPOS or API_TOKEN_SECRETNAME **"
+if [ -z "$REPOS" ] && [ ! -s /run/secrets/$API_TOK_SECRETNAME ]; then
+  echo "** This container requires setting for REPOS or API_TOK_SECRETNAME **"
   sleep 10
   exit 1
 fi
 
-SSH_PATH=/home/$USERNAME/.ssh
-mkdir -p -m 700 $SSH_PATH
 if [ ! -z "$SSHKEY_SECRETNAME" ]; then
   cp /run/secrets/$SSHKEY_SECRETNAME $SSH_PATH/$SSHKEY_SECRETNAME
   chmod 400 $SSH_PATH/$SSHKEY_SECRETNAME
@@ -27,7 +22,7 @@ EOF
     RETRIES=10
     while [ ! -s /tmp/sshkey ]; do
       sleep 5
-      ssh-keyscan -p $SSH_PORT $SSH_HOST > /tmp/sshkey
+      ssh-keyscan -p $SSH_PORT $SSH_HOST > /tmp/sshkey || true
       RETRIES=$((RETRIES - 1))
       if [ $RETRIES == 0 ]; then
         echo "Could not reach sshd on $SSH_HOST after 10 tries"
@@ -37,22 +32,20 @@ EOF
     cat /tmp/sshkey >> $SSH_PATH/known_hosts && rm /tmp/sshkey
   fi
 fi
-chown -R $USERNAME /home/$USERNAME
 [ -e /var/log/git-dump.log ] || touch /var/log/git-dump.log
 [ -e /var/log/git-dump-status.txt ] || touch /var/log/git-dump-status.txt
 mkdir -p -m 750 $DEST_DIR
-chown $USERNAME:$GROUP $DEST_DIR /var/log/git-dump.log /var/log/git-dump-status.txt
 
-cat <<EOF >/etc/opt/git-dump
+cat <<EOF >/etc/default/git-dump
 # Options for /usr/local/bin/git-dump
-API_TOKEN_SECRETNAME=$API_TOKEN_SECRETNAME
+API_TOK_SECRETNAME=$API_TOK_SECRETNAME
 LOGFILE=/var/log/git-dump.log
 REPO_PREFIX=$REPO_PREFIX
 STATFILE=/var/log/git-dump-status.txt
 EOF
-cat <<EOF >/etc/crontabs/$USERNAME
+cat <<EOF >/home/$USERNAME/crontab
 $MINUTE $HOUR * * *  /usr/local/bin/git-dump.sh $DEST_DIR $KEEP_DAYS $REPOS
 EOF
 
-crond -L /var/log/cron.log
-tail -fn 1 /var/log/git-dump.log
+tail -fn 1 /var/log/git-dump.log &
+exec supercronic /home/$USERNAME/crontab

@@ -8,12 +8,6 @@ WX_GROUP=dialout
 HOMEDIR=/home/$WX_USER
 PATH=$HOMEDIR/weewx-venv/bin:$PATH
 
-if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
-  # At first startup, set timezone
-  cat /usr/share/zoneinfo/$TZ > /etc/localtime
-  echo $TZ >/etc/timezone
-fi
-
 if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
   if [ -z ${STATION_URL/ /} ]; then
     REGISTER_OPT=false
@@ -21,8 +15,8 @@ if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
     REGISTER_OPT=true
   fi
   # Edit distributed weewx.conf settings after adding driver for STATION_TYPE
-  su $WX_USER -c "weectl station reconfigure --driver=weewx.drivers.$(
-    echo $STATION_TYPE | tr [:upper:] [:lower:]) --no-prompt"
+  weectl station reconfigure --driver=weewx.drivers.$(
+    echo $STATION_TYPE | tr [:upper:] [:lower:]) --no-prompt
   sed --in-place=.bak -e "s/location = DESC/location = \"$LOCATION\"/" \
   -e "s/altitude = 0, foot/altitude = $ALTITUDE/" \
   -e "s/archive_interval =.*/archive_interval = $LOGGING_INTERVAL/" \
@@ -66,7 +60,7 @@ if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
     sed -i -e "s/hostname = airlink$/hostname = $AIRLINK_HOST/" \
       $WX_ROOT/weewx.conf
   else
-    su $WX_USER -c "weectl extension uninstall --yes airlink"
+    weectl extension uninstall --yes airlink
   fi
   if [ $SKIN != Season ]; then
     sed -i \
@@ -86,20 +80,17 @@ if [ ! -e $WX_ROOT/weewx.conf.bak ]; then
   mv $WX_ROOT/weewx.conf.new $WX_ROOT/weewx.conf
 
   # At first startup, set configs from environment
-  su $WX_USER -c \
-  "weectl device --set-interval=$(( $LOGGING_INTERVAL / 60 )) &&
-   weectl device --set-rain-year-start=$RAIN_YEAR_START &&
-   weectl device --set-tz-code=$TZ_CODE"
+  weectl device --set-interval=$(( $LOGGING_INTERVAL / 60 )) &&
+  weectl device --set-rain-year-start=$RAIN_YEAR_START &&
+  weectl device --set-tz-code=$TZ_CODE
 fi
 
-TZ=UTC rsyslogd
-
-cp /run/secrets/$SSHKEY /run/$SSHKEY && chmod 400 /run/$SSHKEY
+cp /run/secrets/$SSHKEY /tmp/$SSHKEY && chmod 400 /tmp/$SSHKEY
 if [ ! -d $HOMEDIR/.ssh ]; then
   mkdir -m 700 $HOMEDIR/.ssh
   cat >$HOMEDIR/.ssh/config <<EOF
 Host $RSYNC_HOST
-  IdentityFile /run/$SSHKEY
+  IdentityFile /tmp/$SSHKEY
   Port $RSYNC_PORT
   User $RSYNC_USER
 EOF
@@ -116,9 +107,8 @@ EOF
   cat /tmp/sshkey >> $HOMEDIR/.ssh/known_hosts && rm /tmp/sshkey
 fi
 
-chown -R $WX_USER $HOMEDIR/.ssh $HTML_ROOT /run/$SSHKEY
 set +e
-su $WX_USER -c "PATH=$PATH weewxd|grep -v LOOP:"
+weewxd|egrep -v "LOOP:|weewx.restx:.*Published"
 # Failure: attempt restart only every 2 minutes
 sleep 120
 exit 1
