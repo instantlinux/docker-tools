@@ -3,6 +3,11 @@ base_url: http://localhost:3000
 headscale_url: headscale.example.com
 deployment:
   containerPorts: [ containerPort: 3000 ]
+  podSecurityContext:
+    runAsUser: 2004
+    runAsGroup: 2004
+    fsGroup: 2004
+    runAsNonRoot: true
 volumeMounts:
 - mountPath: /etc/headplane/config.yaml
   name: config
@@ -14,6 +19,8 @@ volumeMounts:
 - mountPath: /etc/headscale/config.yaml
   name: headscale-config
   subPath: config.yaml
+- mountPath: /var/lib/headplane
+  name: data
 volumes:
 - name: config
   configMap:
@@ -27,6 +34,8 @@ volumes:
     items:
     - key: cookie_secret
       path: cookie_secret
+- name: data
+  emptyDir: {}
 
 image:
   repository: ghcr.io/tale/headplane

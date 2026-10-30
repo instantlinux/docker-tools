@@ -9,6 +9,11 @@ deployment:
   env:
     smtp_from: alertmanager@example.com
     smtp_smarthost: smtp:25
+  podSecurityContext:
+    runAsUser: 65534
+    runAsGroup: 65534
+    fsGroup: 65534
+    runAsNonRoot: true
 volumeMounts:
 - mountPath: /etc/alertmanager/alertmanager.yml
   name: config

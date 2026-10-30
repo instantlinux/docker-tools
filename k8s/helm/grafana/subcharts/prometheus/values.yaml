@@ -9,6 +9,11 @@ deployment:
   containerPorts: [ containerPort: 9090 ]
   nodeSelector:
     service.prometheus: allow
+  podSecurityContext:
+    runAsUser: 65534
+    runAsGroup: 65534
+    fsGroup: 65534
+    runAsNonRoot: true
   resources:
     limits:
       memory: 512Mi

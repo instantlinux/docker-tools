@@ -36,7 +36,7 @@ deployment:
     gitea__mailer__smtp_addr: smtp
     gitea__service__disable_registration: "false"
     gitea__service__require_signin_view: "true"
-    # runAsUser unsupported - leave these at default
+    # runAsUser limited to this UID - leave these at default
     user_gid: 1000
     user_uid: 1000
   xenv:
@@ -59,6 +59,11 @@ deployment:
     failureThreshold: 10
   nodeSelector:
     service.gitea: allow
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    runAsNonRoot: true
   resources:
     limits:
       memory: 1024Mi
