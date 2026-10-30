@@ -12,9 +12,14 @@ deployment:
     APACHE_ROOT=/usr/local/apache2/conf
     echo "Include $APACHE_ROOT/custom.conf" >> $APACHE_ROOT/httpd.conf
     echo "Include $APACHE_ROOT/extras.conf" >> $APACHE_ROOT/httpd.conf
-    exec httpd-foreground
+    exec httpd-foreground -C "Listen 8080" -C "PidFile /tmp/httpd.pid"
   containerPorts:
-  - containerPort: 80
+  - containerPort: 8080
+  podSecurityContext:
+    runAsUser: 33
+    runAsGroup: 33
+    fsGroup: 33
+    runAsNonRoot: true
   resources:
     limits:
       memory: 512Mi
@@ -55,7 +60,7 @@ serviceAccount: {}
 service:
   clusterIP: None
   ports:
-  - { port: 80, targetPort: 80, name: apache }
+  - { port: 80, targetPort: 8080, name: apache }
   type: ClusterIP
 autoscaling:
   enabled: false

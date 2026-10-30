@@ -3,13 +3,14 @@ tlsHostname: vaultwarden.example.com
 domain: example.com
 deployment:
   containerPorts:
-  - containerPort: 80
+  - containerPort: 8080
   - containerPort: 3012
   env:
     domain: https://vault.example.com
     emergency_access_allowed: "true"
     invitation_expiration_hours: 36
     invitations_allowed: "false"
+    rocket_port: 8080
     signups_allowed: "true"
     signups_verify: "true"
     smtp_from: admin@example.com
@@ -29,6 +30,11 @@ deployment:
       secretKeyRef:
         key: database-url
         name: vaultwarden
+  podSecurityContext:
+    runAsUser: 2003
+    runAsGroup: 2003
+    fsGroup: 2003
+    runAsNonRoot: true
   resources:
     limits:
       cpu: 2
@@ -42,12 +48,12 @@ deployment:
 livenessProbe:
   httpGet:
     path: /alive
-    port: 80
+    port: 8080
   initialDelaySeconds: 5
 readinessProbe:
   httpGet:
     path: /alive
-    port: 80
+    port: 8080
   initialDelaySeconds: 5
 
 volumeMounts:
@@ -70,7 +76,7 @@ serviceAccount:
 service:
   type: ClusterIP
   ports:
-  - { port: 80, targetPort: 80, name: http }
+  - { port: 80, targetPort: 8080, name: http }
   - { port: 3012, targetPort: 3012, name: websocket }
 autoscaling:
   enabled: false
