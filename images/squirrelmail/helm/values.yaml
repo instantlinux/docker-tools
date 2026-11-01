@@ -12,6 +12,10 @@ deployment:
     organization: Community Internet
     smtp_port: "25"
     smtp_smarthost: smtp.ci.net
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, NET_BIND_SERVICE, SETGID, SETUID ]
 
 volumeMounts:
 - mountPath: /var/local/squirrelmail/attach

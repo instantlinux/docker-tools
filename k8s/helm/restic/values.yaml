@@ -5,37 +5,51 @@
 deployment:
   command: [/bin/sh]
   args:
-  - -c
+  - -xec
   - >
-    apk add --update restic==$APP_VERSION ca-certificates tzdata &&
+    HOME=/home/restic-bkp &&
+    apk add --update restic==$APP_VERSION ca-certificates libcap tzdata &&
+    chmod u+s /usr/bin/restic &&
+    adduser -DH -u $UID restic-bkp &&
     ln -s /usr/share/zoneinfo/$TZ /etc/localtime &&
     echo $TZ > /etc/timezone &&
     update-ca-certificates &&
     echo "if [ -r $HOME/.resticrc ]; then . $HOME/.resticrc; fi" \
       >>/etc/profile.d/restic.sh &&
-    touch /var/log/restic.log && /usr/sbin/crond &&
-    mkdir -p /var/log/week && tail -f -n 0 /var/log/restic.log
+    mkdir -p /var/log/week &&
+    touch /var/log/restic.log && chown -R $UID:$UID /var/log &&
+    chown restic-bkp /home/restic-bkp/.cache &&
+    /usr/sbin/crond &&
+    tail -f -n 0 /var/log/restic.log
   env:
     # Edit the version in Chart.yaml to keep consistent
     app_version: 0.18.1-r9
     env: /etc/profile
     tz: UTC
+    uid: 2006
   nodeSelector:
     service.data-sync: allow
+  podSecurityContext:
+    fsGroup: 2006
+    fsGroupChangePolicy: OnRootMismatch
   resources:
     limits:
       memory: 2048Mi
     requests:
       cpu: 200m
       memory: 512Mi
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, DAC_OVERRIDE, DAC_READ_SEARCH, SETFCAP, SETGID, SETUID ]
 volumeMounts:
-- mountPath: /var/spool/cron/crontabs/root
+- mountPath: /var/spool/cron/crontabs/restic-bkp
   name: config
   subPath: cron
-- mountPath: /root/.restic/excludes.txt
+- mountPath: /home/restic-bkp/.restic/excludes.txt
   name: config
   subPath: excludes.txt
-- mountPath: /root/.resticrc
+- mountPath: /home/restic-bkp/.resticrc
   name: config
   subPath: .resticrc
 - mountPath: /bin/set-key.sh
@@ -44,17 +58,17 @@ volumeMounts:
 - mountPath: /usr/local/share/ca-certificates/ca-root.crt
   name: config
   subPath: ca-root.crt
-- mountPath: /root/.cache/restic
+- mountPath: /home/restic-bkp/.cache/restic
   name: cache
 
 # this secret should contain keys b2-account-id / b2-account-key
 # and any other API id/key pairs
-- mountPath: /root/.restic/b2-apikey
+- mountPath: /home/restic-bkp/.restic/b2-apikey
   name: b2-apikey
 
 # this secret has keys restic-repo-local (for rest-server) and
 # restic-repo-password (default encryption key for all repos)
-- mountPath: /root/.restic/repo-password
+- mountPath: /home/restic-bkp/.restic/repo-password
   name: restic-repo-password
 
 - mountPath: /var/log
@@ -114,11 +128,13 @@ configmap:
   name: restic
   data:
     .resticrc: |
-      export B2_ACCOUNT_ID=`cat $HOME/.restic/b2-apikey/b2-account-id`
-      export B2_ACCOUNT_KEY=`cat $HOME/.restic/b2-apikey/b2-account-key`
-      export REPO_LOCAL_PASSWORD=`cat $HOME/.restic/repo-password/restic-repo-local`
-      export RESTIC_PASSWORD_FILE=$HOME/.restic/repo-password/restic-repo-password
-      export BACKUP_OPTS="--exclude-file=$HOME/.restic/excludes.txt --host=k8s --json"
+      if [ "$HOME" != "/root" ]; then 
+        export B2_ACCOUNT_ID=`cat $HOME/.restic/b2-apikey/b2-account-id`
+        export B2_ACCOUNT_KEY=`cat $HOME/.restic/b2-apikey/b2-account-key`
+        export REPO_LOCAL_PASSWORD=`cat $HOME/.restic/repo-password/restic-repo-local`
+        export RESTIC_PASSWORD_FILE=$HOME/.restic/repo-password/restic-repo-password
+        export BACKUP_OPTS="--exclude-file=$HOME/.restic/excludes.txt --host=k8s --json"
+      fi
       export REPO_B2=b2:main-b2
       export REPO_B2_MAIL=b2:webmail
       export REPO_B2_PIC=b2:braunpic

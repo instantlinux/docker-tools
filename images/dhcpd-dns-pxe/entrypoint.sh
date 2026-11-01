@@ -4,8 +4,6 @@
 #  Populates kea.conf and defaults in /etc/kea.d & /etc/dnsmasq.d
 #  Starts kea dhcpd (optionally) and dnsmasq
 
-DHCP_USER=kea
-
 if [ "$DHCP_ENABLE" == yes ]; then
   if [ ! -z "$NETBIOS_NAME_SERVERS" ]; then
     NETBIOS_OPTION="{\"space\": \"dhcp4\", \"name\": \"netbios-name-servers\", \"code\": 44, \"data\": \"$DHCP_NETBIOS_NAME_SERVERS\"},"
@@ -16,8 +14,6 @@ if [ "$DHCP_ENABLE" == yes ]; then
   if [ "$TFTP_SERVER" == self ]; then
     TFTP_SERVER=$(ifconfig $SUBNET1_INTERFACE | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}')
   fi
-  [ -d /etc/kea.d ] || mkdir -m 750 /etc/kea.d
-  chgrp kea /etc/kea.d
   for file in /etc/kea/kea.conf /etc/kea.d/local.conf /etc/kea.d/subnet.conf /etc/kea.d/apc-rpdu.conf; do
     if [ ! -e $file ]; then
       sed -e "s:{{ DB_HOST }}:$DB_HOST:" \
@@ -42,7 +38,7 @@ if [ "$DHCP_ENABLE" == yes ]; then
         -e "s:{{ TFTP_ENABLE }}:$TFTP_ENABLE:" \
         -e "s:{{ TFTP_SERVER }}:$TFTP_SERVER:" \
         -e "s:{{ TZ }}:$TZ:" \
-      /root/$(basename $file).j2 > $file
+      /opt/kea/$(basename $file).j2 > $file
     fi
   done
   if [ ! -e /run/secrets/$DB_SECRETNAME ]; then
@@ -67,7 +63,7 @@ if [ "$TFTP_ENABLE" == yes ]; then
 fi
 
 if [ -d /etc/dnsmasq.d/local ] && [ "$(ls -A /etc/dnsmasq.d/local)" ]; then
-  cp -a /etc/dnsmasq.d/local/. /etc/dnsmasq.d
+  cp -R /etc/dnsmasq.d/local/. /etc/dnsmasq.d
 fi
 
 if [ "$DNS_ENABLE" == yes ]; then
@@ -75,7 +71,7 @@ if [ "$DNS_ENABLE" == yes ]; then
     sed -e "s:{{ DNS_UPSTREAM }}:$DNS_UPSTREAM:" \
       -e "s:{{ DOMAIN }}:$DOMAIN:" \
       -e "s:{{ PORT_DNSMASQ_DNS }}:$PORT_DNSMASQ_DNS:" \
-    /root/dns.conf.j2 > /etc/dnsmasq.d/dns.conf
+    /opt/kea/dns.conf.j2 > /etc/dnsmasq.d/dns.conf
   fi
   if [ -s /etc/dnsmasq.d/hosts ]; then
     echo addn-hosts=/etc/dnsmasq.d/hosts > /etc/dnsmasq.d/hosts.conf

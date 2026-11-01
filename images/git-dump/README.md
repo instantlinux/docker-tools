@@ -4,10 +4,7 @@
 This dockerizes a simple script I wrote years ago to create git bundle
 backups of a private git server.
 
-The example helm / docker-compose service definition will cause
-a dump of all accessible projects to happen at the default hour
-(0:45am in $TZ) from a GitLab server named git.instantlinux.net onto a
-subdirectory git in volume "backup".
+The example helm / docker-compose service definition will cause a dump of all accessible projects to happen at the default hour (0:45am in $TZ) from a GitLab or Gitea server named git.instantlinux.net onto a subdirectory git in volume "backup".
 
 ### Usage
 

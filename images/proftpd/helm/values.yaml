@@ -15,6 +15,10 @@ deployment:
   env:
     pasv_address: 10.101.1.30
     tz: UTC
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, NET_BIND_SERVICE, SETUID, SETGID, SYS_CHROOT ]
 volumeMounts:
 - name: ftp
   mountPath: /var/lib/ftp
