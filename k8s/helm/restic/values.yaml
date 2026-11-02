@@ -5,7 +5,7 @@
 deployment:
   command: [/bin/sh]
   args:
-  - -xec
+  - -c
   - >
     HOME=/home/restic-bkp &&
     apk add --update restic==$APP_VERSION ca-certificates libcap tzdata &&
