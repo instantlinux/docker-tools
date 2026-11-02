@@ -18,9 +18,9 @@ deployment:
   hostNetwork: true
   nodeSelector:
     service.owntone: allow
-  replicas: 2
-  securityContext:
+  podSecurityContext:
     fsGroup: 1000
+  replicas: 2
   strategy:
     type: Recreate
 volumeMounts:

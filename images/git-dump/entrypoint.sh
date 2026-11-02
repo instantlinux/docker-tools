@@ -1,7 +1,6 @@
 #! /bin/sh -e
-export GIT_SSH_COMMAND="ssh -i /tmp/.ssh/id_rsa -o IdentitiesOnly=yes \
-   -o UserKnownHostsFile=/tmp/.ssh/known_hosts" 
-SSH_PATH=/home/$USERNAME/.ssh
+SSH_PATH=/tmp/.ssh
+export GIT_SSH_COMMAND="ssh -F $SSH_PATH/config"
 
 if [ -z "$REPOS" ] && [ ! -s /run/secrets/$API_TOK_SECRETNAME ]; then
   echo "** This container requires setting for REPOS or API_TOK_SECRETNAME **"
@@ -9,6 +8,7 @@ if [ -z "$REPOS" ] && [ ! -s /run/secrets/$API_TOK_SECRETNAME ]; then
   exit 1
 fi
 
+mkdir -m 700 $SSH_PATH
 if [ ! -z "$SSHKEY_SECRETNAME" ]; then
   cp /run/secrets/$SSHKEY_SECRETNAME $SSH_PATH/$SSHKEY_SECRETNAME
   chmod 400 $SSH_PATH/$SSHKEY_SECRETNAME
@@ -16,6 +16,7 @@ if [ ! -z "$SSHKEY_SECRETNAME" ]; then
 Host *
  IdentityFile $SSH_PATH/$SSHKEY_SECRETNAME
  Port $SSH_PORT
+ UserKnownHostsFile $SSH_PATH/known_hosts
 EOF
   if [ ! -z "$REPO_PREFIX" ]; then
     SSH_HOST=$(echo $REPO_PREFIX | cut -d@ -f 2 | cut -d/ -f 1| cut -d: -f 1)
@@ -36,16 +37,11 @@ fi
 [ -e /var/log/git-dump-status.txt ] || touch /var/log/git-dump-status.txt
 mkdir -p -m 750 $DEST_DIR
 
-cat <<EOF >/etc/default/git-dump
-# Options for /usr/local/bin/git-dump
-API_TOK_SECRETNAME=$API_TOK_SECRETNAME
+cat <<EOF >/home/$(id -n -u)/crontab
 LOGFILE=/var/log/git-dump.log
-REPO_PREFIX=$REPO_PREFIX
 STATFILE=/var/log/git-dump-status.txt
-EOF
-cat <<EOF >/home/$USERNAME/crontab
 $MINUTE $HOUR * * *  /usr/local/bin/git-dump.sh $DEST_DIR $KEEP_DAYS $REPOS
 EOF
 
 tail -fn 1 /var/log/git-dump.log &
-exec supercronic /home/$USERNAME/crontab
+exec supercronic /home/$(id -n -u)/crontab

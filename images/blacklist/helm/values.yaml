@@ -19,7 +19,18 @@ deployment:
     tz: UTC
   nodeSelector:
     service.blacklist: allow
+  podSecurityContext:
+    runAsUser: 2035
+    runAsGroup: 2035
+    fsGroup: 2035
+    runAsNonRoot: true
   replicas: 2
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ NET_BIND_SERVICE, SYS_CHROOT ]
+  strategy:
+    type: Recreate
 volumeMounts:
 - mountPath: /var/lib/rbldns
   name: data
@@ -46,6 +57,6 @@ service:
   clusterIP: 10.101.1.10
   ports:
   - { port: 53, protocol: UDP, targetPort: 53 }
-  type: clusterIP
+  type: ClusterIP
 autoscaling:
   enabled: false

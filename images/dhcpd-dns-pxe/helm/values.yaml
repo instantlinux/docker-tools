@@ -33,7 +33,18 @@ deployment:
   - containerPort: 8000
   nodeSelector:
     service.dhcpd-dns-pxe: allow
+  podSecurityContext:
+    runAsUser: 2034
+    runAsGroup: 2034
+    fsGroup: 2034
+    runAsNonRoot: true
   replicas: 2
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ NET_BIND_SERVICE, NET_RAW ]
+  strategy:
+    type: Recreate
   affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:

@@ -22,6 +22,11 @@ deployment:
   - containerPort: 3478
     protocol: UDP
     name: stun
+  podSecurityContext:
+    runAsUser: 2005
+    runAsGroup: 2005
+    fsGroup: 2005
+    runAsNonRoot: true
   resources:
     limits:
       memory: 512Mi
@@ -35,12 +40,16 @@ volumeMounts:
 - name: share
   mountPath: /var/lib/headscale
   subPath: headscale
+- name: run
+  mountPath: /var/run/headscale
 volumes:
 - name: config
   configMap:
     name: headscale
 - name: share
   hostPath: { path: /var/lib/docker/k8s-volumes/share }
+- name: run
+  emptyDir: {}
 
 image:
   repository: headscale/headscale

@@ -1,5 +1,3 @@
-version: "3.1"
-
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/blacklist:${VERSION_BLACKLIST:-latest}
@@ -8,6 +6,8 @@ services:
       NS_SERVERS: ${NS_SERVERS:-ns.mydomain.com}
       RBL_DOMAIN: ${RBL_DOMAIN:-blacklist.mydomain.com}
       TZ: ${TZ:-UTC}
+    cap_drop: [ ALL ]
+    cap_add: [ NET_BIND_SERVICE, SYS_CHROOT ]
     ports:
     - 0.0.0.0:${PORT_BLACKLIST:-53}:53/udp
     volumes:

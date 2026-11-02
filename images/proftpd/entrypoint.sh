@@ -1,11 +1,5 @@
 #!/bin/sh -e
 
-if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
-  # At first startup, set timezone
-  cp /usr/share/zoneinfo/$TZ /etc/localtime
-  echo $TZ >/etc/timezone
-fi
-
 if [ -z "$PASV_ADDRESS" ]; then
   echo "** This container will not run without setting for PASV_ADDRESS **"
   sleep 10
@@ -13,7 +7,9 @@ if [ -z "$PASV_ADDRESS" ]; then
 fi
 
 if [ -e /run/secrets/$FTPUSER_SECRETNAME ] && ! id -u "$FTPUSER_NAME"; then
-  adduser -u $FTPUSER_UID -s /bin/sh -g "ftp user" -D $FTPUSER_NAME
+  adduser -u $FTPUSER_UID -s /bin/sh -g "ftp user" -DH $FTPUSER_NAME
+  mkdir ~$FTPUSER_NAME
+  chown $FTPUSER_UID ~$FTPUSER_NAME
   echo "$FTPUSER_NAME:$(cat /run/secrets/$FTPUSER_SECRETNAME)" \
     | chpasswd -e
 fi
@@ -42,8 +38,6 @@ else
       -e "s:{{ ANON_UPLOAD_ENABLE }}:$ANON_UPLOAD_ENABLE:" \
       /etc/proftpd/proftpd.conf
 fi
-
-mkdir -p /run/proftpd && chown proftpd /run/proftpd/
 
 sed -i \
     -e "s:{{ ALLOW_OVERWRITE }}:$ALLOW_OVERWRITE:" \

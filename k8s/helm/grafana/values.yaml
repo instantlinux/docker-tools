@@ -92,8 +92,8 @@ gateway:
 prometheus:
   enabled: true
   image:
-    tag: v3.15.0
+    tag: v3.15.1
 alertmanager:
   enabled: true
   image:
-    tag: v0.34.1
+    tag: v0.34.2

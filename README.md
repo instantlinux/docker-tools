@@ -67,7 +67,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | grafana | 13.2.4 | monitoring dashboard with prometheus-based alerting |
 | guacamole | 1.6.0 | authenticated remote-desktop server |
 | haproxy-keepalived | [![](https://img.shields.io/docker/v/instantlinux/haproxy-keepalived?sort=date)](https://hub.docker.com/r/instantlinux/haproxy-keepalived "Version badge") | load balancer |
-| headscale | v0.29.5 | tailscale-compatible VPN control-plane |
+| headscale | v0.29.7 | tailscale-compatible VPN control-plane |
 | mysqldump | [![](https://img.shields.io/docker/v/instantlinux/mysqldump?sort=date)](https://hub.docker.com/r/instantlinux/mysqldump "Version badge") | per-database alternative to xtrabackup |
 | nagios | [![](https://img.shields.io/docker/v/instantlinux/nagios?sort=date)](https://hub.docker.com/r/instantlinux/nagios "Version badge") | Nagios Core v4 for monitoring |
 | nagiosql | [![](https://img.shields.io/docker/v/instantlinux/nagiosql?sort=date)](https://hub.docker.com/r/instantlinux/nagiosql "Version badge") | NagiosQL for configuring Nagios Core v4 |

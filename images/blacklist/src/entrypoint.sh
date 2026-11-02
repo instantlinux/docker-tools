@@ -1,22 +1,20 @@
 #! /bin/bash
 
-export PID_FILE=/var/run/rbldnsd.pid
+export PID_FILE=/tmp/rbldnsd.pid
+cd $HOMEDIR
 echo "[client]
-host=$DB_HOST" > $HOMEDIR/.my.cnf
-cat /var/run/secrets/mysql-blacklist-user >> $HOMEDIR/.my.cnf
-chmod 600 $HOMEDIR/.my.cnf
-chown $USERNAME $HOMEDIR $HOMEDIR/.my.cnf
-chsh $USERNAME -s /bin/bash
+host=$DB_HOST" > .my.cnf
+cat /var/run/secrets/mysql-blacklist-user >> .my.cnf
+chmod 600 .my.cnf
 
-su $USERNAME bash -c "
-  mkdir -p $HOMEDIR/$CFG_NAME
-  cd $HOMEDIR/$CFG_NAME
-  [ -e spammerlist ] || touch spammerlist
-  [ -e whitelist ] || touch whitelist
-  if [ ! -e forward ]; then
-    echo '\$SOA' 3600 $RBL_DOMAIN $RBL_DOMAIN 0 600 300 86400 300 >forward
-    echo '\$NS' 3600 \$NS_SERVERS >>forward
-  fi"
+mkdir -p $CFG_NAME
+cd $CFG_NAME
+[ -e spammerlist ] || touch spammerlist
+[ -e whitelist ] || touch whitelist
+if [ ! -e forward ]; then
+  echo '\$SOA' 3600 $RBL_DOMAIN $RBL_DOMAIN 0 600 300 86400 300 >forward
+  echo '\$NS' 3600 \$NS_SERVERS >>forward
+fi
 
 mysql --defaults-file=$HOMEDIR/.my.cnf <<EOT
 CREATE DATABASE IF NOT EXISTS \`$DB_NAME\`;
@@ -35,17 +33,12 @@ CREATE TABLE IF NOT EXISTS \`ips\` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='spammer list';
 EOT
 
-cat <<EOF >/etc/cron.d/$USERNAME
-# crontab for updating spammerlist from MySQL
-HOMEDIR=$HOMEDIR
-CFG_NAME=$CFG_NAME
-DB_NAME=$DB_NAME
-RBL_DOMAIN=$RBL_DOMAIN
-PID_FILE=$PID_FILE
-* * * * * $USERNAME /usr/local/bin/rebuild_rbldns.pl
-EOF
-cron
+( while true; do
+    /usr/local/bin/rebuild_rbldns.pl
+    sleep 60
+  done
+) &
 
-rbldnsd -f -n -r $HOMEDIR/$CFG_NAME -b 0.0.0.0/53 -p $PID_FILE \
+exec rbldnsd -f -n -r $HOMEDIR/$CFG_NAME -b 0.0.0.0/53 -p $PID_FILE \
   $RBL_DOMAIN:ip4set:spammerlist,whitelist \
   $RBL_DOMAIN:generic:forward

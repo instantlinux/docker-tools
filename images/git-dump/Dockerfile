@@ -19,10 +19,10 @@ ENV API_TOK_SECRETNAME= \
     SCM_TYPE=github \
     SSHKEY_SECRETNAME=git-dump_sshkey \
     SSH_PORT=22 \
-    USERNAME=git-dump \
     TZ=UTC
 
 ARG GIT_VERSION=2.54.0-r0
+ARG USERNAME=git-dump
 ARG GID=505
 ARG UID=2032
 
@@ -32,8 +32,7 @@ RUN apk add -u --no-cache curl git=$GIT_VERSION jq \
     apk upgrade libcrypto3 libssl3 && \
     adduser -u $UID -s /bin/sh -g "git backup" -D $USERNAME && \
     addgroup -g $GID $GROUP && addgroup $USERNAME $GROUP && \
-    mkdir -p -m 700 /home/$USERNAME/.ssh /etc/default && \
-    chown -R $USERNAME /home/$USERNAME/.ssh /etc/default && \
+    chown $UID:$GID /var/log && \
     chmod o+rx,g+rx /usr/local/bin/*.sh
 
 VOLUME /var/backup /var/log

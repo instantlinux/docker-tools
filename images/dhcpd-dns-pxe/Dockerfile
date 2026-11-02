@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 ARG KEA_VERSION=3.0.3-r0
 ARG DNSMASQ_VERSION=2.93-r0
-
+ARG UID=2034
 ENV DB_HOST=db00 \
     DB_NAME=kea \
     DB_USER=kea \
@@ -41,11 +41,19 @@ ENV DB_HOST=db00 \
 
 RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
+    adduser -DH -u $UID -g "dnsmasq and kea" -s /bin/nologin dnsmasq && \
     apk add -u --no-cache kea=$KEA_VERSION dnsmasq@edge=$DNSMASQ_VERSION \
-      kea-admin kea-hook-mysql mariadb-client && \
-    mkdir -m 755 /run/kea && chown kea /run/kea
+      kea-admin kea-hook-mysql libcap mariadb-client && \
+    setcap 'cap_net_bind_service=+ep' /usr/sbin/dnsmasq \
+      'cap_net_bind_service,cap_net_raw=+ep' /usr/sbin/kea-dhcp4 && \
+    mkdir -m 770 /run/kea /etc/kea.d && \
+    chown $UID:$UID /run/kea /etc/dnsmasq.d /etc/kea /etc/kea.d \
+      /var/lib/kea && \
+    apk del libcap
 EXPOSE 53/udp 67/udp 69/udp 8000/tcp
 VOLUME $TFTP_ROOT /etc/dhcpd.d/local /etc/dnsmasq.d/local
 COPY entrypoint.sh /usr/local/bin/
-COPY src/*.j2 /root/
+COPY src/*.j2 /opt/kea/
+
+USER $UID
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

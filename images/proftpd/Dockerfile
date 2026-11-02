@@ -10,6 +10,8 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG PROFTPD_VERSION=1.3.9c-r0
+ARG UID=2036
+
 ENV ALLOW_OVERWRITE=on \
     ANONYMOUS_DISABLE=off \
     ANON_UPLOAD_ENABLE=DenyAll \
@@ -31,8 +33,10 @@ ENV ALLOW_OVERWRITE=on \
 
 COPY proftpd.conf.j2 /etc/proftpd/proftpd.conf
 RUN chmod 644 /etc/proftpd/proftpd.conf && \
+    adduser -DH -u $UID -g proftpd -h /var/lib/ftp -s /bin/nologin proftpd && \
     apk add -u --no-cache \
-      proftpd=$PROFTPD_VERSION proftpd-mod_sftp openssh-keygen tzdata
+      proftpd=$PROFTPD_VERSION proftpd-mod_sftp openssh-keygen tzdata && \
+    mkdir -p -m 1777 /run/proftpd
 
 VOLUME /etc/proftpd/conf.d /etc/proftpd/modules.d /var/lib/ftp /etc/ssh
 EXPOSE 21 $SFTP_PORT $PASV_MIN_PORT-$PASV_MAX_PORT
