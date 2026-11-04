@@ -5,7 +5,7 @@ deployment:
   - --config.file=/etc/prometheus/prometheus.yml
   - --storage.tsdb.path=/prometheus
   - --storage.tsdb.retention.time=90d
-  - --web.external-url=http://10.101.1.21:9090
+  - --web.external-url=http://grafana-prometheus:9090
   containerPorts: [ containerPort: 9090 ]
   nodeSelector:
     service.prometheus: allow
@@ -44,7 +44,6 @@ serviceAccount:
   enabled: true
   create: true
 service:
-  clusterIP: 10.101.1.21
   ports: [ port: 9090 ]
   type: ClusterIP
 autoscaling:

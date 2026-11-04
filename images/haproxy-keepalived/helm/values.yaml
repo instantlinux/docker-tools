@@ -22,7 +22,9 @@ deployment:
   securityContext:
     capabilities:
       drop: [ ALL ]
-      add: [ NET_ADMIN ]
+      add: [ NET_ADMIN, NET_BIND_SERVICE, NET_RAW, SETGID, SETUID ]
+  strategy:
+    type: Recreate
 volumeMounts:
 - name: config
   mountPath: /usr/local/etc/haproxy.d

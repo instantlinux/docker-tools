@@ -6,7 +6,7 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - https://github.com/grafana/grafana
 type: application
-version: 13.3.0
+version: 13.3.0-1
 # Reminder, update subchart tags in values.yaml
 appVersion: 13.3.0
 dependencies:
@@ -15,10 +15,10 @@ dependencies:
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux
 - name: prometheus
-  version: 0.1.7
+  version: 0.1.8
   repository: file://subcharts/prometheus
   condition: prometheus.enabled
 - name: alertmanager
-  version: 0.1.5
+  version: 0.1.6
   repository: file://subcharts/alertmanager
   condition: alertmanager.enabled

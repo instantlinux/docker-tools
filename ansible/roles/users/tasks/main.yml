@@ -15,16 +15,16 @@
 - name: Define users
   user:
     name: "{{ item.name }}"
-    comment: "{{ item.comment if 'comment' in item else '' }}"
+    comment: "{{ item.comment if 'comment' in item else item.name }}"
     uid: "{{ item.uid }}"
-    createhome: "{{ item.createhome if 'createhome' in item else 'yes' }}"
-    group: "{{ item.group }}"
+    createhome: "{{ item.createhome if 'createhome' in item else 'no' }}"
+    group: "{{ item.group if 'group' in item else 'nogroup' }}"
     groups: "{{ item.groups if 'groups' in item else '' }}"
     home: "{{ item.home if 'home' in item else '/home/%s' % item.name }}"
     non_unique: "{{ item.non_unique if 'non_unique' in item else 'no' }}"
     password: "{{ vault_users[item.name]['password'] if item.name in
                vault_users and 'password' in vault_users[item.name] else '*' }}"
-    shell: "{{ item.shell if 'shell' in item else '/bin/bash' }}"
+    shell: "{{ item.shell if 'shell' in item else '/usr/sbin/nologin' }}"
   with_items: "{{ local_users }}"
 
 - name: Define authenticator tokens

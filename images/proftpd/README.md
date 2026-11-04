@@ -53,6 +53,14 @@ WRITE_ENABLE | AllowAll | allow put/rm
 Secret | Description
 ------ | -----------
 ftp-user-password-secret | (optional) hashed pw of upload user
+### Notes
+
+Networking this within Kubernetes is a bit tricky. The helm chart included here can deploy to a cluster but you need to decide how to assign the `PASV_ADDRESS`:
+
+* If you use a ClusterIP (in the range 10.96.0.0/12, such as 10.101.1.30), you don't need to pin proftpd to a single node -- but it won't be reachable outside the cluster because passive ports won't route back to the same node
+* If you define an external IP using a load balancer (haproxy or a cloud-infra load balancer), you need to set the label `server.proftpd=allow` on a single worker node -- which means when that node goes down, so does proftpd
+
+I tried to make proftpd work with haproxy on multiple k8s nodes but none of the online suggestions work.
 
 ### Contributing
 

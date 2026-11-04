@@ -67,6 +67,11 @@ statefulset:
             operator: In
             values: [ etcd ]
         topologyKey: kubernetes.io/hostname
+  podSecurityContext:
+    runAsUser: 2007
+    runAsGroup: 2007
+    fsGroup: 2007
+    runAsNonRoot: true
   replicas: 3
   resources:
     limits:
@@ -98,7 +103,6 @@ serviceAccount:
   enabled: true
   name: example-privileged
 service:
-  clusterIP: 10.101.1.19
   ports: [ port: 2379 ]
   type: ClusterIP
 autoscaling:
