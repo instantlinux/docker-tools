@@ -12,7 +12,8 @@
 |  | nut-upsd | 2.8.5-r1 |  |
 |  | openldap | 2.6.15-r0 |  |
 |  | postfix | 3.11.7-r0 |  |
-|  | proftpd | 1.3.9c-r0 |  |
+|  | proftpd | 1.3.9e-r0 |  |
+|  | rest-server | 0.14.0-r12 |  |
 |  | rsyslogd | 8.2604.0-r0 |  |
 |  | samba | 4.23.10-r0 |  |
 |  | samba-dc | 4.23.10-r0 |  |
@@ -22,14 +23,14 @@
 |  | spamassassin | 4.0.2-3 |  |
 | python-packages | ansible | 14.5.0 |  |
 |  | GitPython | 3.2.1 |  |
-|  | pip | 26.2.1 |  |
+|  | pip | 26.3 |  |
 |  | PyGithub | 2.10.0 |  |
 |  | PyYAML | 6.0.3 |  |
 |  | weewx | 5.5.2 |  |
 |  | yadopt | 2026.9.26 |  |
 | images | alpine | 3.24 |  |
-|  | docker | 29.9.1 |  |
-|  | dxflrs/garage | v2.4.1 |  |
+|  | docker | 29.9.3 |  |
+|  | dxflrs/garage | v2.5.0 |  |
 |  | genebit/garage-webui | 1.1.0 |  |
 |  | guacamole/guacd | 1.6.0 |  |
 |  | guacamole/guacamole | 1.6.0 |  |
@@ -38,47 +39,45 @@
 |  | mariadb | 13.0.2 |  |
 |  | instantlinux/nagios | 4.5.14-2.5 |  |
 |  | instantlinux/nagiosql | 3.4.1-4.4.6 |  |
-|  | nginx | 1.31.7-alpine |  |
-|  | prom/alertmanager | v0.34.1 |  |
-|  | prom/prometheus | v3.15.0 |  |
+|  | nginx | 1.31.8-alpine |  |
+|  | prom/alertmanager | v0.34.2 |  |
+|  | prom/prometheus | v3.15.1 |  |
 |  | ghcr.io/immich-app/immich-machine-learning | v3.3.1 |  |
-|  | restic/rest-server | 0.14.0 |  |
 |  | awesometechnologies/synapse-admin | 0.11.4 |  |
-|  | vectorim/element-web | v1.12.32 |  |
-|  | aquasec/trivy | 0.76.0 |  |
+|  | vectorim/element-web | v1.12.33 |  |
+|  | aquasec/trivy | 0.76.1 |  |
 |  | valkey/valkey | 9.2-alpine |  |
 | charts | apache | 2.4.69 |  |
-|  | etcd | v3.6.15 |  |
-|  | gitea | 28.2.0-rootless |  |
-|  | grafana | 13.2.4 |  |
-|  | headscale | v0.29.5 |  |
+|  | etcd | v3.6.16 |  |
+|  | gitea | 28.3.0-rootless |  |
+|  | grafana | 13.3.0 |  |
+|  | headscale | v0.29.7 |  |
 |  | il-v1 | latest |  |
 |  | immich | v3.3.0 |  |
 |  | jira | 9.12.1 |  |
-|  | nexus | 3.97.0 |  |
+|  | nexus | 3.98.0 |  |
 |  | owntone | 29.3 |  |
-|  | radicale | 3.8.3 |  |
+|  | radicale | 3.9.0 |  |
 |  | restic | 0.18.1-r9 |  |
 |  | snappymail | v2.38.2 |  |
 |  | splunk | 10.6.1 |  |
 |  | squirrelmail | latest |  |
-|  | synapse | v1.163.0 |  |
-|  | vaultwarden | 1.37.4-alpine |  |
+|  | synapse | v1.164.2 |  |
+|  | vaultwarden | 1.37.5-alpine |  |
 |  | wordpress | 7.0.0-php8.5-apache |  |
-|  | wx-nginx | 1.31.7-alpine |  |
+|  | wx-nginx | 1.31.8-alpine |  |
 | ansible-applied | cni | 1.9.1-1.1 |  |
-|  | coredns | v1.14.7 |  |
-|  | docker-ce | 5:29.9.1-1~ubuntu.26.04~resolute |  |
-|  | kubernetes | 1.37.1 |  |
-|  | smartmontools | 7.5 |  |
-| github-imports | cert-manager/cert-manager | v1.21.2 |  |
-|  | Mirantis/cri-dockerd | v0.4.9 |  |
-|  | docker/buildx | v0.38.0 |  |
-|  | envoyproxy/gateway | v1.9.2 |  |
+|  | coredns | v1.15.0 |  |
+|  | docker-ce | 5:29.9.3-1~ubuntu.26.04~resolute |  |
+|  | kubernetes | 1.37.2 |  |
+| github-imports | cert-manager/cert-manager | v1.21.3 |  |
+|  | Mirantis/cri-dockerd | v0.4.10 |  |
+|  | docker/buildx | v0.38.2 |  |
+|  | envoyproxy/gateway | v1.9.3 |  |
 |  | flannel-io/flannel | v0.28.10 |  |
 |  | helm/helm | v4.3.1 |  |
 |  | kubernetes/kube-state-metrics | v2.20.0 |  |
-|  | kubernetes/node-local-dns | v1.37.1 |  |
+|  | kubernetes/node-local-dns | v1.37.2 |  |
 |  | getsops/sops | v3.13.3 |  |
 |  | chaunceygardiner/weewx-airlink | v4.1.1 |  |
 | manual-checks | mariadb-galera | 12.3.3 |  |
