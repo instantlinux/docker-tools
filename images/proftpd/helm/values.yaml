@@ -13,19 +13,28 @@ deployment:
   - containerPort: 30099
   - containerPort: 30100
   env:
-    pasv_address: 10.101.1.30
+    pasv_address: proftpd
     tz: UTC
+  nodeSelector:
+    service.proftpd: allow
   securityContext:
     capabilities:
       drop: [ ALL ]
       add: [ CHOWN, NET_BIND_SERVICE, SETUID, SETGID, SYS_CHROOT ]
+  strategy:
+    type: Recreate
 volumeMounts:
 - name: ftp
   mountPath: /var/lib/ftp
+- name: config
+  mountPath: /etc/proftpd/conf.d
 volumes:
 - name: ftp
   persistentVolumeClaim:
     claimName: ftp
+- name: config
+  configMap:
+    name: proftpd
 
 image:
   repository: instantlinux/proftpd
@@ -37,19 +46,38 @@ fullnameOverride: ""
 
 serviceAccount: {}
 service:
-  clusterIP: 10.101.1.30
   ports:
-  - { port: 21, targetPort: 21, name: ftp }
-  - { port: 30091, targetPort: 30091, name: pasv1 }
-  - { port: 30092, targetPort: 30092, name: pasv2 }
-  - { port: 30093, targetPort: 30093, name: pasv3 }
-  - { port: 30094, targetPort: 30094, name: pasv4 }
-  - { port: 30095, targetPort: 30095, name: pasv5 }
-  - { port: 30096, targetPort: 30096, name: pasv6 }
-  - { port: 30097, targetPort: 30097, name: pasv7 }
-  - { port: 30098, targetPort: 30098, name: pasv8 }
-  - { port: 30099, targetPort: 30099, name: pasv9 }
-  - { port: 30100, targetPort: 30100, name: pasv10 }
-  type: ClusterIP
+  - { port: 21, targetPort: 21, nodePort: 30021, name: ftp }
+  - { port: 2222, targetPort: 2222, nodePort: 30022, name: sftp }
+  - { port: 30091, targetPort: 30091, nodePort: 30091, name: pasv1 }
+  - { port: 30092, targetPort: 30092, nodePort: 30092, name: pasv2 }
+  - { port: 30093, targetPort: 30093, nodePort: 30093, name: pasv3 }
+  - { port: 30094, targetPort: 30094, nodePort: 30094, name: pasv4 }
+  - { port: 30095, targetPort: 30095, nodePort: 30095, name: pasv5 }
+  - { port: 30096, targetPort: 30096, nodePort: 30096, name: pasv6 }
+  - { port: 30097, targetPort: 30097, nodePort: 30097, name: pasv7 }
+  - { port: 30098, targetPort: 30098, nodePort: 30098, name: pasv8 }
+  - { port: 30099, targetPort: 30099, nodePort: 30099, name: pasv9 }
+  - { port: 30100, targetPort: 30100, nodePort: 30100, name: pasv10 }
+  type: NodePort
+  externalTrafficPolicy: Local
 autoscaling:
   enabled: false
+
+configmap:
+  name: proftpd
+  data:
+    sftp.conf: |
+      <IfModule mod_sftp.c>
+      #  SFTPEngine on
+      #  Port 2222
+      #  SFTPLog /var/log/proftpd/sftp.log
+      #  SFTPHostKey /etc/ssh/ssh_host_rsa_key
+      #  SFTPHostKey /etc/ssh/ssh_host_dsa_key
+      #  SFTPAuthMethods publickey
+      #  SFTPAuthorizedUserKeys file:/etc/proftpd/authorized_keys/%u
+      #  SFTPCompression delayed
+      </IfModule>
+    proxy.conf: |
+      AllowForeignAddress on
+      UseReverseDNS Off

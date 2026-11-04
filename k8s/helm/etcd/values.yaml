@@ -98,7 +98,6 @@ serviceAccount:
   enabled: true
   name: example-privileged
 service:
-  clusterIP: 10.101.1.19
   ports: [ port: 2379 ]
   type: ClusterIP
 autoscaling:

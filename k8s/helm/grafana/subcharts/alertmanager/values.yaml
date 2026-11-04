@@ -4,7 +4,7 @@ deployment:
   - /bin/alertmanager
   - --config.file=/etc/alertmanager/alertmanager.yml
   - --storage.path=/alertmanager
-  - --web.external-url=http://10.101.1.22:9093
+  - --web.external-url=http://grafana-alertmanager:9093
   containerPorts: [ containerPort: 9093 ]
   env:
     smtp_from: alertmanager@example.com
@@ -38,7 +38,6 @@ fullnameOverride: ""
 serviceAccount:
   enabled: false
 service:
-  clusterIP: 10.101.1.22
   ports: [ port: 9093 ]
   type: ClusterIP
 autoscaling:

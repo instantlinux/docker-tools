@@ -12,6 +12,8 @@ services:
     - ${ADMIN_PATH:-/opt}/keepalived/etc/keepalived.conf:/etc/keepalived/keepalived.conf:ro
     secrets:
      - haproxy-stats-password
+    cap_drop: [ ALL ]
+    cap_add: [ NET_ADMIN, NET_BIND_SERVICE, NET_RAW, SETGID, SETUID ]
     network_mode: host
     # Uncomment if you want to use vrrp_track_process
     # pid: host

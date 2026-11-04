@@ -70,6 +70,8 @@ SUBNET1_NETMASK | 255.255.255.0 | network mask
 TFTP_ENABLE | yes | enable tftp server
 TFTP_ROOT | /tftpboot/pxelinux | don't change this
 
+Container UID is 2034.
+
 ### Secrets
 | Secret | Description |
 | ------ | ----------- |

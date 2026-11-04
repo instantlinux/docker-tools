@@ -10,16 +10,69 @@ local_group_defaults:
 local_group_additions: {}
 local_groups: "{{ local_group_defaults | combine(local_group_additions) }}"
 
+# Only the name and uid are mandatory. Unspecified fields will be:
+#   comment: <name>
+#   group: nogroup
+#   home: /home/<name>
+#   create_home: no
+#   shell: /usr/sbin/nologin
 local_user_defaults:
-  - name: nrpe
+  - name: avahi
+    uid: 86
+  - name: dovecot
+    uid: 90
+  - name: dovenull
+    uid: 91
+  - name: nexus
+    uid: 200
+  - name: grafana
+    uid: 472
+  - name: jira
+    uid: 2001
+  - name: vaultwarden
+    uid: 2003
+  - name: headplane
+    uid: 2004
+    comment: UI for headscale
+  - name: headscale
+    uid: 2005
+  - name: mythbackend
+    uid: 2021
+  - name: debian-spamd
+    uid: 2022
+  - name: restic
     uid: 2025
-    comment: NRPE monitoring
-    createhome: no
-    group: nrpe
-    groups: nagcmd
+  - name: spamfilter
+    uid: 2026
+  - name: immich
+    uid: 2027
+  - name: rsyslogd
+    uid: 2028
+  - name: ddclient
+    uid: 2029
+  - name: git-pull
+    uid: 2031
+  - name: git-dump
+    uid: 2032
+  - name: mysqldump
+    uid: 2033
+  - name: dnsmasq-kea
+    uid: 2034
+  - name: blacklist
+    uid: 2035
+  - name: proftpd
+    uid: 2036
+  - name: weewx
+    uid: 2071
+  - name: coredns-cainj-envoy
+    uid: 65532
+    comment: Shared UID for coredns cert-manager envoy
+  - name: splunk
+    uid: 41812
 
+local_user_site: []
 local_user_additions: []
-local_users: "{{ local_user_defaults + local_user_additions }}"
+local_users: "{{ local_user_defaults + local_user_site + local_user_additions }}"
 
 opensuse_google_auth_repo:
   - name: oss

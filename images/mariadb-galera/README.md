@@ -94,7 +94,7 @@ make db00
 When taking the database down, wait for all pods to stop, and then clear etcd entries for the cluster:
 ```
 CLUSTER=db00
-ETCD_HOST=10.101.1.19
+ETCD_HOST=etcd
 etcdctl --endpoints=$ETCD_HOST:2379 del --prefix /galera/$CLUSTER
 ```
 Then launch with the helm chart or docker-compose.
