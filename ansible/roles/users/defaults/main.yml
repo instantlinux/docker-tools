@@ -36,11 +36,15 @@ local_user_defaults:
     comment: UI for headscale
   - name: headscale
     uid: 2005
+  - name: restic
+    uid: 2006
+  - name: etcd
+    uid: 2007
   - name: mythbackend
     uid: 2021
   - name: debian-spamd
     uid: 2022
-  - name: restic
+  - name: rest-server
     uid: 2025
   - name: spamfilter
     uid: 2026
