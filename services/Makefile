@@ -13,7 +13,7 @@ ifeq ($(shell test -d /var/adm/admin/services && echo 1),1)
 endif
 
 # Versions - for images launched by docker-compose
-export    VERSION_GARAGE ?= v2.4.1
+export    VERSION_GARAGE ?= v2.5.0
 export VERSION_GAR_WEBUI ?= 1.1.0
 export     VERSION_HA_KA ?= 3.4.4-alpine-2.3.4-r2
 export     VERSION_KC_DB ?= 11.8.9

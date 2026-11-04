@@ -7,7 +7,7 @@ sources:
 - https://github.com/go-gitea/gitea
 type: application
 version: 28.2.0-1
-appVersion: 28.2.0-rootless
+appVersion: 28.3.0-rootless
 dependencies:
 - name: chartlib
   version: 0.1.12

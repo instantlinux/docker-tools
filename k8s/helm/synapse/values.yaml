@@ -200,7 +200,7 @@ admin:
 element:
   enabled: true
   image:
-    tag: v1.12.32
+    tag: v1.12.33
   fullnameOverride: synapse-element
   deployment:
     env:

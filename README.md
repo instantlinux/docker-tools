@@ -75,7 +75,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | nut-upsd | [![](https://img.shields.io/docker/v/instantlinux/nut-upsd?sort=date)](https://hub.docker.com/r/instantlinux/nut-upsd "Version badge") | Network UPS Tools |
 | openldap | [![](https://img.shields.io/docker/v/instantlinux/openldap?sort=date)](https://hub.docker.com/r/instantlinux/openldap "Version badge") | OpenLDAP authentication server |
 | proftpd | [![](https://img.shields.io/docker/v/instantlinux/proftpd?sort=date)](https://hub.docker.com/r/instantlinux/proftpd "Version badge") | FTP server |
-| radicale | 3.8.3 | CalDAV / CardDAV for mobile calendar/contacts sync |
+| radicale | 3.9.0 | CalDAV / CardDAV for mobile calendar/contacts sync |
 | restic | ** | backups |
 | rest-server | [![](https://img.shields.io/docker/v/instantlinux/rest-server?sort=date)](https://hub.docker.com/r/instantlinux/rest-server "Version badge") | backend server for restic |
 | rsyslogd | [![](https://img.shields.io/docker/v/instantlinux/rsyslogd?sort=date)](https://hub.docker.com/r/instantlinux/rsyslogd "Version badge") | logger in a 13MB image |
