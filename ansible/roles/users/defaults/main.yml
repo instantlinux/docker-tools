@@ -17,6 +17,8 @@ local_groups: "{{ local_group_defaults | combine(local_group_additions) }}"
 #   create_home: no
 #   shell: /usr/sbin/nologin
 local_user_defaults:
+  - name: postgres
+    uid: 70
   - name: avahi
     uid: 86
   - name: dovecot
