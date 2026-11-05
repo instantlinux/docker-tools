@@ -1,6 +1,6 @@
 # This provides http routes and a service for
 #  https://monitor.$domain hosted outside kubernetes.
-{{- if or .Values.monitor.enabled (not (hasKey .Valules "monitor.enabled")) }}
+{{- if or .Values.monitor.enabled (not (hasKey .Values "monitor.enabled")) }}
 ---
 apiVersion: v1
 kind: Service
@@ -100,4 +100,4 @@ spec:
       requestRedirect:
         scheme: https
         statusCode: 308
-{{ endif }}
+{{ end }}
