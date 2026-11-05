@@ -51,6 +51,12 @@
   when: inventory_hostname != ansible_facts['hostname']
   changed_when: False
 
+- name: Containerd config.toml
+  ansible.builtin.template:
+    src: containerd-config.j2
+    dest: /etc/containerd/config.toml
+  notify: Restart containerd
+
 - include_tasks: cri-dockerd.yml
 
 - name: Set up control plane

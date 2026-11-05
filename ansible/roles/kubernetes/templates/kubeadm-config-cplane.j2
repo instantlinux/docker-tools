@@ -62,7 +62,7 @@ apiServer:
     readOnly: true
     pathType: DirectoryOrCreate
 featureGates:
-  # TODO remove when https works for kubectl exec
+  # TODO remove when migrating off docker-ce - kubectl exec (SYS-705)
   ExtendWebSocketsToKubelet: false
 controlPlaneEndpoint: "{{ k8s.cplane_vip }}:6443"
 dns:
@@ -92,6 +92,7 @@ apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
 containerLogMaxFiles: 3
 containerLogMaxSize: 50Mi
+containerRuntimeEndpoint: {{ k8s.cri_socket }}
 featureGates:
-  # TODO remove when https works for kubectl exec
+  # TODO remove when migrating off docker-ce - kubectl exec (SYS-705)
   ExtendWebSocketsToKubelet: false

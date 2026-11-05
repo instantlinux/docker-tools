@@ -174,11 +174,11 @@ done
 echo "\n  },"
 
 echo " " \"ansible-applied\": {
-for ITEM in cni coredns docker-ce kubernetes; do
+for ITEM in cni coredns docker-ce kubernetes pause; do
   case $ITEM in
     cni)         ROLE=kubernetes; VERSION=$(apt-cache madison kubernetes-$ITEM | \
        awk -F '|' '{print $2; }' | xargs);;
-    coredns)     ROLE=kubernetes; VERSION=$(curl -sL \
+    coredns) ROLE=kubernetes; VERSION=$(curl -sL \
       https://registry.k8s.io/v2/$ITEM/$ITEM/tags/list | \
       jq -r '.manifest[].tag[]'| grep -E '^[v]*[0-9]+\.[0-9]+(\.[0-9]+)?' | \
       sort -V | tail -n 1);;
@@ -187,6 +187,10 @@ for ITEM in cni coredns docker-ce kubernetes; do
     kubernetes)  ROLE=kubernetes; VERSION=$(curl -s \
       https://api.github.com/repos/kubernetes/$ITEM/releases | \
       jq -r '.[].tag_name' | grep -E '^v[0-9]+\.[0-9]+(\.[0-9]+)?$' | sort -V | tail -n 1);;
+    pause) ROLE=kubernetes; VERSION=$(curl -sL \
+      https://registry.k8s.io/v2/$ITEM/tags/list | \
+      jq -r '.manifest[].tag[]'| grep -E '^[v]*[0-9]+\.[0-9]+(\.[0-9]+)?' | \
+      sort -V | tail -n 1);;
   esac
   [ $ITEM = cni ] || echo ,
   echo -n "   " \"$ITEM\": {\"role\": \"$ROLE\", \"version\": \"$VERSION\"}

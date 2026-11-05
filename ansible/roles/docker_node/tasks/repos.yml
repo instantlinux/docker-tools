@@ -11,6 +11,8 @@
     - "{{ ansible_facts['distribution_release'] }}-backports"
     components: [ main, restricted, universe, multiverse ]
     signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  # TODO remove once this module reports changes correctly
+  changed_when: false
 
 - name: Docker repo
   ansible.builtin.deb822_repository:

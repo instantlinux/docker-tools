@@ -80,10 +80,6 @@ local_user_site: []
 local_user_additions: []
 local_users: "{{ local_user_defaults + local_user_site + local_user_additions }}"
 
-opensuse_google_auth_repo:
-  - name: oss
-    repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
-
 pam_package: "{{
     'libpam-google-authenticator' if ansible_facts['os_family'] == 'Debian' 
     else 'pam-google-authenticator' }}"
