@@ -1,13 +1,14 @@
-# This is an example where https://monitor.$domain is hosted outside
-#  kubernetes. Specify its IP address in env var MONITOR_EXT_IP.
+# This provides http routes and a service for
+#  https://monitor.$domain hosted outside kubernetes.
+{{- if or .Values.monitor.enabled (not (hasKey .Valules "monitor.enabled")) }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    kubernetes.io/service-name: $SERVICE_NAME
-  name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
+    kubernetes.io/service-name: {{ .Values.monitor.name }}
+  name: {{ .Values.monitor.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   ports:
   - { port: 80, targetPort: 80, name: monitor }
@@ -16,13 +17,13 @@ spec:
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
+  name: {{ .Values.monitor.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    kubernetes.io/service-name: $SERVICE_NAME
+    kubernetes.io/service-name: {{ .Values.monitor.name }}
 addressType: IPv4
 endpoints:
-  - addresses: [ $MONITOR_EXT_IP ]
+  - addresses: [ {{ .Values.monitor.externalIP }} ]
 ports:
   - name: monitor
     protocol: TCP
@@ -31,10 +32,10 @@ ports:
 apiVersion: gateway.networking.k8s.io/v1
 kind: ListenerSet
 metadata:
-  name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
+  name: {{ .Values.monitor.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app.kubernetes.io/name: $SERVICE_NAME
+    app.kubernetes.io/name: {{ .Values.monitor.name }}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
@@ -42,30 +43,30 @@ spec:
     group: gateway.networking.k8s.io
     kind: Gateway
     name: gateway-2
-    namespace: $K8S_NAMESPACE
+    namespace: {{ .Values.namespace }}
   listeners:
   - name: https
-    hostname: $SERVICE_NAME.$DOMAIN
+    hostname: {{ .Values.monitor.hostname }}
     port: 443
     protocol: HTTPS
     tls:
       mode: Terminate
       certificateRefs:
-      - name: tls-$SERVICE_NAME
+      - name: tls-{{ .Values.monitor.name }}
   - name: http
-    hostname: $SERVICE_NAME.$DOMAIN
+    hostname: {{ .Values.monitor.hostname }}
     port: 80
     protocol: HTTP
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: $SERVICE_NAME
-  namespace: $K8S_NAMESPACE
+  name: {{ .Values.monitor.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   parentRefs:
   - kind: ListenerSet
-    name: $SERVICE_NAME
+    name: {{ .Values.monitor.name }}
     sectionName: https
   rules:
   - matches:
@@ -73,25 +74,25 @@ spec:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: $SERVICE_NAME
+    - name: {{ .Values.monitor.name }}
       port: 80
   - matches:
     - path:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: $SERVICE_NAME
+    - name: {{ .Values.monitor.name }}
       port: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: $SERVICE_NAME-https-redirect
-  namespace: $K8S_NAMESPACE
+  name: {{ .Values.monitor.name }}-https-redirect
+  namespace: {{ .Values.namespace }}
 spec:
   parentRefs:
   - kind: ListenerSet
-    name: $SERVICE_NAME
+    name: {{ .Values.monitor.name }}
     sectionName: http
   rules:
   - filters:
@@ -99,3 +100,4 @@ spec:
       requestRedirect:
         scheme: https
         statusCode: 308
+{{ endif }}

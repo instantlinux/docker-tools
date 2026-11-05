@@ -8,5 +8,4 @@ export VERSION_NODE_LOCAL_DNS ?= v1.37.2
 export VERSION_SOPS           ?= v3.13.3
 
 # Held back versions - more effort to upgrade
-export VERSION_CALICO         ?= v3.16.5
-export VERSION_ETCD           ?= 3.5.15-0  # for infra k8sBackup cron
+export VERSION_ETCD           ?= 3.5.15-0  # infra k8sBackup cron needs /bin/sh

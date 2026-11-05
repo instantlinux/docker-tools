@@ -118,6 +118,7 @@ Thank you to the following contributors!
 * [nicxvan]( https://github.com/nicxvan)
 * [Frank Riley](https://github.com/fhriley)
 * [Devin Bayer](https://github.com/akvadrako)
+* [Rich Braun](https://github.com/instantlinux)
 * [Daniel Muller](https://github.com/DanielMuller)
 * [Brian Hechinger](https://github.com/bhechinger)
 * [David Powers](https://github.com/dapowers87)

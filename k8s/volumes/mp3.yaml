@@ -13,8 +13,6 @@ metadata:
   name: mp3
   labels:
     volume.group: mp3
-# TODO parameterize names/paths and add volume IDs
-#   volume.id: "$VOLUME_ID"
 spec:
   capacity:
     storage: 1Mi 

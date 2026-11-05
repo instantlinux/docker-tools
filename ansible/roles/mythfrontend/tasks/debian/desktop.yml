@@ -58,6 +58,6 @@
     dest: /home/mythtv/.config/autostart/mythtv.desktop
     src: mythtv.desktop.j2
 
-# TODO: ancillary things still need manual configuration
+# Check these items that may still need manual configuration:
 #  add MythTV and Chrome to launcher bar
 #  audio config

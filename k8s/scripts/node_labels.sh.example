@@ -23,7 +23,7 @@ kubectl $SUDO label node --overwrite $NODE service.dc02=allow
 kubectl $SUDO label node --overwrite $NODE service.dovecot=allow
 kubectl $SUDO label node --overwrite $NODE service.git-dump=allow
 kubectl $SUDO label node --overwrite $NODE service.jira=allow
-kubectl $SUDO label node --overwrite $NODE service.mt-daapd=allow
+kubectl $SUDO label node --overwrite $NODE service.owntone=allow
 kubectl $SUDO label node --overwrite $NODE service.mysqldump=allow
 kubectl $SUDO label node --overwrite $NODE service.nut-02=allow
 
