@@ -17,9 +17,9 @@ statefulset:
         key: database_password
         name: postgres
   podSecurityContext:
-    runAsUser: 999
-    runAsGroup: 999
-    fsGroup: 999
+    runAsUser: 70
+    runAsGroup: 70
+    fsGroup: 70
     runAsNonRoot: true
   replicas: 1
   resources:

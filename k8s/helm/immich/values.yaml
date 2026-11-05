@@ -169,6 +169,11 @@ postgres:
         secretKeyRef:
           key: immich-db-password
           name: immich
+    podSecurityContext:
+      # custom vectorchord image is hardcoded to UID 999
+      runAsUser: 999
+      runAsGroup: 999
+      fsGroup: 999
     resources:
       limits:
         memory: 4096Mi

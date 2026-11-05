@@ -18,7 +18,7 @@ dependencies:
   version: 0.1.1
   repository: file://subcharts/ml
 - name: postgres
-  version: 0.1.2
+  version: 0.1.1
   repository: file://subcharts/postgres
 - name: valkey
   version: 0.1.2
