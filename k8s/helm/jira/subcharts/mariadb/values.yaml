@@ -30,6 +30,11 @@ statefulset:
       secretKeyRef:
         key: mysql-root-password
         name: mysql-root-password
+  podSecurityContext:
+    runAsUser: 2008
+    runAsGroup: 2008
+    fsGroup: 2008
+    runAsNonRoot: true
   resources:
     limits:
       memory: 4096Mi

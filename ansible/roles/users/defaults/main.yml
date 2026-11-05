@@ -42,6 +42,8 @@ local_user_defaults:
     uid: 2006
   - name: etcd
     uid: 2007
+  - name: mariadb
+    uid: 2008
   - name: mythbackend
     uid: 2021
   - name: debian-spamd

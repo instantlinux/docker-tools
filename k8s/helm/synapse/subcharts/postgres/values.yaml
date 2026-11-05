@@ -16,6 +16,11 @@ statefulset:
       secretKeyRef:
         key: database_password
         name: postgres
+  podSecurityContext:
+    runAsUser: 70
+    runAsGroup: 70
+    fsGroup: 70
+    runAsNonRoot: true
   replicas: 1
   resources:
     limits:
