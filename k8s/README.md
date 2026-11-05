@@ -32,7 +32,7 @@ kubeadm suite:
 * A k8sudo script to encrypt/decrypt k8s admin key
 * Mozilla [sops](https://github.com/mozilla/sops/blob/master/README.rst) with encryption (to keep credentials in local git repo)
 * Encryption for internal etcd
-* Calico or flannel networking
+* Flannel networking
 * Fluent Bit for container-log aggregation
 * Envoy API gateway
 * Local-volume sync
@@ -160,7 +160,7 @@ store kubernetes secrets, encrypted by a tool called _sops_.
 
 ### OpenID
 
-To tighten security by creating API users you will need to set up OpenID / OAuth2. An on-site user directory can be established using the open-source tool [Keycloak](https://www.keycloak.org/) (a docker-compose file is provided under [services/keycloak](https://github.com/instantlinux/docker-tools/tree/main/services/keycloak/docker-compose.yml)) for which a somewhat complicated configuration is required (TODO - I'll write up the procedure in the docs here). Start by downloading [krew](https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz) and adding it to your $PATH. To get a single-user setup working, follow these steps:
+To tighten security by creating API users you will need to set up OpenID / OAuth2. An on-site user directory can be established using the open-source tool [Keycloak](https://www.keycloak.org/) (a docker-compose file is provided under [services/keycloak](https://github.com/instantlinux/docker-tools/tree/main/services/keycloak/docker-compose.yml)) for which a somewhat complicated configuration is required. Start by downloading [krew](https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz) and adding it to your $PATH. To get a single-user setup working, follow these steps:
 
 * Go to your google account and add client-id k8slogin of type desktop, in [credentials dashboard](https://console.cloud.google.com/apis/credentials);
 * Run these commands, filling in the redacted fields from first step:

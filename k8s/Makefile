@@ -206,7 +206,10 @@ imports/nodelocaldns.yaml: imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml
 	ln -s $(notdir $<) $@
 imports/nodelocaldns-$(VERSION_NODE_LOCAL_DNS).yaml:
 	curl -sLo $@ https://raw.githubusercontent.com/kubernetes/kubernetes/refs/tags/$(VERSION_NODE_LOCAL_DNS)/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml
-	sed -i -e "s/__PILLAR__LOCAL__DNS__/$(NODE_LOCAL_DNS_IP)/g; s/__PILLAR__DNS__DOMAIN__/cluster.local/g; s/__PILLAR__DNS__SERVER__/$(COREDNS_IP)/g" $@
+	sed -i \
+	 -e "s/__PILLAR__LOCAL__DNS__/$(NODE_LOCAL_DNS_IP)/g" \
+	 -e "s/__PILLAR__DNS__DOMAIN__/cluster.local/g" \
+	 -e "s/__PILLAR__DNS__SERVER__/$(COREDNS_IP)/g" $@
 
 ##########
 # Add-ons
@@ -222,9 +225,6 @@ imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS):
 	 imports/kube-state-metrics-$(VERSION_KUBE_STATE_METRICS)
 install_metrics: imports/kube-state-metrics
 	kubectl apply --context=sudo -k $</examples/standard
-
-imports/traefik-prom.yaml:
-	curl -sLo $@ https://raw.githubusercontent.com/mateobur/prometheus-monitoring-guide/master/traefik-prom.yaml
 
 SPLUNK_OPT = $(if $(LOG_TO_SPLUNK), -f install/fluent-bit-splunk.yaml, )
 fluent-bit: install/namespace.yaml

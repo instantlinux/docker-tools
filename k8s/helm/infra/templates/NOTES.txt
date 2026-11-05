@@ -5,3 +5,4 @@ This infra chart defined the following:
 - default CPU and memory limits for {{ .Values.namespace }} namespace
 - local-storage class default
 - cluster role permissions for prometheus
+- service and routes for {{ .Values.monitor.hostname }}

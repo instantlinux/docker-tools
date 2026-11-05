@@ -5,7 +5,7 @@ if [ -z "$NETBIOS_NAME" ]; then
 else
   NETBIOS_NAME=$(echo $NETBIOS_NAME | tr [a-z] [A-Z])
 fi
-REALM=$(echo "$REALM" | tr [a-z] [A-Z])
+REALM_UP=$(echo "$REALM" | tr [a-z] [A-Z])
 
 if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
   echo 'Set timezone'
@@ -25,9 +25,9 @@ if [ ! -f /var/lib/samba/registry.tdb ]; then
   fi
   if [ $DOMAIN_ACTION == provision ]; then
     PROVISION_OPTS="--server-role=dc --use-rfc2307 --domain=$WORKGROUP \
-    --realm=$REALM --adminpass='$ADMIN_PASSWORD'"
+    --realm=$REALM_UP --adminpass='$ADMIN_PASSWORD'"
   elif [ $DOMAIN_ACTION == join ]; then
-    PROVISION_OPTS="$REALM DC -UAdministrator --password='$ADMIN_PASSWORD'"
+    PROVISION_OPTS="$REALM_UP DC -UAdministrator --password='$ADMIN_PASSWORD'"
   else
     echo 'Only provision and join actions are supported.'
     exit 1

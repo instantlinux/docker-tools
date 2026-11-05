@@ -79,7 +79,8 @@
     "cni": {"role": "kubernetes", "version": "1.9.1-1.1", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "coredns": {"role": "kubernetes", "version": "v1.15.0", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
     "docker-ce": {"role": "docker_node", "version": "5:29.9.3-1~ubuntu.26.04~resolute", "paths": ["ansible/roles/docker_node/defaults/main.yml"]},
-    "kubernetes": {"role": "kubernetes", "version": "1.37.2", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]}
+    "kubernetes": {"role": "kubernetes", "version": "1.37.2", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]},
+    "pause": {"role": "kubernetes", "version": "3.10.2", "paths": ["ansible/roles/kubernetes/defaults/main.yml"]}
   },
   "github-imports": {
     "cert-manager/cert-manager": {"version": "v1.21.3", "paths": ["k8s/Makefile.versions"]},

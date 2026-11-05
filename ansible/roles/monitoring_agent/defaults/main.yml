@@ -52,16 +52,6 @@ nrpe_commands: "{{ nrpe_command_defaults | combine(nrpe_command_override) }}"
 
 nrpe_drive_tolerations: {}
 
-opensuse_packages:
-  - monitoring-plugins-load
-  - monitoring-plugins-procs
-  - nrpe
-  - smartmontools
-
-opensuse_repos:
-  - name: oss
-    repo: http://download.opensuse.org/distribution/leap/42.2/repo/oss/suse
-
 pip_packages:
   - mdstat>=1.0.4
 
