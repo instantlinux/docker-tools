@@ -10,6 +10,6 @@ version: 0.14.0-12
 appVersion: "0.14.0-r12"
 dependencies:
 - name: chartlib
-  version: 0.1.12
+  version: 0.26.11
   repository: oci://ghcr.io/instantlinux/charts
   # also available at oci://registry-1.docker.io/instantlinux

@@ -9,9 +9,6 @@ deployment:
     user_login: ""
   podSecurityContext:
     runAsUser: 2029
-    runAsGroup: 2029
-    fsGroup: 2029
-    runAsNonRoot: true
 volumeMounts:
 - name: secret
   mountPath: /run/secrets/ddclient-user
@@ -30,23 +27,9 @@ imagePullSecrets: [ name: regcred ]
 nameOverride: ""
 fullnameOverride: ""
 
-deployment: {}
-serviceAccount: {}
-podAnnotations: {}
-podSecurityContext: {}
-securityContext: {}
-
+serviceAccount:
+  create: true
 service:
   enabled: false
-
-ingress:
-  enabled: false
-
-resources: {}
-
 autoscaling:
   enabled: false
-
-nodeSelector: {}
-tolerations: []
-affinity: {}

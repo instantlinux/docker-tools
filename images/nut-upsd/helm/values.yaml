@@ -55,14 +55,15 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
+  create: true
   enabled: true
-  name: example-privileged
-
+  name: nut-upsd
 service:
   ports:
   - port: 3493
     nodePort: 30493
     targetPort: 3493
+  type: NodePort
 autoscaling:
   enabled: false
 

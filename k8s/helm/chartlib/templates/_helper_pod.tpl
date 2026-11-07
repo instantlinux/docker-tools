@@ -38,12 +38,30 @@ spec:
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
-      {{- if .Values.serviceAccount.enabled }}
+      {{- if or .Values.serviceAccount.enabled .Values.serviceAccount.create }}
       serviceAccountName: {{ include "local.serviceAccountName" . }}
       {{- end }}
       {{- if (hasKey .pod "podSecurityContext") }}
+        {{- $podctx := .pod.podSecurityContext -}}
+        {{- if (hasKey $podctx "runAsUser") -}}
+          {{- if not (hasKey $podctx "runAsGroup") -}}
+            {{- $_ := set $podctx  "runAsGroup" (default $podctx.runAsUser
+                $podctx.fsGroup) -}}
+          {{- end }}
+          {{- if not (hasKey $podctx "runAsNonRoot") -}}
+            {{- $_ := set $podctx "runAsNonRoot" true -}}
+          {{- end }}
+	  {{- if not (hasKey .pod "securityContext") }}
+	    {{- $_ := set .pod "securityContext" (dict "allowPrivilegeEscalation" false) -}}
+          {{- end }}
+        {{- end }}
+        {{- if hasKey $podctx "fsGroup" -}}
+          {{ if not (hasKey $podctx "fsGroupChangePolicy") -}}
+            {{- $_ := set $podctx  "fsGroupChangePolicy" "OnRootMismatch" -}}
+          {{- end }}
+        {{- end }}
       securityContext:
-        {{- toYaml .pod.podSecurityContext | nindent 8 }}
+        {{- toYaml $podctx | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -61,14 +79,18 @@ spec:
           {{- if (hasKey .pod "env") }}
           {{- range $name, $value := .pod.env }}
           - { name: {{ $name | upper -}}, value: "{{ $value }}" }
-          {{ end }}
+          {{- end }}
           {{- end }}
           {{- if (hasKey .pod "xenv") }}
           {{- toYaml .pod.xenv | nindent 10 }}
           {{- end }}
           {{- if (hasKey .pod "securityContext") }}
+            {{- $ctx := .pod.securityContext -}}
+            {{- if not (hasKey $ctx "allowPrivilegeEscalation") -}}
+              {{- $_ := set $ctx  "allowPrivilegeEscalation" false -}}
+            {{- end }}
           securityContext:
-            {{- toYaml .pod.securityContext | nindent 12 }}
+            {{- toYaml $ctx | nindent 12 }}
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

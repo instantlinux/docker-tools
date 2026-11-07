@@ -5,9 +5,6 @@ deployment:
   hostname: guacd
   podSecurityContext:
     runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
-    runAsNonRoot: true
   subdomain: guacamole
 
 image:
@@ -19,7 +16,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   ports: [ port: 4822 ]
   type: ClusterIP

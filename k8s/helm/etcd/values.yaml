@@ -69,9 +69,7 @@ statefulset:
         topologyKey: kubernetes.io/hostname
   podSecurityContext:
     runAsUser: 2007
-    runAsGroup: 2007
     fsGroup: 2007
-    runAsNonRoot: true
   replicas: 3
   resources:
     limits:
@@ -100,8 +98,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: true
-  name: example-privileged
+  create: true
 service:
   ports: [ port: 2379 ]
   type: ClusterIP

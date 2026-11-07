@@ -29,7 +29,6 @@ deployment:
   - containerPort: 2283
   podSecurityContext:
     runAsUser: 1000
-    runAsGroup: 1000
     # gid values for video, render
     supplementalGroups: [ 44, 891 ]
   securityContext:
@@ -130,7 +129,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: None
   ports:

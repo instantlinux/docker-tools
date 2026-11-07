@@ -2,6 +2,9 @@
 deployment:
   nodeSelector:
     service.rest-server: allow
+  podSecurityPolicy:
+    runAsUser: 2025
+    fsGroup: 2025
 volumeMounts:
 - name: data
   mountPath: /data
@@ -24,6 +27,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 autoscaling:
   enabled: false

@@ -32,9 +32,7 @@ deployment:
         name: vaultwarden
   podSecurityContext:
     runAsUser: 2003
-    runAsGroup: 2003
     fsGroup: 2003
-    runAsNonRoot: true
   resources:
     limits:
       cpu: 2
@@ -72,8 +70,9 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  create: false
+  create: true
 service:
+  clusterIP: None
   type: ClusterIP
   ports:
   - { port: 80, targetPort: 8080, name: http }

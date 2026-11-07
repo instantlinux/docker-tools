@@ -24,9 +24,7 @@ deployment:
     name: stun
   podSecurityContext:
     runAsUser: 2005
-    runAsGroup: 2005
     fsGroup: 2005
-    runAsNonRoot: true
   resources:
     limits:
       memory: 512Mi
@@ -59,7 +57,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: None
   ports:

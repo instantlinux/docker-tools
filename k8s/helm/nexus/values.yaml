@@ -31,9 +31,7 @@ deployment:
     service.nexus: allow
   podSecurityContext:
     runAsUser: 200
-    runAsGroup: 200
     fsGroup: 200
-    runAsNonRoot: true
   resources:
     limits:
       cpu: 4
@@ -61,7 +59,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  create: false
+  create: true
 service:
   type: ClusterIP
   ports:

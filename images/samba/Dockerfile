@@ -10,7 +10,8 @@ LABEL org.opencontainers.image.authors="Rich Braun docker@instantlinux.net" \
     org.label-schema.vcs-url=https://github.com/instantlinux/docker-tools
 
 ARG SAMBA_VERSION=4.23.10-r0
-ENV LOGON_DRIVE=H \
+ENV CONFIG_FILE=/etc/samba/smb.conf \
+    LOGON_DRIVE=H \
     NETBIOS_NAME=samba \
     SERVER_STRING="Samba Server" \
     TZ=UTC \
@@ -19,11 +20,11 @@ ENV LOGON_DRIVE=H \
 RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
     apk add -u --no-cache samba@edge=$SAMBA_VERSION shadow tzdata \
-      libcrypto3 libssl3
+      libcrypto3 libssl3 cups-libs@edge
 
 VOLUME /etc/samba/conf.d /var/log/samba
 EXPOSE 137-138/udp 139 445
 
-COPY smb.conf.j2 /root/
+COPY smb.conf.j2 /opt/samba/
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

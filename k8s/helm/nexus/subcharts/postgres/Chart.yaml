@@ -11,5 +11,5 @@ version: 0.1.2
 appVersion: "0.0.1"
 dependencies:
 - name: chartlib
-  version: 0.1.1
+  version: 0.26.11
   repository: oci://ghcr.io/instantlinux/charts

@@ -21,9 +21,7 @@ deployment:
     service.blacklist: allow
   podSecurityContext:
     runAsUser: 2035
-    runAsGroup: 2035
     fsGroup: 2035
-    runAsNonRoot: true
   replicas: 2
   securityContext:
     capabilities:
@@ -52,7 +50,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: 10.101.1.10
   ports:

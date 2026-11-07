@@ -30,8 +30,8 @@ deployment:
   nodeSelector:
     service.data-sync: allow
   podSecurityContext:
+    runAsUser: 2006
     fsGroup: 2006
-    fsGroupChangePolicy: OnRootMismatch
   resources:
     limits:
       memory: 2048Mi
@@ -118,7 +118,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   enabled: false
 autoscaling:

@@ -29,9 +29,7 @@ deployment:
     service.jira: allow
   podSecurityContext:
     runAsUser: 2001
-    runAsGroup: 2001
     fsGroup: 2001
-    runAsNonRoot: true
   resources:
     limits:
       memory: 6144Mi
@@ -67,7 +65,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: None
   ports:
