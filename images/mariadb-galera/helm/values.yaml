@@ -27,6 +27,9 @@ statefulset:
     cluster_size: 3
     discovery_service: "etcd:2379"
     log_level: info
+  podSecurityContext:
+    runAsUser: 212
+    fsGroup: 212
   replicas: 3
   resources:
     limits:
@@ -78,7 +81,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: None
   type: ClusterIP

@@ -54,8 +54,8 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
+  create: true
   enabled: true
-  name: example-privileged
-
+  name: samba-dc
 autoscaling:
   enabled: false

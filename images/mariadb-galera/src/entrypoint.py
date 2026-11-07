@@ -165,8 +165,9 @@ class MariaDBCluster(object):
             command += ' --wsrep-new-cluster'
         if cmdarg:
             command += ' %s' % cmdarg
-        os.chown(Constants.DATA_DIR, pwd.getpwnam('mysql').pw_uid, -1)
-        os.chown(Constants.LOG_DIR, pwd.getpwnam('mysql').pw_uid, -1)
+        if os.getuid() == 0:
+            os.chown(Constants.DATA_DIR, pwd.getpwnam('mysql').pw_uid, -1)
+            os.chown(Constants.LOG_DIR, pwd.getpwnam('mysql').pw_uid, -1)
         if cluster_address:
             assert self._peer_reachable(cluster_address.split(',')[0]), (
                 'Network connectivity problem for %s' % cluster_address)

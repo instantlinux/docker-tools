@@ -8,7 +8,6 @@ statefulset:
     transformers_cache: /cache
   podSecurityContext:
     runAsUser: 1000
-    runAsGroup: 1000
     # gids: video, render
     supplementalGroups: [ 44, 891 ]
   replicas: 1
@@ -54,7 +53,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   ports: [ port: 3003 ]
   type: LoadBalancer

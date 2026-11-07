@@ -117,6 +117,8 @@ This was originally developed under docker Swarm. A [docker-compose](https://git
 | TTL | 10 | longevity (in seconds) of keys posted to etcd |
 | TZ | UTC | timezone |
 
+Default container UID is 212.
+
 ### Notes
 
 When creating this image (in early 2017), DB clustering under Docker

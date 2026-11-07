@@ -5,9 +5,8 @@ deployment:
   env:
     valkey_extra_flags: ""
   podSecurityContext:
-    fsGroup: 1000
     runAsUser: 1000
-    runAsGroup: 1000
+    fsGroup: 1000
     seccompProfile:
       type: RuntimeDefault
   resources:
@@ -51,7 +50,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   ports: [ port: 6379 ]
   type: ClusterIP

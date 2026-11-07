@@ -7,9 +7,7 @@ deployment:
     tz: UTC
   podSecurityContext:
     runAsUser: 2032
-    runAsGroup: 505
     fsGroup: 505
-    runAsNonRoot: true
 # this whole list must be overridden, helm cannot interpolate values here
 volumeMounts:
 - mountPath: /var/backup
@@ -43,6 +41,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 autoscaling:
   enabled: false

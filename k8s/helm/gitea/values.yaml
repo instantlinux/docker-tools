@@ -61,9 +61,7 @@ deployment:
     service.gitea: allow
   podSecurityContext:
     runAsUser: 1000
-    runAsGroup: 1000
     fsGroup: 1000
-    runAsNonRoot: true
   resources:
     limits:
       memory: 1024Mi
@@ -94,7 +92,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: None
   ports:

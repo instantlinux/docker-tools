@@ -34,6 +34,7 @@ These variables can be passed to the image from helm values.yaml, kubernetes.yam
 
 Variable | Default | Description |
 -------- | ------- | ----------- |
+CONFIG_FILE | /etc/samba/smb.conf | Primary config file
 LOGON_DRIVE | H | initial drive mapping
 NETBIOS_NAME | samba | server name
 SERVER_STRING | "Samba Server" | server banner string

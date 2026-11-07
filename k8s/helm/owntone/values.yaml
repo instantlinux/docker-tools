@@ -19,6 +19,7 @@ deployment:
   nodeSelector:
     service.owntone: allow
   podSecurityContext:
+    runAsUser: 1000
     fsGroup: 1000
   replicas: 2
   strategy:
@@ -54,6 +55,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 autoscaling:
   enabled: false

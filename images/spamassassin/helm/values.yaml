@@ -9,9 +9,7 @@ statefulset:
     tz: UTC
   podSecurityContext:
     runAsUser: 2022
-    runAsGroup: 2022
     fsGroup: 2022
-    runAsNonRoot: true
   replicas: 3
   resources:
     limits:

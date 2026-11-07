@@ -14,9 +14,7 @@ deployment:
   - containerPort: 1514
   podSecurityContext:
     runAsUser: 2028
-    runAsGroup: 2028
     fsGroup: 2028
-    runAsNonRoot: true
   resources:
     limits:
       memory: 512Mi
@@ -55,7 +53,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   ports:
   - { port: 514, nodePort: 30514, targetPort: 1514, name: rsyslogd }

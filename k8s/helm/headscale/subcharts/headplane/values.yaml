@@ -5,9 +5,7 @@ deployment:
   containerPorts: [ containerPort: 3000 ]
   podSecurityContext:
     runAsUser: 2004
-    runAsGroup: 2004
     fsGroup: 2004
-    runAsNonRoot: true
 volumeMounts:
 - mountPath: /etc/headplane/config.yaml
   name: config
@@ -46,7 +44,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   clusterIP: None
   ports:

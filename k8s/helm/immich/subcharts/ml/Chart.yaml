@@ -6,10 +6,10 @@ sources:
 - https://github.com/instantlinux/docker-tools
 - ghcr.io/immich-app/immich-machine-learning
 type: application
-version: 0.1.1
+version: 0.1.2
 # specify version tag from hub.docker.com in top-level values.yaml
 appVersion: "0.0.1"
 dependencies:
 - name: chartlib
-  version: 0.1.11
+  version: 0.26.11
   repository: oci://ghcr.io/instantlinux/charts

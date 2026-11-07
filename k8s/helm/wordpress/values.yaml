@@ -49,8 +49,9 @@ deployment:
       secretKeyRef:
         name: wordpress
         key: WORDPRESS_NONCE_SALT
-  securityContext:
+  podSecurityContext:
     runAsUser: 33
+    fsGroup: 33
 
 volumeMounts:
 - mountPath: /usr/local/etc/php/conf.d/local-php.ini
@@ -73,12 +74,12 @@ image:
   repository: wordpress
   pullPolicy: IfNotPresent
   # tag: default
-imagePullSecrets: [ name: regcred ]
 
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+serviceAccount:
+  create: true
 service:
   clusterIP: None
   ports: [ port: 80 ]

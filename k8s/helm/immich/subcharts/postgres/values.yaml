@@ -18,9 +18,7 @@ statefulset:
         name: postgres
   podSecurityContext:
     runAsUser: 70
-    runAsGroup: 70
     fsGroup: 70
-    runAsNonRoot: true
   replicas: 1
   resources:
     limits:
@@ -49,7 +47,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   clusterIP: None
   ports: [ port: 5432 ]

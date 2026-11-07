@@ -11,9 +11,7 @@ deployment:
     smtp_smarthost: smtp:25
   podSecurityContext:
     runAsUser: 65534
-    runAsGroup: 65534
     fsGroup: 65534
-    runAsNonRoot: true
 volumeMounts:
 - mountPath: /etc/alertmanager/alertmanager.yml
   name: config
@@ -36,7 +34,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  enabled: false
+  create: true
 service:
   ports: [ port: 9093 ]
   type: ClusterIP

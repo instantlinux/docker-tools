@@ -32,7 +32,7 @@ COPY entrypoint.sh /usr/local/bin/
 RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" \
       >> /etc/apk/repositories && \
     apk add -u --no-cache krb5 ldb-tools samba-dc@edge=$SAMBA_VERSION \
-      ldb-tools@edge \
+      cups-libs@edge ldb-tools@edge \
       samba-winbind-clients@edge=$SAMBA_VERSION tdb bind bind-libs bind-tools \
       libcrypto3 libxml2 tzdata py3-cryptography py3-setuptools py3-pip && \
     pip install jinjanator --break-system-packages && \
