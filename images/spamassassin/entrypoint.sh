@@ -1,6 +1,14 @@
 #!/bin/bash
+# Rules update at startup, then daily at CRON_HOUR:CRON_MINUTE (TZ), with a
+# reload of spamd after each successful update
 ( /usr/bin/sa-update
-  sleep 86400
+  while true; do
+    now=$(date +%s)
+    next=$(date -d "$(printf '%02d:%02d' $((10#$CRON_HOUR)) $((10#$CRON_MINUTE)))" +%s)
+    [ "$next" -gt "$now" ] || next=$((next + 86400))
+    sleep $((next - now))
+    /usr/bin/sa-update && kill -HUP "$(cat /run/spamd/spamd.pid)"
+  done
 ) &
 
 /var/dcc/libexec/dccifd -tREP,20 -tCMN,5, -llog -wwhiteclnt -Uuserdirs \
