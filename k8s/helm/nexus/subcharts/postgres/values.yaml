@@ -46,8 +46,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  enabled: false
+serviceAccount: {}
 service:
   clusterIP: None
   ports: [ port: 5432 ]

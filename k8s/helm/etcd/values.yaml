@@ -97,8 +97,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
+serviceAccount: {}
 service:
   ports: [ port: 2379 ]
   type: ClusterIP

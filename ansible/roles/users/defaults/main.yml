@@ -29,6 +29,8 @@ local_user_defaults:
     uid: 200
   - name: grafana
     uid: 472
+  - name: synapse
+    uid: 991
   - name: jira
     uid: 2001
   - name: vaultwarden

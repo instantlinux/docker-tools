@@ -18,9 +18,6 @@ deployment:
   hostNetwork: true
   nodeSelector:
     service.owntone: allow
-  podSecurityContext:
-    runAsUser: 1000
-    fsGroup: 1000
   replicas: 2
   strategy:
     type: Recreate
@@ -55,7 +52,6 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
+serviceAccount: {}
 autoscaling:
   enabled: false

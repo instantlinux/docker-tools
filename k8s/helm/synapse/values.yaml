@@ -118,6 +118,10 @@ deployment:
     requests:
       cpu: 100m
       memory: 128Mi
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ SETGID, SETUID ]
 volumeMounts:
 - mountPath: /data
   name: data

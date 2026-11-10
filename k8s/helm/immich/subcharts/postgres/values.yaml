@@ -46,10 +46,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
+serviceAccount: {}
 service:
-  clusterIP: None
   ports: [ port: 5432 ]
   type: ClusterIP
 autoscaling:
