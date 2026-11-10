@@ -40,6 +40,8 @@ spec:
       {{- end }}
       {{- if or .Values.serviceAccount.enabled .Values.serviceAccount.create }}
       serviceAccountName: {{ include "local.serviceAccountName" . }}
+      {{- else }}
+      automountServiceAccountToken: false
       {{- end }}
       {{- if (hasKey .pod "podSecurityContext") }}
         {{- $podctx := .pod.podSecurityContext -}}

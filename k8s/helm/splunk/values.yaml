@@ -35,6 +35,11 @@ statefulset:
     requests:
       cpu: 200m
       memory: 1Gi
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ AUDIT_WRITE, DAC_OVERRIDE, SETGID, SETUID ]
+    allowPrivilegeEscalation: true
 volumeMounts:
 - mountPath: /opt/splunk/etc
   name: splunk
@@ -89,6 +94,8 @@ gateway:
         type: PathPrefix
         value: /
     sessionPersistence:
-      absoluteTimeout: 30m
-      type: Header
+      absoluteTimeout: 90m
       sessionName: Authorization
+      type: Header
+    timeouts:
+      request: 60s

@@ -28,12 +28,14 @@ deployment:
   containerPorts:
   - containerPort: 2283
   podSecurityContext:
-    runAsUser: 1000
+    runAsUser: 2027
+    runAsGroup: 1000
     # gid values for video, render
     supplementalGroups: [ 44, 891 ]
   securityContext:
     # GPU access requires privileges. The alternative is somewhat complicated,
     #  see https://github.com/UntouchedWagons/K3S-Intel
+    allowPrivilegeEscalation: true
     privileged: true
   resources:
     limits:
@@ -129,8 +131,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
+serviceAccount: {}
 service:
   clusterIP: None
   ports:

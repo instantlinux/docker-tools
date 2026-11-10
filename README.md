@@ -124,6 +124,7 @@ Thank you to the following contributors!
 * [David Powers](https://github.com/dapowers87)
 * [Alberto Galera](https://github.com/agalera)
 * [Andrew Eacott](https://github.com/andreweacott)
+* [Manuel Josupeit-Walter](https://github.com/DerPeit)
 
 ### Contributing
 

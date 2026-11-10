@@ -63,7 +63,14 @@ jobs:
 
     - name: Package and Push
       run: |
-        helm dependency update "${{ matrix.chart }}"
-        helm package "${{ matrix.chart }}"
-        helm push "$(echo *.tgz)" oci://${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USER }}
+        DIR="${{ matrix.chart }}"
+        helm dependency update $DIR
+        helm package $DIR
         helm push "$(echo *.tgz)" oci://${{ env.GITHUB_REGISTRY }}/${{ github.repository_owner }}/charts
+        if [ "${DIR#images/}" != "$DIR" ]; then
+          # Add suffix -chart to chart name to avoid image name conflict
+          rm *.tgz
+          sed -i '/^name:/s/$/-chart/' $DIR/Chart.yaml
+          helm package $DIR
+        fi
+        helm push "$(echo *.tgz)" oci://${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USER }}

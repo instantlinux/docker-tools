@@ -6,6 +6,7 @@
 namespace: default
 adminUser:
   name: admin-user
+allowedHostPaths: "['/var/log/pods', '/var/lib/docker/k8s-volumes', '/dev/dri', '/dev/ttyUSB0', '/var/mythtv']"
 certManager:
   email: admin@example.com
   issuer:

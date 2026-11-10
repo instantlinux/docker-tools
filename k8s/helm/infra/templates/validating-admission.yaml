@@ -1,0 +1,50 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: hostpath-restrictions
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: [v1]
+      operations: [CREATE, UPDATE]
+      resources: [pods]
+    - apiGroups: [apps]
+      apiVersions: [v1]
+      operations: [CREATE, UPDATE]
+      resources: [deployments, daemonsets, statefulsets, replicasets]
+    - apiGroups: [batch]
+      apiVersions: [v1]
+      operations: [CREATE, UPDATE]
+      resources: [jobs, cronjobs]
+  variables:
+  - name: allowedPaths
+    expression: "{{ .Values.allowedHostPaths }}"
+  validations:
+  - expression: >
+      !has(object.spec.volumes) ||
+      object.spec.volumes.all(v,
+        !has(v.hostPath) || (
+          !v.hostPath.path.contains('..') &&
+          variables.allowedPaths.exists(prefix,
+            v.hostPath.path == prefix || v.hostPath.path.startsWith(prefix + '/')
+          )
+        )
+      )
+    message: "hostPath volume path is not in the accepted list of allowed paths or contains invalid traversal characters."
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: hostpath-restrictions-binding
+spec:
+  policyName: hostpath-restrictions
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: NotIn
+        values: [kube-node-lease, kube-system]

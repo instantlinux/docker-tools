@@ -58,13 +58,13 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
+serviceAccount: {}
 service:
-  type: ClusterIP
+  clusterIP: None
   ports:
   - { port: 80, targetPort: 8081, name: nexus }
   - { port: 5001, targetPort: 5000, name: registry }
+  type: ClusterIP
 autoscaling:
   enabled: false
 gateway:

@@ -1,5 +1,6 @@
 This infra chart defined the following:
 - cert-manager issuers for letsencrypt and selfSigned
+- hostPath mounts restricted to {{ .Values.allowedHostPaths }}
 - API gateways {{- range .Values.gateways }} {{ .name }}{{ end }}
 - daily k8s backup to {{ .Values.k8sBackup.destPath }}
 - default CPU and memory limits for {{ .Values.namespace }} namespace

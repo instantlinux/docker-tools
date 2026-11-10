@@ -10,6 +10,7 @@ metadata:
   name: {{ .Values.monitor.name }}
   namespace: {{ .Values.namespace }}
 spec:
+  clusterIP: None
   ports:
   - { port: 80, targetPort: 80, name: monitor }
   type: ClusterIP
