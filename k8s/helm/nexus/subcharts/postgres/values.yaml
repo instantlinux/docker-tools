@@ -48,7 +48,6 @@ fullnameOverride: ""
 
 serviceAccount: {}
 service:
-  clusterIP: None
   ports: [ port: 5432 ]
   type: ClusterIP
 autoscaling:

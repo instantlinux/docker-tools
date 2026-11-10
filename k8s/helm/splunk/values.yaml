@@ -67,8 +67,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
+serviceAccount: {}
 service:
   clusterIP: None
   ports:
