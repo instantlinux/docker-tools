@@ -11,4 +11,4 @@ appVersion: "v3.6.16"
 dependencies:
 - name: chartlib
   version: 0.26.11-1
-  # repository: oci://ghcr.io/instantlinux/charts
+  repository: oci://ghcr.io/instantlinux/charts
