@@ -1,10 +1,10 @@
 # Third-party versions
 export VERSION_CERT_MANAGER   ?= v1.21.3
-export VERSION_GATEWAY        ?= v1.9.3
+export VERSION_GATEWAY        ?= v1.10.0
 export VERSION_FLANNEL        ?= v0.28.10
-export VERSION_HELM           ?= v4.3.1
+export VERSION_HELM           ?= v4.3.2
 export VERSION_KUBE_STATE_METRICS ?= v2.20.0
-export VERSION_NODE_LOCAL_DNS ?= v1.37.2
+export VERSION_NODE_LOCAL_DNS ?= v1.38.0-beta.0
 export VERSION_SOPS           ?= v3.13.3
 
 # Held back versions - more effort to upgrade

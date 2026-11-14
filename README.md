@@ -49,8 +49,8 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 | gitea | ** | self-hosted git repo with many github features |
 | jira | 9.12.1 | ticket tracking |
 | mariadb-galera | [![](https://img.shields.io/docker/v/instantlinux/mariadb-galera?sort=date)](https://hub.docker.com/r/instantlinux/mariadb-galera "Version badge") | automatic cluster setup|
-| nexus | 3.98.0 | binary repo with docker registry |
-| synapse | v1.164.2 | self-hosted team chat |
+| nexus | 3.98.1 | binary repo with docker registry |
+| synapse | v1.165.0 | self-hosted team chat |
 | updater | ** | tool that updates this repo for [inventory.md](lib/build/inventory.md) |
 | wordpress | ** | |
 
@@ -58,7 +58,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 
 | Service | Version | Notes |
 | --- | --- | --- |
-| apache | 2.4.69 | web server, with webdav example |
+| apache | 2.4.71 | web server, with webdav example |
 | data-sync | [![](https://img.shields.io/docker/v/instantlinux/data-sync?sort=date)](https://hub.docker.com/r/instantlinux/data-sync "Version badge") | poor-man's SAN for persistent storage |
 | ddclient | [![](https://img.shields.io/docker/v/instantlinux/ddclient?sort=date)](https://hub.docker.com/r/instantlinux/ddclient "Version badge") | Dynamic DNS client |
 | ez-ipupdate | [![](https://img.shields.io/docker/v/instantlinux/ez-ipupdate?sort=date)](https://hub.docker.com/r/instantlinux/ez-ipupdate "Version badge") | Dynamic DNS client |

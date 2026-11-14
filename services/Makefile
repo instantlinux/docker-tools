@@ -17,7 +17,7 @@ export    VERSION_GARAGE ?= v2.5.0
 export VERSION_GAR_WEBUI ?= 1.1.0
 export     VERSION_HA_KA ?= 3.4.4-alpine-2.3.4-r2
 export     VERSION_KC_DB ?= 11.8.9
-export  VERSION_KEYCLOAK ?= 26.8.1
+export  VERSION_KEYCLOAK ?= 26.8.2
 export    VERSION_NAGIOS ?= 4.5.14-2.5
 # 3.5.0 held back - PEAR: NOT AVAILABLE
 export  VERSION_NAGIOSQL ?= 3.4.1-4.4.6
