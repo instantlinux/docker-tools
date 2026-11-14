@@ -78,7 +78,7 @@
 |  | flannel-io/flannel | v0.28.10 |  |
 |  | helm/helm | v4.3.2 |  |
 |  | kubernetes/kube-state-metrics | v2.20.0 |  |
-|  | kubernetes/node-local-dns | v1.38.0-beta.0 |  |
+|  | kubernetes/node-local-dns | v1.37.2 |  |
 |  | getsops/sops | v3.13.3 |  |
 |  | chaunceygardiner/weewx-airlink | v4.1.1 |  |
 | manual-checks | mariadb-galera | 12.3.3 |  |

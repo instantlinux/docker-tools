@@ -90,7 +90,7 @@
     "flannel-io/flannel": {"version": "v0.28.10", "paths": ["k8s/Makefile.versions"]},
     "helm/helm": {"version": "v4.3.2", "paths": ["k8s/Makefile.versions"]},
     "kubernetes/kube-state-metrics": {"version": "v2.20.0", "paths": ["k8s/Makefile.versions"]},
-    "kubernetes/node-local-dns": {"version": "v1.38.0-beta.0", "paths": ["k8s/Makefile.versions"]},
+    "kubernetes/node-local-dns": {"version": "v1.37.2", "paths": ["k8s/Makefile.versions"]},
     "getsops/sops": {"version": "v3.13.3", "paths": ["k8s/Makefile.versions"]},
     "chaunceygardiner/weewx-airlink": {"version": "v4.1.1", "paths": ["images/weewx/Dockerfile"]}
   },

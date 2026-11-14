@@ -2,6 +2,7 @@
     "alpine-packages": [
 	"data-sync",
 	"dhcpd-dns-pxe",
+	"nagios",
 	"nagiosql"
     ],
     "ubuntu-packages": [
