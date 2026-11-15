@@ -1,0 +1,48 @@
+---
+# authenticator.yml
+
+- name: Install PAM module for google-authenticator
+  ansible.builtin.apt:
+    name: libpam-google-authenticator
+    state: present
+
+- name: Define authenticator tokens
+  ansible.builtin.template:
+    dest: ~{{ item.key }}/.google_authenticator
+    src: google_authenticator.j2
+    owner: "{{ item.key }}"
+    mode: 0400
+  loop: "{{ vault_users | dict2items }}"
+  register: template_result
+  when: item.value.google_token is defined
+  no_log: True
+  failed_when:
+    - template_result.failed
+    - "'Destination directory' not in template_result.msg"
+
+- name: Add google-authenticator to PAM sshd
+  ansible.builtin.lineinfile:
+    dest: /etc/pam.d/sshd
+    line: auth   required   pam_google_authenticator.so
+
+- name: Activate sshd ChallengeResponse auth
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^ChallengeResponseAuthentication .*"
+    line: ChallengeResponseAuthentication yes
+  notify: Restart sshd
+
+- name: Set sshd KbdInteractiveAuthentication for google authenticator
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "(?i)^KbdInteractiveAuthentication .*"
+    line: KbdInteractiveAuthentication yes
+  notify: Restart sshd
+
+- name: Permit root login - with OTP
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: PermitRootLogin yes
+    regexp: "^PermitRootLogin .*"
+  notify: Restart sshd
+

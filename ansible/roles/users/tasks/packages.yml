@@ -12,7 +12,3 @@
   when: ansible_facts['os_family'] == 'Debian'
   # TODO remove once this module reports changes correctly
   changed_when: false
-
-- name: Install PAM module for google-authenticator
-  ansible.builtin.package:
-    name: "{{ pam_package }}"

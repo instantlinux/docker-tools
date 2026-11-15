@@ -1,0 +1,15 @@
+---
+# auth-keys.yml
+
+# Look for ssh key files: keys/ssh_public/<user>-*.pub
+
+- name: Add authorized keys for users
+  ansible.builtin.authorized_key:
+    user: "{{ item.split('/')[-1:][0].split('-')[0] }}"
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+  - keys/ssh_public/*.pub
+  register: template_result
+  failed_when:
+  - template_result.failed
+  - "'Failed to create directory' not in template_result.msg and 'Failed to lookup user' not in template_result.msg"
