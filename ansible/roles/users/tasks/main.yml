@@ -7,13 +7,13 @@
 - import_tasks: grub.yml
 
 - name: Define group ids
-  group:
+  ansible.builtin.group:
     name: "{{ item.key }}"
     gid: "{{ item.value }}"
   with_dict: "{{ local_groups }}"
 
 - name: Define users
-  user:
+  ansible.builtin.user:
     name: "{{ item.name }}"
     comment: "{{ item.comment if 'comment' in item else item.name }}"
     uid: "{{ item.uid }}"
@@ -27,61 +27,23 @@
     shell: "{{ item.shell if 'shell' in item else '/usr/sbin/nologin' }}"
   with_items: "{{ local_users }}"
 
-- name: Define authenticator tokens
-  template:
-    dest: /home/{{ item.key }}/.google_authenticator
-    src: google_authenticator.j2
-    owner: "{{ item.key }}"
-    mode: 0400
-  with_dict: "{{ vault_users }}"
-  when: item.google_token is defined
-  no_log: True
-
-- name: Add google-authenticator to PAM sshd
-  lineinfile:
-    dest: /etc/pam.d/sshd
-    line: auth   required   pam_google_authenticator.so
-
 - name: Allow password auth in sshd
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     line: PasswordAuthentication yes
     regexp: "^PasswordAuthentication .*"
-  notify: Restart sshd
-
-- name: Activate sshd ChallengeResponse auth
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: "^ChallengeResponseAuthentication .*"
-    line: ChallengeResponseAuthentication yes
-  notify: Restart sshd
-
-- name: Permit root login - with OTP
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    line: PermitRootLogin yes
-    regexp: "^PermitRootLogin .*"
-  notify: Restart sshd
-
-- name: Set sshd KbdInteractiveAuthentication for google authenticator
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: "(?i)^KbdInteractiveAuthentication .*"
-    line: KbdInteractiveAuthentication yes
+  when: user_security.password_auth
   notify: Restart sshd
 
 - name: Root .ssh directory
-  file:
+  ansible.builtin.file:
     path: /root/.ssh
     state: directory
     mode: 0700
 
-# Look for ssh key files: keys/ssh_public/<user>-*.pub
-
-- name: Add authorized keys for users
-  authorized_key:
-    user: "{{ item.split('/')[-1:][0].split('-')[0] }}"
-    key: "{{ lookup('file', item) }}"
-  with_fileglob:
-  - keys/ssh_public/*.pub
-  ignore_errors: True
+- import_tasks: auth-keys.yml
+  when: user_security.ssh_auth_keys
+- import_tasks: authenticator.yml
+  when: user_security.google_authenticator
+- import_tasks: sudo-passwd.yml
+  when: user_security.sudo_separate_passwords

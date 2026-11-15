@@ -1,4 +1,11 @@
 ---
+# User security feature toggles for this role
+user_security:
+  google_authenticator: True
+  password_auth: True
+  ssh_auth_keys: True
+  sudo_separate_passwords: True
+
 grub_timeout: 5
 
 local_group_defaults:
@@ -72,6 +79,8 @@ local_user_defaults:
     uid: 2035
   - name: proftpd
     uid: 2036
+  - name: owntone
+    uid: 2037
   - name: weewx
     uid: 2071
   - name: coredns-cainj-envoy
@@ -84,11 +93,4 @@ local_user_site: []
 local_user_additions: []
 local_users: "{{ local_user_defaults + local_user_site + local_user_additions }}"
 
-pam_package: "{{
-    'libpam-google-authenticator' if ansible_facts['os_family'] == 'Debian' 
-    else 'pam-google-authenticator' }}"
-
 ubuntu_repo_uri: http://archive.ubuntu.com/ubuntu/
-
-ubuntu_google_auth_repo:
-  - deb {{ ubuntu_repo_uri }} {{ ansible_facts['distribution_release'] }} main restricted universe multiverse

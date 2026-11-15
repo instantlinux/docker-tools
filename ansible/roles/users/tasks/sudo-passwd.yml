@@ -1,0 +1,42 @@
+---
+# sudo-passwd.yml
+
+- name: Set sudo passwords
+  ansible.builtin.lineinfile:
+    path: /etc/security/sudo_passwd
+    regexp: "^{{ item.key }}:"
+    line: "{{ item.key }}:{{ item.value.sudo }}"
+    create: true
+    owner: root
+    group: root
+    mode: '0600'
+  with_items: "{{ vault_users | dict2items }}"
+  when:
+  - item.value.sudo is defined
+  no_log: True
+
+- name: Install pwdfile lib for sudo
+  ansible.builtin.apt:
+    name: libpam-pwdfile
+    state: present
+
+- name: Override PAM service - require pam_pwdfile for sudo
+  ansible.builtin.copy:
+    dest: /etc/pam.d/sudo
+    owner: root
+    group: root
+    mode: 0644
+    content: |
+      #%PAM-1.0
+      # Managed by ansible
+
+      # Set up user limits from /etc/security/limits.conf.
+      session    required   pam_limits.so
+
+      session    required   pam_env.so readenv=1 user_readenv=0
+      session    required   pam_env.so readenv=1 envfile=/etc/default/locale user_readenv=0
+
+      auth required pam_pwdfile.so pwdfile=/etc/security/sudo_passwd
+      ### @include common-auth
+      @include common-account
+      @include common-session-noninteractive
