@@ -1,10 +1,10 @@
 services:
   app:
     image: dxflrs/garage:${VERSION_GARAGE:-latest}
+    cap_drop: [ ALL ]
     configs:
     - source: garage.toml
       target: /etc/garage.toml
-      mode: 0444
     environment:
       GARAGE_ADMIN_TOKEN_FILE:    /run/secrets/garage-admin-token
       GARAGE_METRICS_TOKEN_FILE:  /run/secrets/garage-metrics-token
@@ -26,10 +26,12 @@ services:
     - ${GARAGE_ROOT:-/var/lib/garage}/data:/var/lib/garage/data
   webui:
     image: genebit/garage-webui:${VERSION_GAR_WEBUI:-latest}
+    cap_drop: [ ALL ]
     configs:
     - source: garage.toml
       target: /etc/garage.toml
     restart: unless-stopped
+    user: ${UID_NGINX:-2038}
     volumes:
       - webui-data:/data # required: user accounts, audit logs, upload temp files
     ports:

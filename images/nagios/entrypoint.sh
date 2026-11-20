@@ -1,16 +1,10 @@
 #! /bin/sh -e
 
-if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
-  # At first startup, set timezone
-  cp /usr/share/zoneinfo/$TZ /etc/localtime
-  echo $TZ >/etc/timezone
-fi
-
+umask 770
 sed -i -e "s/=nagiosadmin/=$AUTHORIZED_USERS/" /etc/nagios/cgi.cfg
 if [ -s /run/secrets/$HTPASSWD_SECRETNAME ]; then
   cp /run/secrets/$HTPASSWD_SECRETNAME /etc/nagios/htpasswd.users
-  chown root:www-data /etc/nagios/htpasswd.users
-  chmod 640 /etc/nagios/htpasswd.users
+  chgrp www-data /etc/nagios/htpasswd.users
 fi
 
 sed -i -e "s/server_name .*/server_name $NAGIOS_FQDN;/" \
@@ -81,7 +75,7 @@ AuthUser=$MAIL_AUTH_USER
 EOF
   fi
 fi
-chown root:nagios /etc/ssmtp/ssmtp.conf
+chgrp nagios /etc/ssmtp/ssmtp.conf
 chmod 640 /etc/ssmtp/ssmtp.conf
 
 # Check configuration for errors
@@ -97,7 +91,7 @@ start-stop-daemon -u nginx -b --exec /usr/bin/fcgiwrap -- \
 /usr/sbin/php-fpm83
 /usr/sbin/nginx
 touch /var/nagios/nagios.log && tail -1 -f /var/nagios/nagios.log &
-find /var/nagios -not -user nagios -exec chown nagios:nagios {} \;
-find /etc/nagios/objects -not -user www-data -exec chown www-data:nagios {} \;
+find /var/nagios -not -user nagios -exec chgrp nagios {} \;
+find /etc/nagios/objects -not -user www-data -exec chgrp nagios {} \;
 
 exec /usr/sbin/nagios /etc/nagios/nagios.cfg

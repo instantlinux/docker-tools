@@ -58,7 +58,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+# serviceAccount: {}
 service:
   clusterIP: None
   ports:
@@ -123,5 +123,7 @@ postgres:
   - name: nexus-config
     configMap:
       name: nexus
+  backup:
+    psqlTag: 17.7
   image:
     tag: 17.7-alpine

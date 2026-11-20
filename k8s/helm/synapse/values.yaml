@@ -227,6 +227,8 @@ nginx:
 
 postgres:
   enabled: false
+  backup:
+    psqlTag: 17.7
   image:
     tag: 17.11-alpine
   statefulset:

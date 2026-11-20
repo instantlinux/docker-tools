@@ -81,6 +81,8 @@ local_user_defaults:
     uid: 2036
   - name: owntone
     uid: 2037
+  - name: nginx
+    uid: 2038
   - name: weewx
     uid: 2071
   - name: coredns-cainj-envoy

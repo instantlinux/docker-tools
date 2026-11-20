@@ -44,6 +44,8 @@ RUN addgroup -g $NAGIOS_GID nagios && \
            -e s/^cfg_file/#cfg_file/ /etc/nagios/nagios.cfg && \
     echo '$USER2$=/opt/nagios/plugins' >> /etc/nagios/resource.cfg && \
     mv /etc/nagios/nagios.cfg /etc/nagios/nagios.cfg.proto && \
+    chgrp /etc/nagios /etc/ssmtp && \
+    chmod g+ws /etc/nagios /etc/ssmtp && \
     ln -fns /usr/local/bin/mail.sh /usr/sbin/sendmail && \
     ln -s /usr/local/bin/mail.sh /usr/bin/mail && \
     rm /etc/nginx/http.d/default.conf

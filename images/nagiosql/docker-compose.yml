@@ -1,6 +1,8 @@
 services:
   app:
     image: instantlinux/nagios:${VERSION_NAGIOS:-latest}
+    cap_drop: [ ALL ]
+    cap_add: [ CHOWN, DAC_OVERRIDE, NET_BIND_SERVICE, SETGID, SETUID ]
     restart: always
     hostname: ${NAGIOS_FQDN:-nagios.docker}
     # If your local plugins require additional packages, this is
@@ -21,8 +23,6 @@ services:
     - etc:/etc/nagios
     - var:/var/nagios
     - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
-    ports:
-    - ${PORT_NAGIOS:-80}:80
     secrets:
     - nagios-htpasswd
     # Use bridge mode unless at least one plugin (check_dhcp) requires host net
@@ -30,6 +30,8 @@ services:
 
   nagiosql:
     image: instantlinux/nagiosql:${VERSION_NAGIOSQL:-latest}
+    cap_drop: [ ALL ]
+    cap_add: [ CHOWN, DAC_OVERRIDE, SETGID, SETUID ]
     restart: always
     hostname: nagiosql
     environment:
@@ -47,20 +49,19 @@ services:
     network_mode: bridge
 
   nginx:
-    image: nginx:${VERSION_NGINX:-latest}
+    image: nginx/nginx-unprivileged:${VERSION_NGINX:-latest}
+    cap_drop: [ ALL ]
     restart: always
     hostname: monitor
     ports:
-    - ${PORT_MONITOR_SSL:-443}:443
-    - ${PORT_MONITOR_HTTP:-80}:80
+    - ${PORT_MONITOR_HTTP:-80}:8080
+    user: "${UID_NGINX:-2038}"
     volumes:
     - ${ADMIN_PATH:-/opt}/nagios/etc/nginx/conf.d:/etc/nginx/conf.d:ro
     - ${SHARE_PATH:-/opt}/common/pki/ca:/etc/ssl/ca:ro
     - ${SHARE_PATH:-/opt}/common/pki/certs:/etc/ssl/certs:ro
     environment:
       TZ: ${TZ:-UTC}
-    secrets:
-    - monitor.${DOMAIN:-demo}-server-key.pem
     depends_on:
     - app
     - nagiosql
@@ -76,5 +77,3 @@ secrets:
     file: /var/adm/secrets/nagios-htpasswd
   nagiosql-db-password:
     file: /var/adm/secrets/nagiosql-db-password
-  monitor.ci.net-server-key.pem:
-    file: ${ADMIN_PATH}/../tls/monitor.ci.net-server-key.pem

@@ -1,18 +1,21 @@
-version: "3.1"
-
 services:
   app:
-    image: instantlinux/nagios:latest
+    image: instantlinux/nagios:${VERSION_NAGIOS:-latest}
+    cap_drop: [ ALL ]
+    cap_add: [ CHOWN, DAC_OVERRIDE, NET_BIND_SERVICE, SETGID, SETUID ]
     restart: always
     hostname: ${NAGIOS_FQDN:-nagios.docker}
     environment:
       AUTHORIZED_USERS: ${NAGIOS_USERS:-nagiosadmin}
       MAIL_RELAY_HOST: ${NAGIOS_MAIL_RELAY:-smtp}
+      NGINX_PORT: ${NAGIOS_NGINX_PORT:-80}
       TZ: ${TZ:-UTC}
     volumes:
     - etc:/etc/nagios
     - var:/var/nagios
     - ${ADMIN_PATH:-/opt}/nagios/plugins:/opt/nagios/plugins:ro
+    # Use bridge mode unless at least one plugin (check_dhcp) requires host net
+    network_mode: host
     ports:
     - 80:80
     secrets:

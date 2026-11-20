@@ -1,5 +1,5 @@
 {{- define "chartlib.serviceaccount" -}}
-{{- if .Values.serviceAccount.create -}}
+{{- if and (hasKey .Values "serviceAccount") .Values.serviceAccount.create -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
