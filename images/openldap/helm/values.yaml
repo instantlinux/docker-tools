@@ -63,7 +63,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+# serviceAccount: {}
 service:
   clusterIP: None
   ports:
