@@ -3,6 +3,8 @@ version: "3"
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/samba:latest
+    cap_drop: [ ALL ]
+    cap_add: [ CHOWN, DAC_OVERRIDE, FOWNER, NET_BIND_SERVICE, SETGID, SETUID ]
     network_mode: host
     restart: always
     environment:

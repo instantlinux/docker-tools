@@ -4,6 +4,10 @@ deployment:
   containerPorts: [ containerPort: 80 ]
   env:
     react_app_server: http://synapse-admin.example.com
+  securityContext:
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, NET_BIND_SERVICE, SETGID, SETUID ]
 image:
   repository: awesometechnologies/synapse-admin
   pullPolicy: IfNotPresent

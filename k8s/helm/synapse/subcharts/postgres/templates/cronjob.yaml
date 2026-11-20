@@ -14,7 +14,7 @@ spec:
         spec:
           containers:
           - name: {{ $fullName }}-backup
-            image:  alpine/psql:{{ (split "-" .Values.image.tag)._0 }}
+            image:  alpine/psql:{{ .Values.backup.psqlTag }}
             env:
             - name: PGPASSFILE
               value: /.pgpass

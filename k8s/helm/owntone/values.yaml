@@ -10,17 +10,28 @@ deployment:
             values:
             - owntone
         topologyKey: "kubernetes.io/hostname"
-  env:
-    gid: 1000
-    uid: 1000
   # The (unprotected) UI lives at <node-ip>:3689. Add a password and set
   #  trusted_network=none in /etc/owntone/owntone.conf after first launch
   hostNetwork: true
   nodeSelector:
     service.owntone: allow
+  podSecurityContext:
+    runAsUser: 2037
   replicas: 2
+  securityContext:
+    allowPrivilegeEscalation: true
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, DAC_OVERRIDE ]
   strategy:
     type: Recreate
+livenessProbe:
+  httpGet:
+    path: /
+    port: 3689
+  initialDelaySeconds: 30
+  timeoutSeconds: 30
+  failureThreshold: 3
 volumeMounts:
 - name: cache
   mountPath: /var/cache/owntone

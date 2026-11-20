@@ -3,6 +3,7 @@ backup:
   # Min Hour Day Month Weekday
   timeZone: America/Los_Angeles
   schedule: "0 5 * * *"
+  psqlTag: latest
 
 statefulset:
   containerPorts: [ containerPort: 5432 ]

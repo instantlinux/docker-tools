@@ -15,6 +15,11 @@ deployment:
     requests:
       cpu: 100m
       memory: 384Mi
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, DAC_OVERRIDE, FOWNER, NET_BIND_SERVICE, SETGID, SETUID ]
 
 # override volume list as required
 volumeMounts:
@@ -54,6 +59,7 @@ nameOverride: ""
 fullnameOverride: ""
 autoscaling:
   enabled: false
+# serviceAccount: {}
 
 configmap:
   name: samba

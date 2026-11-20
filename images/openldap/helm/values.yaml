@@ -24,6 +24,11 @@ deployment:
   containerPorts:
   - containerPort: 389
   - containerPort: 636
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: [ ALL ]
+      add: [ CHOWN, DAC_OVERRIDE, NET_BIND_SERVICE, SETGID, SETUID ]
 volumeMounts:
 - mountPath: /etc/openldap/prepopulate
   name: prepopulate
@@ -58,7 +63,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount: {}
+# serviceAccount: {}
 service:
   clusterIP: None
   ports:

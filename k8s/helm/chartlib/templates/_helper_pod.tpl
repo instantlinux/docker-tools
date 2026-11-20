@@ -38,7 +38,8 @@ spec:
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
-      {{- if or .Values.serviceAccount.enabled .Values.serviceAccount.create }}
+      {{- if and (hasKey .Values "serviceAccount") (or
+        .Values.serviceAccount.enabled .Values.serviceAccount.create) }}
       serviceAccountName: {{ include "local.serviceAccountName" . }}
       {{- else }}
       automountServiceAccountToken: false
@@ -54,7 +55,9 @@ spec:
             {{- $_ := set $podctx "runAsNonRoot" true -}}
           {{- end }}
 	  {{- if not (hasKey .pod "securityContext") }}
-	    {{- $_ := set .pod "securityContext" (dict "allowPrivilegeEscalation" false) -}}
+	    {{- $_ := set .pod "securityContext" (dict
+              "allowPrivilegeEscalation" false
+              "capabilities" (dict "drop" (list "ALL"))) -}}
           {{- end }}
         {{- end }}
         {{- if hasKey $podctx "fsGroup" -}}

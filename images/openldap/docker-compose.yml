@@ -1,8 +1,8 @@
-version: "3.2"
-
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/openldap:${VERSION_OPENLDAP:-latest}
+    cap_drop: [ ALL ]
+    cap_add: [ CHOWN, DAC_OVERRIDE, NET_BIND_SERVICE, SETGID, SETUID ]
     environment:
       SLAPD_ROOTDN: ${SLAPD_ROOTDN:-cn=admin,dc=example,dc=com}
       SLAPD_ROOTPW: ${SLAPD_ROOTPW}
@@ -17,7 +17,3 @@ services:
 
 volumes:
   data:
-networks:
-  default:
-    external:
-      name: app_net

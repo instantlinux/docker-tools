@@ -1,11 +1,13 @@
 services:
   app:
     image: ${REGISTRY_URI:-instantlinux}/rest-server:${VERSION_REST_SERVER:-latest}
+    cap_drop: [ ALL ]
     restart: always
     ports:
     - ${PORT_RESTIC:-8000}:8000
     secrets:
     - restic-htpasswd
+    user: ${UID_REST_SERVER:-2025}
     volumes:
     - /var/backup/restic:/data
 

@@ -3,6 +3,7 @@ backup:
   # Min Hour Day Month Weekday
   timeZone: America/Los_Angeles
   schedule: "0 5 * * *"
+  psqlTag: latest
 
 statefulset:
   containerPorts: [ containerPort: 5432 ]
@@ -18,9 +19,7 @@ statefulset:
         name: postgres
   podSecurityContext:
     runAsUser: 70
-    runAsGroup: 70
     fsGroup: 70
-    runAsNonRoot: true
   replicas: 1
   resources:
     limits:
@@ -48,8 +47,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  enabled: false
+# serviceAccount: {}
 service:
   clusterIP: None
   ports: [ port: 5432 ]

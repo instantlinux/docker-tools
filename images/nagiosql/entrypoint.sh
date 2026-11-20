@@ -2,12 +2,6 @@
 
 NAGIOS_OBJ=$NAGIOS_ETC/objects
 
-if [ ! -f /etc/timezone ] && [ ! -z "$TZ" ]; then
-  # At first startup, set timezone
-  ln -fns /usr/share/zoneinfo/$TZ /etc/localtime
-  echo $TZ >/etc/timezone
-fi
-
 if [ -e /run/secrets/$DB_SECRETNAME ]; then
   DB_PASS=$(cat /run/secrets/$DB_SECRETNAME)
 fi
@@ -56,7 +50,7 @@ mkdir -p /usr/local/nagios
 [ -e /usr/local/nagios/etc ] || ln -s $NAGIOS_ETC /usr/local/nagios/etc
 [ -e /usr/local/nagios/var ] || ln -s /var/nagios /usr/local/nagios/var
 
-chown -R $APACHE_USER $NAGIOS_OBJ \
+[ $(id -u) = 0 ] && chown -R $APACHE_USER $NAGIOS_OBJ \
   /var/www/nagiosql/config/settings.php
 
 [ -x /etc/apache2/envvars ] && . /etc/apache2/envvars
