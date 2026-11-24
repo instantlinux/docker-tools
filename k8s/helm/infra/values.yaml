@@ -44,14 +44,6 @@ gateways:
   listeners: []
   nodeport_http: 30080
   nodeport_https: 30443
-gdPlugin:
-  version: 0.2.0
-  # This enables connection to APC UPS devices; use 'lsusb' to find the
-  # vendor and product ID for yours if you want to enable other usb devices
-  logLevel: info
-  usbVendors:
-  - vendor: "051d"
-    product: "0002"
 k8sBackup:
   destPath: /var/backup/k8s
   etcdVersion: 3.5.15-0

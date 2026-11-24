@@ -1,4 +1,3 @@
-{{- if .Values.backup.enabled }}
 {{- $fullName := include "local.fullname" . -}}
 apiVersion: batch/v1
 kind: CronJob
@@ -45,4 +44,3 @@ spec:
               secretName: synapse
               defaultMode: 0600
           restartPolicy: Never
-{{- end }}

@@ -1,6 +1,5 @@
 # Default values for postgres
 backup:
-  enabled: true
   # Min Hour Day Month Weekday
   timeZone: America/Los_Angeles
   schedule: "0 5 * * *"

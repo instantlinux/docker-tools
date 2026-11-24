@@ -9,12 +9,7 @@ deployment:
     nut_debug_level: 0
     serial: mustbeset
   securityContext:
-    capabilities:
-      drop: [ ALL ]
-      add: [ CHOWN, DAC_OVERRIDE, SETGID, SETUID ]
-  resources:
-    limits:
-      devic.es/usb: 1
+    privileged: true
   strategy:
     type: Recreate
 livenessProbe:
@@ -25,8 +20,7 @@ livenessProbe:
     - 'upsc ups@localhost:3493 2>&1|grep -q stale && exit 1 || true'
   periodSeconds: 30
 volumeMounts:
-# With generic-device-plugin, the usbhid-ups driver does not require
-#  directly mounting the serial device
+# TODO make this work with pod security policies instead of securityContext
 # - name: usb
 #   mountpath: /dev/ttyUSB0
 
