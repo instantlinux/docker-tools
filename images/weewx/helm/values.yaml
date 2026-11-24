@@ -34,12 +34,11 @@ deployment:
     fsGroup: 2071
   resources:
     limits:
+      devic.es/serial: 1
       memory: 1024Mi
     requests:
       cpu: 100m
       memory: 64Mi
-  securityContext:
-    privileged: true
   strategy:
     type: Recreate
 volumeMounts:

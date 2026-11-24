@@ -5,5 +5,7 @@ This infra chart defined the following:
 - daily k8s backup to {{ .Values.k8sBackup.destPath }}
 - default CPU and memory limits for {{ .Values.namespace }} namespace
 - local-storage class default
+- generic-device-plugin USB attachment for:
+  {{- toYaml .Values.gdPlugin.usbVendors | nindent 4 }}
 - cluster role permissions for prometheus
 - service and routes for {{ .Values.monitor.hostname }}

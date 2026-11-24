@@ -160,6 +160,9 @@ valkey:
 
 postgres:
   enabled: true
+  backup:
+    # immich has its own backup, so disable it in the subchart
+    enabled: false
   statefulset:
     env:
       postgres_user: immich

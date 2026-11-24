@@ -30,7 +30,7 @@
 - name: InstantLinux log
   file:
     dest: /var/log/ilinux
-    owner: capi
+    owner: 2016
     group: syslog
     mode: 02770
     state: directory
