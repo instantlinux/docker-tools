@@ -38,6 +38,7 @@ The cluster-deployment tools here include helm charts and ansible playbooks to s
 * Pod security policies
 * Automatic certificate issuing/renewal with Letsencrypt
 * Grafana with prometheus-based alerting
+* The [generic-device-plugin](https://github.com/squat/generic-device-plugin) for physical device connections
 
 ### Resource definitions
 
