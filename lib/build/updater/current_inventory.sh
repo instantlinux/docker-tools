@@ -201,7 +201,7 @@ echo "\n  },"
 echo " " \"github-imports\": {
 cd $REPO_PATH
 for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd docker/buildx \
-    envoyproxy/gateway flannel-io/flannel helm/helm \
+    flannel-io/flannel envoyproxy/gateway squat/generic-device-plugin helm/helm \
     kubernetes/kube-state-metrics kubernetes/node-local-dns getsops/sops \
     chaunceygardiner/weewx-airlink; do
   ITEM=$(echo $SOURCE | cut -d / -f 2 | tr '-' _)
@@ -212,6 +212,8 @@ for SOURCE in cert-manager/cert-manager Mirantis/cri-dockerd docker/buildx \
     cri_dockerd) FILE=ansible/roles/kubernetes/defaults/main.yml
        VERSION=$(grep -A 1 cri_dockerd: $FILE | \
        tail -1 | awk '{ print $2; }');;
+    generic_device_plugin) FILE=k8s/helm/infra/values.yaml
+       VERSION=$(grep -A 1 gdPlugin: $FILE | tail -1 | awk '{ print $2; }');;
     weewx_airlink) FILE=images/weewx/Dockerfile
        VERSION=$(grep "^ARG AIRLINK_VERSION" $FILE | cut -d = -f 2);;
     *) VERSION=$(grep -i VERSION_$ITEM $FILE | awk '{ print $4; }');;
